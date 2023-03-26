@@ -34,9 +34,9 @@ The rapid prototyping enables the software development team to quickly iterate t
 
 Tools
 -----
-1. [Focused Analysis Questionare](./Tools/Questionares/SOW/)
-2. [Scoping Questionare](./Tools/Questionares/COW/)
-3. [Targeting Questionare](./Tools/Questionares/PIG/)
+1. [Focused Analysis Questionare](./Tools/Questionares/SOW/) (SOW)
+2. [Scoping Questionare](./Tools/Questionares/COW/) (COW)
+3. [Targeting Questionare](./Tools/Questionares/PIG/) (PIG)
 
 
 Definitions
