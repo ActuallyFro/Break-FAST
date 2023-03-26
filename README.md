@@ -14,16 +14,23 @@ The rapid prototyping enables the software development team to quickly iterate t
 
 ### Phases
 1. Focused Analysis - "SOW"
- 1. Steps
-  1. Sofware Problem Area Taxonomy (SPAT)
-  2. Operational Analysis
-  3. Work(er/load/unit) Analysis.
- 2. Outcome: identification of user execution capabilities/needs.
-2.
-Scoping - COW - Capability, Opportunity, and Worth. Outcome: list of general requirements and their value.
-
-Targeting - PIG - Partition, Isolate, Grasp. Outcome: decomposition of needs and requirements into developement units of work.
-
+   - Steps
+     - Sofware Problem Area Taxonomy (SPAT)
+     - Operational Analysis
+     - Work(er/load/unit) Analysis.
+   - Outcome: identification of user execution capabilities/needs.
+2. Scoping - "COW"
+   - Steps
+     - Capability
+     - Opportunity
+     - Worth
+   - Outcome: list of general requirements and their value.
+3. Targeting - "PIG"
+   - Steps
+     - Partition
+     - Isolate
+     - Grasp
+   - Outcome: decomposition of needs and requirements into developement units of work.
 
 Tools
 -----
