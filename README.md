@@ -42,7 +42,3 @@ The word "production" means the usage of a software development technique (e.g.,
 
 The phrase "left of development" shall be treated as the activities that are used for pre-production before a given production technique is applied.
 Pre-production and "left of development" may be interchangably used.
-
-
-==================
-
