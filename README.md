@@ -12,7 +12,7 @@ Next, task units are isolated for each part. This involves identifying the speci
 The rapid prototyping enables the software development team to quickly iterate through different designs and implementations, incorporating feedback from end-users along the way. The end result is a high-quality software product that meets the needs of the end-users, developed in a shorter amount of time than traditional software development methods.
 **CHATGPT**
 
-###Phases
+### Phases
 1. Focused Analysis - "SOW"
  1. Steps
   1. Sofware Problem Area Taxonomy (SPAT)
