@@ -39,6 +39,7 @@ xhr.onreadystatechange = function() {
 			input.name = ID;
 			input.rows = 3;
 			input.className = "form-control";
+			input.id = question;
 
 			//Check if data exists in LocalStorage
 			var responseDATA = localStorage.getItem(ID);
@@ -85,3 +86,51 @@ function saveForm() {
 
 	alert("Form data SAVED in LocalStorage!");
 }
+
+
+// exportForm() -- will export data to readable JSON file; for each form element save the id and value
+function exportForm() {
+	// var form = document.getElementById("myForm");
+	
+	// for (var i = 0; i < form.elements.length; i++) {
+	// 	if (form.elements[i].name != ""){
+
+	// 		if (form.elements[i].value != ""){
+				
+	// 		}
+
+	// 	}
+
+	// }
+
+	// alert("Form data SAVED in LocalStorage!");
+
+	////
+	// Get form data as JSON object
+	var formData = {};
+	var inputs = document.querySelectorAll("form#myForm input, form#myForm textarea");
+	for (var i = 0; i < inputs.length; i++) {
+		formData[inputs[i].name] = inputs[i].value;
+	}
+
+	// Convert JSON object to human-readable JSON string
+	var jsonString = JSON.stringify(formData, null, 2);
+
+	// Create a temporary <a> element to download the file
+	var downloadLink = document.createElement("a");
+	downloadLink.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(jsonString));
+	downloadLink.setAttribute("download", "form-data.json");
+	downloadLink.style.display = "none";
+	document.body.appendChild(downloadLink);
+
+	// Trigger the download
+	downloadLink.click();
+
+	// Remove the temporary <a> element
+	document.body.removeChild(downloadLink);
+	////
+
+
+}
+
+// importForm()
