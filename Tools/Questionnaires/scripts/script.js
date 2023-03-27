@@ -88,32 +88,13 @@ function saveForm() {
 }
 
 
-// exportForm() -- will export data to readable JSON file; for each form element save the id and value
 function exportForm() {
-	// var form = document.getElementById("myForm");
-	
-	// for (var i = 0; i < form.elements.length; i++) {
-	// 	if (form.elements[i].name != ""){
-
-	// 		if (form.elements[i].value != ""){
-				
-	// 		}
-
-	// 	}
-
-	// }
-
-	// alert("Form data SAVED in LocalStorage!");
-
-	////
-	// Get form data as JSON object
 	var formData = {};
 	var inputs = document.querySelectorAll("form#myForm input, form#myForm textarea");
 	for (var i = 0; i < inputs.length; i++) {
 		formData[inputs[i].name] = inputs[i].value;
 	}
 
-	// Convert JSON object to human-readable JSON string
 	var jsonString = JSON.stringify(formData, null, 2);
 
 	// Create a temporary <a> element to download the file
@@ -123,14 +104,36 @@ function exportForm() {
 	downloadLink.style.display = "none";
 	document.body.appendChild(downloadLink);
 
-	// Trigger the download
 	downloadLink.click();
 
-	// Remove the temporary <a> element
 	document.body.removeChild(downloadLink);
-	////
 
 
 }
 
 // importForm()
+function importForm() {
+	var fileInput = document.createElement("input");
+	fileInput.setAttribute("type", "file");
+	
+	fileInput.addEventListener("change", function(event) {
+	  var file = event.target.files[0];
+	  //console.log("[DEBUG] File Name: " + file.name);
+	  
+	  var reader = new FileReader();
+	  reader.onload = function(event) {
+		//console.log("[DEBUG] File Contents: " + event.target.result);
+		var jsonData = JSON.parse(event.target.result);
+		var inputs = document.querySelectorAll("form#myForm input, form#myForm textarea");
+		for (var i = 0; i < inputs.length; i++) {
+		  if (jsonData.hasOwnProperty(inputs[i].name)) {
+			inputs[i].value = jsonData[inputs[i].name];
+		  }
+		}
+
+	  };
+	  reader.readAsText(file);
+	});
+	
+	fileInput.click();
+}
