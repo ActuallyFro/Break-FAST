@@ -137,3 +137,35 @@ function importForm() {
 	
 	fileInput.click();
 }
+
+// Get the dark mode toggle switch
+const toggleSwitch = document.querySelector('#dark-mode-toggle');
+
+// Check the saved theme preference (if any)
+const currentTheme = localStorage.getItem('theme');
+
+if (currentTheme) {
+	// Set the saved theme preference
+	document.documentElement.setAttribute('data-theme', currentTheme);
+
+	// Check the saved theme preference in the toggle switch
+	if (currentTheme === 'dark') {
+		toggleSwitch.checked = true;
+	}
+}
+
+// Switch between light and dark mode
+function switchTheme(event) {
+	if (event.target.checked) {
+		// Set the theme to dark
+		document.documentElement.setAttribute('data-theme', 'dark');
+		localStorage.setItem('theme', 'dark');
+	} else {
+		// Set the theme to light
+		document.documentElement.setAttribute('data-theme', 'light');
+		localStorage.setItem('theme', 'light');
+	}
+}
+
+// Listen for the toggle switch click event
+toggleSwitch.addEventListener('change', switchTheme, false);
