@@ -38,6 +38,7 @@ Tools
 2. [Scoping Questionare](./Tools/Questionnaires/COW/) (COW)
 3. [Targeting Questionare](./Tools/Questionnaires/PIG/) (PIG)
 4. [Pomodoro Timer Single-Page Application](./Tools/Single-page-Apps/Pomodoro-Timer/)
+5. [Mermaid Renderer Single-Page Application](./Tools/Single-page-Apps/Mermaid-Renderer/)
 
 Definitions
 -----------
