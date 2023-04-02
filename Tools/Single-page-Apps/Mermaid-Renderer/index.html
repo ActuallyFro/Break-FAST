@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Quick Mermaid Editor</title>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script> -->
+  <script src="../scripts/mermaid_9-4-3.js"></script>
+  <!-- <script src="../scripts/mermaid.min.js"></script> -->
+</head>
+<body>
+  <table>
+    <tr>
+      <!-- make td only 40% of page width -->
+      <td style="width: 40%;">
+        <h1>Quick Mermaid Renderer</h1>
+        <p>Find some Mermaid code and render it after pasting it below and hitting the submit button (or Press Alt+Enter)!
+          Click the download button to download the chart as a PNG image.
+        </p>
+        <p>Quick <a href="https://jojozhuang.github.io/tutorial/mermaid-cheat-sheet/">Cheat Sheet</a></p>
+        <p>Examples:
+          [<a href="https://mermaid.live/edit#pako:eNqdVdtO20AQ_ZWRESKRYkHshgejIkFpWlC4SA59sfuwscfEwtm1dtdABPx7d7x24jShapuXncztnDk7Wr86iUjRCZysEM_JnEkN0_OTmMd8fx-uWc7hTooHyRYwRqYriYoin3f-Yt7kuq7bZA93-LwdPt8iNv8gLDHJszyBL4Jr5PpjTEJV1cx0K-ctxWE0HgZwr1DCJS8rDWcS2c-YA3y7vxxG36fXE5jiS8f_g8lh1LPJxs7ZrMDDC6ZZf1VmuFIW_UWeEt1tYC8aewGE7AkPJ4KloAVMRMKKZoq613mlteANiwPKPWh8dZjqoti5Yk8sTGReanBB8MJ4e32QFVexU-edJQkq1TMDpJBJsYAV-T6FqW_Uq8FBaSHZA9Io7ayue2obdBgZ39uduV-F6ds6SHwoEmoswQxHTCDnWry1amxkGN3zDDZw4eZ2Crgo9bLT1lp1mWFqhKrPlrnxU1fL90O1_WjsB3C5KIXUh19f6Ogo7DUK2_iGxuO8QOs-tYdV8Cq8vQFNe5GZhHYvvF7tv2NSYX9N3evReMR8Q_kOflfPNeImvskhiBZqdS1eB4j6kOoKSuKQNhMbIzUL2lzDGtdv5raCbM1t3af2IPY7prbA_ofLZU7fqhJqmfOHPFvW_g6J7WXyt3bP72BRfqVQNUjtZG0RxdfsN7bCPFOhXhaGRveRiLnxPFIA4chsohSPGOz5mT-wtvucp3oefCpfBokohAwkpifdouH_FHl_X2TWuS4hRUj5ItibzbJBW58dHzc22HpvVb83Go3a3ilT5smWbBnACEbrru1DuOJzdHG01e-3ZO9fkv0_JjsDZ4FywfLUfFhe69Vw9BwXGDuBMVPMWFXo2In5u0lllRbhkidOkLFC4cCpSnP_eJEz-kY03vdf071GwQ">0</a>]
+          [<a href="https://satoru.dev/2020/08/using-mermaid-in-hugo/">1</a>]
+          [<a href="https://mermaid.live/edit#pako:eNplkt1qwjAUx19FchVBX6CDQdEJwkYnBnaR7uIsPbUBm5R8DER8953EtZ3s5vD_-DXpob0yZRtkBTs5GLqF2D7VZvNScU5juVyvnze7ZHZk7k2KqhRVD5FIkfiNdikqlbLRBG1Oks96-TkBwiH46C6Sj-peVqmsBnQQtDVe8lnfAZGAvZB8L3KwF-S3-C05jTk5lJIfytkfLx6aXhvJR5W7-XRi3p1tJE8zqpT9J17tSfugFb3XJDOVHqL-DUxsQYXo8uYP9i9Xeo_915m2H1VupzMJ-QCHnY0eJZ9khiaXtur0MOSrRkUIW7EeXQ-6oS97rc1iUbPQYY81K0g22EI8h5rV5kYoxGCPF6NYEVzEFYtDAwG3Guif6FnRwtnj7QeeObru">2</a>]
+          [<a href="https://mermaid.js.org/intro/n00b-gettingStarted.html">3</a>]
+          [<a href="https://mermaid-js.github.io/mermaid/#/flowchart?id=flowchart">4</a>]
+          <!-- #5 https://mermaid.js.org/syntax/sequenceDiagram.html -->
+          [<a href="https://mermaid-js.github.io/mermaid/#/sequenceDiagram?id=sequence-diagram">5</a>]
+          [<a href="https://mermaid-js.github.io/mermaid/#/gantt?id=gantt-diagram">6</a>]
+          [<a href="https://mermaid-js.github.io/mermaid/#/classDiagram?id=class-diagram">7</a>]
+          [<a href="https://mermaid-js.github.io/mermaid/#/stateDiagram?id=state-diagram">8</a>]
+          [<a href="https://mermaid-js.github.io/mermaid/#/pie?id=pie-diagram">9</a>]
+          [<a href="https://mermaid-js.github.io/mermaid/#/gitGraph?id=git-graph">10</a>]
+          [<a href="https://mermaid-js.github.io/mermaid/#/journey?id=journey-diagram">11</a>]
+          [<a href="https://mermaid-js.github.io/mermaid/#/entityRelationshipDiagram?id=entity-relationship-diagram">12</a>]
+          [<a href="https://mermaid.js.org/syntax/userJourney.html">13</a>]
+
+        </p>
+        <hr>
+        <div>
+          <label for="input">Enter Mermaid code</label><br>
+          <textarea id="input" rows="25" style="width: 100%;"></textarea>
+          <button id="submit">Submit</button>
+          <button id="download-png">Download as PNG</button>
+          <button id="download-svg">Download as SVG</button>
+        </div>
+        </td>
+        <td>
+          <div id="chart"></div>
+        </td>
+    </tr>
+  </table>
+
+  <script>
+    const input = document.getElementById('input');
+    const submit = document.getElementById('submit');
+    const downloadPNG = document.getElementById('download-png');
+    const downloadSVG = document.getElementById('download-svg');
+    const chartContainer = document.getElementById('chart');
+
+    // On page load, check if there is a chart input in local storage
+    const savedInput = localStorage.getItem('input');
+    if (savedInput) {
+      input.value = savedInput;
+      const inputText = input.value.trim();
+
+      const chartDefinition = `
+        ${inputText}
+      `;
+
+      chartContainer.innerHTML = chartDefinition;
+
+      mermaid.init(undefined, chartContainer);submit.click();
+    }
+
+    // Have Alt+Enter submit the chart
+    input.addEventListener('keydown', (e) => {
+      if (e.altKey && e.keyCode === 13) {
+        submit.click();
+      }
+    });
+
+    submit.addEventListener('click', () => {
+      // save the chart input to local storage
+      const inputText = input.value.trim();
+      localStorage.setItem('input', inputText);
+
+      //reload the page
+      location.reload();
+    });
+
+    downloadPNG.addEventListener('click', () => {
+      const svg = chartContainer.querySelector('svg');
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      canvas.width = svg.clientWidth;
+      canvas.height = svg.clientHeight;
+
+      const image = new Image();
+      image.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+
+      image.onload = () => {
+        context.drawImage(image, 0, 0);
+
+        const a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'chart.png';
+        a.click();
+      };
+
+      downloadSVG.addEventListener('click', () => {
+      const svg = chartContainer.querySelector('svg');
+      const svgData = new XMLSerializer().serializeToString(svg);
+
+      const a = document.createElement('a');
+      a.href = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+      a.download = 'chart.svg';
+      a.click();
+    });
+    });
+
+
+/*
+      mermaid.render("preparedScheme", inputText, chartContainer);
+
+
+graph TD;
+CEO(CEO)-->CFO[CFO];
+CEO-->COO[COO];
+CEO-->CTO((CTO));
+CFO-->Accounting[(Accounting)];
+CFO-->Treasury[(Treasury)];
+COO-->Operations[(Operations)];
+CTO-->IT[(IT)];
+IT-->Dev[(Dev)];
+IT-->QA[(QA)];
+IT-->Sysadmin[(Sysadmin)];
+Operations-->Prod[(Production)];
+Operations-->Logistics[(Logistics)];
+Prod-->Manufacturing[(Manufacturing)];
+Prod-->Assembly[(Assembly)];
+Logistics-->Warehouse[(Warehouse)];
+Warehouse-->Shipping[(Shipping)];
+*/
+
+
+  </script>
+</body>
+</html>
