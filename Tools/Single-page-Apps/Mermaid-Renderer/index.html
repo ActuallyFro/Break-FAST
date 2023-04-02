@@ -42,6 +42,7 @@
           <button id="submit">Submit</button>
           <button id="download-png">Download as PNG</button>
           <button id="download-svg">Download as SVG</button>
+          <button id="clear-storage">Clear Storage</button>
         </div>
         </td>
         <td>
@@ -55,7 +56,9 @@
     const submit = document.getElementById('submit');
     const downloadPNG = document.getElementById('download-png');
     const downloadSVG = document.getElementById('download-svg');
+    const clearStorage = document.getElementById('clear-storage');
     const chartContainer = document.getElementById('chart');
+
 
     // On page load, check if there is a chart input in local storage
     const savedInput = localStorage.getItem('input');
@@ -79,12 +82,28 @@
       }
     });
 
+    // Have Alt+Backspace clear the input
+    input.addEventListener('keydown', (e) => {
+      if (e.altKey && e.keyCode === 8) {
+        input.value = '';
+        // clear local storage
+        localStorage.removeItem('input');
+      }
+    });
+
     submit.addEventListener('click', () => {
       // save the chart input to local storage
       const inputText = input.value.trim();
       localStorage.setItem('input', inputText);
 
       //reload the page
+      location.reload();
+    });
+
+
+    // Clear local storage
+    clearStorage.addEventListener('click', () => {
+      localStorage.removeItem('input');
       location.reload();
     });
 
