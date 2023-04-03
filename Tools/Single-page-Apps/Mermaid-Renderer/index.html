@@ -113,8 +113,10 @@
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
 
-      canvas.width = svg.clientWidth;
-      canvas.height = svg.clientHeight;
+      // canvas.width = svg.clientWidth;
+      // canvas.height = svg.clientHeight;
+      canvas.width = 1920;
+      canvas.height = 1080;
 
       const image = new Image();
       image.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
