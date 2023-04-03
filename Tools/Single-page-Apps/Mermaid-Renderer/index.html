@@ -127,8 +127,9 @@
         a.download = 'chart.png';
         a.click();
       };
+    });
 
-      downloadSVG.addEventListener('click', () => {
+    downloadSVG.addEventListener('click', () => {
       const svg = chartContainer.querySelector('svg');
       const svgData = new XMLSerializer().serializeToString(svg);
 
@@ -136,7 +137,6 @@
       a.href = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
       a.download = 'chart.svg';
       a.click();
-    });
     });
 
 
