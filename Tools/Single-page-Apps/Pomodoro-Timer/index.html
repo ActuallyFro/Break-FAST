@@ -299,7 +299,7 @@
           seconds -= 60;
         }
 
-        if (minutes > 60) {
+        if (minutes >= 60) {
           hours++;
           minutes -= 60;
         }
@@ -358,10 +358,14 @@
         breakLengthMins = document.getElementById("breakLength").value;
         breakLengthSecs = GetPartialMinutes(breakLengthMins);
         breakLengthMins = breakLengthMins < 1 ? 0 : breakLengthMins;
+        // correct mins == 60 to 0
+        breakLengthMins = breakLengthMins === 60 ? 0 : breakLengthMins;
 
         longBreakLengthMin = document.getElementById("longBreakLength").value;
         longBreakLengthSecs = GetPartialMinutes(longBreakLengthMin);
         longBreakLengthMin = longBreakLengthMin < 1 ? 0 : longBreakLengthMin;
+        // correct mins == 60 to 0
+        longBreakLengthMin = longBreakLengthMin === 60 ? 0 : longBreakLengthMin;
 
       }
 
