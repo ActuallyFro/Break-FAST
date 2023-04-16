@@ -1,12 +1,17 @@
 /* Set the body background color to white by default */
 body {
-    background-color: #fff;
+    background-color: #FFF;
 }
 
 /* Set the navbar color to black by default */
 .navbar {
     background-color: #000;
     /* text color */
+
+    color: #fff;
+}
+
+.navbar {
     color: #fff;
 }
 

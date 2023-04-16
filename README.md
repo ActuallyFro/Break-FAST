@@ -25,18 +25,18 @@ The rapid prototyping enables the software development team to quickly iterate t
      - Opportunity
      - Worth
    - Outcome: list of general requirements and their value.
-3. Targeting - "PIG"
+3. Targeting - "HEN"
    - Steps
-     - Partition
-     - Isolate
-     - Grasp
+     - Hew
+     - Evaluate
+     - Nab
    - Outcome: decomposition of needs and requirements into developement units of work.
 
 Tools
 -----
 1. [Focused Analysis Questionare](./Tools/Questionnaires/SOW/) (SOW)
 2. [Scoping Questionare](./Tools/Questionnaires/COW/) (COW)
-3. [Targeting Questionare](./Tools/Questionnaires/PIG/) (PIG)
+3. [Targeting Questionare](./Tools/Questionnaires/HEN/) (HEN)
 4. [Pomodoro Timer Single-Page Application](./Tools/Single-page-Apps/Pomodoro-Timer/)
 5. [Mermaid Renderer Single-Page Application](./Tools/Single-page-Apps/Mermaid-Renderer/)
 
