@@ -1,6 +1,8 @@
 Break FAST
 ==========
 
+![AI Logo FTW](BreakFAST_01.png)
+
 Background
 ----------
 Break FAST is a software development process that involves breaking down a project into smaller, manageable parts, identifying the requirements for each part, analyzing the potential return on investment for each part, and isolating the task units necessary to develop each part.
