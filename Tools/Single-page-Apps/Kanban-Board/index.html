@@ -404,18 +404,22 @@
       const viewAsHtmlIcon = document.createElement("i");
       viewAsHtmlIcon.className = "fas fa-eye view-as-html";
       viewAsHtmlIcon.style.marginLeft = "0.5rem";
+      viewAsHtmlIcon.style.display = "none";
       card.appendChild(viewAsHtmlIcon);
 
       const editIcon = document.createElement("i");
       editIcon.className = "fas fa-edit edit";
-      editIcon.style.display = "none";
       editIcon.style.marginLeft = "0.5rem";
       card.appendChild(editIcon);
 
-      let cardBody = document.createElement("textarea");
+      let cardBody = document.createElement("div"); // Change this line
       cardBody.className = "card-body";
       cardBody.placeholder = "Enter description...";
-      
+
+      // Update initial state of viewAsHtmlIcon and editIcon
+      viewAsHtmlIcon.style.display = "inline";
+      editIcon.style.display = "none";
+
       card.appendChild(cardBody);
 
       viewAsHtmlIcon.addEventListener("click", () => {
@@ -441,7 +445,6 @@
               editIcon.style.display = "none";
           }
       });
-
 
       editIcon.addEventListener("click", () => {
           if (cardBody.tagName === "DIV") {
