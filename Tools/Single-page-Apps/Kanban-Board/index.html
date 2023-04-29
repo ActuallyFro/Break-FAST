@@ -571,38 +571,70 @@
 
     // Export function
     function exportMatrix() {
-      const bucketsData = JSON.parse(localStorage.getItem("kanbanBoard")) || [];
-      const dataStr = JSON.stringify(bucketsData);
-      const dataBlob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
-      const dataUrl = URL.createObjectURL(dataBlob);
+        const boardTitle = document.querySelector(".board-title").textContent;
 
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      const ISOdateTime = new Date().toISOString().replace(/:/g, '-').replace('.', '_');
-      const boardTitle = document.getElementById("boardTitle").textContent;
-      const BOARD_NAME = boardTitle.replace(/ /g, '_');
-      link.download = "Kanban_" + BOARD_NAME + "-" + ISOdateTime + ".json";
-      link.click();
+        const data = {
+            boardTitle: boardTitle,
+            bucketsData: JSON.parse(localStorage.getItem("kanbanBoard")),
+        };
+
+        const ISOdateTime = new Date().toISOString().replace(/:/g, '-').replace('.', '_');
+        const fileName = "Kanban_" + boardTitle.replace(/ /g, "-") + "-" + ISOdateTime + ".json";
+
+        const fileContent = JSON.stringify(data, null, 2);
+        const file = new Blob([fileContent], { type: "application/json" });
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(file);
+        link.download = fileName;
+        link.click();
     }
 
     // Import function
     function importMatrix(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+        const input = event.target;
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-          const contents = e.target.result;
-          try {
-              const parsedData = JSON.parse(contents);
-              localStorage.setItem("kanbanBoard", JSON.stringify(parsedData));
-              location.reload();
-          } catch (e) {
-              alert('Invalid JSON file!');
-          }
-      };
-      reader.readAsText(file);
+        if (input.files.length === 0) {
+            alert('No file selected!');
+            return;
+        }
+
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            const fileContent = event.target.result;
+            
+            try {
+                const jsonData = JSON.parse(fileContent);
+                
+                // Read and set the board title
+                const boardTitle = jsonData.boardTitle;
+                if (boardTitle) {
+                    // setBoardTitle(boardTitle);
+                    document.querySelector(".board-title").textContent = boardTitle;
+                }
+
+                // Update the buckets data
+                const bucketsData = jsonData.bucketsData;
+                if (bucketsData) {
+                    localStorage.setItem("kanbanBoard", JSON.stringify(bucketsData));
+                    location.reload();
+                } else {
+                    alert('Invalid file format!');
+                }
+            } catch (error) {
+                alert('Error parsing JSON file: ' + error.message);
+            }
+        };
+
+        reader.onerror = () => {
+            alert('Error reading file!');
+        };
+
+        reader.readAsText(file);
     }
+
 
     //==============================================================================================================
     // Automatic functions when the page loads:
