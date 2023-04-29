@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban SPA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+      .buckets {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: wrap;
+        /* flex-direction: column; */
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-grow: 1;
+        overflow: auto;
+      }
+      /*  -----------------------  */
+      .bucket {
+        flex: 1;
+        width: 25%;
+        height: 100%;
+        position: relative;
+        box-sizing: border-box;
+        padding: 1rem;
+        border: 1px solid #ccc;
+      }
+      .bucket h2 {
+        margin: 0 0 1rem;
+        font-size: 1.2rem;
+      }
+      .bucket h2 .counter {
+        font-size: 1rem;
+        font-weight: normal;
+        margin-left: 0.5rem;
+      }
+
+      .controls {
+        /* display: flex; */
+        align-items: right;
+        justify-content: space-between;
+        padding: 1rem;
+      }
+
+      /*  -----------------------  */
+      .container {
+        max-height: calc(100% - 3rem);
+        overflow-y: auto;
+      }
+
+      .card {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: #f0f0f0;
+        margin-bottom: 0.5rem;
+        position: relative;
+        cursor: move;
+      }
+      .card-body {
+        display: none;
+        margin-top: 0.5rem;
+        white-space: pre-wrap;
+      }
+      .card:hover .card-body {
+        display: block;
+      }
+      .card.disable-hover .card-body {
+        display: block;
+      }
+      .move-left,
+      .move-right {
+        position: absolute;
+        top: 1rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+      .move-left {
+        right: 4rem;
+      }
+      .move-right {
+        right: 3rem;
+      }
+      .x-to-remove-bucket {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 0.75rem;
+        cursor: pointer;
+      }
+
+      .plus {
+        position: absolute;
+        top: 2rem;
+        right: 1rem;
+        font-size: 1.5rem;
+      }
+      /*  -----------------------  */
+      .minus {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        font-size: 1.4rem;
+        cursor: pointer;
+      }
+      input[type="text"] {
+        font-family: inherit;
+        font-size: inherit;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        width: 100%;
+      }
+      input[type="text"]:focus {
+        outline: auto;
+      }
+    </style>
+</head>
+<body>
+    <div class="buckets" id="buckets"></div>
+<br/>
+    <hr id="Tool-Line">
+    <div class="controls">
+        <button id="addBucketButton">Add Bucket</button>
+        <button id="exportButton">Export</button>
+        <label for="importButton" style="cursor:pointer">Import</label>
+        <input type="file" id="importButton" style="display:none">
+        <button id="resetButton" onclick="resetLocalStorage()">Reset LocalStorage</button>
+    </div>
+
+  <script>
+    // --------------------
+    // localStorage Functions
+    function saveToLocalStorage() {
+      const bucketsData = [];
+      document.querySelectorAll(".bucket").forEach((bucket, index) => {
+        const cards = Array.from(bucket.querySelectorAll(".card"));
+        const cardsData = cards.map(card => {
+          return {
+            label: card.querySelector("input[type='text']").value,
+            body: card.querySelector(".card-body").outerHTML
+          };
+        });
+        const titleElement = bucket.querySelector(".title");
+        const title = titleElement.tagName === "INPUT" ? titleElement.value : titleElement.textContent;
+        bucketsData[index] = {
+          title: title,
+          cards: cardsData
+        };
+      });
+      localStorage.setItem("kanbanBoard", JSON.stringify(bucketsData));
+    }
+
+
+    function loadFromLocalStorage() {
+      document.querySelectorAll(".bucket").forEach(bucket => bucket.remove());
+
+      const bucketsData = JSON.parse(localStorage.getItem("kanbanBoard"));
+      if (bucketsData) {
+        bucketsData.forEach((bucketData, index) => {
+          let bucket = document.querySelectorAll(".bucket")[index];
+          if (!bucket) {
+            createBucket(bucketData.title);
+            bucket = document.querySelectorAll(".bucket")[index];
+          }
+          const container = bucket.querySelector(".container");
+          const title = bucket.querySelector(".title");
+          title.textContent = bucketData.title;
+          makeBucketTitleEditable(title); // Add this line
+          bucketData.cards.forEach(cardData => {
+            const card = createCard();
+            card.querySelector("input[type='text']").value = cardData.label;
+            card.querySelector(".card-body").outerHTML = cardData.body;
+            container.appendChild(card);
+            updateCardCount(bucket, 1);
+          });
+        });
+      }
+    }
+
+
+    function resetLocalStorage() {
+      localStorage.removeItem("kanbanBoard");
+      location.reload();
+    }
+
+    //==============================================================================================================
+    // Bucket and Card Functions
+
+    // --------------------
+    // Buckets
+    function resizeWidthBuckets(){
+      const bucketCount = document.querySelectorAll(".bucket").length;
+
+      const bucketWidth = 100 / (bucketCount + 1);
+      document.querySelectorAll(".bucket").forEach(bucket => {
+          bucket.style.width = `${bucketWidth}%`;
+      });  
+    }
+
+    function createBucket(bucketName="New Bucket") {
+      const bucketCount = document.querySelectorAll(".bucket").length;
+
+      const bucket = document.createElement('div');
+      bucket.classList.add("bucket");
+      bucket.setAttribute("id", `b${bucketCount + 1}`);
+
+      const bucketTemplate = `
+          <h2><span class="title" style="display: inline-block;">${bucketName}</span><span class="counter">0</span></h2>
+          <span class="move-left">&lt;</span>
+          <span class="move-right">&gt;</span>
+          <span class="plus">+</span>
+          <span class="x-to-remove-bucket">[X]</span>
+          <div class="container"></div>
+      `;
+      bucket.innerHTML = bucketTemplate.trim();
+      
+      bucket.querySelector(".move-left").addEventListener("click", moveBucketLeft);
+      bucket.querySelector(".move-right").addEventListener("click", moveBucketRight);
+      bucket.querySelector(".plus").addEventListener("click", addCardButton);
+      bucket.querySelector(".x-to-remove-bucket").addEventListener("click", removeBucketButton);
+
+      bucket.addEventListener("dragover", bucketDragOver);
+      bucket.addEventListener("drop", bucketDrop);
+      bucket.addEventListener("dragenter", bucketDragEnter);
+
+      const bucketsElement = document.querySelector(".buckets");
+      bucketsElement.insertAdjacentElement("beforeend", bucket);
+
+      resizeWidthBuckets();
+
+      makeAllBucketTitlesEditable();
+
+    }
+
+    function addBucketButton(){
+      createBucket();
+      saveToLocalStorage();
+    }
+
+    function moveBucketLeft(e) {
+      const bucket = e.target.closest(".bucket");
+      const prevBucket = bucket.previousElementSibling;
+      if (prevBucket) {
+        bucket.parentElement.insertBefore(bucket, prevBucket);
+        saveToLocalStorage();
+      }
+    }
+
+    function moveBucketRight(e) {
+      const bucket = e.target.closest(".bucket");
+      const nextBucket = bucket.nextElementSibling;
+      if (nextBucket) {
+        bucket.parentElement.insertBefore(nextBucket, bucket);
+        saveToLocalStorage();
+      }
+    }
+
+    function addCardButton(e) {
+      const bucket = e.target.parentElement;
+      const container = bucket.querySelector(".container");
+      const card = createCard();
+      container.appendChild(card);
+      updateCardCount(bucket, 1);
+      saveToLocalStorage();
+    }
+
+    function removeBucketButton(e) {
+      const bucket = e.target.closest(".bucket");
+      bucket.remove();
+      saveToLocalStorage();
+
+      resizeWidthBuckets();
+    }
+
+    function makeBucketTitleEditable(title) {
+      title.addEventListener("click", (e) => {
+        const target = e.target;
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = target.textContent;
+        input.className = "title";
+        input.style.width = "100%";
+        target.replaceWith(input);
+        input.focus();
+
+        input.addEventListener("blur", () => {
+          target.textContent = input.value;
+          input.replaceWith(target);
+          saveToLocalStorage();
+        });
+      });
+    }
+
+    function makeAllBucketTitlesEditable() {
+      document.querySelectorAll(".title").forEach(title => {
+        makeBucketTitleEditable(title);
+      });
+    }
+
+    function moveBucketLeft(e) {
+      const bucket = e.target.closest(".bucket");
+      const prevBucket = bucket.previousElementSibling;
+      if (prevBucket) {
+        bucket.parentElement.insertBefore(bucket, prevBucket);
+        saveToLocalStorage();
+      }
+    }
+
+    function bucketDragOver(e) {
+      e.preventDefault();
+    }
+
+    function bucketDrop(e) {
+      e.preventDefault();
+      const cardId = e.dataTransfer.getData("text");
+      const card = document.getElementById(cardId);
+      const container = e.currentTarget.querySelector(".container");
+
+      if (card) {
+        const oldBucket = card.parentElement.parentElement;
+        container.appendChild(card);
+        updateCardCount(oldBucket, -1);
+        updateCardCount(e.currentTarget, 1);
+      } else {
+        const draggedCard = document.querySelector('.dragging');
+        if (draggedCard) {
+          const oldBucket = draggedCard.parentElement.parentElement;
+          container.appendChild(draggedCard);
+          updateCardCount(oldBucket, -1);
+          updateCardCount(e.currentTarget, 1);
+        }
+      }
+    }
+
+    function bucketDragEnter(e) {
+      e.preventDefault();
+    }
+
+    // --------------------
+    // Cards
+    function createCard() {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.setAttribute("draggable", "true");
+
+      const cardLabelInput = document.createElement("input");
+      cardLabelInput.addEventListener("input", saveToLocalStorage);
+      cardLabelInput.type = "text";
+      cardLabelInput.placeholder = "Label...";
+      card.appendChild(cardLabelInput);
+
+      const minus = document.createElement("span");
+      minus.textContent = "-";
+      minus.className = "minus";
+      minus.addEventListener("click", () => {
+          const bucket = card.parentElement.parentElement;
+          card.remove();
+          updateCardCount(bucket, -1);
+          saveToLocalStorage();
+      });
+
+      card.appendChild(minus);
+
+      const viewAsHtmlIcon = document.createElement("i");
+      viewAsHtmlIcon.className = "fas fa-eye view-as-html";
+      viewAsHtmlIcon.style.marginLeft = "0.5rem";
+      card.appendChild(viewAsHtmlIcon);
+
+      const editIcon = document.createElement("i");
+      editIcon.className = "fas fa-edit edit";
+      editIcon.style.display = "none";
+      editIcon.style.marginLeft = "0.5rem";
+      card.appendChild(editIcon);
+
+      let cardBody = document.createElement("textarea");
+      cardBody.className = "card-body";
+      cardBody.placeholder = "Enter description...";
+      
+      card.appendChild(cardBody);
+
+      viewAsHtmlIcon.addEventListener("click", () => {
+          if (cardBody.tagName === "TEXTAREA") {
+              const sanitizedHtml = sanitizeHTML(cardBody.value);
+              const renderedHtml = document.createElement("div");
+              renderedHtml.className = "card-body";
+              renderedHtml.innerHTML = sanitizedHtml;
+              card.replaceChild(renderedHtml, cardBody);
+              cardBody = renderedHtml;
+              viewAsHtmlIcon.style.display = "none";
+              editIcon.style.display = "inline";
+
+          } else {
+              const textarea = document.createElement("textarea");
+              textarea.className = "card-body";
+              textarea.placeholder = "Enter description...";
+              textarea.innerHTML = cardBody.innerHTML;
+              card.replaceChild(textarea, cardBody);
+              cardBody = textarea;
+
+              viewAsHtmlIcon.style.display = "inline";
+              editIcon.style.display = "none";
+          }
+      });
+
+
+      editIcon.addEventListener("click", () => {
+          if (cardBody.tagName === "DIV") {
+              const textarea = document.createElement("textarea");
+              textarea.className = "card-body";
+              textarea.placeholder = "Enter description...";
+              textarea.value = cardBody.innerHTML; // Change this line
+              card.replaceChild(textarea, cardBody);
+              cardBody = textarea;
+
+              viewAsHtmlIcon.style.display = "inline";
+              editIcon.style.display = "none";
+
+          } else {
+              const newCardBody = document.createElement("div");
+              newCardBody.className = "card-body";
+              newCardBody.innerHTML = cardBody.value;
+              if (card.contains(cardBody)) {
+                  card.replaceChild(newCardBody, cardBody);
+              } else {
+                  card.appendChild(newCardBody);
+              }
+              cardBody = newCardBody;
+              viewAsHtmlIcon.style.display = "inline";
+              editIcon.style.display = "none";
+          }
+      });
+      
+      return card;
+    }
+
+    function updateCardCount(bucket, change) {
+      const counter = bucket.querySelector(".counter");
+      const newCount = parseInt(counter.textContent, 10) + change;
+      counter.textContent = newCount;
+    }
+
+    function sanitizeHTML(html) {
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+      const tagsToKeep = ['b', 'u', 'i', 'strike', 'ul', 'li'];
+      const tags = temp.getElementsByTagName("*");
+
+      for (let i = tags.length - 1; i >= 0; i--) {
+          const tag = tags[i];
+          if (tagsToKeep.indexOf(tag.tagName.toLowerCase()) === -1) {
+              tag.outerHTML = tag.innerHTML;
+          }
+      }
+      return temp.innerHTML;
+    }
+
+    //==============================================================================================================
+    // Touch Events for Mouse-based events
+    document.addEventListener("dragstart", (e) => {
+      if (e.target.classList.contains("card")) {
+          e.target.classList.add("dragging");
+          e.dataTransfer.setData("text", e.target.id);
+      }
+    });
+
+    document.addEventListener("dragend", (e) => {
+      if (e.target.classList.contains("card")) {
+          e.target.classList.remove("dragging");
+      }
+      saveToLocalStorage();
+    });
+
+    // --------------------
+    // Touch Events for Mobile/Touchscreen Devices
+
+    let draggedCard = null;
+    let StartingBucket = null;
+
+
+    document.addEventListener("touchstart", (e) => {
+    if (e.target.classList.contains("card")) {
+      draggedCard = e.target;
+      StartingBucket = draggedCard.parentElement.parentElement;
+    }
+    });
+
+    document.addEventListener("touchmove", (e) => {
+    if (draggedCard) {
+      e.preventDefault();
+      draggedCard.style.position = "absolute";
+      draggedCard.style.left = e.touches[0].clientX + "px";
+      draggedCard.style.top = e.touches[0].clientY + "px";
+    }
+    });
+
+    document.addEventListener("touchend", (e) => {
+      if (draggedCard) {
+        const touchX = e.changedTouches[0].clientX;
+        const touchY = e.changedTouches[0].clientY;
+        const bucket = document.elementFromPoint(touchX, touchY).closest(".bucket");
+        if (bucket) {
+          const container = bucket.querySelector(".container");
+          container.appendChild(draggedCard);
+          const newBucket = draggedCard.parentElement.parentElement;
+          updateCardCount(StartingBucket, -1);
+          updateCardCount(newBucket, 1);
+        }
+        draggedCard.style.position = "";
+        draggedCard.style.left = "";
+        draggedCard.style.top = "";
+        draggedCard = null;
+        saveToLocalStorage();
+      }
+    });
+
+
+    function findBucket(x, y) {
+    const buckets = document.querySelectorAll(".bucket");
+    for (let i = 0; i < buckets.length; i++) {
+      const rect = buckets[i].getBoundingClientRect();
+      if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+        return buckets[i];
+      }
+    }
+    return null;
+    }
+
+
+    //==============================================================================================================
+    // Data IO
+
+    // Export function
+    function exportMatrix() {
+      const bucketsData = JSON.parse(localStorage.getItem("kanbanBoard")) || [];
+      const dataStr = JSON.stringify(bucketsData);
+      const dataBlob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
+      const dataUrl = URL.createObjectURL(dataBlob);
+
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = 'eisenhower_matrix.json';
+      link.click();
+    }
+
+    // Import function
+    function importMatrix(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+          const contents = e.target.result;
+          try {
+              const parsedData = JSON.parse(contents);
+              localStorage.setItem("kanbanBoard", JSON.stringify(parsedData));
+              location.reload();
+          } catch (e) {
+              alert('Invalid JSON file!');
+          }
+      };
+      reader.readAsText(file);
+    }
+
+    //==============================================================================================================
+    // Automatic functions when the page loads:
+    loadFromLocalStorage();
+
+    if (document.querySelectorAll(".bucket").length === 0) {
+
+      createBucket("Backlog");
+      createBucket("Blocked");
+      createBucket("In Progress");
+      createBucket("Done");
+
+    }
+
+    document.getElementById("addBucketButton").addEventListener("click", addBucketButton);
+    document.getElementById("exportButton").addEventListener("click", exportMatrix);
+    document.getElementById("importButton").addEventListener("change", importMatrix);
+  </script>
+
+</body>
+</html>
