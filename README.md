@@ -12,7 +12,6 @@ The process begins with breaking down the overall project into smaller, more man
 Next, task units are isolated for each part. This involves identifying the specific software components that need to be developed for each part. The isolated task units are then developed rapidly using the DevOps methodology, which involves continuous integration, testing, and deployment.
 
 The rapid prototyping enables the software development team to quickly iterate through different designs and implementations, incorporating feedback from end-users along the way. The end result is a high-quality software product that meets the needs of the end-users, developed in a shorter amount of time than traditional software development methods.
-
 **As described by CHATGPT**
 
 ### Phases
@@ -23,7 +22,7 @@ The rapid prototyping enables the software development team to quickly iterate t
      - Work(er/load/unit) Analysis.
    - Outcome: identification of user execution capabilities/needs.
    - Tools:
-     - 1. [Focused Analysis Questionare](./Tools/Questionnaires/SOW/)
+     - 1. [Focused Analysis Questionnaire](./Tools/Questionnaires/SOW/)
 2. Scoping - "COW"
    - Steps
      - Capability
@@ -31,15 +30,15 @@ The rapid prototyping enables the software development team to quickly iterate t
      - Worth
    - Outcome: list of general requirements and their value.
    - Tools:
-     - 1. [Scoping Questionare](./Tools/Questionnaires/COW/) (COW)
+     - 1. [Scoping Questionnaire](./Tools/Questionnaires/COW/)
 3. Targeting - "HEN"
    - Steps
      - Hew - Tool: [Mermaid Renderer Single-Page Application](./Tools/Single-page-Apps/Mermaid-Renderer/)
      - Evaluate - Tool: [Eisenhower Matrix Single-Page Application](./Tools/Single-page-Apps/Eisenhower-Matrix/)
      - Nab - Tool: [Pomodoro Timer Single-Page Application](./Tools/Single-page-Apps/Pomodoro-Timer/)
-   - Outcome: decomposition of needs and requirements into developement units of work.
+   - Outcome: decomposition of needs and requirements into development units of work.
    - Other Tools:
-     - 1. [Targeting Questionare](./Tools/Questionnaires/HEN/) (HEN)
+     - 1. [Targeting Questionnaire](./Tools/Questionnaires/HEN/)
 
 Definitions
 -----------
