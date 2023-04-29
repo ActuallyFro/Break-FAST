@@ -121,6 +121,7 @@
     </style>
 </head>
 <body>
+<h1 id="boardTitle" class="board-title">Kanban Board</h1>
     <div class="buckets" id="buckets"></div>
 <br/>
     <hr id="Tool-Line">
@@ -133,6 +134,40 @@
     </div>
 
   <script>
+    // --------------------
+    // Board Title Functions
+    function makeBoardTitleEditable() {
+      const title = document.getElementById("boardTitle");
+      title.addEventListener("click", (e) => {
+        const target = e.target;
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = target.textContent;
+        input.id = "boardTitle";
+        input.className = "board-title";
+        input.style.width = "100%";
+        target.replaceWith(input);
+        input.focus();
+
+        input.addEventListener("blur", () => {
+          target.textContent = input.value;
+          input.replaceWith(target);
+          localStorage.setItem("boardTitle", target.textContent);
+        });
+      });
+    }
+
+    // Load the board title from LocalStorage during initialization
+    function loadBoardTitleFromLocalStorage() {
+      const savedTitle = localStorage.getItem("boardTitle");
+      if (savedTitle) {
+        const titleElement = document.getElementById("boardTitle");
+        titleElement.textContent = savedTitle;
+      }
+    }
+
+
+    
     // --------------------
     // localStorage Functions
     function saveToLocalStorage() {
@@ -543,7 +578,10 @@
 
       const link = document.createElement('a');
       link.href = dataUrl;
-      link.download = 'eisenhower_matrix.json';
+      const ISOdateTime = new Date().toISOString().replace(/:/g, '-').replace('.', '_');
+      const boardTitle = document.getElementById("boardTitle").textContent;
+      const BOARD_NAME = boardTitle.replace(/ /g, '_');
+      link.download = "Kanban_" + BOARD_NAME + "-" + ISOdateTime + ".json";
       link.click();
     }
 
@@ -568,15 +606,15 @@
 
     //==============================================================================================================
     // Automatic functions when the page loads:
+    makeBoardTitleEditable();
+    loadBoardTitleFromLocalStorage();
     loadFromLocalStorage();
 
     if (document.querySelectorAll(".bucket").length === 0) {
-
       createBucket("Backlog");
       createBucket("Blocked");
       createBucket("In Progress");
       createBucket("Done");
-
     }
 
     document.getElementById("addBucketButton").addEventListener("click", addBucketButton);
