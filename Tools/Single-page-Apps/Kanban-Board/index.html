@@ -121,17 +121,17 @@
     </style>
 </head>
 <body>
-<h1 id="boardTitle" class="board-title">Kanban Board</h1>
-    <div class="buckets" id="buckets"></div>
+  <h1 id="boardTitle" class="board-title">Kanban Board</h1>
+  <div class="buckets" id="buckets"></div>
 <br/>
-    <hr id="Tool-Line">
-    <div class="controls">
-        <button id="addBucketButton">Add Bucket</button>
-        <button id="exportButton">Export</button>
-        <label for="importButton" style="cursor:pointer">Import</label>
-        <input type="file" id="importButton" style="display:none">
-        <button id="resetButton" onclick="resetLocalStorage()">Reset LocalStorage</button>
-    </div>
+  <hr id="Tool-Line">
+  <div class="controls">
+      <button id="addBucketButton">Add Bucket</button>
+      <button id="exportButton">Export</button>
+      <label for="importButton" style="cursor:pointer">Import</label>
+      <input type="file" id="importButton" style="display:none">
+      <button id="resetButton" onclick="resetLocalStorage()">Reset LocalStorage</button>
+  </div>
 
   <script>
     // --------------------
@@ -166,8 +166,6 @@
       }
     }
 
-
-    
     // --------------------
     // localStorage Functions
     function saveToLocalStorage() {
@@ -209,7 +207,63 @@
           bucketData.cards.forEach(cardData => {
             const card = createCard();
             card.querySelector("input[type='text']").value = cardData.label;
-            card.querySelector(".card-body").outerHTML = cardData.body;
+
+            const cardBody = card.querySelector(".card-body");
+            if (cardData.body.includes("textarea")) {
+              // Card body data was created with a textarea, switch to edit view
+              const textarea = document.createElement("textarea");
+              textarea.className = "card-body";
+              textarea.placeholder = "Enter description...";
+              textarea.value = cardData.body.match(/<textarea(.|\n)*<\/textarea>/g)[0];
+              card.replaceChild(textarea, cardBody);
+              cardBody.remove();
+              cardBody = textarea;
+
+              const viewAsHtmlIcon = card.querySelector(".view-as-html");
+              const editIcon = card.querySelector(".edit");
+              const lockIcon = card.querySelector(".lock");
+
+              viewAsHtmlIcon.style.display = "none";
+              editIcon.style.display = "inline";
+
+              lockIcon.addEventListener("click", () => {
+                if (cardBody.classList.contains("locked")) {
+                  cardBody.classList.remove("locked");
+                  lockIcon.classList.remove("fa-lock");
+                  lockIcon.classList.add("fa-unlock");
+                  card.classList.remove("disable-hover"); // Remove disable-hover class
+                } else {
+                  cardBody.classList.add("locked");
+                  lockIcon.classList.remove("fa-unlock");
+                  lockIcon.classList.add("fa-lock");
+                  card.classList.add("disable-hover"); // Add disable-hover class
+                }
+              });
+
+              editIcon.addEventListener("click", () => {
+                const newCardBody = document.createElement("div");
+                newCardBody.className = "card-body";
+                newCardBody.innerHTML = cardBody.value;
+
+                if (card.contains(cardBody)) {
+                  card.replaceChild(newCardBody, cardBody);
+                } else {
+                  card.appendChild(newCardBody);
+                }
+
+                cardBody = newCardBody;
+
+                viewAsHtmlIcon.style.display = "inline";
+                editIcon.style.display = "none";
+
+                // Remove event listener added to textarea when editing
+                cardBody.removeEventListener("input", saveToLocalStorage);
+              });
+
+            } else {
+              cardBody.innerHTML = cardData.body;
+            }
+
             container.appendChild(card);
             updateCardCount(bucket, 1);
           });
@@ -218,8 +272,10 @@
     }
 
 
+
     function resetLocalStorage() {
       localStorage.removeItem("kanbanBoard");
+      localStorage.removeItem("boardTitle");
       location.reload();
     }
 
@@ -228,6 +284,7 @@
 
     // --------------------
     // Buckets
+
     function resizeWidthBuckets(){
       const bucketCount = document.querySelectorAll(".bucket").length;
 
@@ -268,7 +325,7 @@
 
       resizeWidthBuckets();
 
-      makeAllBucketTitlesEditable();
+      makeAllBucketTitlesEditable(); //Too much?!?!
 
     }
 
@@ -359,15 +416,15 @@
       if (card) {
         const oldBucket = card.parentElement.parentElement;
         container.appendChild(card);
-        updateCardCount(oldBucket, -1);
-        updateCardCount(e.currentTarget, 1);
+        updateCardCount(oldBucket, -1); // Decrease the card count in the old bucket by 1
+        updateCardCount(e.currentTarget, 1); // Increase the card count in the new bucket by 1
       } else {
         const draggedCard = document.querySelector('.dragging');
         if (draggedCard) {
           const oldBucket = draggedCard.parentElement.parentElement;
           container.appendChild(draggedCard);
-          updateCardCount(oldBucket, -1);
-          updateCardCount(e.currentTarget, 1);
+          updateCardCount(oldBucket, -1); // Decrease the card count in the old bucket by 1
+          updateCardCount(e.currentTarget, 1); // Increase the card count in the new bucket by 1
         }
       }
     }
@@ -378,6 +435,7 @@
 
     // --------------------
     // Cards
+
     function createCard() {
       const card = document.createElement("div");
       card.className = "card";
@@ -412,15 +470,33 @@
       editIcon.style.marginLeft = "0.5rem";
       card.appendChild(editIcon);
 
-      let cardBody = document.createElement("div"); // Change this line
+      const lockIcon = document.createElement("i"); // Add lock icon
+      lockIcon.className = "fa fa-unlock lock";
+      lockIcon.style.marginLeft = "0.5rem";
+      card.appendChild(lockIcon);
+
+      let cardBody = document.createElement("div");
       cardBody.className = "card-body";
       cardBody.placeholder = "Enter description...";
-
-      // Update initial state of viewAsHtmlIcon and editIcon
+      
+      // Update initial state of viewAsHtmlIcon, editIcon and lockIcon
       viewAsHtmlIcon.style.display = "inline";
       editIcon.style.display = "none";
+      lockIcon.style.display = "inline";
 
-      card.appendChild(cardBody);
+      lockIcon.addEventListener("click", () => {
+        if (cardBody.classList.contains("locked")) {
+            cardBody.classList.remove("locked");
+            lockIcon.classList.remove("fa-lock");
+            lockIcon.classList.add("fa-unlock");
+            card.classList.remove("disable-hover"); // Remove disable-hover class
+        } else {
+            cardBody.classList.add("locked");
+            lockIcon.classList.remove("fa-unlock");
+            lockIcon.classList.add("fa-lock");
+            card.classList.add("disable-hover"); // Add disable-hover class
+        }
+      });
 
       viewAsHtmlIcon.addEventListener("click", () => {
           if (cardBody.tagName === "TEXTAREA") {
@@ -444,35 +520,45 @@
               viewAsHtmlIcon.style.display = "inline";
               editIcon.style.display = "none";
           }
-      });
-
-      editIcon.addEventListener("click", () => {
+        });
+        
+        editIcon.addEventListener("click", () => {
           if (cardBody.tagName === "DIV") {
               const textarea = document.createElement("textarea");
               textarea.className = "card-body";
               textarea.placeholder = "Enter description...";
-              textarea.value = cardBody.innerHTML; // Change this line
+              textarea.value = cardBody.innerHTML;
               card.replaceChild(textarea, cardBody);
               cardBody = textarea;
 
               viewAsHtmlIcon.style.display = "inline";
               editIcon.style.display = "none";
 
+              // Add event listener to save changes on input
+              cardBody.addEventListener("input", saveToLocalStorage);
           } else {
               const newCardBody = document.createElement("div");
               newCardBody.className = "card-body";
               newCardBody.innerHTML = cardBody.value;
+
               if (card.contains(cardBody)) {
                   card.replaceChild(newCardBody, cardBody);
               } else {
                   card.appendChild(newCardBody);
               }
+
               cardBody = newCardBody;
+
               viewAsHtmlIcon.style.display = "inline";
               editIcon.style.display = "none";
+
+              // Remove event listener added to textarea when editing
+              cardBody.removeEventListener("input", saveToLocalStorage);
           }
       });
-      
+
+      card.appendChild(cardBody);
+
       return card;
     }
 
@@ -569,28 +655,29 @@
     }
 
 
+
     //==============================================================================================================
     // Data IO
 
     // Export function
     function exportMatrix() {
-        const boardTitle = document.querySelector(".board-title").textContent;
+      const boardTitle = document.querySelector(".board-title").textContent;
 
-        const data = {
-            boardTitle: boardTitle,
-            bucketsData: JSON.parse(localStorage.getItem("kanbanBoard")),
-        };
+      const data = {
+          boardTitle: boardTitle,
+          bucketsData: JSON.parse(localStorage.getItem("kanbanBoard")),
+      };
 
-        const ISOdateTime = new Date().toISOString().replace(/:/g, '-').replace('.', '_');
-        const fileName = "Kanban_" + boardTitle.replace(/ /g, "-") + "-" + ISOdateTime + ".json";
+      const ISOdateTime = new Date().toISOString().replace(/:/g, '-').replace('.', '_');
+      const fileName = "Kanban_" + boardTitle.replace(/ /g, "-") + "-" + ISOdateTime + ".json";
 
-        const fileContent = JSON.stringify(data, null, 2);
-        const file = new Blob([fileContent], { type: "application/json" });
+      const fileContent = JSON.stringify(data, null, 2);
+      const file = new Blob([fileContent], { type: "application/json" });
 
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(file);
-        link.download = fileName;
-        link.click();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(file);
+      link.download = fileName;
+      link.click();
     }
 
     // Import function
@@ -610,12 +697,14 @@
             
             try {
                 const jsonData = JSON.parse(fileContent);
+
+                console.log("JSON Import size:: " + fileContent.length);
                 
-                // Read and set the board title
-                const boardTitle = jsonData.boardTitle;
-                if (boardTitle) {
-                    // setBoardTitle(boardTitle);
-                    document.querySelector(".board-title").textContent = boardTitle;
+                const loadedBoardTitle = jsonData.boardTitle;
+                if (loadedBoardTitle) {
+                  const titleElement = document.getElementById("boardTitle");
+                  titleElement.textContent = loadedBoardTitle;
+                  localStorage.setItem("boardTitle", loadedBoardTitle);
                 }
 
                 // Update the buckets data
@@ -646,10 +735,12 @@
     loadFromLocalStorage();
 
     if (document.querySelectorAll(".bucket").length === 0) {
+
       createBucket("Backlog");
       createBucket("Blocked");
       createBucket("In Progress");
       createBucket("Done");
+
     }
 
     document.getElementById("addBucketButton").addEventListener("click", addBucketButton);
