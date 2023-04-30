@@ -1,12 +1,12 @@
 #ID,Category,Subcategory,Question,Required
 # Capability
 # ==========
-"COW-Q1","Capability",,"Heilmeier Question: What are you trying to do? (Articulate your objectives using absolutely no jargon.)",mandatory
-"COW-Q2","Capability",,"For a user: list out skills, techniques, procedures, understanding and/or knowledge (i.e., capability) provided by the software.",mandatory
-"COW-Q3","Capability",,"What data capabilities will be provided by the software?",mandatory
-"COW-Q4","Capability",,"Heilmeier Question: What is new in your approach and why do you think it will be successful?",
-"COW-Q5","Capability",,"Are new technology capabilities provided from the software? (e.g., meaningful AI or ML interfacing where non exists)",
-"COW-Q6","Capability",,"For an organization: What NEW capabilities are gained with the software?",
+"COW-Q1","Capability","ESSENTIAL","Heilmeier Question: What are you trying to do? (Articulate your objectives using absolutely no jargon.)",mandatory
+"COW-Q2","Capability","ESSENTIAL","For a user: list out skills, techniques, procedures, understanding and/or knowledge (i.e., capability) provided by the software.",mandatory
+"COW-Q3","Capability","ESSENTIAL","What data capabilities will be provided by the software?",mandatory
+"COW-Q4","Capability","OPTIONAL","Heilmeier Question: What is new in your approach and why do you think it will be successful?",
+"COW-Q5","Capability","OPTIONAL","Are new technology capabilities provided from the software? (e.g., meaningful AI or ML interfacing where non exists)",
+"COW-Q6","Capability","OPTIONAL","For an organization: What NEW capabilities are gained with the software?",
 ## Risk Items
 "COW-Q7","Capability","RISK","Is current capability lost when developing this software, and can they be mitigated?",
 "COW-Q8","Capability","RISK","What human resources are necessary to execute the software project?",
@@ -15,13 +15,13 @@
 "COW-Q11","Capability","RISK","Is new infrastructure necessary to execute the software project?",
 # Opportunity
 # ===========
-"COW-Q12","Opportunity",,"What opportunities are created by the software (i.e., Heilmeier Question: what difference will this make)?",mandatory
+"COW-Q12","Opportunity","ESSENTIAL","What opportunities are created by the software (i.e., Heilmeier Question: what difference will this make)?",mandatory
 "COW-Q13","Opportunity","Scoping","Does this enable innovation opportunities for other users or organizations?",
 "COW-Q14","Opportunity","Scoping","What collaboration opportunities are created by the software development?",
-"COW-Q15","Opportunity",,"Can existing solutions speed the development for the software?",
-"COW-Q16","Opportunity",,"Does the software enhance other solutions/capabilities?",
-"COW-Q17","Opportunity",,"Can other organizations be leveraged for similar software/approaches?",
-"COW-Q18","Opportunity",,"Are there means or methods to expand the software beyond its initial scope? (e.g., can it enable an API? Do the outputs have 'downstream' value?)",
+"COW-Q15","Opportunity","OPTIONAL","Can existing solutions speed the development for the software?",
+"COW-Q16","Opportunity","OPTIONAL","Does the software enhance other solutions/capabilities?",
+"COW-Q17","Opportunity","OPTIONAL","Can other organizations be leveraged for similar software/approaches?",
+"COW-Q18","Opportunity","OPTIONAL","Are there means or methods to expand the software beyond its initial scope? (e.g., can it enable an API? Do the outputs have 'downstream' value?)",
 ## Risk Items
 "COW-Q19","Opportunity","RISK","Do existing solutions work 'well enough' (Heilmeier Question: how is it done today, what are current practice limits)?",
 "COW-Q20","Opportunity","RISK","What are the constraints on the software development process, are any imposed by external stakeholders?",
@@ -30,9 +30,9 @@
 "COW-Q23","Opportunity","RISK","If other organizations have similar approaches, why does this software need to be created?",
 # Worth
 # =====
-"COW-Q24","Worth",,"What benefits/advantages are expected from the software development?",mandatory
-"COW-Q25","Worth",,"When is the software going to be usable? (Heilmeier Question: What are the mid-term and final 'exams'; Minimal Viable Product and Minimum Viable Capability Release)?",mandatory
-"COW-Q26","Worth",,"How many users and non-direct users can leverage the software or its outputs (e.g., market demand)?",
+"COW-Q24","Worth","ESSENTIAL","What benefits/advantages are expected from the software development?",mandatory
+"COW-Q25","Worth","ESSENTIAL","When is the software going to be usable? (Heilmeier Question: What are the mid-term and final 'exams'; Minimal Viable Product and Minimum Viable Capability Release)?",mandatory
+"COW-Q26","Worth","OPTIONAL","How many users and non-direct users can leverage the software or its outputs (e.g., market demand)?",
 ## Risk Items
 "COW-Q27","Worth","RISK","(Expanded) What is the timeline for software development and how does that impact resource allocation?",
 "COW-Q28","Worth","RISK","For existing options: how is the software more valuable, and/or different?",
