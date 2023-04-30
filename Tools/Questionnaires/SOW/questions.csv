@@ -1,19 +1,19 @@
 #ID,Category,Subcategory,Question,Required
-"SOW-Q1","Software Problem Area Taxonomy (SPAT)","WHAT"," What are the primary goals of the software system from the user's perspective?",
-"SOW-Q2","Software Problem Area Taxonomy (SPAT)","WHAT"," What are the primary business functions that the software system will support?",
-"SOW-Q3","Software Problem Area Taxonomy (SPAT)","WHAT"," Is there key data that the software system will use/manage?",
-"SOW-Q4","Software Problem Area Taxonomy (SPAT)","WHY"," What is the software problem area you are trying to address?",mandatory
-"SOW-Q5","Software Problem Area Taxonomy (SPAT)","WHY"," What are the primary user tasks or activities that the software system will support?",mandatory
-"SOW-Q6","Software Problem Area Taxonomy (SPAT)","WHY"," Are there any known limitations or issues with the current software in this area?",
-"SOW-Q7","Operational Analysis","WHERE"," Where will the software be used in practice (local computer, online, mobile app, etc.)?",mandatory
-"SOW-Q8","Operational Analysis","WHERE"," What are the main scenarios or use cases that the software system will support?",
-"SOW-Q9","Operational Analysis","WHERE"," For the data used/processed: where is it located?",
-"SOW-Q10","Operational Analysis","WHERE/WHEN"," What are the key performance requirements for the software system?",
-"SOW-Q11","Operational Analysis","WHERE/WHEN"," Are there hardware and software resources needed to support the software system?",mandatory
-"SOW-Q12","Operational Analysis","WHERE/WHEN"," Are there any specific performance requirements for the software (e.g., does it depend on other software, data, certain modes -- like offline mode when no internet)?",
-"SOW-Q13","Work(er/flow/load) Analysis","WHO"," List the primary and secondary user (or groups) for the software.",
-"SOW-Q14","Work(er/flow/load) Analysis","WHO"," What are the prioritized key tasks (i.e., a task being a single action that creates a collect of data, or processes the data a single, specific action) needed for the primary users?",mandatory
-"SOW-Q15","Work(er/flow/load) Analysis","WHO"," Given the key tasks, are there other needs for user workflow while using the software?",
-"SOW-Q16","Work(er/flow/load) Analysis","HOW"," Does this software need to be compatible with other software or systems?",
-"SOW-Q17","Work(er/flow/load) Analysis","HOW"," What are the requirements for data input/output (e.g., does data need to be brought in, or saved elsewhere when done)?",
-"SOW-Q18","Work(er/flow/load) Analysis","HOW"," Where is the "cut line" for the key tasks where the software is minimally useful?",mandatory
+"SOW-Q1","Software Problem Area Taxonomy (SPAT)","WHAT","From the user's perspective: what are the primary goals the software to accomplish/enable?",
+"SOW-Q2","Software Problem Area Taxonomy (SPAT)","WHAT","List the primary business functions that the software system will support.",
+"SOW-Q3","Software Problem Area Taxonomy (SPAT)","WHAT","Are there data (externally or generated) that would cause the software to fail without them?",
+"SOW-Q4","Software Problem Area Taxonomy (SPAT)","WHY","What is the software problem area you are trying to address?",mandatory
+"SOW-Q5","Software Problem Area Taxonomy (SPAT)","WHY","What are the primary user tasks/activities the software implements?",mandatory
+"SOW-Q6","Software Problem Area Taxonomy (SPAT)","WHY","Are there any known limitations, or issues, with current software in this area?",
+"SOW-Q7","Operational Analysis","WHERE","Where will a user execute the software (local computer, online, mobile app, etc.)?",mandatory
+"SOW-Q8","Operational Analysis","WHERE","Provide fundamental scenarios (e.g., use cases) highlighting user support.",
+"SOW-Q9","Operational Analysis","WHERE","For the data used/processed: where is it located? Are there protection or restrictions on the data?",
+"SOW-Q10","Operational Analysis","WHERE/WHEN","What are the key performance requirements for the software system?",
+"SOW-Q11","Operational Analysis","WHERE/WHEN","Does the software leverage specific hardware and/or software resources?",mandatory
+"SOW-Q12","Operational Analysis","WHERE/WHEN","Highlight performance requirements for the software (e.g., does it depend on other software, data, certain modes -- like offline mode when no internet)?",
+"SOW-Q13","Work(er/flow/load) Analysis","WHO","List the primary and secondary user (or groups) for the software or its products.",
+"SOW-Q14","Work(er/flow/load) Analysis","WHO","For the primary users: What are the key tasks needed (i.e., a single action that creates data, or processes the data)? Recommendation: prioritizing the tasks.",mandatory
+"SOW-Q15","Work(er/flow/load) Analysis","WHO","Knowing the key tasks: are there other needs for user workflow while using the software?",
+"SOW-Q16","Work(er/flow/load) Analysis","HOW","Are there compatibility concerns for other software or systems?",
+"SOW-Q17","Work(er/flow/load) Analysis","HOW","What are the requirements for data input/output (e.g., are there data import/export requirements to interface with other systems/processes)?",
+"SOW-Q18","Work(er/flow/load) Analysis","HOW","Where is the "cut line" for the key tasks where the software is minimally useful (i.e., to declare a minimally viable product)? ",mandatory
