@@ -11,12 +11,100 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<script src="../scripts/script.js"></script>
-	<link rel="stylesheet" href="../styles/style.css">
+
+	<style>
+		/* BODY and Darkmode Settings */
+		/* ========================== */
+		/* Set the body background color to white by default */
+		body {
+				background-color: #FFF;
+		}
+
+		/* Set the navbar color to black by default */
+		.navbar {
+				background-color: #bbbbbb;
+				/* font color == white */
+				color: #FFF;
+		}
+
+		/* Invert the colors of text, links, and active links in dark mode */
+		.dark-mode {
+				filter: invert(1);
+		}
+
+		.dark-mode .nav-link,
+		.dark-mode .navbar-brand {
+				color: #fff;
+		}
+
+		.dark-mode .nav-link.active,
+		.dark-mode .nav-link:hover {
+				color: #f00;
+		}
+
+		/* TOOL TIP for SPAT */
+		/* ================= */
+		/* Tooltip container */
+    /* Tooltip container */
+    .my-tooltip {
+      position: absolute;
+      left: 50%;
+      display: inline-block;
+      border-bottom: 1px dotted black;
+    }
+
+    /* Tooltip text */
+    .my-tooltip .my-tooltiptext {
+      visibility: hidden;
+      width: 300px;
+      background-color: #f1f1f1;
+      color: #000;
+      text-align: left;
+      padding: 10px;
+      border-radius: 6px;
+      position: absolute;
+      z-index: 1;
+      top: 125%;
+      left: 50%;
+      margin-left: -150px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    /* Tooltip table - add border for each tr */
+    .my-tooltip table tr {
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* Tooltip table - add border for each td */
+    .my-tooltip table td {
+      border-right: 1px solid #ddd;
+    }
+
+    /* Tooltip arrow */
+    .my-tooltip .my-tooltiptext::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent #f1f1f1 transparent;
+    }
+
+    /* Show tooltip on hover */
+    .my-tooltip:hover .my-tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+	</style>
+
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg ">
+		
+	<nav class="navbar navbar-expand-lg ">
 		<div class="container">
-			<!-- Navbar brand/logo -->
 			<a class="navbar-brand" href="#">Focused Analysis Questions [SOW] (v1.0.0)</a>
 
 			<!-- Hamburger menu button -->
@@ -72,8 +160,58 @@
 		</div>
 		</div>
 	</nav>
-  
-
+	<div class="my-tooltip">
+    SPAT Table 0.1.0
+    <span class="my-tooltiptext">
+      <table>
+        <thead>
+          <tr>
+            <th>Main Category</th>
+            <th>Sub-Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Business Software</td>
+            <td>Presentation, Word Processing, Mathematical Spreadsheets</td>
+          </tr>
+          <tr>
+            <td>Computer Management</td>
+            <td>Command &amp; Control (C2), Remote Access, Patching &amp; Updates, Device Management</td>
+          </tr>
+          <tr>
+            <td>Data Analysis</td>
+            <td>Manual, Automatic, Machine Learning-based, AI-based</td>
+          </tr>
+          <tr>
+            <td>Data Collection</td>
+            <td>Primary, Secondary+, Archival</td>
+          </tr>
+          <tr>
+            <td>Digital Assembly</td>
+            <td>Drafting, Manufacturing, Multimedia, Visualization</td>
+          </tr>
+          <tr>
+            <td>Information Transfer</td>
+            <td>Audio, Video, Text, Raw</td>
+          </tr>
+          <tr>
+            <td>Information Visualization</td>
+            <td>Dashboarding, Summary</td>
+          </tr>
+          <tr>
+            <td>Modeling &amp; Simulation</td>
+            <td>Manual, Automatic, Model Generation/Refinement, Visualization, Wargaming</td>
+          </tr>
+          <tr>
+            <td>Workflow &amp; Processing</td>
+            <td>Manual, Automatic, Non-repudiation Receipt</td>
+          </tr>
+        </tbody>
+      </table>
+    </span>
+  </div>
+	<br>
 	<div class="container">
 		<form id="myForm">
 			<div id="formElements"></div>

@@ -1,18 +1,12 @@
 /* Set the body background color to white by default */
 body {
-    background-color: #FFF;
+    background-color: #000;
 }
 
 /* Set the navbar color to black by default */
 .navbar {
-    background-color: #000;
-    /* text color */
-
-    color: #fff;
-}
-
-.navbar {
-    color: #fff;
+    background-color: #ffffff;
+    /* color: #fff; */
 }
 
 /* Invert the colors of text, links, and active links in dark mode */

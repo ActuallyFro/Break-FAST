@@ -1,5 +1,5 @@
 #ID,Category,Subcategory,Question,Required
-"SOW-Q1","Software Problem Area Taxonomy (SPAT)","WHAT"," What are the primary goals of the software system from the user's perspective?",mandatory
+"SOW-Q1","Software Problem Area Taxonomy (SPAT)","WHAT"," What are the primary goals of the software system from the user's perspective?",
 "SOW-Q2","Software Problem Area Taxonomy (SPAT)","WHAT"," What are the primary business functions that the software system will support?",
 "SOW-Q3","Software Problem Area Taxonomy (SPAT)","WHAT"," Is there key data that the software system will use/manage?",
 "SOW-Q4","Software Problem Area Taxonomy (SPAT)","WHY"," What is the software problem area you are trying to address?",mandatory
@@ -11,9 +11,9 @@
 "SOW-Q10","Operational Analysis","WHERE/WHEN"," What are the key performance requirements for the software system?",
 "SOW-Q11","Operational Analysis","WHERE/WHEN"," Are there hardware and software resources needed to support the software system?",mandatory
 "SOW-Q12","Operational Analysis","WHERE/WHEN"," Are there any specific performance requirements for the software (e.g., does it depend on other software, data, certain modes -- like offline mode when no internet)?",
-"SOW-Q13","Work(er/flow/load) Analysis","WHO"," List the primary and secondary user (or groups) for the software.",mandatory
+"SOW-Q13","Work(er/flow/load) Analysis","WHO"," List the primary and secondary user (or groups) for the software.",
 "SOW-Q14","Work(er/flow/load) Analysis","WHO"," What are the prioritized key tasks (i.e., a task being a single action that creates a collect of data, or processes the data a single, specific action) needed for the primary users?",mandatory
-"SOW-Q15","Work(er/flow/load) Analysis","WHO"," Given the key tasks, are ther other needs for user workflow while using the software?",
-"SOW-Q16","Work(er/flow/load) Analysis","HOW"," Does this software need to be compatable with other software or systems?",
+"SOW-Q15","Work(er/flow/load) Analysis","WHO"," Given the key tasks, are there other needs for user workflow while using the software?",
+"SOW-Q16","Work(er/flow/load) Analysis","HOW"," Does this software need to be compatible with other software or systems?",
 "SOW-Q17","Work(er/flow/load) Analysis","HOW"," What are the requirements for data input/output (e.g., does data need to be brought in, or saved elsewhere when done)?",
 "SOW-Q18","Work(er/flow/load) Analysis","HOW"," Where is the "cut line" for the key tasks where the software is minimally useful?",mandatory
