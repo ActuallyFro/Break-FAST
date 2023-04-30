@@ -3,7 +3,7 @@
 # ===
 "HEN-Q1","Hew","ESSENTIAL","What are the major components (from features/tasks) of the software?",mandatory
 "HEN-Q2","Hew","ESSENTIAL","Is there a 'workflow order' that allows work to be broken down? If so what is it?",mandatory
-"HEN-Q3","Hew","OPTIONAL","What dependencies exist, and what is the plan to trace or track them, amongst the smaller
+"HEN-Q3","Hew","OPTIONAL","What dependencies exist, and what is the plan to trace or track them, amongst the smaller",
 "HEN-Q4","Hew","OPTIONAL","How will work be estimated in a timeframes?",
 "HEN-Q5","Hew","OPTIONAL","What is the plan to communicate project's progress (i.e., how work is accomplish compared to the total plan)?",
 "HEN-Q6","Hew","OPTIONAL","Is there a team? How will work be divided up, and team members be informed of project updates and changes?",
