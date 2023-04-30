@@ -1,28 +1,125 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
 
 			<title>Scoping Questions [COW] (Capability, Opportunity, Worth)</title>
+
+    
+	<!-- =========================================== -->
+	<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="../styles/bootstrap_5-3-0_alpha2-min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+	<script src="../scripts/bootstrap_5-3-0_alpha2_Bundle-min.js"  integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+
+	<title>Focused Analysis Questions [COW] (Sofware Problem Area Taxonomy, Operational Analysis, Work(er/load/unit) Analysis)</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<script src="../scripts/script.js"></script>
+	<style>
+		/* BODY and Darkmode Settings */
+		/* ========================== */
+		/* Set the body background color to white by default */
+		body {
+				background-color: #FFF;
+		}
+
+		/* Set the navbar color to black by default */
+		.navbar {
+				background-color: #bbbbbb;
+				/* font color == white */
+				color: #FFF;
+		}
+
+		/* Invert the colors of text, links, and active links in dark mode */
+		.dark-mode {
+				filter: invert(1);
+		}
+
+		.dark-mode .nav-link,
+		.dark-mode .navbar-brand {
+				color: #fff;
+		}
+
+		.dark-mode .nav-link.active,
+		.dark-mode .nav-link:hover {
+				color: #f00;
+		}
+
+		/* TOOL TIP for SPAT */
+		/* ================= */
+		/* Tooltip container */
+    /* Tooltip container */
+    .my-tooltip {
+      position: relative;
+      left: 75%;
+      display: inline-block;
+      border-bottom: 1px dotted black;
+    }
+
+    /* Tooltip text */
+    .my-tooltip .my-tooltiptext {
+      visibility: hidden;
+      width: 300px;
+      background-color: #f1f1f1;
+      color: #000;
+      text-align: left;
+      padding: 10px;
+      border-radius: 6px;
+      position: absolute;
+      z-index: 1;
+      top: 125%;
+      left: 50%;
+      margin-left: -150px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    /* Tooltip table - add border for each tr */
+    .my-tooltip table tr {
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* Tooltip table - add border for each td */
+    .my-tooltip table td {
+      border-right: 1px solid #ddd;
+    }
+
+    /* Tooltip arrow */
+    .my-tooltip .my-tooltiptext::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent #f1f1f1 transparent;
+    }
+
+    /* Show tooltip on hover */
+    .my-tooltip:hover .my-tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+	</style>
+
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg ">
 		<div class="container">
-			<!-- Navbar brand/logo -->
 			<a class="navbar-brand" href="#">Scoping Questions [COW] (v1.0.0)</a>
+
+			<!-- Hamburger menu button -->
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
 			<!-- Navbar links -->
 			<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav">
-				<li class="nav-item">
+				<ul class="navbar-nav" style="--bs-scroll-height: 200px;">
+				<!-- <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;"> -->
+					
+					<li class="nav-item">
 				<a class="nav-link" href="#Capability">Capability</a>
 			</li>
 				<li class="nav-item">
@@ -31,21 +128,45 @@
 				<li class="nav-item">
 				<a class="nav-link" href="#Worth">Worth</a>
 				</li>
+				<!-- //divider -->
+				<li><hr class="dropdown-divider"></li>
+				<button type="button" class="btn btn-success" onclick="saveForm()">
+					Save
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save-fill" viewBox="0 0 16 16">
+						<path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v7.793L4.854 6.646a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l3.5-3.5a.5.5 0 0 0-.708-.708L8.5 9.293V1.5z"/>
+					</svg>		
+				</button>
+				<button type="button" class="btn btn-primary" onclick="exportForm()">
+					Export
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-download-fill" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M8 0a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 4.095 0 5.555 0 7.318 0 9.366 1.708 11 3.781 11H7.5V5.5a.5.5 0 0 1 1 0V11h4.188C14.502 11 16 9.57 16 7.773c0-1.636-1.242-2.969-2.834-3.194C12.923 1.999 10.69 0 8 0zm-.354 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V11h-1v3.293l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/>
+					</svg>
+				</button>
+				<button type="button" class="btn btn-warning" onclick="importForm()">
+					Import
+					<!-- <input type="file" id="myFile" name="myFile" class="file-input"> -->
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-upload" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/>
+						<path fill-rule="evenodd" d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z"/>
+					</svg>	
+				</button>
 			</ul>
+
+			<!-- Toggle Switch for Dark Mode -->
+			<div class="form-check form-switch mx-3">
+				<input class="form-check-input" type="checkbox" id="dark-mode-toggle">
+				<label class="form-check-label" for="dark-mode-toggle">Dark Mode</label>
 			</div>
+			
+
+		</div>
 		</div>
 	</nav>
-  
-
+	<!-- centered h1 -->
+	<h1 id="COWTitle" class="Questionnaire-title" style="text-align: center;">Software Project Name</h1>
 	<div class="container">
-		<form id="myForm">
+		<form id="myCOWForm">
 			<div id="formElements"></div>
-			<button type="button" class="btn btn-primary" onclick="saveForm()">
-				Save
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save-fill" viewBox="0 0 16 16">
-					<path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v7.793L4.854 6.646a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l3.5-3.5a.5.5 0 0 0-.708-.708L8.5 9.293V1.5z"/>
-				  </svg>		
-			</button>
 		</form>
 
 		<!-- https://icons.getbootstrap.com/icons/cloud-download-fill/ -->
@@ -53,8 +174,9 @@
 
 		<br>
 		<br>
-<hr>
-		<button type="button" class="btn btn-danger" onclick="localStorage.clear(); location.reload();">
+		<hr>
+
+		<button type="button" class="btn btn-danger" onclick="resetLocalStorage() ">
 			Clear LocalStorage
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
 				<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
@@ -62,6 +184,311 @@
 			  </svg>
 		</button>
 	</div>
+
+
+	<script>
+		const labelColors = ['#2F4D7E', '#7E2F2F', '#4D7E2F', '#563D7C', '#7E6B2F', '#2F7373', '#6B2F6E', '#7E7D4D', '#365899', '#7E476B', '#369962', '#6E2F2F', '#367373', '#6E2F6E', '#7E7A00', '#2F3E73', '#6E1F00', '#1F4D4D', '#5B2828', '#3A512B'];
+
+		currentLabelColor = -1;
+
+		const complementaryColors = labelColors.map(color => {
+			const r = parseInt(color.slice(1,3), 16);
+			const g = parseInt(color.slice(3,5), 16);
+			const b = parseInt(color.slice(5), 16);
+			
+			const compR = (255 - r).toString(16).padStart(2, '0');
+			const compG = (255 - g).toString(16).padStart(2, '0');
+			const compB = (255 - b).toString(16).padStart(2, '0');
+			
+			return `#${compR}${compG}${compB}`;
+		});
+
+		const lightModeComplementaryColors = labelColors.map(color => {
+			const r = parseInt(color.slice(1,3), 16);
+			const g = parseInt(color.slice(3,5), 16);
+			const b = parseInt(color.slice(5), 16);
+			
+			const compR = (255 - r) / 2; //twice as dark
+			const compG = (255 - g) / 2; //twice as dark
+			const compB = (255 - b) / 2; //twice as dark
+			
+			// combine the components into a new color string
+			return `#${Math.round(compR).toString(16).padStart(2, '0')}${Math.round(compG).toString(16).padStart(2, '0')}${Math.round(compB).toString(16).padStart(2, '0')}`;
+		});
+
+		function ReturnColumn(str, col) {
+			var arr = str.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+			return arr[col].replace(/"/g, "");
+		}
+
+		// Load Questions from File; Load data from LocalStorage IF exists...
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var questions = this.responseText.split("\n");
+				var formElements = document.getElementById("formElements");
+
+				var Sections = [];
+	
+				
+				const savedTitle = localStorage.getItem("SavedCOWTitle");
+				console.log("Loaded SavedCOWTitle: "+savedTitle);
+				if (savedTitle) {
+					const titleElement = document.getElementById("COWTitle");
+					titleElement.textContent = savedTitle;
+				}
+				makeQuestionnaireTitleEditable();	
+
+				for (var i = 0; i < questions.length; i++) {
+					if (questions[i].startsWith("#")) {
+						continue;
+					}
+
+					var ID= ReturnColumn(questions[i], 0);
+					var Section = ReturnColumn(questions[i], 1);
+					var Type = ReturnColumn(questions[i], 2);
+					var question = ReturnColumn(questions[i], 3);
+					var required = ReturnColumn(questions[i], 4);
+
+					if (Sections.indexOf(Section) == -1) {
+						formElements.appendChild(document.createElement("hr"));
+						Sections.push(Section);
+
+						var newSection = document.createElement("h2");
+						newSection.innerHTML = Section;
+						newSection.id = Section;
+						formElements.appendChild(newSection); //mandatory elements
+						// append HR
+						formElements.appendChild(document.createElement("hr"));
+
+						var optionalElements = document.createElement("div"); // Create a new div for optional elements
+						optionalElements.id = "optionalElements"+Section;
+						optionalElements.style.display = "none";
+
+						formElements.appendChild(document.createElement("br"));
+						formElements.appendChild(document.createElement("br"));
+						
+						var optionalElementsDivider = document.createElement("div"); // Create a new div for mandatory elements
+						optionalElementsDivider.id = "optionalElementsDivider"+Section;
+						formElements.appendChild(optionalElementsDivider);
+
+						formElements.appendChild(document.createElement("h5")).innerHTML = "Optional Questions";
+
+						var toggle = document.createElement("a");
+						toggle.id = Section + "Toggle"; // add unique identifier based on section name
+						toggle.innerHTML = "[+]";
+						toggle.style.marginLeft = "10px";
+						toggle.style.cursor = "pointer";
+
+						toggle.addEventListener("click", function() {
+							var optionalElements = document.getElementById("optionalElements" + this.id.slice(0, -6)); // use id to get the corresponding optional elements
+				
+							if (optionalElements.style.display === "none") {
+								optionalElements.style.display = "block";
+								this.innerHTML = "[-]";
+							} else {
+								optionalElements.style.display = "none";
+								this.innerHTML = "[+]";
+							}
+						});
+
+						formElements.lastElementChild.appendChild(toggle);
+						formElements.appendChild(document.createElement("br"));
+						formElements.appendChild(optionalElements);
+
+						currentLabelColor += 1;
+					}
+
+					var label = document.createElement("label");
+					label.innerHTML = "["+ Type +"] " + question;
+					label.style.fontWeight = "bold";
+					label.style.color = labelColors[currentLabelColor];
+
+					var input = document.createElement("textarea");
+					input.name = ID;
+					input.rows = 3;
+					input.className = "form-control";
+					input.id = question;
+
+					var responseDATA = localStorage.getItem(ID);
+					if (responseDATA) {
+						input.value = responseDATA;
+					} 
+
+					if (required === "mandatory") {
+						formElements.insertBefore(label, optionalElementsDivider);
+						formElements.insertBefore(document.createElement("br"), optionalElementsDivider);
+						formElements.insertBefore(input, optionalElementsDivider);
+						formElements.insertBefore(document.createElement("br"), optionalElementsDivider);
+						formElements.insertBefore(document.createElement("br"), optionalElementsDivider);				
+						
+					} else { // if (required !== "mandatory") {
+						label.style.fontWeight = "normal";
+						label.style.fontStyle = "italic";
+
+						if (document.documentElement.getAttribute('data-theme') === 'dark') {
+							label.style.color = complementaryColors[currentLabelColor];
+						} else {
+							label.style.color = lightModeComplementaryColors[currentLabelColor];
+						}
+
+						optionalElements.appendChild(label.cloneNode(true)); // Use cloneNode to create a copy of the label
+						optionalElements.appendChild(document.createElement("br"));
+						optionalElements.appendChild(input.cloneNode(true)); // Use cloneNode to create a copy of the input
+						optionalElements.appendChild(document.createElement("br"));
+						optionalElements.appendChild(document.createElement("br"));
+					}
+				}
+
+			}
+		};
+		xhr.open("GET", "questions.csv");
+		xhr.send();
+
+		function saveForm() {
+			console.log("Saving form data in LocalStorage...");
+			var form = document.getElementById("myCOWForm");
+
+			for (var i = 0; i < form.elements.length; i++) {
+				if (form.elements[i].name != ""){
+
+					if (form.elements[i].value != ""){
+						localStorage.setItem(form.elements[i].name, form.elements[i].value);
+					}
+				}
+
+			}
+
+			const COWQuestionsTitle = document.getElementById("COWTitle");
+			console.log("Title: " +COWQuestionsTitle.innerHTML);
+			localStorage.setItem("SavedCOWTitle", COWQuestionsTitle.innerHTML);
+
+			alert("Form data SAVED in LocalStorage!");
+		}
+
+		function resetLocalStorage() {
+			var form = document.getElementById("myCOWForm");
+
+			for (var i = 0; i < form.elements.length; i++) {
+				if (form.elements[i].name != ""){
+
+					if (form.elements[i].value != ""){
+						localStorage.removeItem(form.elements[i].name, form.elements[i].value);
+					}
+				}
+
+			}
+
+			localStorage.removeItem('SavedCOWTitle');
+			location.reload();
+		}
+		
+		function exportForm() {
+			var formData = {};
+			var inputs = document.querySelectorAll("form#myCOWForm input, form#myCOWForm textarea");
+			for (var i = 0; i < inputs.length; i++) {
+				formData[inputs[i].name] = inputs[i].value;
+			}
+
+			formData["COWQuestionsTitle"] = document.getElementById("COWTitle").innerHTML;
+
+			var jsonString = JSON.stringify(formData, null, 2);
+
+
+			const fileCOWTitle = document.getElementById("COWTitle").innerHTML;
+			const ISOdateTime = new Date().toISOString().replace(/:/g, '-').replace('.', '_');
+			const fileName = "COW-Questions_" + fileCOWTitle.replace(/ /g, "-") + "-" + ISOdateTime + ".json";
+
+			var downloadLink = document.createElement("a");
+			downloadLink.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(jsonString));
+			downloadLink.setAttribute("download", fileName);
+			downloadLink.style.display = "none";
+			document.body.appendChild(downloadLink);
+
+			downloadLink.click();
+
+			document.body.removeChild(downloadLink);
+		}
+
+		function importForm() {
+			var fileInput = document.createElement("input");
+			fileInput.setAttribute("type", "file");
+			
+			fileInput.addEventListener("change", function(event) {
+				var file = event.target.files[0];
+				
+				var reader = new FileReader();
+				reader.onload = function(event) {
+
+				var jsonData = JSON.parse(event.target.result);
+				var inputs = document.querySelectorAll("form#myCOWForm input, form#myCOWForm textarea");
+
+				for (var i = 0; i < inputs.length; i++) {
+					if (jsonData.haCOWnProperty(inputs[i].name)) {
+						inputs[i].value = jsonData[inputs[i].name];
+					}
+				}
+
+				var COWTitleToSet = document.getElementById("COWTitle");
+				if (jsonData.haCOWnProperty("COWQuestionsTitle")) {
+						console.log("importForm() -- Setting COWQuestionsTitle: " + jsonData["COWQuestionsTitle"]);
+						COWTitleToSet.innerHTML = jsonData["COWQuestionsTitle"];
+				}
+
+				};
+				reader.readAsText(file);
+			});
+			
+			fileInput.click();
+		}
+
+		const toggleSwitch = document.querySelector('#dark-mode-toggle');
+		const currentTheme = localStorage.getItem('theme');
+
+		if (currentTheme) {
+			document.documentElement.setAttribute('data-theme', currentTheme);
+
+			if (currentTheme === 'dark') {
+				toggleSwitch.checked = true;
+			}
+		}
+
+		function switchTheme(event) {
+			if (event.target.checked) {
+				document.documentElement.setAttribute('data-theme', 'dark');
+				localStorage.setItem('theme', 'dark');
+			} else {
+				document.documentElement.setAttribute('data-theme', 'light');
+				localStorage.setItem('theme', 'light');
+			}
+		}
+
+		toggleSwitch.addEventListener('change', switchTheme, false);
+		// -----------------
+		// Title functions
+		function makeQuestionnaireTitleEditable() {
+			const title = document.getElementById("COWTitle");
+			title.addEventListener("click", (e) => {
+				const target = e.target;
+				const input = document.createElement("input");
+				input.type = "text";
+				input.value = target.textContent;
+				input.id = "COWTitle";
+				input.className = "Questionnaire-title";
+				input.style.width = "100%";
+				target.replaceWith(input);
+				input.focus();
+
+				input.addEventListener("blur", () => {
+					target.textContent = input.value;
+					input.replaceWith(target);
+					localStorage.setItem("SavedCOWTitle", target.textContent);
+				});
+			});
+		}
+
+		makeQuestionnaireTitleEditable();
+	</script>
 </body>
 </html>
     

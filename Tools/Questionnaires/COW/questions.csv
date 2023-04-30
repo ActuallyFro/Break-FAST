@@ -1,3 +1,43 @@
-"COW-Q1","Capability","N/A",""
-"COW-Q2","Opportunity","N/A",""
-"COW-Q3","Worth","N/A",""
+#ID,Category,Subcategory,Question,Required
+# Capability
+# ==========
+"COW-Q","Capability",,"Heilmeier Question: What are you trying to do? (Articulate your objectives using absolutely no jargon.)",mandatory
+"COW-Q","Capability",,"For a user: list out skills, techniques, procedures, understanding and/or knowledge (i.e., capability) provided by the software.",mandatory
+"COW-Q","Capability",,"What data capabilities will be provided by the software?",mandatory
+"COW-Q","Capability",,"For an organization: What NEW capabilities are gained with the software?",
+"COW-Q","Capability",,"Are new technology capabilities provided from the software? (e.g., meaningful AI or ML interfacing where non exists)",
+"COW-Q","Capability",,"Heilmeier Question: What is new in your approach and why do you think it will be successful?",
+## Risk Items
+"COW-Q","Capability","RISK","What are the technical requirements and expertise necessary for software development?",
+"COW-Q","Capability","RISK","Is new infrastructure necessary to execute the software project?",
+"COW-Q","Capability","RISK","What human resources are necessary to execute the software project?",
+"COW-Q","Capability","RISK","What are the limitations on available resources to enable software development?"
+"COW-Q","Capability","RISK","Is current capability lost when developing this software, and can they be mitigated?",
+# Opportunity
+# ===========
+"COW-Q","Opportunity",,"What opportunities are created by the software (i.e., Heilmeier Question: what difference will this make)?",mandatory
+"COW-Q","Opportunity","Scoping","Does this enable innovation opportunities for other users or organizations?",
+"COW-Q","Opportunity","Scoping","What collaboration opportunities are created by the software development?",
+"COW-Q","Opportunity",,"Can existing solutions speed the development for the software?",
+"COW-Q","Opportunity",,"Does the software enhance other solutions/capabilities?",
+"COW-Q","Opportunity",,"Can other organizations be leveraged for similar software/approaches?"
+"COW-Q","Opportunity",,"Are there means or methods to expand the software beyond its initial scope? (e.g., can it enable an API? Do the outputs have "downstream" value?)",
+## Risk Items
+"COW-Q","Opportunity","RISK","Do existing solutions work 'well enough' (Heilmeier Question: how is it done today, what are current practice limits)?",
+"COW-Q","Opportunity","RISK","Can existing solutions be modified with techniques, tactics, and procedures to achieve this software's capability?",
+"COW-Q","Opportunity","RISK","If other organizations have similar approaches, why does this software need to be created?"
+"COW-Q","Opportunity","RISK","For organization strategic goals: does this software development effort fit? (i.e., are we 'supposed to develop software?')",
+"COW-Q","What are the constraints on the software development process, are any imposed by external stakeholders?"
+# Worth
+# =====
+"COW-Q","Worth",,"What benefits/advantages are expected from the software development?",mandatory
+"COW-Q","Worth",,"How many users and non-direct users can leverage the software or its outputs (e.g., market demand)?",mandatory
+"COW-Q","Worth",,"When is the software going to be usable? (Heilmeier Question: What are the mid-term and final 'exams'; Minimal Viable Product and Minimum Viable Capability Release)?
+## Risk Items
+"COW-Q","Worth","RISK","(Expanded) What is the timeline for software development and how does that impact resource allocation?"
+"COW-Q","Worth","RISK","What is the estimated cost (time, money) (i.e. what return on investment is gained) from the software development?",
+"COW-Q","What are the financial resources available for software development?"
+"COW-Q","Worth","RISK","For existing options: how is the oftware more valuable, and/or different?",
+"COW-Q","Worth","RISK","What is the expected lifespan of the software?",
+"COW-Q","Worth","RISK","What is the expected maintenance of the software?",
+"COW-Q","What are the legal and regulatory constraints on the software development process?"
