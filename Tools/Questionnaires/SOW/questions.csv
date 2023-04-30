@@ -16,4 +16,4 @@
 "SOW-Q15","Work(er/flow/load) Analysis","WHO"," Given the key tasks, are ther other needs for user workflow while using the software?",
 "SOW-Q16","Work(er/flow/load) Analysis","HOW"," Does this software need to be compatable with other software or systems?",
 "SOW-Q17","Work(er/flow/load) Analysis","HOW"," What are the requirements for data input/output (e.g., does data need to be brought in, or saved elsewhere when done)?",
-"SOW-Q18","Work(er/flow/load) Analysis","HOW"," Where is the "cut line" for the key tasks where the software is minimally useful?",
+"SOW-Q18","Work(er/flow/load) Analysis","HOW"," Where is the "cut line" for the key tasks where the software is minimally useful?",mandatory
