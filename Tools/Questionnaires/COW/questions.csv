@@ -41,3 +41,19 @@
 "COW-Q31","Worth","RISK","What is the estimated cost (time, money) (i.e. what return on investment is gained) from the software development?",
 "COW-Q32","Worth","RISK","What are the financial resources available for software development?",
 "COW-Q33","Worth","RISK","What are the legal and regulatory constraints on the software development process?",
+#///////////////////////////////////////////////////////////
+"COW-Q34","Capability","OPTIONAL","Are there any third-party dependencies needed for the software to operate correctly?",
+"COW-Q35","Capability","RISK","What if the software does not meet the desired level of performance or functionality?",
+"COW-Q36","Capability","RISK","Are there any potential security or controls needed for the software or its products? (e.g., Data at Rest)",
+# Opportunity
+# ===========
+"COW-Q37","Opportunity","RISK","What is the risk of not pursuing the software development opportunity?",
+"COW-Q38","Opportunity","RISK","What are the impacts of not being able to deliver on time or within budget? (e.g., is this a Fear of Missing Out?)",
+"COW-Q39","Opportunity","RISK","What happens if software is not adopted by targeted users?",
+# Worth
+# =====
+"COW-Q40","Worth","OPTIONAL","What occurs if the software is not created?",
+"COW-Q41","Worth","OPTIONAL","Can the software positively impact existing systems or processes?",
+"COW-Q42","Worth","RISK","What are the negative impacts of the software development on the organization's reputation/resources?",
+"COW-Q43","Worth","RISK","How likely is the software being outdated or obsolete before completion?",
+
