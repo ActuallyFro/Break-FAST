@@ -125,11 +125,6 @@
 <input type="file" id="importButton" style="display:none">
 <!-- <button id="importButton">Import</button> -->
 
-<script>
-    document.getElementById("exportButton").addEventListener("click", exportMatrix);
-    document.getElementById("importButton").addEventListener("change", importMatrix);
-</script>
-
 <button id="resetButton" onclick="resetLocalStorage()">Reset LocalStorage</button>
 
 
@@ -447,6 +442,9 @@
         reader.readAsText(file);
     }
  
+    document.getElementById("exportButton").addEventListener("click", exportMatrix);
+    document.getElementById("importButton").addEventListener("change", importMatrix);
 </script>
+
 </body>
 </html>
