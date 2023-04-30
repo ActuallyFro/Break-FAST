@@ -1,3 +1,32 @@
-"HEN-Q1","Hew","N/A",""
-"HEN-Q2","Evaluate","N/A",""
-"HEN-Q3","Nab","N/A",""
+#ID,Category,Subcategory,Question,Required
+# Hew
+# ===
+"HEN-Q1","Hew","ESSENTIAL","What are the major components (from features/tasks) of the software?",mandatory
+"HEN-Q2","Hew","ESSENTIAL","Is there a 'workflow order' that allows work to be broken down? If so what is it?",mandatory
+"HEN-Q3","Hew","OPTIONAL","What dependencies exist, and what is the plan to trace or track them, amongst the smaller
+"HEN-Q4","Hew","OPTIONAL","How will work be estimated in a timeframes?",
+"HEN-Q5","Hew","OPTIONAL","What is the plan to communicate project's progress (i.e., how work is accomplish compared to the total plan)?",
+"HEN-Q6","Hew","OPTIONAL","Is there a team? How will work be divided up, and team members be informed of project updates and changes?",
+"HEN-Q7","Hew","RISK","What is the plan to changing priorities or requirements? (e.g., during development a new dependency is discovered, which would change work priorities)",
+"HEN-Q8","Hew","RISK","What is the plan for addressing potential scope creep or feature creep (e.g., 'new features' are discovered and could pull away from the original task/goal)?",
+"HEN-Q9","Hew","RISK","What is the plan for handling potential communication breakdowns or miscommunications? (between the team and stakeholders)",
+# Evaluate
+# ========
+"HEN-Q10","Evaluate","ESSENTIAL","What is the priority of each unit of work?",mandatory
+"HEN-Q11","Evaluate","ESSENTIAL","What criteria will be used to evaluate the success of each unit of work?",mandatory
+"HEN-Q12","Evaluate","ESSENTIAL","How will the progress of each unit of work be monitored?",mandatory
+"HEN-Q13","Evaluate","OPTIONAL","What are the key performance indicators (KPIs) for each unit of work?",
+"HEN-Q14","Evaluate","OPTIONAL","What are the expected outcomes, impacts, or deliverables for each unit of work?",
+"HEN-Q15","Evaluate","OPTIONAL","How will, or how often will, feedback from stakeholders be incorporated into the project?",
+"HEN-Q16","Evaluate","RISK","What is the contingency plan if a unit of work does not meet the evaluation criteria?",
+"HEN-Q17","Evaluate","RISK","How can the project team address potential conflicts or disagreements among stakeholders?",
+"HEN-Q18","Evaluate","RISK","What is the plan for handling potential negative feedback or criticism?",
+# Nab
+# ===
+"HEN-Q19","Nab","ESSENTIAL","What is the timeline for completing each unit of work?",mandatory
+"HEN-Q20","Nab","ESSENTIAL","How will resources be allocated to ensure the timely completion of each unit of work?",mandatory
+"HEN-Q21","Nab","ESSENTIAL","How will the team maintain focus and momentum throughout the project?",mandatory
+"HEN-Q22","Nab","OPTIONAL","What tools or techniques will be used to manage time, resources, and risks effectively?",
+"HEN-Q23","Nab","OPTIONAL","How will the team ensure that deadlines are met and the project stays on track?",
+"HEN-Q24","Nab","RISK","What is the contingency plan if a unit of work takes longer than expected or requires additional resources?",
+"HEN-Q25","Nab","RISK","What is the plan for handling unforeseen delays or resource constraints?",
