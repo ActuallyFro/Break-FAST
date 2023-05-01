@@ -55,15 +55,15 @@ I used my direct JSON outputs, with a prompt requesting either a Mermaid.js or P
 
 ### Mermaid Fishbone of Answers to Questions
 
-![Mermaid Fishbone of Answers to Questions](02_02-ChatGPT-Fishbone.svg)
+<img src="02_02-ChatGPT-Fishbone.svg" alt="Mermaid Fishbone of Answers to Questions" width="50%">
 
 ### Mermaid How-Why of Answers to Questions
 
-![Mermaid How-Why of Answers to Questions](03_02-ChatGPT-How-Why.svg)
+<img src="03_02-ChatGPT-How-Why.svg" alt="Mermaid How-Why of Answers to Questions" width="50%">
 
 ### PlantUML Usecase of Answers to Questions
 
-![PlantUML Usecase of Answers to Questions](04_Usecase.svg)
+<img src="04_Usecase.svg" alt="PlantUML Usecase of Answers to Questions" width="50%">
 
 <!-- ## References -->
 [^1]: Marchese, F.T. (2002). IDENTIFYING OTHER REQUIREMENTS. Lecture 4. CS616 – Software Engineering II. Retrieved on April 30, 2023, from http://csis.pace.edu/~marchese/CS616/Lec4/se_l4.htm.
