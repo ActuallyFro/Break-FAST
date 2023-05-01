@@ -419,13 +419,13 @@
 				var inputs = document.querySelectorAll("form#myHENForm input, form#myHENForm textarea");
 
 				for (var i = 0; i < inputs.length; i++) {
-					if (jsonData.haHENnProperty(inputs[i].name)) {
+					if (jsonData.hasOwnProperty(inputs[i].name)) {
 						inputs[i].value = jsonData[inputs[i].name];
 					}
 				}
 
 				var HENTitleToSet = document.getElementById("HENTitle");
-				if (jsonData.haHENnProperty("HENQuestionsTitle")) {
+				if (jsonData.hasOwnProperty("HENQuestionsTitle")) {
 						console.log("importForm() -- Setting HENQuestionsTitle: " + jsonData["HENQuestionsTitle"]);
 						HENTitleToSet.innerHTML = jsonData["HENQuestionsTitle"];
 				}
