@@ -1,0 +1,2 @@
+all:
+	java -jar ~/.local/bin/plantuml/plantuml.jar 04_Usecase.puml

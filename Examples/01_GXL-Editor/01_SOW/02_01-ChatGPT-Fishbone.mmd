@@ -1,0 +1,48 @@
+graph LR
+A["GXL Graph Editor"]
+
+B[Data Collection and Entry]
+C[Data Visualization and Rendering]
+D[Data Editing and Updating]
+E[Data Export and Transfer]
+F[User Experience and Compatibility]
+G[Additional Features and Limitations]
+
+A-->B
+B-->|SOW-Q4|1["Data collection -- GraphML/GXL"]
+B-->|SOW-Q5.1|2["Data entry of graph edges and nodes"]
+B-->|SOW-Q1|3["Enter graphs"]
+B-->|SOW-Q2|4["Collection and manipulation of unstructured data"]
+
+A-->C
+C-->|SOW-Q5.3|5["Rendering of graph on the webpage (e.g., D3.js)"]
+C-->|SOW-Q14|6["Visualization of graph"]
+C-->|SOW-Q14|7["Interactive graph visualization"]
+C-->|SOW-Q14|8["Export graph visualization as image"]
+
+A-->D
+D-->|SOW-Q5.2|9["Editing of existing graph objects"]
+D-->|SOW-Q1|10["Edit/update graph objects"]
+D-->|SOW-Q3|11["Web-based user editing progress"]
+D-->|SOW-Q18|12["Adding and editing nodes and edges"]
+
+A-->E
+E-->|SOW-Q4|13["Information transfer -- GXL files"]
+E-->|SOW-Q5.4|14["Preparation of .GXL files content"]
+E-->|SOW-Q1|15["Saving of editing progress/machine transfer"]
+E-->|SOW-Q10|16["Support for GXL outputs"]
+E-->|SOW-Q14|17["GXL preparation, exporting, and validation"]
+
+A-->F
+F-->|SOW-Q7|18["Web-based Single Page App"]
+F-->|SOW-Q11|19["Modern JavaScript web browsers"]
+F-->|SOW-Q8|20["Non-graphml familiar user"]
+F-->|SOW-Q9|21["User brings all data"]
+F-->|SOW-Q12|22["NIPR compatibility"]
+F-->|SOW-Q13|23["Primary and secondary users"]
+F-->|SOW-Q16|24["PC web browsers and mobile browsers"]
+
+A-->G
+G-->|SOW-Q6|25["Challenges with GXL"]
+G-->|SOW-Q15|26["Automated saving and graph merging"]
+G-->|SOW-Q17|27["Users responsible for data outside of SPA"]

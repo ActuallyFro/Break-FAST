@@ -1,0 +1,21 @@
+{
+  "SOW-Q4": "Data collection  -- allow graph-data to be collected through GraphML/GXL\nInformation transfer  -- show, render, and provide GXL files to share information. both on a screen/web browser and through filesharing.",
+  "SOW-Q5": "1. Data entry of graph edges and nodes\n2. Editing of existing graph objects\n3. Rendering of graph on the webpage (e.g., D3.js)\n4. Preparation of .GXL files content (i.e., providing of skeleton/template, providing of data attribute templates for nodes, and proving of graphml formatted tags from graph node and edge objects).",
+  "SOW-Q1": "Enter graphs, see graphs in real time, edit/update graph objects, saving of editing progress/machine transfer (e.g., save files like JSON), and GXL file prep of XML outputs.",
+  "SOW-Q2": "Collection and manipulation of unstructured data, which can be ingested into larger and open systems.\n\nEnabling a individual level creation of the data.",
+  "SOW-Q3": "(fix this question)\n\nWeb-based user editing progress. And compliant graphml and GXL outputs",
+  "SOW-Q6": "It's not commonly used.\n\nCompliant XML data is hard to verify.\n\nWeb-based SPAs could conceivably be restricted due to local storage constraints.",
+  "SOW-Q7": "Web-based Single Page App",
+  "SOW-Q11": "Modern JavaScript web browsers that can support async functions.",
+  "SOW-Q8": "A non-graphml familiar user will need to enter data in a graph style, which they might not be familiar to, and likely will not need the GXL output at the beginning.",
+  "SOW-Q9": "The user will bring all data into this application, there is no expectation of external loading of files, but continue progress will be required from existing/inprogress data.",
+  "SOW-Q10": "It needs to have graph object entry, and editing.\n\nThen visualization of manipulated and updated graph data.\n\nFinally support for GXL outputs (i.e., this final format can be ingested into larger data Enterprise tools like neo4j or databricks)\n",
+  "SOW-Q12": "NIPR compatibility, which can only be validated through testing.",
+  "SOW-Q14": "(fix question)\nAdding nodes.\nAdding edges.\nEditing nodes and edges.\nSharing node and edge data.\nBacking up node and edge data.\nVisualization of graph \nInteractive graph visualization.\nExport graph visualization as image.\nGXL preparation\nGXL exporting\nValidation of proper GXL syntax.",
+  "SOW-Q18": "Adding nodes.\nAdding edges.\nEditing nodes and edges.",
+  "SOW-Q13": "Primary: Data Specialists, Data Teams\nSecondary: users/creators of data from sources",
+  "SOW-Q15": "Automated saving (or warnings of lack of saving -- size vs. time elapsed ... Etc.)\n\nGraph merging -- if the data forks, and people work on related data, then merging it back together would be beneficial.",
+  "SOW-Q16": "PC web browsers.\nObjectively: mobile browsers",
+  "SOW-Q17": "No. Users will be responsible for the data outside of the SPA.",
+  "SOWQuestionsTitle": "GXL Graph Editor"
+}

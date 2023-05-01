@@ -1,0 +1,55 @@
+graph LR
+A["GXL Graph Editor"]
+B[Data Entry]
+C[Data Visualization]
+D[Data Editing]
+E[Data Export]
+F[User Experience]
+G[Compatibility]
+H[Challenges]
+
+A-->B
+B-->|SOW-Q4|1["Data collection -- GraphML/GXL"]
+B-->|SOW-Q5.1|2["Data entry of graph edges and nodes"]
+B-->|SOW-Q1|3["Enter graphs"]
+B-->|SOW-Q2|4["Collection and manipulation of unstructured data"]
+B-->|SOW-Q10|5["Graph object entry"]
+B-->|SOW-Q14|6["Adding nodes and edges"]
+B-->|SOW-Q18|7["Adding nodes, edges, editing"]
+
+A-->C
+C-->|SOW-Q5.3|8["Rendering of graph on the webpage (e.g., D3.js)"]
+C-->|SOW-Q14|9["Visualization of graph"]
+C-->|SOW-Q14|10["Interactive graph visualization"]
+C-->|SOW-Q14|11["Export graph visualization as image"]
+
+A-->D
+D-->|SOW-Q5.2|12["Editing of existing graph objects"]
+D-->|SOW-Q1|13["Edit/update graph objects"]
+D-->|SOW-Q3|14["Web-based user editing progress"]
+D-->|SOW-Q10|15["Graph object editing"]
+D-->|SOW-Q14|16["Editing nodes and edges"]
+D-->|SOW-Q18|17["Editing nodes, edges"]
+
+A-->E
+E-->|SOW-Q1|18["GXL file prep of XML outputs"]
+E-->|SOW-Q4|19["Information transfer -- GXL files"]
+E-->|SOW-Q5.4|20["Preparation of .GXL files content"]
+E-->|SOW-Q10|21["Support for GXL outputs"]
+E-->|SOW-Q14|22["GXL preparation, exporting, and validation"]
+
+A-->F
+F-->|SOW-Q8|23["Non-graphml familiar user"]
+F-->|SOW-Q9|24["User brings all data"]
+F-->|SOW-Q13|25["Primary and secondary users"]
+F-->|SOW-Q16|26["PC web browsers and mobile browsers"]
+F-->|SOW-Q17|27["Users responsible for data outside of SPA"]
+
+A-->G
+G-->|SOW-Q7|28["Web-based Single Page App"]
+G-->|SOW-Q11|29["Modern JavaScript web browsers"]
+G-->|SOW-Q12|30["NIPR compatibility"]
+
+A-->H
+H-->|SOW-Q6|31["Challenges with GXL"]
+H-->|SOW-Q15|32["Automated saving and graph merging"]
