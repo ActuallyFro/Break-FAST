@@ -53,11 +53,19 @@ Dr. Yang's survey ALSO asked for measures of success regarding customer/client r
 I decided to leverage ChatGPT, beacause I responded to the questions alone. 
 I used my direct JSON outputs, with a prompt requesting either a Mermaid.js or PlantUML output of: (1) a Fishbone diagram, (2) a How-why diagram, and (3) a Usecase Diagram.
 
+### Mermaid Fishbone of Answers to Questions
+
 ![Mermaid Fishbone of Answers to Questions](02_02-ChatGPT-Fishbone.svg)
+
+### Mermaid How-Why of Answers to Questions
+
 ![Mermaid How-Why of Answers to Questions](03_02-ChatGPT-How-Why.svg)
+
+### PlantUML Usecase of Answers to Questions
+
 ![PlantUML Usecase of Answers to Questions](04_Usecase.svg)
 
-## References
+<!-- ## References -->
 [^1]: Marchese, F.T. (2002). IDENTIFYING OTHER REQUIREMENTS. Lecture 4. CS616 – Software Engineering II. Retrieved on April 30, 2023, from http://csis.pace.edu/~marchese/CS616/Lec4/se_l4.htm.
 [^2]: Yang, MC. "Design Methods, Tools, and Outcome Measures: A Survey of Practitioners." Proceedings of the ASME 2007 International Design Engineering Technical Conferences and Computers and Information in Engineering Conference. Volume 3: 19th International Conference on Design Theory and Methodology; 1st International Conference on Micro- and Nanosystems; and 9th International Conference on Advanced Vehicle Tire Technologies, Parts A and B. Las Vegas, Nevada, USA. September 4–7, 2007. pp. 217-225. ASME. 
 
