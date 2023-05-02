@@ -1,0 +1,109 @@
+@startuml
+left to right direction
+actor User
+
+User --> (Create Graph)
+User --> (Edit Graph)
+(Edit Graph) --> (File IO)
+User --> (Visualize Graph)
+(File IO) --> (Export GraphML)
+(File IO) --> (Import GraphML)
+(Create Graph) --> (Add Node)
+(Edit Graph) --> (Edit Node)
+(Edit Graph) --> (Delete Node)
+(Create Graph) --> (Add Edge)
+(Create Graph) -[dashed]-> (Automatic Key Creation)
+(Edit Graph) --> (Edit Edge)
+(Edit Graph) --> (Delete Edge)
+(Edit Graph) --> (Save Progress)
+(Edit Graph) --> (Load Progress)
+(File IO) --> (Export JSON)
+(File IO) --> (Import JSON)
+(Edit Graph) --> (Undo Action)
+(Undo Action) <--> (Redo Action)
+(Visualize Graph) --> (Zoom In/Out)
+(Visualize Graph) --> (Navigate Graph)
+(Visualize Graph) --> (Search Nodes/Edges)
+(Visualize Graph) --> (Filter Nodes/Edges)
+(Visualize Graph) --> (Export Image)
+
+note right of (Create Graph)
+  Features:
+  * Saving/load of a graph
+  * Adding node objects
+  * Adding edge objects
+  * Leveraging dynamic filling
+end note
+
+note right of (Edit Graph)
+  Features:
+  * Dynamic object selection
+  * Object removal with dependency handling
+  * Template for GraphML attributes
+  * Stretch goal: auto-populated attribute tags
+end note
+
+note right of (Visualize Graph)
+  Features (Stretch goals):
+  * Real-time graph visualization
+  * Navigable graph visualization with mouse and keyboard
+end note
+
+note right of (Export GraphML)
+  Features:
+  * Export data to GraphML format
+  * Share data to larger systems
+end note
+
+note right of (Import GraphML)
+  Features:
+  * Import GraphML data for editing
+end note
+
+note right of (Export JSON)
+  Features:
+  * Export data to JSON format
+  * Share data for active graph creation
+end note
+
+note right of (Import JSON)
+  Features:
+  * Import JSON data for editing
+end note
+
+note right of (Undo Action)
+  Features:
+  * Undo last action
+end note
+
+note right of (Redo Action)
+  Features:
+  * Redo last undone action
+end note
+
+note right of (Zoom In/Out)
+  Features (Stretch goal):
+  * Zoom in and out of the graph visualization
+end note
+
+note right of (Navigate Graph)
+  Features (Stretch goal):
+  * Move and adjust the view of the graph visualization
+end note
+
+note right of (Search Nodes/Edges)
+  Features:
+  * Search for specific nodes or edges
+end note
+
+note right of (Filter Nodes/Edges)
+  Features:
+  * Apply filters to nodes or edges to display specific data
+end note
+
+note right of (Export Image)
+  Features (Stretch goal):
+  * Export graph visualization as an image
+end note
+
+@enduml

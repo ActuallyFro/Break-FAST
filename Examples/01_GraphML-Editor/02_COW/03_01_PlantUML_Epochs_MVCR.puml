@@ -1,0 +1,30 @@
+@startuml
+
+!define DEV_ENVIRONMENT "Development Environment Setup"
+!define WEB_APP "Web Application"
+!define DATA_MANAGEMENT "Data Management"
+!define GRAPHML_EXPORT "GraphML Export"
+!define GRAPHML_IMPORT "GraphML Import (MVCR+3)"
+!define VISUALIZATION "Visualization (MVCR+2)"
+!define UI_NAV "UI Navigation (MVCR+2.5)"
+
+title SPA GraphML Editor - WBS
+
+package "SPA GraphML Editor" {
+    folder DEV_ENVIRONMENT
+    folder WEB_APP
+    folder DATA_MANAGEMENT
+    folder GRAPHML_EXPORT
+    folder GRAPHML_IMPORT
+    folder VISUALIZATION
+    folder UI_NAV
+}
+
+DEV_ENVIRONMENT -down-> WEB_APP
+WEB_APP -down-> DATA_MANAGEMENT
+DATA_MANAGEMENT -down-> GRAPHML_EXPORT
+GRAPHML_EXPORT -down-> GRAPHML_IMPORT
+GRAPHML_IMPORT -down-> VISUALIZATION
+VISUALIZATION -down-> UI_NAV
+
+@enduml

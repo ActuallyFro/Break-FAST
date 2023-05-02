@@ -1,0 +1,32 @@
+graph TD
+
+A[SPA GraphML Editor]
+
+subgraph How
+B["Create/Edit Graph Objects"]
+C["Export/Import JSON Data"]
+D["Export GraphML/XML Templates"]
+E["Visualize Graph in Real Time (Stretch Goal)"]
+end
+
+subgraph Why
+F["Improve Accessibility to Graph Databases"]
+G["Enhance Collaboration and Data Sharing"]
+H["Enable Innovative Data-driven Decisions"]
+I["Provide a Free, Offline-capable Tool"]
+end
+
+A --> B
+A --> C
+A --> D
+A --> E
+
+B --> F
+C --> G
+D --> H
+E --> F
+E --> I
+
+F --> H
+G --> H
+H --> I

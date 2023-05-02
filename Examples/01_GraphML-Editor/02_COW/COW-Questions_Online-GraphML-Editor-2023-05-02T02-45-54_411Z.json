@@ -42,5 +42,5 @@
   "COW-Q41": "Current systems: unlikely.\n\nFuture/plan systems: Yes.\n\nThe biggest issue with the process and problem is there's no unified data base or collection. Hence, even if a future software solution was selected that is incompatible, the data itself could be migrated relatively easily. This effort is \" getting ahead of the curve\".",
   "COW-Q42": "Individual working on this one is not working on activities within the organization.",
   "COW-Q43": "Unlikely, because it is a set standard with not much current development.\n\nFor instance there's no current discussion online regarding incompatible/breaking updates being developed.",
-  "COWQuestionsTitle": "Online GraphML Editor"
+  "COWQuestionsTitle": "SPA GraphML Editor"
 }

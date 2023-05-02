@@ -1,0 +1,37 @@
+@startuml
+left to right direction
+
+skinparam style strictuml
+skinparam monochrome true
+skinparam shadowing false
+
+package "SPA GraphML Editor" {
+package "UI" {
+[HTML]
+[CSS]
+[JavaScript]
+}
+package "Graph Editor" {
+[Graph Editor Core]
+[Node Management]
+[Edge Management]
+}
+package "Graph Visualization" {
+[D3.js Library]
+[Visualization Controls]
+}
+package "Data Management" {
+[Data Import/Export]
+[GraphML/GXL Export]
+[JSON Export/Import]
+}
+package "Testing" {
+[Unit Tests]
+[Integration Tests]
+}
+package "Documentation" {
+[User Manual]
+[Developer Guide]
+}
+}
+@enduml
