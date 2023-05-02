@@ -1,0 +1,55 @@
+@startwbs
+'<font color=DarkSlateGray><b>Development Tasks for SPA GraphML Editor</b></font>
++ SPA GraphML Editor Development
+++ Create Graph
++++ Implement Add Node feature
+++++ Develop user interface for adding nodes
+++++ Implement logic for adding nodes to graph
++++ Implement Edit Node feature
+++++ Develop user interface for editing nodes
+++++ Implement logic for editing nodes in graph
++++ Implement Delete Node feature
+++++ Develop user interface for deleting nodes
+++++ Implement logic for deleting nodes from graph
++++ Implement Add Edge feature
+++++ Develop user interface for adding edges
+++++ Implement logic for adding edges to graph
++++ Implement Automatic Key Creation feature (stretch goal)
+++++ Develop logic for automatic key creation
+++++ Incorporate feedback from stakeholders
+++ Edit Graph
++++ Implement Edit Node feature
+++++ Develop user interface for editing nodes
+++++ Implement logic for editing nodes in graph
++++ Implement Delete Node feature
+++++ Develop user interface for deleting nodes
+++++ Implement logic for deleting nodes from graph, and handle dependencies
++++ Implement Edit Edge feature
+++++ Develop user interface for editing edges
+++++ Implement logic for editing edges in graph
++++ Implement Delete Edge feature
+++++ Develop user interface for deleting edges
+++++ Implement logic for deleting edges from graph
++++ Implement Save Progress feature
+++++ Implement logic for saving progress of graph edits
+++++ Incorporate feedback from stakeholders
++++ Implement Load Progress feature
+++++ Implement logic for loading progress of graph edits
+++++ Incorporate feedback from stakeholders
++++ Implement Undo/Redo Actions feature
+++++ Develop user interface for undoing and redoing actions
+++++ Implement logic for undoing and redoing actions in graph
+++ File IO
++++ Implement Export GraphML feature
+++++ Implement logic for exporting graph data to GraphML format
+++++ Incorporate feedback from stakeholders
++++ Implement Import GraphML feature
+++++ Implement logic for importing GraphML data for editing
+++++ Incorporate feedback from stakeholders
++++ Implement Export JSON feature
+++++ Implement logic for exporting graph data to JSON format
+++++ Incorporate feedback from stakeholders
++++ Implement Import JSON feature
+++++ Implement logic for importing JSON data for editing
+++++ Incorporate feedback from stakeholders
+@endwbs

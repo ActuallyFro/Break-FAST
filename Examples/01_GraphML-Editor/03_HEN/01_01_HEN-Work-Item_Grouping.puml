@@ -1,0 +1,70 @@
+title SPA GraphML Editor - WBS
+
+left to right direction
+
+package "SPA GraphML Editor" {
+    folder DEV_ENVIRONMENT {
+        [Install development tools]
+        [Configure development environment]
+        [Set up version control]
+        [Set up continuous integration]
+        [Set up project management tools]
+    }
+
+    folder WEB_APP {
+        [Create single page app (SPA)]
+        [Implement UI design]
+        [Implement app functionality]
+        [Implement unit tests]
+        [Implement integration tests]
+        [Integrate with data management]
+        [Integrate with graph editor]
+        [Integrate with graph visualization]
+    }
+
+    folder DATA_MANAGEMENT {
+        [Implement data import/export functionality]
+        [Implement GraphML/GXL export]
+        [Implement JSON export/import]
+    }
+
+    folder GRAPHML_EXPORT {
+        [Implement GraphML export functionality]
+        [Implement export error handling]
+        [Implement export progress monitoring]
+    }
+
+    folder GRAPHML_IMPORT {
+        [Implement GraphML import functionality]
+        [Implement import error handling]
+        [Implement import progress monitoring]
+    }
+
+    folder VISUALIZATION {
+        [Implement graph visualization functionality]
+        [Implement zoom in/out]
+        [Implement navigate graph]
+        [Implement search nodes/edges]
+        [Implement filter nodes/edges]
+        [Implement image export]
+    }
+
+    folder UI_NAV {
+        [Implement UI navigation functionality]
+        [Implement UI control handling]
+        [Implement UI error handling]
+        [Implement UI progress monitoring]
+    }
+
+    folder TESTING {
+        [Create unit test cases]
+        [Execute unit tests]
+        [Create integration test cases]
+        [Execute integration tests]
+    }
+
+    folder DOCUMENTATION {
+        [Create user manual]
+        [Create developer guide]
+    }
+}
