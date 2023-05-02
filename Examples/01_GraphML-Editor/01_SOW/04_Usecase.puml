@@ -1,5 +1,5 @@
 @startuml
-title GXL Graph Editor
+title Online GraphML Editor
 left to right direction
 
 actor DataSpecialist as DS
@@ -9,12 +9,12 @@ usecase EnterGraphs as "Enter graphs"
 usecase SeeGraphs as "See graphs in real time"
 usecase EditGraphObjects as "Edit/update graph objects"
 usecase SaveProgress as "Save editing progress"
-usecase PrepareGXL as "GXL file prep of XML outputs"
+usecase PrepareGraphML as "GraphML file prep of XML outputs"
 
 usecase DataEntry as "Data entry of graph edges and nodes"
 usecase EditGraphObjects2 as "Editing of existing graph objects"
 usecase RenderGraph as "Rendering of graph on the webpage"
-usecase PrepareGXLContent as "Preparation of .GXL files content"
+usecase PrepareGraphMLContent as "Preparation of .GraphML files content"
 
 usecase AddNodes as "Adding nodes"
 usecase AddEdges as "Adding edges"
@@ -27,11 +27,11 @@ DS --> EnterGraphs
 DS --> SeeGraphs
 DS --> EditGraphObjects
 DS --> SaveProgress
-DS --> PrepareGXL
+DS --> PrepareGraphML
 DS --> DataEntry
 DS --> EditGraphObjects2
 DS --> RenderGraph
-DS --> PrepareGXLContent
+DS --> PrepareGraphMLContent
 DS --> AddNodes
 DS --> AddEdges
 DS --> EditNodesAndEdges
@@ -42,11 +42,11 @@ UC --> EnterGraphs
 UC --> SeeGraphs
 UC --> EditGraphObjects
 UC --> SaveProgress
-UC --> PrepareGXL
+UC --> PrepareGraphML
 UC --> DataEntry
 UC --> EditGraphObjects2
 UC --> RenderGraph
-UC --> PrepareGXLContent
+UC --> PrepareGraphMLContent
 UC --> AddNodes
 UC --> AddEdges
 UC --> EditNodesAndEdges
