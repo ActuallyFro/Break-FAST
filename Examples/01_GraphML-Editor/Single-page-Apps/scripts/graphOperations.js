@@ -36,3 +36,32 @@ function autoKeyCreationLogic() {
 function autoKeyCreationFeedback() {
   console.log("1.1.5.2 Incorporate feedback from stakeholders");
 }
+
+
+// ADDED FOR ADD/EDGE -- ChatGPT
+const graphObjects = [];
+
+const form = document.getElementById('graph-object-form');
+const tableBody = document.getElementById('graph-object-table-body');
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const graphType = document.getElementById('graph-type').value;
+    addObject(graphType);
+    updateTable();
+});
+
+function addObject(graphType) {
+    graphObjects.push({ type: graphType });
+}
+
+function updateTable() {
+    tableBody.innerHTML = '';
+    for (const object of graphObjects) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.textContent = object.type;
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+    }
+}

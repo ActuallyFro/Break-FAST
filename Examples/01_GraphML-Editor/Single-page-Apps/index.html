@@ -4,13 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPA GraphML Editor</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./styles/styles.css">
 </head>
 <body>
     <!-- Add your HTML elements here -->
+    <form id="graph-object-form">
+        <label for="graph-type">Graph Type:</label>
+        <select id="graph-type">
+            <option value="node">Node</option>
+            <option value="edge">Edge</option>
+        </select>
+        <button type="submit">Add Object</button>
+    </form>
 
-    <script src="graphOperations.js"></script>
-    <script src="graphEditing.js"></script>
-    <script src="fileIO.js"></script>
+    <table id="graph-object-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody id="graph-object-table-body">
+        </tbody>
+    </table>
+
+    <script src="./scripts/graphOperations.js"></script>
+    <script src="./scripts/graphEditing.js"></script>
+    <script src="./scripts/fileIO.js"></script>
 </body>
 </html>
