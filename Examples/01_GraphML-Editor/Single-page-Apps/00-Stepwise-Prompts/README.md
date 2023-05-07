@@ -81,14 +81,45 @@ function editNodeLogic() {
 }
 ```
 
-. 
+5. SPA Features: Updating HTML and JavaScript
 ------------------------
 
 ### Prompt
 
+For the HTML:
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPA GraphML Editor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Add your HTML elements here -->
+
+    <script src="graphOperations.js"></script>
+    <script src="graphEditing.js"></script>
+    <script src="fileIO.js"></script>
+</body>
+</html>
+```
+Keep an array of Graph Objects in Javascript.
+
+Two part HTML areas: (I) Object Add Area (i.e., a form), (II) Table that displays the current list of Objects (generated from the Objects).
+
+Task: Add needed source code (HTML/CSS/JavaScript) that adds  a <form> selection to (a) first select a graph type (i.e., node, edge),  (b) upon submit it will add to the array, and (c).
+
+
 ### Results
+- Updated HTML
 
+### Un-requested Results
+- Provided styles.css
 
+### Undesired
+- Added NEW main.js
 
 . 
 ------------------------

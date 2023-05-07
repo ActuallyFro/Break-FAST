@@ -17,4 +17,3 @@ Missed
 
 ### Task Statement
 Code SPA features (HTML/CSS/JavaScript) to enable GraphML adding of Nodes and Edges to enable a <table > to display current list.
-
