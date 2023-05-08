@@ -11,24 +11,44 @@
     <h1>I) Object Adding/Editing</h1>
     <form id="graph-object-form">
         <label for="graph-type">Select New Object Type:</label>
-        <select id="graph-type">
+        <select id="graph-type" onchange="toggleObjectTypeFields()">
             <option value="node">Node</option>
             <option value="edge">Edge</option>
         </select>
         <br>
+    
+        <div id="node-fields">
+            <label for="node-label">Node Label:</label>
+            <input type="text" id="node-label" placeholder="Node Label">
+        </div>
+    
+        <div id="edge-fields" style="display: none;">
+            <label for="edge-label">Edge Label:</label>
+            <input type="text" id="edge-label" placeholder="Edge Label">
+            <br>
+            <label for="source-node">Source Node:</label>
+            <input type="text" id="source-node" placeholder="Source Node">
+            <br>
+            <label for="target-node">Target Node:</label>
+            <input type="text" id="target-node" placeholder="Target Node">
+        </div>
+        
+        <br>
         <button type="submit">Add Object</button>
     </form>
+    
 <hr>
 <h1>II) Object Table</h1>
-    <table id="graph-object-table">
-        <thead>
-            <tr>
-                <th>Type</th>
-            </tr>
-        </thead>
-        <tbody id="graph-object-table-body">
-        </tbody>
-    </table>
+  <table id="graph-object-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tbody id="graph-object-table-body">
+    </tbody>
+  </table>
 
 
     <button id="reset-button">Reset</button>

@@ -387,30 +387,144 @@ Skipped (gave code and error)
 
 
 
-. 
+. SPA: entering the direct task
 ------------------------
 ### Prompt
+The current HTML for the SPA is:
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPA GraphML Editor</title>
+    <link rel="stylesheet" href="./styles/styles.css">
+</head>
+<body>
+    <!-- Add your HTML elements here -->
+    <h1>I) Object Adding/Editing</h1>
+    <form id="graph-object-form">
+        <label for="graph-type">Select New Object Type:</label>
+        <select id="graph-type">
+            <option value="node">Node</option>
+            <option value="edge">Edge</option>
+        </select>
+        <br>
+        <button type="submit">Add Object</button>
+    </form>
+<hr>
+<h1>II) Object Table</h1>
+    <table id="graph-object-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody id="graph-object-table-body">
+        </tbody>
+    </table>
+
+
+    <button id="reset-button">Reset</button>
+
+
+    <script src="./scripts/graphUI.js"></script>
+    <script src="./scripts/SJFI/lib-localstorage.js"></script>
+    <script src="./scripts/fileIO.js"></script>
+
+    <script src="./scripts/graphOperations.js"></script>
+    <script src="./scripts/graphEditing.js"></script>
+
+    <script>
+      window.graphObjects = [];
+      window.SJFI_storageKey = 'SGE_graphObjects';
+
+      OperationsUIObjectsFormSetup();
+      OperationsUIObjectsButtonSetup();
+
+      loadGraphObjects(SJFI_storageKey);
+    </script>
+
+
+</body>
+</html>
+```
+Javascript:
+```graphUI.js
+
+function updateTable() {
+  console.log("X.X.1 Update table of graph objects"); //This is NOT for setup (0.X), but more of graphOperations 
+  const tableBody = document.getElementById('graph-object-table-body'); // Move tableBody definition inside the function
+  tableBody.innerHTML = '';
+
+  for (const object of graphObjects) {
+      const row = document.createElement('tr');
+      const cell = document.createElement('td');
+      cell.textContent = object.type;
+      row.appendChild(cell);
+      tableBody.appendChild(row);
+  }
+}
+```
+
+```graphOperations.js
+//---------------------------
+// Objects
+//---------------------------
+window.addObject = function(graphType) {
+  window.graphObjects.push({ type: graphType });
+  saveFunction(window.SJFI_storageKey);
+}
+```
+
+Add code to (1) add labels to the Add Object Area and (2) update the Object table to 'load' the object into Add Object area to enable add/edit for the SPA to enable core features of the SPA.
 
 ### Results
-- 
+- Provided two step approach
+- Gave NEW setup javascript
+
+
 ### Un-requested Results
-- 
+- JavaScript Object arrays that varied by type
+- Gave "switch and show" Javascript (certain fields only show)
+
 ### Undesired
 - 
 
 
 
 
-. 
+. Update the "known" code -- and change the Table
 ------------------------
 ### Prompt
+Current Reference:
+
+HTML
+```index.html
+<FULL CODE>
+```
+
+```graphOperations.js
+window.addObject = function(graphType, data) {
+  const objectData = { type: graphType, ...data };
+  window.graphObjects.push(objectData);
+  saveFunction(window.SJFI_storageKey);
+}
+```
+
+And:
+```graphUI.js
+<FULL CODE>
+```
+
+Update the Table to show the nodeID or EdgeID.
 
 ### Results
 - 
 ### Un-requested Results
 - 
 ### Undesired
-- 
+- Did NOT include the edge label
 
 
 

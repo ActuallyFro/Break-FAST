@@ -1,8 +1,10 @@
 //---------------------------
 // Objects
 //---------------------------
-window.addObject = function(graphType) {
-  window.graphObjects.push({ type: graphType });
+window.addObject = function(graphType, data) {
+  const objectId = `${graphType}_${window.graphObjects.length}`;
+  const objectData = { id: objectId, type: graphType, ...data };
+  window.graphObjects.push(objectData);
   saveFunction(window.SJFI_storageKey);
 }
 
