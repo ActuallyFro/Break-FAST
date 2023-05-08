@@ -136,3 +136,74 @@ Task: Add needed source code (HTML/CSS/JavaScript) that adds  a <form> selection
 ### Prompt
 
 ### Results
+
+
+
+. 
+------------------------
+
+### Prompt
+
+### Results
+
+
+
+
+. 
+------------------------
+
+### Prompt
+
+### Results
+
+
+
+
+
+. 
+------------------------
+
+### Prompt
+For the following HTML code:
+```index.html
+<HTML CODE>
+```
+
+Knowing:
+```graphUI.js
+function updateTable() {
+  const tableBody = document.getElementById('graph-object-table-body'); // Move tableBody definition inside the function
+  tableBody.innerHTML = '';
+
+  for (const object of graphObjects) {
+      const row = document.createElement('tr');
+      const cell = document.createElement('td');
+      cell.textContent = object.type;
+      row.appendChild(cell);
+      tableBody.appendChild(row);
+  }
+}
+```
+
+Knowing:
+```graphOperations.js
+window.addObject = function(graphType) {
+  window.graphObjects.push({ type: graphType });
+}
+```
+
+1. Add a saveFunction (runs when  addObject() executes), that stores graphObjects() into 
+
+2. LocalStorage. Also, on page load, check if LocalStorage has objects, then if there are objects: load those into the table/run updateTable.
+
+3. Finally, have a reset button on the bottom of the page that will clear local storage.
+
+### Results
+
+- Provided  MOST of the code as asked
+
+### Un-requested Results
+- 
+
+### Undesired
+- Moved save function into the wrong .js

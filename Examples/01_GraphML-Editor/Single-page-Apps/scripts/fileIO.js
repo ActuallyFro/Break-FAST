@@ -1,3 +1,24 @@
+// LOCALStorage
+function saveFunction() {
+  localStorage.setItem('SGE_graphObjects', JSON.stringify(window.graphObjects));
+}
+
+function loadGraphObjects() {
+  const storedGraphObjects = localStorage.getItem('SGE_graphObjects');
+  if (storedGraphObjects) {
+    window.graphObjects = JSON.parse(storedGraphObjects);
+    updateTable();
+  }
+}
+
+function resetLocalStorage() {
+  localStorage.removeItem('SGE_graphObjects');
+  window.graphObjects = [];
+  updateTable();
+}
+
+
+
 // 1.3.1 Implement Export GraphML feature
 function exportGraphMLLogic() {
   console.log("1.3.1.1 Implement logic for exporting graph data to GraphML format");
@@ -33,3 +54,5 @@ function importJSONLogic() {
 function importJSONFeedback() {
   console.log("1.3.4.2 Incorporate feedback from stakeholders");
 }
+
+

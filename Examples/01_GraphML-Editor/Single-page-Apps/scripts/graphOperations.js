@@ -3,6 +3,7 @@
 //---------------------------
 window.addObject = function(graphType) {
   window.graphObjects.push({ type: graphType });
+  saveFunction();
 }
 
 // 1.1.5 Implement Automatic Key Creation feature (stretch goal)

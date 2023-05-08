@@ -28,17 +28,24 @@
     </table>
 
 
+    <button id="reset-button">Reset</button>
+
+
     <script src="./scripts/graphUI.js"></script>
     <script src="./scripts/fileIO.js"></script>
 
     <script src="./scripts/graphOperations.js"></script>
     <script src="./scripts/graphEditing.js"></script>
 
-<script>
+    <script>
       window.graphObjects = [];
+      
+      OperationsUIObjectsFormSetup();
+      OperationsUIObjectsButtonSetup();
 
-      OperationsObjectsFormSetup();
+      loadGraphObjects();
     </script>
+
 
 </body>
 </html>

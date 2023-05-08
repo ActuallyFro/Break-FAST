@@ -24,3 +24,9 @@ Code SPA features (HTML/CSS/JavaScript) to enable GraphML adding of Nodes and Ed
 
 ### Task Statement
 Tailor source code to sub-call JavaScript Libraries for Display/Add source code (node/edge)
+
+5. SPA Features: Local Storage
+-----------------------------
+
+### Task Statement
+Add code to enable LocalStorage Saving/Loading (then Reset) to enable data to be stored on page reboot.
