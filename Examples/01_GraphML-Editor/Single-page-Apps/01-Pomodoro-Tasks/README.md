@@ -49,3 +49,9 @@ Finish migrating LocalStorage Saving/Loading (then Reset) code to a SJFI (https:
 
 ### Task Statement
 Modify the SPA HTML/CSS to show separate areas for the Add Object Area and the Current Objects list/table to enable better workflow/presentation of information.
+
+9. SPA Features: Sure up Add Area and Object Table
+-------------------------------------------------
+
+### Task Statement
+Add code to (1) add labels to the Add Object Area and (2) update the Object table to 'load' the object into Add Object area to enable add/edit for the SPA to enable core features of the SPA.
