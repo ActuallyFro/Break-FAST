@@ -30,3 +30,10 @@ Tailor source code to sub-call JavaScript Libraries for Display/Add source code 
 
 ### Task Statement
 Add code to enable LocalStorage Saving/Loading (then Reset) to enable data to be stored on page reboot.
+
+
+6. Library: Move Local Storage to a Library 
+-------------------------------------------
+
+### Task Statement
+Modify LocalStorage Saving/Loading (then Reset) code to a separate library to enable code reuse for other libraries.

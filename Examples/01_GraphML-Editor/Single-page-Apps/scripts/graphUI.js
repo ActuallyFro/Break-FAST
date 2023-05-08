@@ -20,7 +20,9 @@ function OperationsUIObjectsFormSetup() {
 function OperationsUIObjectsButtonSetup() {
   console.log("0.1.2 Initialize User Interface for adding objects");
   const resetButton = document.getElementById('reset-button');
-  resetButton.addEventListener('click', resetLocalStorage);
+  resetButton.addEventListener('click', function() {
+    window.resetLocalStorage(window.SJFI_storageKey);
+  });
 }
 
 function updateTable() {

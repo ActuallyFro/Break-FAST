@@ -32,6 +32,7 @@
 
 
     <script src="./scripts/graphUI.js"></script>
+    <script src="./scripts/SJFI/lib-localstorage.js"></script>
     <script src="./scripts/fileIO.js"></script>
 
     <script src="./scripts/graphOperations.js"></script>
@@ -39,11 +40,12 @@
 
     <script>
       window.graphObjects = [];
-      
+      window.SJFI_storageKey = 'SGE_graphObjects';
+
       OperationsUIObjectsFormSetup();
       OperationsUIObjectsButtonSetup();
 
-      loadGraphObjects();
+      loadGraphObjects(SJFI_storageKey);
     </script>
 
 
