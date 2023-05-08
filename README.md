@@ -19,7 +19,7 @@ Background
 ### Phases
 1. Focused Analysis - "SOW"
    - Steps
-     - Sofware Problem Area Taxonomy (SPAT)
+     - Software Problem Area Taxonomy (SPAT) [Paper Link](https://github.com/ActuallyFro/Work-Papers/blob/main/05_AFSOC/01_SPAT/Software-Problems-2022_1-0-0.pdf)
      - Operational Analysis
      - Work(er/load/unit) Analysis.
    - Outcome: identification of user execution capabilities/needs.
