@@ -7,25 +7,54 @@
 function OperationsUIObjectsFormSetup() {
   console.log("#.#.#.# Develop user interface for adding objects");
 
+  const graphTypeDropdown = document.getElementById('graph-type');
+  graphTypeDropdown.addEventListener('change', () => {
+    const submitButton = document.getElementById('submit-button');
+    submitButton.textContent = 'Add Object';
+    window.editingIndex = null;
+    toggleObjectTypeFields();
+  });
+  
+  
   const form = document.getElementById('graph-object-form');
 
   form.addEventListener('submit', (e) => {
       e.preventDefault();
       const graphType = document.getElementById('graph-type').value;
 
+      let objectData;
       if (graphType === 'node') {
-          const nodeLabel = document.getElementById('node-label').value;
-          addObject(graphType, { label: nodeLabel });
-        } else {
-          const edgeLabel = document.getElementById('edge-label').value; // Add this line
-          const sourceNode = document.getElementById('source-node').value;
-          const targetNode = document.getElementById('target-node').value;
-          addObject(graphType, { label: edgeLabel , source: sourceNode, target: targetNode });
+        const nodeLabel = document.getElementById('node-label').value;
+        objectData = { label: nodeLabel };
+        
+      } else {
+        const edgeLabel = document.getElementById('edge-label').value;
+        const sourceNode = document.getElementById('source-node').value;
+        const targetNode = document.getElementById('target-node').value;
+        objectData = { label: edgeLabel , source: sourceNode, target: targetNode };
       }
 
+      if (window.editingIndex !== null) {
+        // Update the object at editingIndex
+        window.graphObjects[window.editingIndex] = {
+          ...window.graphObjects[window.editingIndex],
+          ...objectData
+        };
+    
+        // Reset editingIndex
+        window.editingIndex = null;
+        document.getElementById('submit-button').textContent = 'Add Object';
+
+      } else {
+        addObject(graphType, objectData);
+      }
+      
       updateTable();
-      // Within updateTabel() --> updateNodeDropdowns();      
-  });
+      resetForm();
+
+      // Reset the editingIndex after adding a new object
+      window.editingIndex = null;
+    });
 }
 
 function OperationsUIObjectsButtonSetup() {
@@ -117,4 +146,13 @@ function toggleObjectTypeFields() {
       nodeFields.style.display = 'none';
       edgeFields.style.display = 'block';
   }
+}
+
+function resetForm() {
+  const form = document.getElementById('graph-object-form');
+  form.reset();
+  toggleObjectTypeFields();
+  const submitButton = document.getElementById('submit-button');
+  submitButton.textContent = 'Add Object';
+  window.editingIndex = null;
 }

@@ -603,6 +603,115 @@ B) Add the JavaScript logic that will "update" a given object if/when "Update Ob
 - 
 
 
+. "Rebaseline"
+------------------------
+### Prompt
+The next post is not a question, but a statement.
+
+To re-baseline the code track the HTML as:
+```
+<CODE HERE>
+```
+
+### Prompt2
+The next post is not a question, but a statement.
+
+To re-baseline the code track the JavaScript files are:
+```graphOperations.js
+<CODE HERE>
+
+```
+
+```graphUI.js
+<CODE HERE>
+```
+
+```graphEditing.js
+<CODE HERE>
+```
+
+### Results
+- ChatGPT Responded (for both):
+Thank you for providing the updated JavaScript code for the SPA GraphML Editor. This will serve as the new baseline for any further code changes or improvements. If you have any questions or need assistance with implementing additional features or modifications, feel free to ask!
+
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+. Editing - re-ask
+------------------------
+### Prompt
+Add the JavaScript logic that will "update" a given object if/when "Update Object" is clicked (i.e., the current code has a bug, which always adds new objects vs. updating objects that are being edited)
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+. Bug Hunting: using the UI ID'ed a bug
+------------------------
+### Prompt
+Current Bug: when `Select New Object Type:` has it's drop-down selected -- it DOES NOT reset the form.
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
 . 
 ------------------------
 ### Prompt

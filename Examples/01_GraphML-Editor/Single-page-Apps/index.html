@@ -34,7 +34,7 @@
         </div>
         
         <br>
-        <button type="submit">Add Object</button>
+        <button id="submit-button" type="submit">Add Object</button>
     </form>
     
 <hr>
@@ -66,6 +66,7 @@
 
     <script>
       window.graphObjects = [];
+      window.editingIndex = null;
       window.SJFI_storageKey = 'SGE_graphObjects';
 
       OperationsUIObjectsFormSetup();
