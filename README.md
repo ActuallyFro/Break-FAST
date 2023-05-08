@@ -2,7 +2,7 @@ Break FAST
 ==========
 
 ![AI Logo FTW](BreakFAST_01.png)
-_<small>(Credit Stable Diffusion)</small>_
+_<center><small>(Credit Stable Diffusion)</small></center>_
 
 Background
 ----------
