@@ -24,6 +24,7 @@ function OperationsUIObjectsFormSetup() {
       }
 
       updateTable();
+      // Within updateTabel() --> updateNodeDropdowns();      
   });
 }
 
@@ -77,7 +78,32 @@ function updateTable() {
 
     tableBody.appendChild(row);
   }
+
+  updateNodeDropdowns();
 }
+
+function updateNodeDropdowns() {
+  const sourceNodeDropdown = document.getElementById('source-node');
+  const targetNodeDropdown = document.getElementById('target-node');
+
+  sourceNodeDropdown.innerHTML = '';
+  targetNodeDropdown.innerHTML = '';
+
+  const nodeObjects = graphObjects.filter(object => object.type === 'node');
+
+  for (const node of nodeObjects) {
+    const sourceOption = document.createElement('option');
+    sourceOption.value = node.label;
+    sourceOption.textContent = node.label;
+    sourceNodeDropdown.appendChild(sourceOption);
+
+    const targetOption = document.createElement('option');
+    targetOption.value = node.label;
+    targetOption.textContent = node.label;
+    targetNodeDropdown.appendChild(targetOption);
+  }
+}
+
 
 function toggleObjectTypeFields() {
   const graphType = document.getElementById('graph-type').value;

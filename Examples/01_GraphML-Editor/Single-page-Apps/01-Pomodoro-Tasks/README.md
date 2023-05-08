@@ -60,3 +60,11 @@ Add code to (1) add labels to the Add Object Area and (2) update the Object tabl
 -------------------------------------------------------------
 ### Task Statement
 Continue updates to (1) Add Object Area and (2) Object table to to enable add/edit for the SPA to enable core features of the SPA.
+
+### Task Status
+completed
+
+11. SPA Features: Add Object Area and Object Table (continued)
+-------------------------------------------------------------
+### Task Statement
+Change the add/edit for Edges to NOT be inputs, but dynamic drop downs for the SPA to make user input faster/less prone to error.
