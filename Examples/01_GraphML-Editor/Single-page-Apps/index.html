@@ -60,12 +60,20 @@
   </table>
 
 
-    <button id="reset-button">Reset</button>
+  <hr>
+  <h1>III) Import/Export</h1>
+  <input type="file" id="import-file" style="display:none" accept=".json">
+  <button id="import-button">Import</button>
+  <button id="export-button">Export</button>
+
+  <hr>
+
+    <button id="reset-button">Reset LocalStorage</button>
 
 
-    <script src="./scripts/graphUI.js"></script>
-    <script src="./scripts/SJFI/lib-localstorage.js"></script>
     <script src="./scripts/fileIO.js"></script>
+    <script src="./scripts/SJFI/lib-localstorage.js"></script>
+    <script src="./scripts/graphUI.js"></script>
 
     <script src="./scripts/graphOperations.js"></script>
     <script src="./scripts/graphEditing.js"></script>
@@ -75,10 +83,17 @@
       window.editingIndex = null;
       window.SJFI_storageKey = 'SGE_graphObjects';
 
-      OperationsUIObjectsFormSetup();
-      OperationsUIObjectsButtonSetup();
+      //OLD:
+    //   OperationsUIObjectsFormSetup();
+    //   OperationsUIObjectsButtonSetup();
+    //   loadGraphObjects(SJFI_storageKey);
 
-      loadGraphObjects(SJFI_storageKey);
+        window.addEventListener('DOMContentLoaded', () => {
+            OperationsUIObjectsFormSetup();
+            OperationsUIObjectsButtonSetup();
+
+            loadGraphObjects(SJFI_storageKey);
+        });
     </script>
 
 

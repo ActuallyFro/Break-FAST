@@ -68,3 +68,13 @@ completed
 -------------------------------------------------------------
 ### Task Statement
 Change the add/edit for Edges to NOT be inputs, but dynamic drop downs for the SPA to make user input faster/less prone to error.
+
+12. ID Editing
+--------------
+### Task Statement
+Edit code to allow custom ID's  to make user input faster/less prone to error.
+
+13. Import/Export
+----------------
+### Task Statement
+Update add/edit for Nodes to enable key/value pairs to be added for the SPA to fully store Node data.

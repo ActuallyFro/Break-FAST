@@ -56,13 +56,69 @@ function OperationsUIObjectsFormSetup() {
 
 }
 
+window.importGraphObjects = function(event) {
+  console.log("X.X.2 Import graph objects to JSON file");
+
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const contents = e.target.result;
+      try {
+        const importedGraphObjects = JSON.parse(contents);
+        window.graphObjects = importedGraphObjects;
+        updateTable();
+        saveFunction(window.SJFI_storageKey);
+      } catch (error) {
+        alert('Invalid JSON file');
+      }
+    };
+    reader.readAsText(file);
+  }
+}
+
+window.exportGraphObjects = function() {
+  // console debug
+  console.log("X.X.2 Export graph objects to JSON file");
+  const data = JSON.stringify(window.graphObjects, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'graph-objects.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+
 function OperationsUIObjectsButtonSetup() {
   console.log("0.1.2 Initialize User Interface for adding objects");
+  const importButton = document.getElementById('import-button');
+  importButton.addEventListener('click', () => {
+    const importFileInput = document.getElementById('import-file');
+    importFileInput.click();
+  });
+
+  const importFileInput = document.getElementById('import-file');
+  importFileInput.addEventListener('change', window.importGraphObjects);
+
+  const exportButton = document.getElementById('export-button');
+  exportButton.addEventListener('click', (e) => { // Updated this line
+    e.stopPropagation();
+    window.exportGraphObjects();
+  });
+
   const resetButton = document.getElementById('reset-button');
   resetButton.addEventListener('click', function() {
     window.resetLocalStorage(window.SJFI_storageKey);
   });
 }
+
+
+
+
+
+
 
 function updateTable() {
   console.log("X.X.1 Update table of graph objects");
