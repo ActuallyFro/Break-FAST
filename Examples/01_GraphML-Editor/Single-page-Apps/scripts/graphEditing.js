@@ -14,6 +14,14 @@ function editObject(object) {
   if (object.type === 'node') {
     const nodeLabelInput = document.getElementById('node-label');
     nodeLabelInput.value = object.label;
+
+    const nodeProperties = object.properties || [];
+    const nodePropertiesDiv = document.getElementById('node-properties');
+    nodePropertiesDiv.innerHTML = '';
+
+    for (const property of nodeProperties) {
+      nodePropertiesDiv.appendChild(createPropertyInput(property));
+    }
   } else {
     const edgeLabelInput = document.getElementById('edge-label');
     edgeLabelInput.value = object.label;
@@ -28,7 +36,6 @@ function editObject(object) {
 
   document.getElementById('submit-button').textContent = 'Update Object';
 }
-
 
 function removeObject(object) {
   const index = graphObjects.indexOf(object);

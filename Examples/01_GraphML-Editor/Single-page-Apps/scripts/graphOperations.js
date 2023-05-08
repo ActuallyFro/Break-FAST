@@ -28,6 +28,8 @@ window.addObjectOrUpdate = function(objectId, graphType, data) {
   saveFunction(window.SJFI_storageKey);
 }
 
+
+
 //Commenting out to re-baseline
 // // 1.1.5 Implement Automatic Key Creation feature (stretch goal)
 // function autoKeyCreationLogic() {

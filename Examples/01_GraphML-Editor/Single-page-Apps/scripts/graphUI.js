@@ -15,6 +15,12 @@ function OperationsUIObjectsFormSetup() {
     toggleObjectTypeFields();
   });
   
+  const addPropertyButton = document.getElementById('add-property-button');
+  addPropertyButton.addEventListener('click', () => {
+    const nodeProperties = document.getElementById('node-properties');
+    nodeProperties.appendChild(createPropertyInput());
+  });
+
   const form = document.getElementById('graph-object-form');
 
   form.addEventListener('submit', (e) => {
@@ -24,13 +30,25 @@ function OperationsUIObjectsFormSetup() {
 
     if (graphType === 'node') {
       const nodeLabel = document.getElementById('node-label').value;
-      addObjectOrUpdate(objectId, graphType, { label: nodeLabel });
+      const nodePropertiesDiv = document.getElementById('node-properties');
+      const propertyInputs = nodePropertiesDiv.getElementsByClassName('property-input');
+      const properties = [];
+  
+      for (const propertyInput of propertyInputs) {
+        const keyInput = propertyInput.getElementsByTagName('input')[0];
+        const valueInput = propertyInput.getElementsByTagName('input')[1];
+        properties.push({ key: keyInput.value, value: valueInput.value });
+      }
+  
+      addObjectOrUpdate(objectId, graphType, { label: nodeLabel, properties });
     } else {
       const edgeLabel = document.getElementById('edge-label').value;
       const sourceNode = document.getElementById('source-node').value;
       const targetNode = document.getElementById('target-node').value;
       addObjectOrUpdate(objectId, graphType, { label: edgeLabel, source: sourceNode, target: targetNode });
     }
+
+
 
     updateTable();
     resetForm();
@@ -136,4 +154,31 @@ function resetForm() {
   const submitButton = document.getElementById('submit-button');
   submitButton.textContent = 'Add Object';
   window.editingIndex = null;
+}
+
+function createPropertyInput(property) {
+  const propertyDiv = document.createElement('div');
+  propertyDiv.classList.add('property-input');
+
+  const keyInput = document.createElement('input');
+  keyInput.type = 'text';
+  keyInput.placeholder = 'Key';
+  keyInput.value = property ? property.key : '';
+  propertyDiv.appendChild(keyInput);
+
+  const valueInput = document.createElement('input');
+  valueInput.type = 'text';
+  valueInput.placeholder = 'Value';
+  valueInput.value = property ? property.value : '';
+  propertyDiv.appendChild(valueInput);
+
+  const removeButton = document.createElement('button');
+  removeButton.textContent = '-';
+  removeButton.type = 'button';
+  removeButton.addEventListener('click', () => {
+    propertyDiv.remove();
+  });
+  propertyDiv.appendChild(removeButton);
+
+  return propertyDiv;
 }
