@@ -37,3 +37,9 @@ Add code to enable LocalStorage Saving/Loading (then Reset) to enable data to be
 
 ### Task Statement
 Modify LocalStorage Saving/Loading (then Reset) code to a separate library to enable code reuse for other libraries.
+
+7. Library: FINISH Moving Display/Add to a Library
+--------------------------------------------------
+
+### Task Statement
+Finish migrating LocalStorage Saving/Loading (then Reset) code to a SJFI (https://github.com/ActuallyFro/SJFI.git) to enable code reuse for other libraries.
