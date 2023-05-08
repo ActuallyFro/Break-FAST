@@ -121,47 +121,141 @@ Task: Add needed source code (HTML/CSS/JavaScript) that adds  a <form> selection
 ### Undesired
 - Added NEW main.js
 
-. 
+. Breakout of code into sub-files
 ------------------------
 
 ### Prompt
+```graphUI.js
+//Variables
+const graphObjects = [];
+```
+
+```graphOperations.js
+function addObject(graphType) {
+  graphObjects.push({ type: graphType });
+}
+```
+
+The HTML loads:
+```
+    <script src="./scripts/graphUI.js"></script>
+    <script src="./scripts/fileIO.js"></script>
+
+    <script src="./scripts/graphOperations.js"></script>
+    <script src="./scripts/graphEditing.js"></script>
+```
+
+Fix the code for the addObject() call to leverage the graphObjects[] when the HTML button is pressed.
 
 ### Results
+- Provided breakout of the code
 
+### Un-requested Results
+- gave 'export' for functions
 
+### Undesired
+- tried to make a NEW JavaScript file
 
-. 
+. Breakout of code into sub-files -- added guidance
 ------------------------
 
 ### Prompt
+How to have included libraries access the following array:
+```
+    <script>
+      const graphObjects = [];
+
+    </script>
+
+    <script src="./scripts/graphUI.js"></script>
+    <script src="./scripts/fileIO.js"></script>
+
+    <script src="./scripts/graphOperations.js"></script>
+    <script src="./scripts/graphEditing.js"></script>
+```
+
+DO NOT ADD a main.js
 
 ### Results
+- provided: `you can attach the array to the window object in the index.html file. `
 
+### Un-requested Results
+- 
 
+### Undesired
+- 
 
-. 
+. Access Question
 ------------------------
 
 ### Prompt
+How to have `graphUI.js`, with the following:
+
+```
+//UI Features for Add
+function OperationsObjectsFormSetup() {
+  console.log("#.#.#.# Develop user interface for adding objects");
+
+  const form = document.getElementById('graph-object-form');
+  const tableBody = document.getElementById('graph-object-table-body');
+  
+  form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const graphType = document.getElementById('graph-type').value;
+      addObject(graphType);
+      updateTable();
+  });
+}
+```
+
+Access the addObject() function in `graphOperations.js`?
 
 ### Results
+- `attach the addObject function to the window object`
+- showed how to access the objects: `window.addObject()`
+
+### Un-requested Results
+- 
+
+### Undesired
+- 
 
 
 
-
-. 
+. Debugging references
 ------------------------
 
 ### Prompt
+Fix the following code:
+```graphUI.js
+function updateTable() {
+  tableBody.innerHTML = '';
+  for (const object of graphObjects) {
+      const row = document.createElement('tr');
+      const cell = document.createElement('td');
+      cell.textContent = object.type;
+      row.appendChild(cell);
+      tableBody.appendChild(row);
+  }
+}
+```
+
+Current Error:
+```
+ Uncaught ReferenceError: tableBody is not defined
+    updateTable http://127.0.0.1:8000/scripts/graphUI.js:5
+    OperationsObjectsFormSetup http://127.0.0.1:8000/scripts/graphUI.js:26
+    OperationsObjectsFormSetup http://127.0.0.1:8000/scripts/graphUI.js:22
+    <anonymous> http://127.0.0.1:8000/?:40
+```
 
 ### Results
+- Move the definition of tableBody inside the updateTable function or make it a global variable.
 
 
 
-
-
-. 
-------------------------
+. LocalStorage Implementation
+-----------------------------
 
 ### Prompt
 For the following HTML code:
@@ -207,3 +301,140 @@ window.addObject = function(graphType) {
 
 ### Undesired
 - Moved save function into the wrong .js
+
+
+
+
+
+
+. Debugging references
+------------------------
+
+### Prompt
+For the following HTML code:
+```index.html
+<CODE REMOVED>
+```
+
+Knowing:
+```graphUI.js
+<CODE REMOVED>
+```
+
+Knowing:
+```graphOperations.js
+<CODE REMOVED>
+```
+
+1. Add a saveFunction (runs when  addObject() executes), that stores graphObjects() into 
+
+2. LocalStorage. Also, on page load, check if LocalStorage has objects, then if there are objects: load those into the table/run updateTable.
+
+3. Finally, have a reset button on the bottom of the page that will clear local storage.
+
+### Results
+- Gave a edits for HTML button
+- Gave fileIO.js edits
+- Added to existing "main area <script>"
+
+### Un-requested Results
+- changed listeners
+
+### Undesired
+- 
+
+
+
+. Migration to LocalStorage Functions
+-------------------------------------
+
+### Prompt
+I) Move all of:
+```
+function saveFunction() 
+function loadGraphObjects() 
+function resetLocalStorage() 
+```
+
+To fileIO.js.
+
+II) Change the localstroage string ID to "SGE_graphObjects"
+
+III) Fix any reference code/functions due to nesting of functions into fileIO.js.
+
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+
+. Debug: unaccessible button
+----------------------------
+### Prompt
+Skipped (gave code and error)
+
+### Results
+- `element is not available in the DOM ... when function is called. To fix this issue, move the ... element before the script tags...`
+
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 

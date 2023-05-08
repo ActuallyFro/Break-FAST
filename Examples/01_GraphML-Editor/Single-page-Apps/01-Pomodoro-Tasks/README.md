@@ -43,3 +43,9 @@ Modify LocalStorage Saving/Loading (then Reset) code to a separate library to en
 
 ### Task Statement
 Finish migrating LocalStorage Saving/Loading (then Reset) code to a SJFI (https://github.com/ActuallyFro/SJFI.git) to enable code reuse for other libraries.
+
+8. SPA Features: Add Object Area
+-------------------------------
+
+### Task Statement
+Modify the SPA HTML/CSS to show separate areas for the Add Object Area and the Current Objects list/table to enable better workflow/presentation of information.
