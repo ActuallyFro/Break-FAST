@@ -5,6 +5,8 @@
 // Reuse editNodeUI() and editNodeLogic() from 1.1.2
 
 function editObject(object) {
+  document.getElementById('object-id').value = object.id;
+  
   const graphTypeSelect = document.getElementById('graph-type');
   graphTypeSelect.value = object.type;
   toggleObjectTypeFields();

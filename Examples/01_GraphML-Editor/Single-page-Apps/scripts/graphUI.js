@@ -15,46 +15,27 @@ function OperationsUIObjectsFormSetup() {
     toggleObjectTypeFields();
   });
   
-  
   const form = document.getElementById('graph-object-form');
 
   form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const graphType = document.getElementById('graph-type').value;
+    e.preventDefault();
+    const graphType = document.getElementById('graph-type').value;
+    const objectId = document.getElementById('object-id').value;
 
-      let objectData;
-      if (graphType === 'node') {
-        const nodeLabel = document.getElementById('node-label').value;
-        objectData = { label: nodeLabel };
-        
-      } else {
-        const edgeLabel = document.getElementById('edge-label').value;
-        const sourceNode = document.getElementById('source-node').value;
-        const targetNode = document.getElementById('target-node').value;
-        objectData = { label: edgeLabel , source: sourceNode, target: targetNode };
-      }
+    if (graphType === 'node') {
+      const nodeLabel = document.getElementById('node-label').value;
+      addObjectOrUpdate(objectId, graphType, { label: nodeLabel });
+    } else {
+      const edgeLabel = document.getElementById('edge-label').value;
+      const sourceNode = document.getElementById('source-node').value;
+      const targetNode = document.getElementById('target-node').value;
+      addObjectOrUpdate(objectId, graphType, { label: edgeLabel, source: sourceNode, target: targetNode });
+    }
 
-      if (window.editingIndex !== null) {
-        // Update the object at editingIndex
-        window.graphObjects[window.editingIndex] = {
-          ...window.graphObjects[window.editingIndex],
-          ...objectData
-        };
-    
-        // Reset editingIndex
-        window.editingIndex = null;
-        document.getElementById('submit-button').textContent = 'Add Object';
+    updateTable();
+    resetForm();
+  });
 
-      } else {
-        addObject(graphType, objectData);
-      }
-      
-      updateTable();
-      resetForm();
-
-      // Reset the editingIndex after adding a new object
-      window.editingIndex = null;
-    });
 }
 
 function OperationsUIObjectsButtonSetup() {

@@ -665,9 +665,10 @@ Current Bug: when `Select New Object Type:` has it's drop-down selected -- it DO
 - 
 
 
-. 
+. Adding Editing for ID's
 ------------------------
 ### Prompt
+Update editing task code to enable users to change stored ID value for the SPA to allow different naming standards/values.
 
 ### Results
 - 
