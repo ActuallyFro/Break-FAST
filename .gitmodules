@@ -1,0 +1,3 @@
+[submodule "Examples/01_GraphML-Editor/Single-page-Apps/scripts/SJFI"]
+	path = Examples/01_GraphML-Editor/Single-page-Apps/scripts/SJFI
+	url = https://github.com/ActuallyFro/SJFI.git
