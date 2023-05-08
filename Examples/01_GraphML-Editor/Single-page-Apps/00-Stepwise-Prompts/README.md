@@ -568,7 +568,7 @@ Finish the response that was just halted
 ### Undesired
 - It gave "additive" code changes -- but was NOT EXPLICIT where it'd be placed (it was an append action, which the table would have been out of order)
 
-. 
+. Adding Editing
 ------------------------
 ### Prompt
 
@@ -580,9 +580,20 @@ Finish the response that was just halted
 - 
 
 
-. 
+. COntinue that adding of Editing functions
 ------------------------
 ### Prompt
+The above code accomplished:
+I. Change the code to have the "Add Object" button be changed to "Update Object"  when an "Edit Button" is pressed.
+II. Have the "Add Object" button return (1) on page load, 
+III. Have the "Add Object" button return ( (2) when the drop down for 'Select New Object Type:' is selected,
+
+Finish what NOT Implemented:
+A) Have the "Add Object" button return when (3) the Edge Label is changed
+
+Also:
+B) Add the JavaScript logic that will "update" a given object if/when "Update Object" is clicked (i.e., the current code has a bug, which always adds new objects vs. updating objects that are being edited)
+
 
 ### Results
 - 
