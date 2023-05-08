@@ -2,7 +2,8 @@ Break FAST
 ==========
 
 ![AI Logo FTW](BreakFAST_01.png)
-(Credit Stable Diffusion )
+_<small>(Credit Stable Diffusion)</small>_
+
 Background
 ----------
 > Break FAST is a software development process that involves breaking down a project into smaller, manageable parts, identifying the requirements for each part, analyzing the potential return on investment for each part, and isolating the task units necessary to develop each part.
@@ -12,6 +13,7 @@ Background
 > Next, task units are isolated for each part. This involves identifying the specific software components that need to be developed for each part. The isolated task units are then developed rapidly using the DevOps methodology, which involves continuous integration, testing, and deployment.
 > 
 > The rapid prototyping enables the software development team to quickly iterate through different designs and implementations, incorporating feedback from end-users along the way. The end result is a high-quality software product that meets the needs of the end-users, developed in a shorter amount of time than traditional software development methods.
+> 
 > -**As described by CHATGPT**
 
 ### Phases
