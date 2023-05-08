@@ -51,6 +51,30 @@ function updateTable() {
     typeCell.textContent = object.type;
     row.appendChild(typeCell);
 
+    const labelCell = document.createElement('td');
+    labelCell.textContent = object.label;
+    row.appendChild(labelCell);
+
+    const editCell = document.createElement('td');
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Edit';
+    editButton.addEventListener('click', () => {
+      editObject(object);
+    });
+    editCell.appendChild(editButton);
+    row.appendChild(editCell);
+
+    // Add the remove button
+    const removeCell = document.createElement('td');
+    const removeButton = document.createElement('button');
+    removeButton.textContent = 'Remove';
+    removeButton.addEventListener('click', () => {
+      removeObject(object);
+      updateTable();
+    });
+    removeCell.appendChild(removeButton);
+    row.appendChild(removeCell);
+
     tableBody.appendChild(row);
   }
 }

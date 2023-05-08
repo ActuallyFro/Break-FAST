@@ -4,6 +4,24 @@
 // 1.2.1 Implement Edit Node feature
 // Reuse editNodeUI() and editNodeLogic() from 1.1.2
 
+function editObject(object) {
+  const graphTypeSelect = document.getElementById('graph-type');
+  graphTypeSelect.value = object.type;
+  toggleObjectTypeFields();
+
+  if (object.type === 'node') {
+    const nodeLabelInput = document.getElementById('node-label');
+    nodeLabelInput.value = object.label;
+  } else {
+    const edgeLabelInput = document.getElementById('edge-label');
+    edgeLabelInput.value = object.label;
+    const sourceNodeInput = document.getElementById('source-node');
+    sourceNodeInput.value = object.source;
+    const targetNodeInput = document.getElementById('target-node');
+    targetNodeInput.value = object.target;
+  }
+}
+
 function editNodeUI() {
   console.log("1.1.2.1 Develop user interface for editing nodes");
 }
@@ -12,6 +30,13 @@ function editNodeLogic() {
   console.log("1.1.2.2 Implement logic for editing nodes in graph");
 }
 
+function removeObject(object) {
+  const index = graphObjects.indexOf(object);
+  if (index > -1) {
+    graphObjects.splice(index, 1);
+    saveFunction(window.SJFI_storageKey);
+  }
+}
 
 // 1.2.2 Implement Delete Node feature
 function deleteNodeWithDependenciesUI() {

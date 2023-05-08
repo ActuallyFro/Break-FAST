@@ -552,8 +552,44 @@ graphUI.js:22 Uncaught ReferenceError: edgeLabel is not defined
 ### Un-requested Results
 - 
 ### Undesired
+- The response ENDED without completion
+
+
+. Continuing a response
+------------------------
+### Prompt
+Finish the response that was just halted
+
+### Results
+- 
+### Un-requested Results
+- Adding the table headers had an exact callout of `<!-- Add this line -->` x2
+
+### Undesired
+- It gave "additive" code changes -- but was NOT EXPLICIT where it'd be placed (it was an append action, which the table would have been out of order)
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
 - 
 
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
 
 
 . 
