@@ -16,7 +16,8 @@ function OperationsUIObjectsFormSetup() {
       if (graphType === 'node') {
           const nodeLabel = document.getElementById('node-label').value;
           addObject(graphType, { label: nodeLabel });
-      } else {
+        } else {
+          const edgeLabel = document.getElementById('edge-label').value; // Add this line
           const sourceNode = document.getElementById('source-node').value;
           const targetNode = document.getElementById('target-node').value;
           addObject(graphType, { label: edgeLabel , source: sourceNode, target: targetNode });

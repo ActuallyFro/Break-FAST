@@ -489,8 +489,7 @@ Add code to (1) add labels to the Add Object Area and (2) update the Object tabl
 - Gave "switch and show" Javascript (certain fields only show)
 
 ### Undesired
-- 
-
+- Did NOT include the edge label
 
 
 
@@ -520,18 +519,33 @@ And:
 Update the Table to show the nodeID or EdgeID.
 
 ### Results
-- 
+- Table shows ID and Type
+
 ### Un-requested Results
-- 
+- Gave incrementing ID for the node
+
 ### Undesired
-- Did NOT include the edge label
+- did not "fix" (but was NOT ASKED TO) for the edgeLabel
 
 
 
 
-. 
+. Bug hunting and Table Hacking
 ------------------------
 ### Prompt
+For the current code:
+
+1) Fix the error: 
+```
+graphUI.js:22 Uncaught ReferenceError: edgeLabel is not defined
+    at HTMLFormElement.<anonymous> (graphUI.js:22:41)
+```
+
+2) Add to the table: the label for the nodeLavel or edgeLabel
+
+3) Add a column to the table: EDIT -- it loads the data into the section (1) for the editing
+
+4) Add a column to the table: REMOVE -- it will remove the object from the table
 
 ### Results
 - 
