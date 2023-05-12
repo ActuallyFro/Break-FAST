@@ -1,9 +1,6 @@
 //---------------------------
 // UI
 //---------------------------
-// Setup UI and Environment
-// 0.1 User Interface Setup/Initialization
-
 function OperationsUIObjectsFormSetup() {
   console.log("#.#.#.# Develop user interface for adding objects");
 
@@ -113,12 +110,6 @@ function OperationsUIObjectsButtonSetup() {
     window.resetLocalStorage(window.SJFI_storageKey);
   });
 }
-
-
-
-
-
-
 
 function updateTable() {
   console.log("X.X.1 Update table of graph objects");
