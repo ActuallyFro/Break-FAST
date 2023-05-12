@@ -4,57 +4,94 @@
 +++ 1.1.1 Implement Add Node feature
 ++++ 1.1.1.1 Develop user interface for adding nodes
 +++++ "graphUI.js: OperationsUIObjectsFormSetup()"
++++++ DONE
 ++++ 1.1.1.2 Implement logic for adding nodes to graph
 +++++ "graphOperations.js: addObjectOrUpdate()"
++++++ DONE
 +++ 1.1.2 Implement Edit Node feature
 ++++ 1.1.2.1 Develop user interface for editing nodes
 +++++ "graphUI.js: OperationsUIObjectsFormSetup, editObject()"
++++++ DONE
 ++++ 1.1.2.2 Implement logic for editing nodes in graph
 +++++ "graphEditing.js: editObject()"
++++++ DONE
 +++ 1.1.3 Implement Delete Node feature
 ++++ 1.1.3.1 Develop user interface for deleting nodes
 +++++ "graphUI.js: updateTable()"
++++++ DONE
 ++++ 1.1.3.2 Implement logic for deleting nodes from graph
 +++++ "graphEditing.js: removeObject()"
++++++ DONE
 +++ 1.1.4 Implement Add Edge feature
 ++++ 1.1.4.1 Develop user interface for adding edges
 +++++ "graphUI.js: OperationsUIObjectsFormSetup()"
++++++ DONE
 ++++ 1.1.4.2 Implement logic for adding edges to graph
 +++++ "graphOperations.js: addObjectOrUpdate()"
++++++ DONE
 ++ 1.2 Edit Graph
 +++ 1.2.1 Implement Edit Node feature
 ++++ 1.2.1.1 Develop user interface for editing nodes
 +++++ "graphUI.js: OperationsUIObjectsFormSetup, editObject()"
++++++ DONE
 ++++ 1.2.1.2 Implement logic for editing nodes in graph
 +++++ "graphEditing.js: editObject()"
++++++ DONE
 +++ 1.2.2 Implement Delete Node feature
 ++++ 1.2.2.1 Develop user interface for deleting nodes
 +++++ "graphUI.js: updateTable()"
++++++ DONE
 ++++ 1.2.2.2 Implement logic for deleting nodes from graph, and handle dependencies
 +++++ "graphEditing.js: removeObject()"
++++++ DONE
 +++ 1.2.3 Implement Edit Edge feature
 ++++ 1.2.3.1 Develop user interface for editing edges
 +++++ "graphUI.js: OperationsUIObjectsFormSetup, editObject()"
++++++ DONE
 ++++ 1.2.3.2 Implement logic for editing edges in graph
 +++++ "graphEditing.js: editObject()"
++++++ DONE
 +++ 1.2.4 Implement Delete Edge feature
 ++++ 1.2.4.1 Develop user interface for deleting edges
 +++++ "graphUI.js: updateTable()"
++++++ DONE
 ++++ 1.2.4.2 Implement logic for deleting edges from graph
 +++++ "graphEditing.js: removeObject()"
++++++ DONE
 ++ 1.3 File IO
 +++ 1.3.1 Implement Export GraphML feature
 ++++ Not in the current JS files.
-+++ 1.3.2 Implement Import GraphML feature
+++++ MIGRATE FROM THIS TASK AREA
++++ 1.3.2 Implement Import GraphML feature (OPTIONAL)
 ++++ Not in the current JS files.
+++++ MIGRATE FROM THIS TASK AREA
 +++ 1.3.3 Implement Export JSON feature
 ++++ 1.3.3.1 Implement logic for exporting graph data to JSON format
++++++ "Export Button"
++++++ DONE
 +++++ "graphUI.js: exportGraphObjects()"
-+++ 1.3.3.2 Incorporate feedback from stakeholders
-++++ Not in the current JS files.
++++++ TO DO - Migrate to SJFI
 +++ 1.3.4 Implement Import JSON feature
 ++++ 1.3.4.1 Implement logic for importing JSON data for editing
++++++ "Import Button"
++++++ DONE
 +++++ "graphUI.js: importGraphObjects()"
-++++ 1.3.4.2 Incorporate feedback from stakeholders
-+++++ Not in the current JS files.
++++++ TO DO - Migrate to SJFI++ 1.4 Local Storage (IMPORTED Library)
+++ 1.4 Local Storage (IMPORTED Library)
++++ 1.4.1 Implement Save Graph feature
+++++ "SJFI/lib-localstorage.js: saveFunction()"
+++++ DONE
++++ 1.4.2 Implement Load Graph feature
+++++ "SJFI/lib-localstorage.js: loadGraphObjects()"
+++++ DONE
++++ 1.4.3 Implement Reset Graph feature
+++++ "SJFI/lib-localstorage.js: resetLocalStorage()"
+++++ DONE
+++ 1.5 JSON IMPORT/EXPORT (IMPORTED Library)
++++ 1.5.1 Implement logic for exporting graph data to JSON format
+++++ "graphUI.js: exportGraphObjects()"
+++++ "TO DO - Migrate to SJFI -- SJFI/lib-localstorage.js: TBD()"
++++ 1.5.2 Implement Import JSON feature
+++++ "graphUI.js: importGraphObjects()"
+++++ "TO DO - Migrate to SJFI -- SJFI/lib-localstorage.js: TBD()"
 @endwbs
