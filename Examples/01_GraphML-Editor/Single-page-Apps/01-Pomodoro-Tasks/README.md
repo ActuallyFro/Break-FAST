@@ -78,3 +78,10 @@ Edit code to allow custom ID's  to make user input faster/less prone to error.
 ----------------
 ### Task Statement
 Update add/edit for Nodes to enable key/value pairs to be added for the SPA to fully store Node data.
+
+<!-- =================== SOME DAYS LATER ===================== -->
+
+14. Prepare for next Sprints
+---------------------------
+### Task Statement
+Review and update documentation on the current structure of the SPA to define next sprint tasks
