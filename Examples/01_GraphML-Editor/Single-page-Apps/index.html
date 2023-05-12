@@ -7,8 +7,12 @@
     <link rel="stylesheet" href="./styles/styles.css">
 </head>
 <body>
-    <!-- Add your HTML elements here -->
-    <h1>I) Object Adding/Editing</h1>
+    <h1>A) Current Visual Graph</h1>
+    <div class="rectangle" style="height: 50px;width: 100px;background-color: #555;color: #FFF;"> PLACE HOLDER FOR D3.js</div>
+
+    <hr>
+    <h1>B) GraphML Object Editing</h1>
+    <h2>I) Object Adding/Editing</h2>
     <form id="graph-object-form">
         <label for="graph-type">Select New Object Type:</label>
         <select id="graph-type" onchange="toggleObjectTypeFields()">
@@ -44,7 +48,7 @@
     </form>
     
 <hr>
-<h1>II) Object Table</h1>
+<h2>II) Object Table</h2>
 <table id="graph-object-table">
     <thead>
       <tr>
@@ -59,9 +63,8 @@
     </tbody>
   </table>
 
-
   <hr>
-  <h1>III) Import/Export</h1>
+  <h2>III) Object Import/Export</h2>
   <input type="file" id="import-file" style="display:none" accept=".json">
   <button id="import-button">Import</button>
   <button id="export-button">Export</button>
@@ -70,6 +73,8 @@
 
     <button id="reset-button">Reset LocalStorage</button>
 
+  <hr>
+  <h1>C) GraphML File Creation</h1>
 
     <script src="./scripts/fileIO.js"></script>
     <script src="./scripts/SJFI/lib-localstorage.js"></script>

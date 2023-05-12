@@ -1,0 +1,9 @@
+@startwbs
++ 1 SPA GraphML Editor
+++ 1.1 A) Current Visual Graph
+++ 1.2 B) GraphML Object Editing
++++ 1.2.1 I) Object Adding/Editing
++++ 1.2.2 II) Object Table
++++ 1.2.3 III) Object Import/Export
+++ 1.3 C) GraphML File Creation
+@endwbs
