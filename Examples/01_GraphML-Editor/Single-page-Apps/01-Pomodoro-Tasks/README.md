@@ -85,3 +85,9 @@ Update add/edit for Nodes to enable key/value pairs to be added for the SPA to f
 ---------------------------
 ### Task Statement
 Review and update documentation on the current structure of the SPA to define next sprint tasks
+
+15. Moving JSON Export/Import to a Library
+------------------------------------------
+### Task Statement
+Migrate code and implemented calls for the JSON import/export of the GraphML Objects into the SJFI
+

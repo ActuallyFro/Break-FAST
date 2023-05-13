@@ -53,39 +53,23 @@ function OperationsUIObjectsFormSetup() {
 
 }
 
-window.importGraphObjects = function(event) {
+window.exportGraphObjects = function(event) {
+  console.log("X.X.2 Export graph objects to JSON file");
+  SJFIJSONExport(window.graphObjects);
+}
+
+window.importGraphObjects = async function(event) {
   console.log("X.X.2 Import graph objects to JSON file");
 
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const contents = e.target.result;
-      try {
-        const importedGraphObjects = JSON.parse(contents);
-        window.graphObjects = importedGraphObjects;
-        updateTable();
-        saveFunction(window.SJFI_storageKey);
-      } catch (error) {
-        alert('Invalid JSON file');
-      }
-    };
-    reader.readAsText(file);
+  const importedGraphObjects = await SJFIJSONImport(event.target.files[0]);
+  if (importedGraphObjects) {
+    window.graphObjects = importedGraphObjects;
+    updateTable();
+    saveFunction(window.SJFI_storageKey);
   }
 }
+//////////////////////////
 
-window.exportGraphObjects = function() {
-  // console debug
-  console.log("X.X.2 Export graph objects to JSON file");
-  const data = JSON.stringify(window.graphObjects, null, 2);
-  const blob = new Blob([data], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'graph-objects.json';
-  a.click();
-  URL.revokeObjectURL(url);
-}
 
 
 function OperationsUIObjectsButtonSetup() {
