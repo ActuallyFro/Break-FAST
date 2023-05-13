@@ -86,7 +86,10 @@
     <script src="./scripts/graphEditing.js"></script>
 
     <script>
-      setGraphMLContent(defaultGraphML);
+      setGraphMLContent(defaultGraphMLHEADER+"\n");
+      setGraphMLContentAPPEND("\n");
+      setGraphMLContentAPPEND('    <graph id="NAME OF GRAPH" edgedefault="undirected|directed"></graphml>');
+      setGraphMLContentAPPEND(defaultGraphMLFOOTER);
       
       window.graphObjects = [];
       window.editingIndex = null;
