@@ -86,8 +86,8 @@
     <script src="./scripts/graphEditing.js"></script>
 
     <script>
-      document.getElementById("graphml-file").innerText = defaultGraphML;
-
+      setGraphMLContent(defaultGraphML);
+      
       window.graphObjects = [];
       window.editingIndex = null;
       window.SJFI_storageKey = 'SGE_graphObjects';

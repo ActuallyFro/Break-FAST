@@ -87,3 +87,9 @@ window.defaultGraphML = `<?xml version="1.0" encoding="UTF-8"?>
   
         </graph>
   </graphml>`;
+
+
+  function setGraphMLContent(defaultGraphML) {
+    document.getElementById("graphml-file").innerText = defaultGraphML;
+  }
+  
