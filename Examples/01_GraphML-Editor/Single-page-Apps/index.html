@@ -75,6 +75,7 @@
 
   <hr>
   <h1>C) GraphML File Creation</h1>
+  <div id="graphml-file"></div>
 
     <script src="./scripts/fileIO.js"></script>
     <script src="./scripts/SJFI/lib-localstorage.js"></script>
@@ -85,6 +86,9 @@
     <script src="./scripts/graphEditing.js"></script>
 
     <script>
+      // On page load, set the <div id="graphml-file"></div> to the defaultGraphML
+      document.getElementById("graphml-file").innerHTML = defaultGraphML;
+
       window.graphObjects = [];
       window.editingIndex = null;
       window.SJFI_storageKey = 'SGE_graphObjects';

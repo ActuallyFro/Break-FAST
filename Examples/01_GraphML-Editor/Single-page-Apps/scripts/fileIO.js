@@ -35,4 +35,55 @@
 //   console.log("1.3.4.2 Incorporate feedback from stakeholders");
 // }
 
+/*
+DEFAULT GraphML File:
 
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+      http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+
+      <!-- Attribute Keys -->
+      <!--     (From 'Recommended Attribute Keys' Above -^ filled in) -->
+  
+      <graph id="NAME OF GRAPH" edgedefault="undirected|directed">
+
+          <!-- Node Entries -->
+          <!--     (Copy & paste FROM 'Entry Table') -->
+          
+          <!--     Suggest: 'nameNode'; for D3.js Label -->
+          <!--     Suggest: 'descriptionNode'; for ul / li listings -->
+          <!--     Example: https://actuallyfro.github.io/SpaceEngineersMapping/ -->
+          
+          <!-- Edge Entries -->
+          <!--     (Copy & paste FROM 'Entry Table') -->
+
+      </graph>
+</graphml>
+*/
+
+
+//store a default, graphml template as a variable
+const defaultGraphML = `<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+        http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+        <!-- Attribute Keys -->
+        <!--     (From 'Recommended Attribute Keys' Above -^ filled in) -->
+    
+        <graph id="NAME OF GRAPH" edgedefault="undirected|directed">
+  
+            <!-- Node Entries -->
+            <!--     (Copy & paste FROM 'Entry Table') -->
+            
+            <!--     Suggest: 'nameNode'; for D3.js Label -->
+            <!--     Suggest: 'descriptionNode'; for ul / li listings -->
+            <!--     Example: https://actuallyfro.github.io/SpaceEngineersMapping/ -->
+            
+            <!-- Edge Entries -->
+            <!--     (Copy & paste FROM 'Entry Table') -->
+  
+        </graph>
+  </graphml>`;
