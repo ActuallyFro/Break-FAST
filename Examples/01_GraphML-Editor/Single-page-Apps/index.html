@@ -89,19 +89,13 @@
       window.editingIndex = null;
       window.SJFI_storageKey = 'SGE_graphObjects';
 
-      //OLD:
-    //   OperationsUIObjectsFormSetup();
-    //   OperationsUIObjectsButtonSetup();
-    //   loadGraphObjects(SJFI_storageKey);
+      window.addEventListener('DOMContentLoaded', () => {
+          OperationsUIObjectsFormSetup();
+          OperationsUIObjectsButtonSetup();
 
-        window.addEventListener('DOMContentLoaded', () => {
-            OperationsUIObjectsFormSetup();
-            OperationsUIObjectsButtonSetup();
-
-            loadGraphObjects(SJFI_storageKey);
-        });
+          loadGraphObjects(SJFI_storageKey);
+      });
     </script>
-
 
 </body>
 </html>
