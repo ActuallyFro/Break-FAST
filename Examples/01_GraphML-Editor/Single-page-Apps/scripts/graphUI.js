@@ -68,9 +68,6 @@ window.importGraphObjects = async function(event) {
     saveFunction(window.SJFI_storageKey);
   }
 }
-//////////////////////////
-
-
 
 function OperationsUIObjectsButtonSetup() {
   console.log("0.1.2 Initialize User Interface for adding objects");
