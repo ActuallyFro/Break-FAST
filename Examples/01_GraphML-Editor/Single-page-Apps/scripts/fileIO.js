@@ -65,7 +65,7 @@ DEFAULT GraphML File:
 
 
 //store a default, graphml template as a variable
-const defaultGraphML = `<?xml version="1.0" encoding="UTF-8"?>
+window.defaultGraphML = `<?xml version="1.0" encoding="UTF-8"?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns

@@ -86,8 +86,7 @@
     <script src="./scripts/graphEditing.js"></script>
 
     <script>
-      // On page load, set the <div id="graphml-file"></div> to the defaultGraphML
-      document.getElementById("graphml-file").innerHTML = defaultGraphML;
+      document.getElementById("graphml-file").innerText = defaultGraphML;
 
       window.graphObjects = [];
       window.editingIndex = null;

@@ -91,3 +91,7 @@ Review and update documentation on the current structure of the SPA to define ne
 ### Task Statement
 Migrate code and implemented calls for the JSON import/export of the GraphML Objects into the SJFI
 
+15. Start to implement GraphML XML file
+---------------------------------------
+### Task Statement
+Migrate the old RBGT's Builder2 Template into the SPA so the nodes/edges will be auto-placed into the GraphML XML file.
