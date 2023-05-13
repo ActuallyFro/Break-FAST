@@ -12,6 +12,10 @@
 
     <hr>
     <h1>B) GraphML Object Editing</h1>
+    <label for="graph-title">Graph Title:</label>
+    <input type="text" id="graph-title" placeholder="Graph Title">
+    <button id="update-title-button" type="button">Update Title</button>
+
     <h2>I) Object Adding/Editing</h2>
     <form id="graph-object-form">
         <label for="graph-type">Select New Object Type:</label>
@@ -92,6 +96,7 @@
       setGraphMLContentAPPEND(defaultGraphMLFOOTER);
       
       window.graphObjects = [];
+      window.graphTitle = ""; // Initialize graphTitle
       window.editingIndex = null;
       window.SJFI_storageKey = 'SGE_graphObjects';
 
@@ -100,6 +105,39 @@
           OperationsUIObjectsButtonSetup();
 
           loadGraphObjects(SJFI_storageKey);
+
+
+window.updateTitle = function(debug = false) {
+  const titleInput = document.getElementById('graph-title');
+  titleInput.value = window.graphTitle;
+}
+
+window.saveTitle = function(storageKey, debug = false) {
+  if (debug) console.log("[SJFI] [DEBUG] saveTitle(" + storageKey + ") called");
+  localStorage.setItem(`${storageKey}_title`, window.graphTitle);
+};
+
+window.loadTitle = function(storageKey, debug = false) {
+  console.log("[SJFI] [DEBUG] loadTitle(" + storageKey + ") called");
+  const storedTitle = localStorage.getItem(`${storageKey}_title`);
+  if (storedTitle) {
+    window.graphTitle = storedTitle;
+    window.updateTitle();
+  }
+};
+
+window.resetTitle = function(storageKey, debug = false) {
+  if (debug) console.log("[SJFI] [DEBUG] resetTitle(" + storageKey + ") called");
+  localStorage.removeItem(`${storageKey}_title`);
+  window.graphTitle = "";
+  window.updateTitle();
+};
+
+          // console.log("[SJFI] [DEBUG] loadTitle(" + SJFI_storageKey + ") called");
+          const storedTitle = localStorage.getItem(`${SJFI_storageKey}_title`);
+
+          loadTitle(SJFI_storageKey); // Load the title
+          updateTitle(); // Update the title
       });
     </script>
 

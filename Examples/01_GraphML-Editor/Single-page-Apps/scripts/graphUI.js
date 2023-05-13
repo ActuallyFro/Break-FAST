@@ -53,19 +53,23 @@ function OperationsUIObjectsFormSetup() {
 
 }
 
+// In your import and export functions
 window.exportGraphObjects = function(event) {
   console.log("X.X.2 Export graph objects to JSON file");
-  SJFIJSONExport(window.graphObjects);
+  SJFIJSONExport({objects: window.graphObjects, title: window.graphTitle}); // Include title
 }
 
 window.importGraphObjects = async function(event) {
   console.log("X.X.2 Import graph objects to JSON file");
 
-  const importedGraphObjects = await SJFIJSONImport(event.target.files[0]);
-  if (importedGraphObjects) {
-    window.graphObjects = importedGraphObjects;
+  const importedData = await SJFIJSONImport(event.target.files[0]);
+  if (importedData) {
+    window.graphObjects = importedData.objects;
+    window.graphTitle = importedData.title; // Set title
     updateTable();
+    updateTitle();
     saveFunction(window.SJFI_storageKey);
+    saveTitle(window.SJFI_storageKey); // Save title
   }
 }
 
@@ -89,6 +93,12 @@ function OperationsUIObjectsButtonSetup() {
   const resetButton = document.getElementById('reset-button');
   resetButton.addEventListener('click', function() {
     window.resetLocalStorage(window.SJFI_storageKey);
+  });
+
+  const updateTitleButton = document.getElementById('update-title-button');
+  updateTitleButton.addEventListener('click', () => {
+    window.graphTitle = document.getElementById('graph-title').value;
+    saveTitle(window.SJFI_storageKey);
   });
 }
 
@@ -210,3 +220,8 @@ function createPropertyInput(property) {
 
   return propertyDiv;
 }
+
+//--------------------
+// Graph Properties
+//--------------------
+// MOVE TITLE ACTIONS HERE!
