@@ -21,28 +21,49 @@ window.addObjectOrUpdate = function(objectId, graphType, data) {
   saveFunction(window.SJFI_storageKey);
 }
 
-window.updateTitle = function(debug = false) {
+window.updateGraphSettings = function(debug = false) {
   const titleInput = document.getElementById('graph-title');
+  const directionalitySelect = document.getElementById('graph-directionality');
+  // const directionalityValue = directionalitySelect.options[directionalitySelect.selectedIndex].value;
+
   titleInput.value = window.graphTitle;
+  directionalitySelect.value = window.graphDirectionality;
 }
 
-window.saveTitle = function(storageKey, debug = false) {
-  if (debug) console.log("[SJFI] [DEBUG] saveTitle(" + storageKey + ") called");
+window.saveGraphSettings = function(storageKey, debug = false) {
+  if (debug) console.log("[DEBUG] saveGraphSettings(" + storageKey + ") called");
   localStorage.setItem(`${storageKey}_title`, window.graphTitle);
+  localStorage.setItem(`${storageKey}_directionality`, window.graphDirectionality);
+
+  reprintGraphMLFile();
 };
 
-window.loadTitle = function(storageKey, debug = false) {
-  console.log("[SJFI] [DEBUG] loadTitle(" + storageKey + ") called");
+window.loadGraphSettings = function(storageKey, debug = false) {
+  let needToUpdate = false;
+  console.log("[DEBUG] loadGraphSettings(" + storageKey + ") called");
   const storedTitle = localStorage.getItem(`${storageKey}_title`);
+  const storedDirectionality = localStorage.getItem(`${storageKey}_directionality`);
+  
   if (storedTitle) {
     window.graphTitle = storedTitle;
-    window.updateTitle();
+    needToUpdate = true;
+  }
+
+  if (storedDirectionality) {
+    window.graphDirectionality = storedDirectionality;
+    needToUpdate = true;
+  }
+
+  if (needToUpdate) {
+    window.updateGraphSettings();
   }
 };
 
-window.resetTitle = function(storageKey, debug = false) {
-  if (debug) console.log("[SJFI] [DEBUG] resetTitle(" + storageKey + ") called");
+window.resetGraphSettings = function(storageKey, debug = false) {
+  if (debug) console.log("[DEBUG] resetGraphSettings(" + storageKey + ") called");
   localStorage.removeItem(`${storageKey}_title`);
+  localStorage.removeItem(`${storageKey}_directionality`);
   window.graphTitle = "";
-  window.updateTitle();
+  window.graphDirectionality = "directed";
+  window.updateGraphSettings();
 };

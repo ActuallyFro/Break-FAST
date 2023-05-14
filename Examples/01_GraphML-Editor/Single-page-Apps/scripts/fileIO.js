@@ -108,6 +108,6 @@ window.reprintGraphMLFile = function(objectId, graphType, data) {
     setGraphMLContent(defaultGraphMLHEADER+"\n");
     setGraphMLContentAPPEND("\n");
     // setGraphMLContentAPPEND('    <graph id="' + graphTitle + '" edgedefault="undirected|directed"></graphml>');
-    setGraphMLContentAPPEND('    <graph id="' + graphTitle + '" edgedefault="undirected|directed"></graphml>');
+    setGraphMLContentAPPEND('    <graph id="' + window.graphTitle + '" edgedefault="' + window.graphDirectionality + '"></graphml>');
     setGraphMLContentAPPEND(defaultGraphMLFOOTER);
 }

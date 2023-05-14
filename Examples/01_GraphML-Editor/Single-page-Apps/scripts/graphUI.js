@@ -56,7 +56,7 @@ function OperationsUIObjectsFormSetup() {
 // In your import and export functions
 window.exportGraphObjects = function(event) {
   console.log("X.X.2 Export graph objects to JSON file");
-  SJFIJSONExport({objects: window.graphObjects, title: window.graphTitle}); // Include title
+  SJFIJSONExport({objects: window.graphObjects, title: window.graphTitle, directionality: window.graphDirectionality}); // Include title
 }
 
 window.importGraphObjects = async function(event) {
@@ -66,10 +66,11 @@ window.importGraphObjects = async function(event) {
   if (importedData) {
     window.graphObjects = importedData.objects;
     window.graphTitle = importedData.title;
+    window.graphDirectionality = importedData.directionality;
     updateTable();
-    updateTitle();
+    updateGraphSettings();
     saveFunction(window.SJFI_storageKey);
-    saveTitle(window.SJFI_storageKey);
+    saveGraphSettings(window.SJFI_storageKey);
   }
 }
 
@@ -95,11 +96,12 @@ function OperationsUIObjectsButtonSetup() {
     window.resetLocalStorage(window.SJFI_storageKey);
   });
 
-  const updateTitleButton = document.getElementById('update-title-button');
-  updateTitleButton.addEventListener('click',() => {
-    // console.log("[DEBUG] TITLE UPDATE BUTTON CLICKED");
+  const updateGraphSettingsButton = document.getElementById('update-graph-settings-button');
+  updateGraphSettingsButton.addEventListener('click',() => {
+    console.log("[DEBUG] SAVE - GRAPH SETTINGS BUTTON CLICKED");
     window.graphTitle = document.getElementById('graph-title').value;
-    saveTitle(window.SJFI_storageKey);
+    window.graphDirectionality = document.getElementById('graph-directionality').value;
+    saveGraphSettings(window.SJFI_storageKey);
   });
 }
 

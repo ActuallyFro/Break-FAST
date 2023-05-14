@@ -14,7 +14,16 @@
     <h1>B) GraphML Object Editing</h1>
     <label for="graph-title">Graph Title:</label>
     <input type="text" id="graph-title" placeholder="Graph Title">
-    <button id="update-title-button" type="button">Update Title</button>
+    <br>
+    <label for="graph-directionality">Graph Directionality:</label>
+    <select id="graph-directionality">
+        <option value="undirected">Undirected</option>
+        <option value="directed">Directed</option>
+    </select>
+    <!-- <button id="graph-directionality-button" type="button">Update Directionality</button> -->
+    <br>
+    <button id="update-graph-settings-button" type="button">Update Graph Options</button>
+
 
     <h2>I) Object Adding/Editing</h2>
     <form id="graph-object-form">
@@ -93,6 +102,7 @@
       
       window.graphObjects = [];
       window.graphTitle = ""; // Initialize graphTitle
+      window.graphDirectionality ="";
       window.editingIndex = null;
       window.SJFI_storageKey = 'SGE_graphObjects';
 
@@ -104,8 +114,8 @@
 
           const storedTitle = localStorage.getItem(`${SJFI_storageKey}_title`);
 
-          loadTitle(SJFI_storageKey); // Load the title
-          updateTitle(); // Update the title
+          loadGraphSettings(SJFI_storageKey); // Load the title
+          updateGraphSettings(); // Update the title
 
           reprintGraphMLFile();
       });
