@@ -57,24 +57,35 @@ window.reprintGraphMLFile = function(objectId, graphType, data) {
     //<KEYS>
     setGraphMLContentAPPEND("    <!-- Attribute Keys -->");
     // Extract unique keys from node and edge properties
-    let uniqueKeys = new Set();
+    let uniqueKeys = new Map();
 
     graphObjects.forEach(object => {
         // Check if the properties array exists before trying to iterate over it
-        if (object.properties) {
+        if (object.type === 'node' && object.properties) {
             object.properties.forEach(property => {
-                uniqueKeys.add(property.key);
+                // Store the unique keys per type
+                if (!uniqueKeys.has(object.type)) {
+                    uniqueKeys.set(object.type, new Set());
+                }
+                uniqueKeys.get(object.type).add(property.key);
             });
+        } else if (object.type === 'edge') {
+            if (!uniqueKeys.has(object.type)) {
+                uniqueKeys.set(object.type, new Set());
+            }
+            uniqueKeys.get(object.type).add(object.key);
         }
     });
 
     // Generate key XML for each unique key
-    uniqueKeys.forEach(key => {
-        let keyXML = `
-        <key attr.name="GraphML_ID_${key}" attr.type="string" for="${graphType}" id="${key}">
-            <default>MISSING DESCRIPTION</default>
-        </key>`;
-        setGraphMLContentAPPEND(keyXML);
+    uniqueKeys.forEach((keys, type) => {
+        keys.forEach(key => {
+            let keyXML = `
+            <key attr.name="KEY_${type.toUpperCase()}_ID_${key}" attr.type="boolean|int|long|float|double|string" for="${type}" id="${key}">
+                <default>MISSING DESCRIPTION</default>
+            </key>`;
+            setGraphMLContentAPPEND(keyXML);
+        });
     });
 
     // <GRAPH>
