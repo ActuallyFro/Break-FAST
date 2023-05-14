@@ -99,6 +99,14 @@ function OperationsUIObjectsButtonSetup() {
     window.exportGraphObjects();
   });
 
+
+  const saveGraphMLButton = document.getElementById('save-graphml-button');
+  saveGraphMLButton.addEventListener('click', (e) => { // Updated this line
+    e.stopPropagation();
+    window.saveGraphMLFile();
+  });
+
+
   const resetButton = document.getElementById('reset-button');
   resetButton.addEventListener('click', function() {
     window.resetLocalStorage(window.SJFI_storageKey);

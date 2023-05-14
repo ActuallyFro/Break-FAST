@@ -71,3 +71,10 @@ window.reprintGraphMLFile = function(objectId, graphType, data) {
 
     renderGraphMLToFileArea();
 }
+
+
+
+window.saveGraphMLFile = function(event) {
+    var blob = new Blob([window.GraphMLXMLData], {type: "application/xml;charset=utf-8"});
+    window.SJFIXMLExportText(blob, window.graphTitle+".graphml");    
+}
