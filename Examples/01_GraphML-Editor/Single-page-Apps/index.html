@@ -112,7 +112,7 @@
 
   <script>
     window.graphObjects = [];
-    window.graphTitle = ""; // Initialize graphTitle
+    window.graphTitle = "";
     window.graphDirectionality ="";
     window.editingIndex = null;
     window.SJFI_storageKey = 'SGE_graphObjects';
@@ -125,8 +125,8 @@
 
         const storedTitle = localStorage.getItem(`${SJFI_storageKey}_title`);
 
-        loadGraphSettings(SJFI_storageKey); // Load the title
-        updateGraphSettings(); // Update the title
+        loadGraphSettings(SJFI_storageKey);
+        updateGraphSettings();
 
         reprintGraphMLFile();
     });
