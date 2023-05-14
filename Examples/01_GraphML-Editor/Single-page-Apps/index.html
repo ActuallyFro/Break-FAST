@@ -60,66 +60,66 @@
         <button id="submit-button" type="submit">Add Object</button>
     </form>
     
-<hr>
-<h2>II) Object Table</h2>
-<table id="graph-object-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Type</th>
-        <th>Label</th>
-        <th>Edit</th>
-        <th>Remove</th>
-    </tr>
-    </thead>
-    <tbody id="graph-object-table-body">
-    </tbody>
-  </table>
+    <hr>
+    <h2>II) Object Table</h2>
+      <table id="graph-object-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Label</th>
+            <th>Edit</th>
+            <th>Remove</th>
+        </tr>
+        </thead>
+        <tbody id="graph-object-table-body">
+        </tbody>
+      </table>
 
-  <hr>
-  <h2>III) Object Import/Export</h2>
-  <input type="file" id="import-file" style="display:none" accept=".json">
-  <button id="import-button">Import</button>
-  <button id="export-button">Export</button>
-
-  <hr>
-
-    <button id="reset-button">Reset LocalStorage</button>
+    <hr>
+    <h2>III) Object Import/Export</h2>
+      <input type="file" id="import-file" style="display:none" accept=".json">
+      <button id="import-button">Import</button>
+      <button id="export-button">Export</button>
 
   <hr>
   <h1>C) GraphML File Creation</h1>
   <div id="graphml-file"></div>
 
-    <script src="./scripts/fileIO.js"></script>
-    <script src="./scripts/SJFI/lib-localstorage.js"></script>
-    <script src="./scripts/SJFI/lib-JSON-ImpExp.js"></script>
-    <script src="./scripts/graphUI.js"></script>
+  <hr>
+  <!-- make red, bold text in <h3> -->
+  <h3 style="color:red;font-weight:bold;">DANGER</h3>
+  <button id="reset-button">Reset LocalStorage</button>
+  
+  <!-- SCRIPTS -->
+  <script src="./scripts/fileIO.js"></script>
+  <script src="./scripts/SJFI/lib-localstorage.js"></script>
+  <script src="./scripts/SJFI/lib-JSON-ImpExp.js"></script>
+  <script src="./scripts/graphUI.js"></script>
 
-    <script src="./scripts/graphOperations.js"></script>
-    <script src="./scripts/graphEditing.js"></script>
+  <script src="./scripts/graphOperations.js"></script>
+  <script src="./scripts/graphEditing.js"></script>
 
-    <script>
-      
-      window.graphObjects = [];
-      window.graphTitle = ""; // Initialize graphTitle
-      window.graphDirectionality ="";
-      window.editingIndex = null;
-      window.SJFI_storageKey = 'SGE_graphObjects';
+  <script>
+    window.graphObjects = [];
+    window.graphTitle = ""; // Initialize graphTitle
+    window.graphDirectionality ="";
+    window.editingIndex = null;
+    window.SJFI_storageKey = 'SGE_graphObjects';
 
-      window.addEventListener('DOMContentLoaded', () => {
-          OperationsUIObjectsFormSetup();
-          OperationsUIObjectsButtonSetup();
+    window.addEventListener('DOMContentLoaded', () => {
+        OperationsUIObjectsFormSetup();
+        OperationsUIObjectsButtonSetup();
 
-          loadGraphObjects(SJFI_storageKey);
+        loadGraphObjects(SJFI_storageKey);
 
-          const storedTitle = localStorage.getItem(`${SJFI_storageKey}_title`);
+        const storedTitle = localStorage.getItem(`${SJFI_storageKey}_title`);
 
-          loadGraphSettings(SJFI_storageKey); // Load the title
-          updateGraphSettings(); // Update the title
+        loadGraphSettings(SJFI_storageKey); // Load the title
+        updateGraphSettings(); // Update the title
 
-          reprintGraphMLFile();
-      });
-    </script>
-
+        reprintGraphMLFile();
+    });
+  </script>
 </body>
 </html>
