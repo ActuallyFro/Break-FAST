@@ -76,6 +76,12 @@ window.importGraphObjects = async function(event) {
 
 function OperationsUIObjectsButtonSetup() {
   console.log("0.1.2 Initialize User Interface for adding objects");
+  
+  const newObjectOrCLEARButton = document.getElementById('new-button');
+  newObjectOrCLEARButton.addEventListener('click', () => {
+    resetForm();
+  });
+
   const importButton = document.getElementById('import-button');
   importButton.addEventListener('click', () => {
     const importFileInput = document.getElementById('import-file');
