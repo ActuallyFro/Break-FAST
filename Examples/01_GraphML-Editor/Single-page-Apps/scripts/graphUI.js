@@ -65,11 +65,11 @@ window.importGraphObjects = async function(event) {
   const importedData = await SJFIJSONImport(event.target.files[0]);
   if (importedData) {
     window.graphObjects = importedData.objects;
-    window.graphTitle = importedData.title; // Set title
+    window.graphTitle = importedData.title;
     updateTable();
     updateTitle();
     saveFunction(window.SJFI_storageKey);
-    saveTitle(window.SJFI_storageKey); // Save title
+    saveTitle(window.SJFI_storageKey);
   }
 }
 
@@ -96,7 +96,8 @@ function OperationsUIObjectsButtonSetup() {
   });
 
   const updateTitleButton = document.getElementById('update-title-button');
-  updateTitleButton.addEventListener('click', () => {
+  updateTitleButton.addEventListener('click',() => {
+    // console.log("[DEBUG] TITLE UPDATE BUTTON CLICKED");
     window.graphTitle = document.getElementById('graph-title').value;
     saveTitle(window.SJFI_storageKey);
   });
