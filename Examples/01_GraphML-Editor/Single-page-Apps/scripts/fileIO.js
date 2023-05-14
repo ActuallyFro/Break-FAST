@@ -102,3 +102,12 @@ function setGraphMLContentAPPEND(defaultGraphML) {
     graphmlFileElement.innerText += defaultGraphML;
     graphmlFileElement.style.whiteSpace = "pre"; // Preserve whitespace
 } 
+
+//create window function reprintGraphMLFile()
+window.reprintGraphMLFile = function(objectId, graphType, data) {
+    setGraphMLContent(defaultGraphMLHEADER+"\n");
+    setGraphMLContentAPPEND("\n");
+    // setGraphMLContentAPPEND('    <graph id="' + graphTitle + '" edgedefault="undirected|directed"></graphml>');
+    setGraphMLContentAPPEND('    <graph id="' + graphTitle + '" edgedefault="undirected|directed"></graphml>');
+    setGraphMLContentAPPEND(defaultGraphMLFOOTER);
+}

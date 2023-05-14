@@ -90,10 +90,6 @@
     <script src="./scripts/graphEditing.js"></script>
 
     <script>
-      setGraphMLContent(defaultGraphMLHEADER+"\n");
-      setGraphMLContentAPPEND("\n");
-      setGraphMLContentAPPEND('    <graph id="NAME OF GRAPH" edgedefault="undirected|directed"></graphml>');
-      setGraphMLContentAPPEND(defaultGraphMLFOOTER);
       
       window.graphObjects = [];
       window.graphTitle = ""; // Initialize graphTitle
@@ -110,6 +106,8 @@
 
           loadTitle(SJFI_storageKey); // Load the title
           updateTitle(); // Update the title
+
+          reprintGraphMLFile();
       });
     </script>
 
