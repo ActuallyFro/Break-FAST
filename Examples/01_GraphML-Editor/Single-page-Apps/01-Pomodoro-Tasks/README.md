@@ -96,7 +96,17 @@ Migrate code and implemented calls for the JSON import/export of the GraphML Obj
 ### Task Statement
 Migrate the old RBGT's Builder2 Template into the SPA so the nodes/edges will be auto-placed into the GraphML XML file.
 
-16. Moving temp code to more permanent function calls
+16. BUMPED - New Object Bug
+---------------------------
+### Task Statement
+GOT DISTRACTED -- new objects were not directly accessible, after 'edit/view' of existing objects was hit (or NOT until an edited one was 'updated')
+
+17 BUMPTED - EDGES cannot support 'weights'
+--------------------------------------------
+### Task Statement
+Currently Edges support an ID and a 'label' -- but the Label is a SPECIFIC key/value. Thus if a general attribute of 'distanceBetweenMi' with a float of '2.5', then it PRESENTLY cannot be added to the graph
+
+18. Moving temp code to more permanent function calls
 -----------------------------------------------------
 ### Task Statement
 Move existing , or develop new, GraphML/XML template code to enable re-rendering of XML based on user input.
