@@ -105,3 +105,5 @@ Move existing , or develop new, GraphML/XML template code to enable re-rendering
 
 #### .b - evaluate adding drop down setting for directionality
 
+#### .c/d/e - Add loops to XML printing for key|attributes, nodes, and edges 
+
