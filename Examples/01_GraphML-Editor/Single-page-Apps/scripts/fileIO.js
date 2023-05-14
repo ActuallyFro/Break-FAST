@@ -25,9 +25,8 @@ window.defaultGraphMLHEADER = `<?xml version="1.0" encoding="UTF-8"?>
 //"There is no order defined for the appearance of node and edge elements." This means it CAN mix! --> implies issues for parsing
 
 window.defaultGraphMLFOOTER = `
-        <!-- Node Entries -->
 
-        <!-- Edge Entries -->
+        <!-- Node Entries -->
     </graph>
 </graphml>`;
 
@@ -64,8 +63,21 @@ window.reprintGraphMLFile = function(objectId, graphType, data) {
     setGraphMLContentAPPEND('    <graph id="' + window.graphTitle + '" edgedefault="' + window.graphDirectionality + '">');
 
     // <NODES>
+    // const nodeObjects = graphObjects.filter(object => object.type === 'node');
 
-    // <EDGES>
+    setGraphMLContentAPPEND("\n\n        <!-- Edge Entries -->\n");
+    const edgeObjects = graphObjects.filter(object => object.type === 'edge');
+
+    // Iterate over edgeObjects and append edge XML for each object
+    edgeObjects.forEach((edge) => {
+        let edgeXML = `
+            <edge id="${edge.id}" source="${edge.source}" target="${edge.target}">
+                <data key="${edge.key}">${edge.value}</data>
+            </edge>`;
+
+        setGraphMLContentAPPEND(edgeXML);
+    });
+
 
     setGraphMLContentAPPEND(defaultGraphMLFOOTER);
 
