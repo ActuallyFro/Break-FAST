@@ -98,13 +98,15 @@ Migrate the old RBGT's Builder2 Template into the SPA so the nodes/edges will be
 
 16. BUMPED - New Object Bug
 ---------------------------
-### Task Statement
 GOT DISTRACTED -- new objects were not directly accessible, after 'edit/view' of existing objects was hit (or NOT until an edited one was 'updated')
-
-17 BUMPTED - EDGES cannot support 'weights'
---------------------------------------------
 ### Task Statement
+Add a 'new object' button to the index.html page to resolve add/edit/view object bug
+
+17 BUMPED - EDGES cannot support 'weights'
+--------------------------------------------
 Currently Edges support an ID and a 'label' -- but the Label is a SPECIFIC key/value. Thus if a general attribute of 'distanceBetweenMi' with a float of '2.5', then it PRESENTLY cannot be added to the graph
+### Task Statement
+Change the edge to a single key/value entry for the add/edit object form to enable the addition of a 'weight' (and other attributes)
 
 18. Moving temp code to more permanent function calls
 -----------------------------------------------------
