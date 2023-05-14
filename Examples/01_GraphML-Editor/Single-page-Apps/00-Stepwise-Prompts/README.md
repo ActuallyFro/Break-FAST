@@ -749,12 +749,174 @@ Add the needed code for looping over edgeObjects in reprintGraphMLFile().
 
 
 ### Results
+- DROP IN quality code
+
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+. Migrating node objects for XML export
+------------------------
+### Prompt
+Add the appropriate code, now for the nodes. Noting that the nodes can have a series of key/value objects"
+```graphEditing.js
+  if (object.type === 'node') {
+    const nodeLabelInput = document.getElementById('node-label');
+    nodeLabelInput.value = object.label;
+
+    const nodeProperties = object.properties || [];
+    const nodePropertiesDiv = document.getElementById('node-properties');
+    nodePropertiesDiv.innerHTML = '';
+
+    for (const property of nodeProperties) {
+      nodePropertiesDiv.appendChild(createPropertyInput(property));
+    }
+  }
+```
+### Results
+- Minor hacking to, and minor/manual addition of the label to produce the code
+
+### Un-requested Results
+- 
+### Undesired
+- 
+
+
+
+. Getting Attribute Keys to Generate
+------------------------
+### Prompt
+For the code thus far, provide the code edits for `reprintGraphMLFile()` (i.e., ### NEEDED CODE HERE ### below) that will loop over the objects, discover keys, and place them before the `setGraphMLContentAPPEND('    <graph id="' + window.graphTitle + '" edgedefault="' + window.graphDirectionality + '">');` line to comply with the GraphML standards.
+
+Present code:
+```
+<Provided the RUNNING CODE>
+```
+
+The data types are UNKNOWN, or not save in the current array, Use the following as a template (i.e., each key will replace the `###data key###` and ###type### content and the rest is re-use) :
+```
+<key attr.name="GraphML_ID_###data key###" attr.type="boolean|int|long|float|double|string" for="###type###" id="###data key###"><default>MISSING DESCRIPTION</default></key>
+```
+
+### Results
+- well defined code
+
+### Un-requested Results
+- 
+### Undesired
+- Code Errors
+
+. Fixing error
+------------------------
+### Prompt
+That errors:
+```
+leIO.js:66 Uncaught TypeError: Cannot read properties of undefined (reading 'forEach')
+    at fileIO.js:66:27
+    at Array.forEach (<anonymous>)
+    at window.reprintGraphMLFile (fileIO.js:65:18)
+    at (index):134:9
+(
+```
+
+### Results
+- Code
+- "This code now checks if each object in graphObjects has a properties array before trying to iterate over it. If an object doesn't have a properties array, it just skips over that object. This should prevent the error you were seeing."
+
+### Un-requested Results
+- 
+### Undesired
+- 
+
+. 
+------------------------
+### Prompt
+
+### Results
 - 
 ### Un-requested Results
 - 
 ### Undesired
 - 
 
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
+
+. 
+------------------------
+### Prompt
+
+### Results
+- 
+### Un-requested Results
+- 
+### Undesired
+- 
 
 . 
 ------------------------

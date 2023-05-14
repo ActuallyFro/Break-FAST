@@ -131,3 +131,6 @@ Move existing, or develop new, GraphML/XML template code to enable re-rendering 
 
 #### .c/d/e - Add loops to XML printing for key|attributes, nodes, and edges 
 Modify all/code new capabilities for `GraphMLXMLData` functions to enable printing of graphml <EDGES>
+
+#### Note
+Did Edge, then node, then key

@@ -5,7 +5,7 @@ window.defaultGraphMLHEADER = `<?xml version="1.0" encoding="UTF-8"?>
     xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
 
-    <!-- Attribute Keys -->`;
+`;
 
         // <!-- Attribute Keys -->
         // <!--     (From 'Recommended Attribute Keys' Above -^ filled in) -->
@@ -26,7 +26,6 @@ window.defaultGraphMLHEADER = `<?xml version="1.0" encoding="UTF-8"?>
 
 window.defaultGraphMLFOOTER = `
 
-        <!-- Node Entries -->
     </graph>
 </graphml>`;
 
@@ -53,18 +52,57 @@ function renderGraphMLToFileArea() {
 
 //create window function reprintGraphMLFile()
 window.reprintGraphMLFile = function(objectId, graphType, data) {
-    setGraphMLContent(defaultGraphMLHEADER+"\n");
-    setGraphMLContentAPPEND("\n");
+    setGraphMLContent(defaultGraphMLHEADER);
 
     //<KEYS>
+    setGraphMLContentAPPEND("    <!-- Attribute Keys -->");
+    // Extract unique keys from node and edge properties
+    let uniqueKeys = new Set();
+
+    graphObjects.forEach(object => {
+        // Check if the properties array exists before trying to iterate over it
+        if (object.properties) {
+            object.properties.forEach(property => {
+                uniqueKeys.add(property.key);
+            });
+        }
+    });
+
+    // Generate key XML for each unique key
+    uniqueKeys.forEach(key => {
+        let keyXML = `
+        <key attr.name="GraphML_ID_${key}" attr.type="string" for="${graphType}" id="${key}">
+            <default>MISSING DESCRIPTION</default>
+        </key>`;
+        setGraphMLContentAPPEND(keyXML);
+    });
 
     // <GRAPH>
     //OPTIONAL: <graph id="..."
-    setGraphMLContentAPPEND('    <graph id="' + window.graphTitle + '" edgedefault="' + window.graphDirectionality + '">');
+    setGraphMLContentAPPEND('\n\n    <graph id="' + window.graphTitle + '" edgedefault="' + window.graphDirectionality + '">');
 
-    // <NODES>
-    // const nodeObjects = graphObjects.filter(object => object.type === 'node');
+    //--------------------------------------------------------------------------------
+    setGraphMLContentAPPEND("\n\n        <!-- Node Entries -->\n");
+    const nodeObjects = graphObjects.filter(object => object.type === 'node');
 
+    // Iterate over nodeObjects and append node XML for each object
+    nodeObjects.forEach((node) => {
+        let nodeXML = `            <node id="${node.id}">\n`;
+
+        nodeXML += `                <data key="label">${node.label}</data>\n`;
+
+        // Iterate over the properties of each node
+        node.properties.forEach((property) => {
+            nodeXML += `                <data key="${property.key}">${property.value}</data>\n`;
+        });
+
+        nodeXML += "            </node>\n";
+
+        setGraphMLContentAPPEND(nodeXML);
+    });
+
+
+    //--------------------------------------------------------------------------------
     setGraphMLContentAPPEND("\n\n        <!-- Edge Entries -->\n");
     const edgeObjects = graphObjects.filter(object => object.type === 'edge');
 
