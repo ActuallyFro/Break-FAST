@@ -25,6 +25,10 @@ function editObject(object) {
   } else {
     const edgeLabelInput = document.getElementById('edge-label');
     edgeLabelInput.value = object.label;
+    const edgeKeyInput = document.getElementById('edge-key');
+    edgeKeyInput.value = object.key;
+    const edgeValueInput = document.getElementById('edge-value');
+    edgeValueInput.value = object.value;
     const sourceNodeInput = document.getElementById('source-node');
     sourceNodeInput.value = object.source;
     const targetNodeInput = document.getElementById('target-node');

@@ -40,9 +40,11 @@ function OperationsUIObjectsFormSetup() {
       addObjectOrUpdate(objectId, graphType, { label: nodeLabel, properties });
     } else {
       const edgeLabel = document.getElementById('edge-label').value;
+      const edgeKey = document.getElementById('edge-key').value;
+      const edgeValue = document.getElementById('edge-value').value;
       const sourceNode = document.getElementById('source-node').value;
       const targetNode = document.getElementById('target-node').value;
-      addObjectOrUpdate(objectId, graphType, { label: edgeLabel, source: sourceNode, target: targetNode });
+      addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, target: targetNode });
     }
 
 
