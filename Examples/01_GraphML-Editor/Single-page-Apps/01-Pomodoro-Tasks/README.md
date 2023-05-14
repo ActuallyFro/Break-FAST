@@ -95,3 +95,13 @@ Migrate code and implemented calls for the JSON import/export of the GraphML Obj
 ---------------------------------------
 ### Task Statement
 Migrate the old RBGT's Builder2 Template into the SPA so the nodes/edges will be auto-placed into the GraphML XML file.
+
+16. Moving temp code to more permanent function calls
+-----------------------------------------------------
+### Task Statement
+Move existing , or develop new, GraphML/XML template code to enable re-rendering of XML based on user input.
+
+#### .a - Graph Title / directionality
+
+#### .b - evaluate adding drop down setting for directionality
+
