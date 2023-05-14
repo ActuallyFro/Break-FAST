@@ -117,7 +117,14 @@ Currently Edges support an ID and a 'label' -- but the Label is a SPECIFIC key/v
 ### Task Statement
 Change the edge to a single key/value entry for the add/edit object form to enable the addition of a 'weight' (and other attributes)
 
-19. Moving temp code to more permanent function calls
+19. BUMPED - Plan to Save XML
+-----------------------------
+Add all text to a variable, such that (at a later time) a user can hit "SAVE GraphML" (like import/export)
+
+### Task Statement
+Move/add/edit code of current XML printing to a single variable to enable capabilities of a 'save' button for XML/.graphml file
+
+20. Moving temp code to more permanent function calls
 -----------------------------------------------------
 ### Task Statement
 Move existing , or develop new, GraphML/XML template code to enable re-rendering of XML based on user input.
