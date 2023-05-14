@@ -34,15 +34,23 @@ window.defaultGraphMLFOOTER = `
 
 function setGraphMLContent(defaultGraphML) {
     var graphmlFileElement = document.getElementById("graphml-file");
-    graphmlFileElement.innerText = defaultGraphML;
-    graphmlFileElement.style.whiteSpace = "pre"; // Preserve whitespace
+    // graphmlFileElement.innerText = defaultGraphML;
+    window.GraphMLXMLData = defaultGraphML;
+    // graphmlFileElement.style.whiteSpace = "pre"; // Preserve whitespace
 }
 
 function setGraphMLContentAPPEND(defaultGraphML) {
     var graphmlFileElement = document.getElementById("graphml-file");
-    graphmlFileElement.innerText += defaultGraphML;
-    graphmlFileElement.style.whiteSpace = "pre"; // Preserve whitespace
+    //graphmlFileElement.innerText += defaultGraphML;
+    window.GraphMLXMLData += defaultGraphML;
+    // graphmlFileElement.style.whiteSpace = "pre"; // Preserve whitespace
 } 
+
+function renderGraphMLToFileArea() {
+    var graphmlFileElement = document.getElementById("graphml-file");
+    graphmlFileElement.innerText = window.GraphMLXMLData;
+    graphmlFileElement.style.whiteSpace = "pre"; // Preserve whitespace
+}
 
 //create window function reprintGraphMLFile()
 window.reprintGraphMLFile = function(objectId, graphType, data) {
@@ -60,4 +68,6 @@ window.reprintGraphMLFile = function(objectId, graphType, data) {
     // <EDGES>
 
     setGraphMLContentAPPEND(defaultGraphMLFOOTER);
+
+    renderGraphMLToFileArea();
 }

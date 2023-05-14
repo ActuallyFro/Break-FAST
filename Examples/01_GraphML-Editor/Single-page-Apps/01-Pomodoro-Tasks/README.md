@@ -127,7 +127,7 @@ Move/add/edit code of current XML printing to a single variable to enable capabi
 20. Moving temp code to more permanent function calls
 -----------------------------------------------------
 ### Task Statement
-Move existing , or develop new, GraphML/XML template code to enable re-rendering of XML based on user input.
+Move existing, or develop new, GraphML/XML template code to enable re-rendering of XML based on user input.
 
 #### .c/d/e - Add loops to XML printing for key|attributes, nodes, and edges 
 
