@@ -134,3 +134,8 @@ Modify all/code new capabilities for `GraphMLXMLData` functions to enable printi
 
 #### Note
 Did Edge, then node, then key
+
+21. Display of Graph   
+--------------------
+### Task Statement
+Develop the means (code modifications) to display in the SPA a current graph (nodes + edges) in a "view area" above the editing area.
