@@ -50,7 +50,14 @@ The word "production" means the usage of a software development technique (e.g.,
 The phrase "left of development" shall be treated as the activities that are used for pre-production before a given production technique is applied.
 Pre-production and "left of development" may be interchangeably used.
 
+Examples
+--------
+1. Using Break-FAST to create an 'SPA' (if I were to EVER merge the code too...) to enable [GraphML](http://graphml.graphdrawing.org/primer/graphml-primer.html) development.
+   1. [Source Folder](https://github.com/ActuallyFro/Break-FAST/tree/main/Examples/01_GraphML-Editor)
+   2. [Example running](./Examples/01_GraphML-Editor/Single-page-Apps/)
 
 Credits
 -------
-Image based on some materials from Stable Diffusion, per the CreativeML Open RAIL++-M License Section III Paragraph 6 -- no claims nor endorsement by Stable Diffusion (i.e., Stability AI and contributors) is implied. Image is released under a [Creative Commons Zero (CC0) 1.0 Universal License](https://creativecommons.org/publicdomain/zero/1.0/).
+Image based on some materials from Stable Diffusion, per the CreativeML Open RAIL++-M License Section III Paragraph 6 -- no claims nor endorsement by Stable Diffusion (i.e., Stability AI and contributors) is implied. Image is released under a [Creative Commons Zero (CC0) 1.0 Universal License](https://creativecommons.org/publicdomain/zero/1.0/)
+
+
