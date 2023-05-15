@@ -45,4 +45,9 @@ h1 {
     fill: black; /* or any other color */
 }
 
+.hidden {
+    display: none !important;
+}
+
+
 /* ============================= */

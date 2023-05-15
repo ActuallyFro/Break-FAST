@@ -82,7 +82,7 @@ const node = svg.selectAll('.node')
         });
     });
 
-    // Draw labels
+    // Draw labels - FOR NODES
     const label = svg.selectAll('.label')
         .data(nodes)
         .join('text')
@@ -92,6 +92,31 @@ const node = svg.selectAll('.node')
         .attr('y', d => d.y)
         .attr('text-anchor', 'middle')
         .attr('dy', '.35em');
+
+    // Draw edge labels
+    const edgeLabel = svg.selectAll('.edgelabel')
+        .data(links)
+        .join('text')
+        .attr('class', 'edgelabel')
+        .attr('id', (d, i) => 'edgelabel' + i)
+        .attr('dx', 80)
+        .attr('dy', 0)
+        .attr('font-size', 10)
+        .style('fill', '#aaa')
+        .text(d => d.label);
+
+    // Update the positions of edge labels in ticked()
+    edgeLabel.attr('transform', function(d) {
+        if (d.target.x < d.source.x) {
+            const bbox = this.getBBox();
+
+            const rx = bbox.x + bbox.width / 2;
+            const ry = bbox.y + bbox.height / 2;
+            return 'rotate(180 ' + rx + ' ' + ry + ')';
+        } else {
+            return 'rotate(0)';
+        }
+    });
 
     // Update the positions of the nodes, edges, and labels
     function ticked() {
@@ -151,6 +176,38 @@ const node = svg.selectAll('.node')
             //.on('end', dragended); <-- resets position VS leaving it
     }
 
+
+    // On right click on the SVG, show the context menu
+    svg.on('contextmenu', function(event) {
+        event.preventDefault();
+
+        d3.select('#graph-context-menu')
+            .style('left', `${event.pageX}px`)
+            .style('top', `${event.pageY}px`)
+            .style('display', 'block');
+    });
+
+    // Add click event listeners for the context menu buttons
+    document.getElementById('toggle-node-labels').addEventListener('click', () => {
+        const display = window.getComputedStyle(d3.select('.label').node()).display === 'none' ? 'block' : 'none';
+        d3.selectAll('.label').style('display', display);
+        localStorage.setItem('nodeLabelsDisplay', display);
+    });
+
+    document.getElementById('toggle-edge-labels').addEventListener('click', () => {
+        const display = window.getComputedStyle(d3.select('.edgelabel').node()).display === 'none' ? 'block' : 'none';
+        d3.selectAll('.edgelabel').style('display', display);
+        localStorage.setItem('edgeLabelsDisplay', display);
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            d3.select('#graph-context-menu')
+                .style('display', 'none');
+        }
+    });
+    
+
     return nodes;
 }
 
@@ -167,15 +224,76 @@ const node = svg.selectAll('.node')
   });
 
 // Now you can export the SVG to a new tab
-document.getElementById('print-button').addEventListener('click', () => {
-    const svgElement = document.getElementById('graph-svg');
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write('<html><head><title>Print</title>');
-    printWindow.document.write('</head><body>');
-    printWindow.document.write(svgElement.outerHTML);
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-});
+// Puts graph into a new tab -- but cannot be saved as SVG
+// document.getElementById('print-button').addEventListener('click', () => {
+//     const svgElement = document.getElementById('graph-svg');
+//     const printWindow = window.open('', '_blank');
+//     printWindow.document.write('<html><head><title>Print</title>');
+//     printWindow.document.write('</head><body>');
+//     printWindow.document.write(svgElement.outerHTML);
+//     printWindow.document.write('</body></html>');
+//     printWindow.document.close();
+// });
+
+
+    // DOES NOT run: -- open in new tab
+    // const svgData = new XMLSerializer().serializeToString(svgElement);
+    // const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    // const svgUrl = URL.createObjectURL(svgBlob);
+
+    // const img = new Image();
+
+    // img.onload = function() {
+    //     const canvas = document.createElement('canvas');
+    //     const ctx = canvas.getContext('2d');
+    //     canvas.width = svgElement.viewBox.baseVal.width;
+    //     canvas.height = svgElement.viewBox.baseVal.height;
+    //     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    //     const pngUrl = canvas.toDataURL('image/png');
+    //     window.open(pngUrl, '_blank');
+    // };
+
+    // img.src = svgUrl;
+    document.getElementById('print-button').addEventListener('click', () => {
+        const svgElement = document.getElementById('graph-svg');
+        const blob = new Blob([svgElement.outerHTML], {type: 'image/svg+xml'});
+        const url = URL.createObjectURL(blob);
+    
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'graph.svg';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    
+        const svgData = new XMLSerializer().serializeToString(svgElement);
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const svgUrl = URL.createObjectURL(svgBlob);
+    
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.onload = function () {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            context.drawImage(img, 0, 0);
+    
+            const pngUrl = canvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = pngUrl;
+            a.download = 'graph.png';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(pngUrl);
+        };
+    
+        img.src = svgUrl;
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+    });
 
 
 //////////////////////////////////////////////////
@@ -219,35 +337,55 @@ function saveNodePositions() {
 //////////////////////////////////////////////////
 // Node X/Y save and load -- LOCALSTORAGE
 function saveNodePositionsToFile() {
-    const nodeData = {};
+    const config = {
+        nodeData: {},
+        labelVisibility: {
+            nodeLabels: localStorage.getItem('nodeLabelsDisplay'),
+            edgeLabels: localStorage.getItem('edgeLabelsDisplay'),
+        },
+    };
+
     RenderNodes.forEach(node => {
-        nodeData[node.id] = { x: node.x, y: node.y, color: nodeColors[node.id] };
+        config.nodeData[node.id] = { x: node.x, y: node.y, color: nodeColors[node.id] };
     });
-    const data = JSON.stringify(nodeData);
+
+    const data = JSON.stringify(config);
     const file = new Blob([data], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(file);
     a.download = 'node-data-configuration.json';
     a.click();
 }
+
   
-  // Add event listeners to save and load buttons
+function loadNodePositionsFromFile(file) {
+    console.log('Loading node data from file...');
+    const reader = new FileReader();
+    reader.onload = event => {
+        const config = JSON.parse(event.target.result);
+        RenderNodes.forEach(node => {
+            const data = config.nodeData[node.id];
+            if (data) {
+                node.fx = data.x;
+                node.fy = data.y;
+                if (data.color) {
+                    nodeColors[node.id] = data.color;
+                }
+            }
+        });
+
+    if (config.labelVisibility) {
+        d3.selectAll('.label').style('display', config.labelVisibility.nodeLabels);
+        d3.selectAll('.edgelabel').classed('hidden', config.labelVisibility.edgeLabels === 'none');
+        localStorage.setItem('nodeLabelsDisplay', config.labelVisibility.nodeLabels);
+        localStorage.setItem('edgeLabelsDisplay', config.labelVisibility.edgeLabels);
+    }
+
+    };
+    reader.readAsText(file);
+}
+
   document.addEventListener('DOMContentLoaded', () => {
-    //   document.getElementById('export-config-button').addEventListener('click', () => {
-    //   saveNodePositionsToFile();
-    //   // alert('Saved!');
-    //   });
-  
-    //   document.getElementById('import-config-button').addEventListener('click', () => {
-    //       document.getElementById('import-config-file').click();
-    //   });
-  
-    //   document.getElementById('import-config-file').addEventListener('change', event => {
-    //       console.log('Import button clicked');
-    //       const file = event.target.files[0];
-    //       loadNodePositionsFromFile(file);
-    //     //   alert('Imported!');
-    //   });
     document.getElementById('export-config-button').addEventListener('click', () => {
         saveNodePositionsToFile();
     });
@@ -262,29 +400,6 @@ function saveNodePositionsToFile() {
     });
 
 });
-  
-  // Load node positions from a text file
-  function loadNodePositionsFromFile(file) {
-    console.log('Loading node data from file...');
-    const reader = new FileReader();
-    reader.onload = event => {
-        const nodeData = JSON.parse(event.target.result);
-        RenderNodes.forEach(node => {
-            const data = nodeData[node.id];
-            if (data) {
-                node.fx = data.x;
-                node.fy = data.y;
-                if (data.color) {
-                    nodeColors[node.id] = data.color; // Update nodeColors
-                }
-            }
-        });
-        localStorage.setItem('nodeColors', JSON.stringify(nodeColors)); // Update local storage
-    };
-    reader.readAsText(file);
-} 
-
-
 //////////////////////////////////////////////////
 
 
@@ -310,4 +425,3 @@ window.addEventListener('click', function(event) {
 
 
 
-//////
