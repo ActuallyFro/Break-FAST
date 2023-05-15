@@ -813,12 +813,11 @@ The data types are UNKNOWN, or not save in the current array, Use the following 
 ### Prompt
 That errors:
 ```
-leIO.js:66 Uncaught TypeError: Cannot read properties of undefined (reading 'forEach')
+*.js:66 Uncaught TypeError: Cannot read properties of undefined (reading 'forEach')
     at fileIO.js:66:27
     at Array.forEach (<anonymous>)
     at window.reprintGraphMLFile (fileIO.js:65:18)
     at (index):134:9
-(
 ```
 
 ### Results
@@ -830,23 +829,70 @@ leIO.js:66 Uncaught TypeError: Cannot read properties of undefined (reading 'for
 ### Undesired
 - 
 
-. 
+. Error Iterations
 ------------------------
 ### Prompt
+This works for MOST of the data. However, each object has a .type which is NOT the same as the `graphType` (e.g., to find the nodss: `    const nodeObjects = graphObjects.filter(object => object.type === 'node');`)
+
+Update the code for the `for="${graphType}"` to be of the respective object.type.
+
+### Prompt 2
+No keys for the edges are provided, only the nodes, in the above code
 
 ### Results
 - 
 ### Un-requested Results
 - 
 ### Undesired
-- 
+- SELF failure to describe issue
 
-. 
+. Re-attempt at error description
 ------------------------
 ### Prompt
+The logical error (bug) still persists.
+
+Know that:
+```javascript
+...
+  if (object.type === 'node') {
+    const nodeLabelInput = document.getElementById('node-label');
+    nodeLabelInput.value = object.label;
+
+    const nodeProperties = object.properties || [];
+    const nodePropertiesDiv = document.getElementById('node-properties');
+    nodePropertiesDiv.innerHTML = '';
+
+    for (const property of nodeProperties) {
+      nodePropertiesDiv.appendChild(createPropertyInput(property));
+    }
+  } else {
+    const edgeLabelInput = document.getElementById('edge-label');
+    edgeLabelInput.value = object.label;
+    const edgeKeyInput = document.getElementById('edge-key');
+    edgeKeyInput.value = object.key;
+    const edgeValueInput = document.getElementById('edge-value');
+    edgeValueInput.value = object.value;
+    const sourceNodeInput = document.getElementById('source-node');
+    sourceNodeInput.value = object.source;
+    const targetNodeInput = document.getElementById('target-node');
+    targetNodeInput.value = object.target;
+  }
+...
+```
+
+Specifically for nodes the keys would be nested within the properties of of object, but edges have the key/value "up a level".
+
+
+### Prompt 2 - Refinement
+The code generates:
+            <key attr.name="GraphML_ID_key" attr.type="string" for="edge" id="key">
+                <default>MISSING DESCRIPTION</default>
+            </key>
+
+However, key is generic, and likely skips/overwrites content. Leave nodes alone, but for edges modify the code to leverage the data within the .key value to determine the _key variable for attr.name and id.
 
 ### Results
-- 
+- Finally got desired endstate 
 ### Un-requested Results
 - 
 ### Undesired
