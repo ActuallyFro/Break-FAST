@@ -898,9 +898,250 @@ However, key is generic, and likely skips/overwrites content. Leave nodes alone,
 ### Undesired
 - 
 
-. 
+. Adding D3.js
 ------------------------
 ### Prompt
+Current SPA:
+```index.html
+    <form id="graph-object-form">
+        <label for="graph-type">Select New Object Type:</label>
+        <select id="graph-type" onchange="toggleObjectTypeFields()">
+            <option value="node">Node</option>
+            <option value="edge">Edge</option>
+        </select>
+        <br>
+    
+        <label for="object-id">Object ID:</label>
+        <input type="text" id="object-id" placeholder="Object ID">
+        
+        <div id="node-fields">
+            <label for="node-label">Object Table Label:</label>
+            <input type="text" id="node-label" placeholder="Label">
+            <br>
+            <div id="node-properties"></div>
+            <button id="add-property-button" type="button">+</button>
+          </div>
+    
+        <div id="edge-fields" style="display: none;">
+            <label for="edge-label">Object Table Label:</label>
+            <input type="text" id="edge-label" placeholder="Label">
+            <br>
+            <label for="edge-key">Edge Key:</label>
+            <input type="text" id="edge-key" placeholder="color">
+            <br>
+            <label for="edge-value">Edge Value:</label>
+            <input type="text" id="edge-value" placeholder="purple">
+            <br>
+            <label for="source-node">Source Node:</label>
+            <select id="source-node"></select>
+            <br>
+            <label for="target-node">Target Node:</label>
+            <select id="target-node"></select>
+            <!-- add hidden inputs for source and target nodes -->
+            <input type="hidden" id="source-node-id" value="">
+            <input type="hidden" id="target-node-id" value="">
+
+        </div>
+        
+        <br>
+        <button id="submit-button" type="submit">Add Object</button>
+    </form>
+
+...
+
+<script>
+    window.graphObjects = [];
+    window.graphTitle = "";
+    window.graphDirectionality ="";
+...
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const graphType = document.getElementById('graph-type').value;
+    const objectId = document.getElementById('object-id').value;
+
+    if (graphType === 'node') {
+      const nodeLabel = document.getElementById('node-label').value;
+      const nodePropertiesDiv = document.getElementById('node-properties');
+      const propertyInputs = nodePropertiesDiv.getElementsByClassName('property-input');
+      const properties = [];
+  
+      for (const propertyInput of propertyInputs) {
+        const keyInput = propertyInput.getElementsByTagName('input')[0];
+        const valueInput = propertyInput.getElementsByTagName('input')[1];
+        properties.push({ key: keyInput.value, value: valueInput.value });
+      }
+  
+      addObjectOrUpdate(objectId, graphType, { label: nodeLabel, properties });
+
+    } else {
+      const edgeLabel = document.getElementById('edge-label').value;
+      const edgeKey = document.getElementById('edge-key').value;
+      const edgeValue = document.getElementById('edge-value').value;
+      const sourceNode = document.getElementById('source-node').value;
+      const targetNode = document.getElementById('target-node').value;
+
+      const sourceNodeId = window.graphObjects.find(obj => obj.label === sourceNode).id;
+      const targetNodeId = window.graphObjects.find(obj => obj.label === targetNode).id;
+
+      // addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId });
+      addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
+    }
+
+    updateTable();
+    resetForm();
+    reprintGraphMLFile();
+  });
+</script>
+```
+
+Example JSON of stored data:
+```JSON
+{
+  "objects": [
+    {
+      "id": "NPC01",
+      "type": "node",
+      "label": "Volo",
+      "properties": [
+        {
+          "key": "FullName",
+          "value": "Volotham Geddarm"
+        },
+        {
+          "key": "Profession",
+          "value": "FAMOUS Explorer and Raconteur"
+        }
+      ]
+    },
+    {
+      "id": "LOCATION01",
+      "type": "node",
+      "label": "Yawning Portal Inn and Tavern",
+      "properties": [
+        {
+          "key": "Type",
+          "value": "Inn and Tavern"
+        },
+        {
+          "key": "Location",
+          "value": "Waterdeep"
+        }
+      ]
+    },
+    {
+      "id": "npc1_to_location1",
+      "type": "edge",
+      "label": "frequents",
+      "key": "label",
+      "value": ":frequents:",
+      "source": "Volo",
+      "sourceId": "NPC01",
+      "target": "Yawning Portal Inn and Tavern",
+      "targetId": "LOCATION01"
+    },
+    {
+      "id": "CITY02",
+      "type": "node",
+      "label": "Waterdeep",
+      "properties": [
+        {
+          "key": "Realm",
+          "value": "Forgotten Realms"
+        },
+        {
+          "key": "Realm",
+          "value": "Grevnyrch"
+        },
+        {
+          "key": "Size",
+          "value": "Large"
+        },
+        {
+          "key": "Population",
+          "value": "130000"
+        },
+        {
+          "key": "PopulationTerritory",
+          "value": "1000000"
+        }
+      ]
+    },
+    {
+      "id": "location1_to_city2",
+      "type": "edge",
+      "label": "within",
+      "key": "label",
+      "value": ":within:",
+      "source": "Yawning Portal Inn and Tavern",
+      "sourceId": "LOCATION01",
+      "target": "Waterdeep",
+      "targetId": "CITY02"
+    },
+    {
+      "id": "NPC02",
+      "type": "node",
+      "label": "Yagra",
+      "properties": [
+        {
+          "key": "FullName",
+          "value": "Yagra Stonefist"
+        }
+      ]
+    },
+    {
+      "id": "npc2_to_location1",
+      "type": "edge",
+      "label": "frequents",
+      "key": "label",
+      "value": ":frequents:",
+      "source": "Yagra",
+      "sourceId": "NPC02",
+      "target": "Yawning Portal Inn and Tavern",
+      "targetId": "LOCATION01"
+    },
+    {
+      "id": "OBJECT01",
+      "type": "node",
+      "label": "Yawning Portal Well",
+      "properties": []
+    },
+    {
+      "id": "object1_to_location1",
+      "type": "edge",
+      "label": "within",
+      "key": "label",
+      "value": ":within:",
+      "source": "Yawning Portal Well",
+      "sourceId": "OBJECT01",
+      "target": "Yawning Portal Inn and Tavern",
+      "targetId": "LOCATION01"
+    },
+    {
+      "id": "object1_to_location1_distance",
+      "type": "edge",
+      "label": "Distance To",
+      "key": "meters",
+      "value": "0",
+      "source": "Yawning Portal Well",
+      "sourceId": "OBJECT01",
+      "target": "Yawning Portal Inn and Tavern",
+      "targetId": "LOCATION01"
+    }
+  ],
+  "title": "Waterdeep-Interactions",
+  "directionality": "undirected"
+}
+```
+
+At the top of `index.html` update/expand/add code to render  information/data/nodes and graphs above with D3.js:
+```
+    <h1>A) Current Visual Graph</h1>
+    <div class="rectangle" style="height: 50px;width: 100px;background-color: #555;color: #FFF;"> PLACE HOLDER FOR D3.js</div>
+```
+
+
+
 
 ### Results
 - 

@@ -8,7 +8,10 @@
 </head>
 <body>
     <h1>A) Current Visual Graph</h1>
-    <div class="rectangle" style="height: 50px;width: 100px;background-color: #555;color: #FFF;"> PLACE HOLDER FOR D3.js</div>
+    <!-- <div class="rectangle" style="height: 50px;width: 100px;background-color: #555;color: #FFF;"> PLACE HOLDER FOR D3.js</div> -->
+    <div id="d3-container">
+      <svg id="graph-svg"></svg>
+    </div>
 
     <hr>
     <h1>B) GraphML Object Editing</h1>
@@ -107,6 +110,7 @@
   <button id="reset-button">Reset LocalStorage</button>
   
   <!-- SCRIPTS -->
+  <script src="./scripts/graphRendering.js"></script>
   <script src="./scripts/fileIO.js"></script>
   <script src="./scripts/SJFI/lib-localstorage.js"></script>
   <script src="./scripts/SJFI/lib-JSON-ImpExp.js"></script>
@@ -115,6 +119,7 @@
 
   <script src="./scripts/graphOperations.js"></script>
   <script src="./scripts/graphEditing.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
 
   <script>
     window.graphObjects = [];

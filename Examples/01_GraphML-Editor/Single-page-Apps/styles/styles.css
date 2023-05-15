@@ -1,3 +1,5 @@
+/* ============================= */
+/* Web Page */
 body {
     font-family: Arial, sans-serif;
 }
@@ -21,3 +23,23 @@ h1 {
     text-decoration: underline;
     font-weight: bold;
 }
+/* ============================= */
+
+
+/* ============================= */
+/* D3.js */
+.link {
+    stroke-width: 2px;
+}
+
+.node {
+    stroke: white;
+    stroke-width: 2px;
+}
+
+.label {
+    font-family: sans-serif;
+    font-size: 12px;
+    fill: black;
+}
+/* ============================= */
