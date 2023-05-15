@@ -12,6 +12,14 @@
     <div id="d3-container">
       <svg id="graph-svg"></svg>
     </div>
+    <button id="reset-d3-button">Reset Drawing</button>
+    <button id="print-button">Print</button>
+    <button id="save-config-button">Temp Save</button>
+    <button id="load-config-button">Temp Load</button>
+    <button id="export-config-button">Export Config</button>
+    <input type="file" id="import-config-file" style="display:none" accept=".json">
+    <button id="import-config-button">Import Config</button>
+
 
     <hr>
     <h1>B) GraphML Object Editing</h1>
@@ -124,6 +132,7 @@
   <script>
     window.graphObjects = [];
     window.graphTitle = "";
+    window.RenderNodes = [];
     window.graphDirectionality ="";
     window.GraphMLXMLData = "";
     window.editingIndex = null;

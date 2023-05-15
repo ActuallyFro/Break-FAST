@@ -175,7 +175,7 @@ function updateTable() {
 
   //RENDER D3.js GRAPH
   d3.select("#graph-svg").selectAll("*").remove();
-  drawGraph(window.graphObjects);
+  RenderNodes = drawGraph(window.graphObjects);
 }
 
 function updateNodeDropdowns() {
