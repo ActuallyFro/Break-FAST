@@ -2,7 +2,7 @@
 // UI
 //---------------------------
 function OperationsUIObjectsFormSetup() {
-  console.log("#.#.#.# Develop user interface for adding objects");
+  //console.log("#.#.#.# Develop user interface for adding objects");
 
   const graphTypeDropdown = document.getElementById('graph-type');
   graphTypeDropdown.addEventListener('change', () => {
@@ -38,31 +38,36 @@ function OperationsUIObjectsFormSetup() {
       }
   
       addObjectOrUpdate(objectId, graphType, { label: nodeLabel, properties });
+
     } else {
       const edgeLabel = document.getElementById('edge-label').value;
       const edgeKey = document.getElementById('edge-key').value;
       const edgeValue = document.getElementById('edge-value').value;
       const sourceNode = document.getElementById('source-node').value;
       const targetNode = document.getElementById('target-node').value;
-      addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, target: targetNode });
+
+      const sourceNodeId = window.graphObjects.find(obj => obj.label === sourceNode).id;
+      const targetNodeId = window.graphObjects.find(obj => obj.label === targetNode).id;
+
+      // addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId });
+      addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
     }
-
-
 
     updateTable();
     resetForm();
+    reprintGraphMLFile();
   });
 
 }
 
 // In your import and export functions
 window.exportGraphObjects = function(event) {
-  console.log("X.X.2 Export graph objects to JSON file");
+  //console.log("X.X.2 Export graph objects to JSON file");
   SJFIJSONExport({objects: window.graphObjects, title: window.graphTitle, directionality: window.graphDirectionality}); // Include title
 }
 
 window.importGraphObjects = async function(event) {
-  console.log("X.X.2 Import graph objects to JSON file");
+  //console.log("X.X.2 Import graph objects to JSON file");
 
   const importedData = await SJFIJSONImport(event.target.files[0]);
   if (importedData) {
@@ -77,7 +82,7 @@ window.importGraphObjects = async function(event) {
 }
 
 function OperationsUIObjectsButtonSetup() {
-  console.log("0.1.2 Initialize User Interface for adding objects");
+  //console.log("0.1.2 Initialize User Interface for adding objects");
   
   const newObjectOrCLEARButton = document.getElementById('new-button');
   newObjectOrCLEARButton.addEventListener('click', () => {
@@ -110,11 +115,13 @@ function OperationsUIObjectsButtonSetup() {
   const resetButton = document.getElementById('reset-button');
   resetButton.addEventListener('click', function() {
     window.resetLocalStorage(window.SJFI_storageKey);
+    window.reprintGraphMLFile();
+    window.resetGraphSettings();
   });
 
   const updateGraphSettingsButton = document.getElementById('update-graph-settings-button');
   updateGraphSettingsButton.addEventListener('click',() => {
-    console.log("[DEBUG] SAVE - GRAPH SETTINGS BUTTON CLICKED");
+    //console.log("[DEBUG] SAVE - GRAPH SETTINGS BUTTON CLICKED");
     window.graphTitle = document.getElementById('graph-title').value;
     window.graphDirectionality = document.getElementById('graph-directionality').value;
     saveGraphSettings(window.SJFI_storageKey);
@@ -122,7 +129,7 @@ function OperationsUIObjectsButtonSetup() {
 }
 
 function updateTable() {
-  console.log("X.X.1 Update table of graph objects");
+  //console.log("X.X.1 Update table of graph objects");
   const tableBody = document.getElementById('graph-object-table-body');
   tableBody.innerHTML = '';
 

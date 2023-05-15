@@ -40,7 +40,7 @@ window.saveGraphSettings = function(storageKey, debug = false) {
 
 window.loadGraphSettings = function(storageKey, debug = false) {
   let needToUpdate = false;
-  console.log("[DEBUG] loadGraphSettings(" + storageKey + ") called");
+  if (debug) console.log("[DEBUG] loadGraphSettings(" + storageKey + ") called");
   const storedTitle = localStorage.getItem(`${storageKey}_title`);
   const storedDirectionality = localStorage.getItem(`${storageKey}_directionality`);
   

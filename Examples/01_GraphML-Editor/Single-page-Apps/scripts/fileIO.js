@@ -1,12 +1,14 @@
 //http://graphml.graphdrawing.org/primer/graphml-primer.html#Graph
+// window.defaultGraphMLHEADER = `<?xml version="1.0" encoding="UTF-8"?>
+// <graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+//     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+//     xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+//         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+
+// `;
+
 window.defaultGraphMLHEADER = `<?xml version="1.0" encoding="UTF-8"?>
-<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
-        http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
-
-`;
-
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">`;
         // <!-- Attribute Keys -->
         // <!--     (From 'Recommended Attribute Keys' Above -^ filled in) -->
     
@@ -24,9 +26,7 @@ window.defaultGraphMLHEADER = `<?xml version="1.0" encoding="UTF-8"?>
 
 //"There is no order defined for the appearance of node and edge elements." This means it CAN mix! --> implies issues for parsing
 
-window.defaultGraphMLFOOTER = `
-
-    </graph>
+window.defaultGraphMLFOOTER = `    </graph>
 </graphml>`;
 
 
@@ -51,11 +51,11 @@ function renderGraphMLToFileArea() {
 }
 
 //create window function reprintGraphMLFile()
-window.reprintGraphMLFile = function(objectId, graphType, data) {
-    setGraphMLContent(defaultGraphMLHEADER);
+window.reprintGraphMLFile = function() {
+    setGraphMLContent(defaultGraphMLHEADER+"\n");
 
     //<KEYS>
-    setGraphMLContentAPPEND("    <!-- Attribute Keys -->");
+    setGraphMLContentAPPEND("    <!-- Attribute Keys -->\n");
     // Extract unique keys from node and edge properties
     let uniqueKeys = new Map();
 
@@ -78,22 +78,23 @@ window.reprintGraphMLFile = function(objectId, graphType, data) {
     });
 
     // Generate key XML for each unique key
+    setGraphMLContentAPPEND("        <!-- supported types: boolean|int|long|float|double|string ; DEFAULT == STRING-->\n");
     uniqueKeys.forEach((keys, type) => {
         keys.forEach(key => {
-            let keyXML = `
-            <key attr.name="KEY_${type.toUpperCase()}_ID_${key}" attr.type="boolean|int|long|float|double|string" for="${type}" id="${key}">
-                <default>MISSING DESCRIPTION</default>
-            </key>`;
+            // let keyXML = `<key attr.name="KEY_${type.toUpperCase()}_ID_${key}" attr.type="boolean|int|long|float|double|string" for="${type}" id="${key}">
+            //     <default>MISSING DESCRIPTION</default>
+            // </key>`;
+            let keyXML = `        <key attr.name="KEY_${type.toUpperCase()}_ID_${key}" attr.type="string" for="${type}" id="${key}"/>\n`;
             setGraphMLContentAPPEND(keyXML);
         });
     });
 
     // <GRAPH>
     //OPTIONAL: <graph id="..."
-    setGraphMLContentAPPEND('\n\n    <graph id="' + window.graphTitle + '" edgedefault="' + window.graphDirectionality + '">');
+    setGraphMLContentAPPEND('    <graph id="' + window.graphTitle + '" edgedefault="' + window.graphDirectionality + '">\n');
 
     //--------------------------------------------------------------------------------
-    setGraphMLContentAPPEND("\n\n        <!-- Node Entries -->\n");
+    setGraphMLContentAPPEND("        <!-- Node Entries -->\n");
     const nodeObjects = graphObjects.filter(object => object.type === 'node');
 
     // Iterate over nodeObjects and append node XML for each object
@@ -114,15 +115,15 @@ window.reprintGraphMLFile = function(objectId, graphType, data) {
 
 
     //--------------------------------------------------------------------------------
-    setGraphMLContentAPPEND("\n\n        <!-- Edge Entries -->\n");
+    setGraphMLContentAPPEND("        <!-- Edge Entries -->\n");
     const edgeObjects = graphObjects.filter(object => object.type === 'edge');
 
     // Iterate over edgeObjects and append edge XML for each object
+    //source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId 
     edgeObjects.forEach((edge) => {
-        let edgeXML = `
-            <edge id="${edge.id}" source="${edge.source}" target="${edge.target}">
+        let edgeXML = `            <edge id="${edge.id}" source="${edge.sourceId}" target="${edge.targetId}">
                 <data key="${edge.key}">${edge.value}</data>
-            </edge>`;
+            </edge>\n`;
 
         setGraphMLContentAPPEND(edgeXML);
     });

@@ -27,6 +27,16 @@ function editObject(object) {
     sourceNodeInput.value = object.source;
     const targetNodeInput = document.getElementById('target-node');
     targetNodeInput.value = object.target;
+
+  //Loop thru nodes to find id -- source-node-id & target-node-id
+    const sourceNodeId = window.graphObjects.find(obj => obj.label === object.source).id;
+    const targetNodeId = window.graphObjects.find(obj => obj.label === object.target).id;
+
+    const sourceNodeIdInput = document.getElementById('source-node-id');
+    sourceNodeIdInput.value = sourceNodeId;
+    const targetNodeIdInput = document.getElementById('target-node-id');
+    targetNodeIdInput.value = targetNodeId;
+
   }
 
   // Set editingIndex to the index of the object being edited
