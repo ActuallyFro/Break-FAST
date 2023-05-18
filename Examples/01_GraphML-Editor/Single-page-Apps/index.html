@@ -46,9 +46,10 @@
       </div>
   </nav>
 
-    <h1 id="section-a">A) Current Visual Graph</h1>
+  <h1 id="section-a">A) Current Visual Graph</h1>
     <!-- <div class="rectangle" style="height: 50px;width: 100px;background-color: #555;color: #FFF;"> PLACE HOLDER FOR D3.js</div> -->
-    <div id="d3-container">
+    <!-- Draw a 1px box around the div  -->
+    <div id="d3-container" style="position: relative; width: 1752px; height: 800px; border: 1px solid black;">
       <svg id="graph-svg"></svg>
     </div>
     <button id="reset-d3-button">Reset Drawing</button>
@@ -58,18 +59,40 @@
     <button id="export-config-button">Export Config</button>
     <input type="file" id="import-config-file" style="display:none" accept=".json">
     <button id="import-config-button">Import Config</button>
-
+    <button id="zoom-in-button">Zoom In</button>
+    <button id="zoom-out-button">Zoom Out</button>
+    
     <div id="context-menu" style="display: none; position: absolute; background-color: white; border: 1px solid black;">
       <label>
           Color:
           <input id="color-picker" type="color" value="#000000" />
       </label>
+      <br>
+      <!-- input for font size -->
+      <label for="font-size">Font Size:</label>
+      <input type="number" id="font-size" name="font-size" min="1" max="100" value="12">
+      <br>
+      <!-- Input for font y offset -->
+      <label for="font-y-offset">Font Y Offset:</label>
+      <input type="number" id="font-y-offset" name="font-y-offset" min="-100" max="100" value="0">
+      <br>
+      <!-- Input for font x offset -->
+      <label for="font-x-offset">Font X Offset:</label>
+      <input type="number" id="font-x-offset" name="font-x-offset" min="-100" max="100" value="0">
+      <br>
+      <!-- Input for node radius -->
+      <label for="node-radius">Node Radius:</label>
+      <input type="number" id="node-radius" name="node-radius" min="1" max="100" value="20">
+      <br>
     </div>
   
-    <div id="graph-context-menu" style="position: absolute; display: none;">
-      <button id="toggle-node-labels">Toggle Node Labels</button>
-      <button id="toggle-edge-labels">Toggle Edge Labels</button>
+    <!-- position: absolute; display: none; -- hover to the left -->
+    <div id="graph-context-menu" style="position: absolute; display: none; background-color: rgb(21, 148, 207); border: 1px solid black;">
+      <button id="toggle-node-labels">Toggle Node Labels</button><br>
+      <button id="toggle-edge-labels">Toggle Edge Labels</button><br>
+      <button id="toggle-label-color">Toggle Label Color</button>
     </div>
+    
 
     <hr>
     <h1 id="section-b">B) GraphML Object Editing</h1>
