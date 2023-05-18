@@ -2,56 +2,34 @@
 let nodeColors = JSON.parse(localStorage.getItem('nodeColors')) || {};
 let labelColor = localStorage.getItem('labelColor') || 'black';
 // let nodeOutlineColor = localStorage.getItem('nodeOutlineColor') || 'black';
+let nodeSettings = JSON.parse(localStorage.getItem('nodeSettings')) || {};
 
-// Initialize new settings
+// // Initialize new settings
 let fontSize = localStorage.getItem('fontSize') || '12';
 let offsetX = localStorage.getItem('offsetX') || '0';
 let offsetY = localStorage.getItem('offsetY') || '0';
 let nodeRadius = localStorage.getItem('nodeRadius') || '20';
+
+
+
 
 window.drawGraph = function(graphObjects, debug = false) {
     // Define the dimensions of the SVG
     const width = 1750;
     const height = 800;
 
+    // const nodes = graphObjects.filter(object => object.type === 'node');
+    const nodeObjects = graphObjects.filter(object => object.type === 'node'); //SAME AS LINE ABOVE
+    const edgeObjects = graphObjects.filter(object => object.type === 'edge');
+
+
     // Define the SVG
     const svg = d3.select('#graph-svg')
         .attr('width', width)
         .attr('height', height)
 
-// ----------------------------------------------------------
-d3.select('#font-size').on('input', function() {
-    fontSize = this.value;
-    d3.selectAll('.label').style('font-size', fontSize + 'px');
-    localStorage.setItem('fontSize', fontSize);
-});
-
-d3.select('#font-x-offset').on('input', function() {
-    offsetX = this.value;
-    d3.selectAll('.label').attr('dx', offsetX);
-    localStorage.setItem('offsetX', offsetX);
-});
-
-d3.select('#font-y-offset').on('input', function() {
-    offsetY = this.value;
-    d3.selectAll('.label').attr('dy', offsetY);
-    localStorage.setItem('offsetY', offsetY);
-});
-
-d3.select('#node-radius').on('input', function() {
-    nodeRadius = this.value;
-    d3.selectAll('.node').attr('r', nodeRadius);
-    localStorage.setItem('nodeRadius', nodeRadius);
-});
-// ----------------------------------------------------------
-
     // Instead of appending elements directly to the SVG, we append them to a group element.
     const g = svg.append("g");
-
-
-    // const nodes = graphObjects.filter(object => object.type === 'node');
-    const nodeObjects = graphObjects.filter(object => object.type === 'node'); //SAME AS LINE ABOVE
-    const edgeObjects = graphObjects.filter(object => object.type === 'edge');
 
     // // Create a new array of edges where source and target are node ids
     const links = edgeObjects.map(edge => {
@@ -64,15 +42,6 @@ d3.select('#node-radius').on('input', function() {
         };
     });
 
-    
-    // Draw edges (literal line)
-    const link = g.selectAll('.link')
-        .data(links) // use links instead of edges
-        .join('line')
-        .attr('class', 'link')
-        .attr('stroke', 'black');
-
-
     // Define the simulation
     const simulation = d3.forceSimulation(nodeObjects) //replaced nodes
         .force('charge', d3.forceManyBody().strength(-50))
@@ -80,12 +49,19 @@ d3.select('#node-radius').on('input', function() {
         .force('link', d3.forceLink(links).id(d => d.id))
         .on('tick', ticked);
 
+    // Draw edges (literal line)
+    const link = g.selectAll('.link')
+        .data(links) // use links instead of edges
+        .join('line')
+        .attr('class', 'link')
+        .attr('stroke', 'black');
+
     // Modify the node drawing code to use the color from nodeColors
     const node = g.selectAll('.node')
         .data(nodeObjects)
         .join('circle')
         .attr('class', 'node')
-        .attr('r', nodeRadius)
+        .attr('r', d => nodeSettings[d.id] && nodeSettings[d.id].radius ? nodeSettings[d.id].radius : 20)
         .style('fill', d => nodeColors[d.id] || 'lightblue')
         .style('stroke', labelColor)
         .call(drag(simulation))
@@ -98,15 +74,43 @@ d3.select('#node-radius').on('input', function() {
                 .style('display', 'block');
 
             d3.select('#color-picker').node().value = nodeColors[d.id] || '#000000';
-            d3.select('#font-size').node().value = fontSize;
-            d3.select('#font-x-offset').node().value = offsetX;
-            d3.select('#font-y-offset').node().value = offsetY;
-            d3.select('#node-radius').node().value = nodeRadius;
+            d3.select('#font-size').node().value = nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize : '12';
+            d3.select('#font-x-offset').node().value = nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0';
+            d3.select('#font-y-offset').node().value = nodeSettings[d.id] && nodeSettings[d.id].offsetY ? nodeSettings[d.id].offsetY : '0';
+            d3.select('#node-radius').node().value = nodeSettings[d.id] && nodeSettings[d.id].radius ? nodeSettings[d.id].radius : '20';
 
             d3.select('#color-picker').on('input', function() {
                 nodeColors[d.id] = this.value;
                 d3.select(event.currentTarget).style('fill', this.value);
                 localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
+            });
+
+            d3.select('#font-size').on('input', function() {
+                d3.select(`#label${d.id}`).style('font-size', this.value + 'px');
+                nodeSettings[d.id] = nodeSettings[d.id] || {};
+                nodeSettings[d.id].fontSize = this.value;
+                localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+            });
+
+            d3.select('#font-x-offset').on('input', function() {
+                d3.select(`#label${d.id}`).attr('dx', this.value);
+                nodeSettings[d.id] = nodeSettings[d.id] || {};
+                nodeSettings[d.id].offsetX = this.value;
+                localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+            });
+
+            d3.select('#font-y-offset').on('input', function() {
+                d3.select(`#label${d.id}`).attr('dy', this.value);
+                nodeSettings[d.id] = nodeSettings[d.id] || {};
+                nodeSettings[d.id].offsetY = this.value;
+                localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+            });
+
+            d3.select('#node-radius').on('input', function() {
+                d3.select(event.currentTarget).attr('r', this.value);
+                nodeSettings[d.id] = nodeSettings[d.id] || {};
+                nodeSettings[d.id].radius = this.value;
+                localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
             });
         });
 
@@ -123,6 +127,7 @@ d3.select('#node-radius').on('input', function() {
         .attr('dx', offsetX)
         .attr('dy', offsetY)
         .attr('text-anchor', 'middle');
+
 
     // // Draw edge labels
     const edgeLabel = g.selectAll('.edgelabel')
@@ -144,30 +149,7 @@ d3.select('#node-radius').on('input', function() {
         });
     svg.call(zoom);
 
-
-    // Update the positions of the nodes, edges, and labels
-    function ticked() {
-        node.attr('cx', d => d.x)
-            .attr('cy', d => d.y)
-            .style('fill', d => nodeColors[d.id] || 'lightblue');
-
-        node.attr('cx', d => d.x)
-            .attr('cy', d => d.y);
-
-        link.attr('x1', d => d.source.x)
-            .attr('y1', d => d.source.y)
-            .attr('x2', d => d.target.x)
-            .attr('y2', d => d.target.y);
-
-        label.attr('x', d => d.x)
-            .attr('y', d => d.y);
-
-        // Update edge label positions
-        edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
-            .attr('y', d => (d.source.y + d.target.y) / 2)
-            .attr('text-anchor', 'middle')
-            .attr('dy', '.35em');            
-    }
+    
 
     // Get computed styles
     const nodesComputedStyles = window.getComputedStyle(d3.select('.node').node());
@@ -254,6 +236,30 @@ d3.select('#node-radius').on('input', function() {
     document.getElementById('zoom-out-button').addEventListener('click', () => {
         zoom.scaleBy(svg.transition().duration(750), 0.8);  // zoom out
     });    
+
+    function ticked() {
+        node.attr('cx', d => d.x)
+            .attr('cy', d => d.y)
+            .attr('r', d => nodeSettings[d.id] && nodeSettings[d.id].radius ? nodeSettings[d.id].radius : 20)
+            .style('fill', d => nodeColors[d.id] || 'lightblue');
+    
+        link.attr('x1', d => d.source.x)
+            .attr('y1', d => d.source.y)
+            .attr('x2', d => d.target.x)
+            .attr('y2', d => d.target.y);
+    
+        label.attr('x', d => d.x)
+            .attr('y', d => d.y)
+            .style('font-size', d => nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize + 'px' : '12px')
+            .attr('dx', d => nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0')
+            .attr('dy', d => nodeSettings[d.id] && nodeSettings[d.id].offsetY ? nodeSettings[d.id].offsetY : '0');
+    
+        // Update edge label positions
+        edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
+            .attr('y', d => (d.source.y + d.target.y) / 2)
+            .attr('text-anchor', 'middle')
+            .attr('dy', '.35em');            
+    }    
 
     return nodeObjects;
 }
