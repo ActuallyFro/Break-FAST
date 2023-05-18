@@ -3,22 +3,47 @@ let nodeColors = JSON.parse(localStorage.getItem('nodeColors')) || {};
 let labelColor = localStorage.getItem('labelColor') || 'black';
 // let nodeOutlineColor = localStorage.getItem('nodeOutlineColor') || 'black';
 
+// Initialize new settings
+let fontSize = localStorage.getItem('fontSize') || '12';
+let offsetX = localStorage.getItem('offsetX') || '0';
+let offsetY = localStorage.getItem('offsetY') || '0';
+let nodeRadius = localStorage.getItem('nodeRadius') || '20';
+
 window.drawGraph = function(graphObjects, debug = false) {
     // Define the dimensions of the SVG
     const width = 1750;
     const height = 800;
 
-
-//     <defs>
-//     <filter id="text-shadow">
-//       <feDropShadow dx="1" dy="1" stdDeviation="0.5" flood-color="black" flood-opacity="0.5"/>
-//     </filter>
-//   </defs>
-
     // Define the SVG
     const svg = d3.select('#graph-svg')
         .attr('width', width)
         .attr('height', height)
+
+// ----------------------------------------------------------
+d3.select('#font-size').on('input', function() {
+    fontSize = this.value;
+    d3.selectAll('.label').style('font-size', fontSize + 'px');
+    localStorage.setItem('fontSize', fontSize);
+});
+
+d3.select('#font-x-offset').on('input', function() {
+    offsetX = this.value;
+    d3.selectAll('.label').attr('dx', offsetX);
+    localStorage.setItem('offsetX', offsetX);
+});
+
+d3.select('#font-y-offset').on('input', function() {
+    offsetY = this.value;
+    d3.selectAll('.label').attr('dy', offsetY);
+    localStorage.setItem('offsetY', offsetY);
+});
+
+d3.select('#node-radius').on('input', function() {
+    nodeRadius = this.value;
+    d3.selectAll('.node').attr('r', nodeRadius);
+    localStorage.setItem('nodeRadius', nodeRadius);
+});
+// ----------------------------------------------------------
 
     // Instead of appending elements directly to the SVG, we append them to a group element.
     const g = svg.append("g");
@@ -57,26 +82,27 @@ window.drawGraph = function(graphObjects, debug = false) {
 
     // Modify the node drawing code to use the color from nodeColors
     const node = g.selectAll('.node')
-        .data(nodeObjects) //replaced nodes
+        .data(nodeObjects)
         .join('circle')
         .attr('class', 'node')
-        .attr('r', 20)
-        .attr('fill', d => nodeColors[d.id] || 'lightblue') // Use the color from nodeColors if it exists
-        .attr('stroke', 'black') //or `nodeOutlineColor`
+        .attr('r', nodeRadius)
+        .style('fill', d => nodeColors[d.id] || 'lightblue')
+        .style('stroke', labelColor)
         .call(drag(simulation))
-        .on('contextmenu', function(event, d) { // Add a right-click handler
+        .on('contextmenu', function(event, d) {
             event.preventDefault();
 
-            // Show the context menu at the mouse position
             d3.select('#context-menu')
                 .style('left', `${event.pageX}px`)
                 .style('top', `${event.pageY}px`)
                 .style('display', 'block');
 
-            // Update the color picker when it changes
             d3.select('#color-picker').node().value = nodeColors[d.id] || '#000000';
+            d3.select('#font-size').node().value = fontSize;
+            d3.select('#font-x-offset').node().value = offsetX;
+            d3.select('#font-y-offset').node().value = offsetY;
+            d3.select('#node-radius').node().value = nodeRadius;
 
-            // When the color picker value changes, update nodeColors and the node color
             d3.select('#color-picker').on('input', function() {
                 nodeColors[d.id] = this.value;
                 d3.select(event.currentTarget).style('fill', this.value);
@@ -86,15 +112,17 @@ window.drawGraph = function(graphObjects, debug = false) {
 
     // Draw labels - FOR NODES
     const label = g.selectAll('.label')
-        .data(nodeObjects) //replaced nodes
+        .data(nodeObjects)
         .join('text')
         .attr('class', 'label')
         .text(d => d.label)
         .attr('x', d => d.x)
         .attr('y', d => d.y)
-        .attr('fill', labelColor) // Use the labelColor variable for the fill color
-        .attr('text-anchor', 'middle')
-        .attr('dy', '.35em');
+        .style('fill', labelColor)
+        .style('font-size', fontSize + 'px')
+        .attr('dx', offsetX)
+        .attr('dy', offsetY)
+        .attr('text-anchor', 'middle');
 
     // // Draw edge labels
     const edgeLabel = g.selectAll('.edgelabel')
@@ -139,11 +167,6 @@ window.drawGraph = function(graphObjects, debug = false) {
             .attr('y', d => (d.source.y + d.target.y) / 2)
             .attr('text-anchor', 'middle')
             .attr('dy', '.35em');            
-
-        // Don't think this did anything...
-        // edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
-        //          .attr('y', d => (d.source.y + d.target.y) / 2);
-
     }
 
     // Get computed styles
