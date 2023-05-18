@@ -6,6 +6,7 @@
     <title>SPA GraphML Editor</title>
     <link rel="stylesheet" href="./styles/styles.css">
     <link href="./styles/SJUS_1-0-0_ScrollToTop.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light">
@@ -160,20 +161,73 @@
 
     <hr style="width: 90%; float: left; margin-top: 0;">
     <br>
-    <h2>II) Object Table</h2>
-      <table id="graph-object-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Type</th>
-            <th>Label</th>
-            <th>Edit</th>
-            <th>Remove</th>
-        </tr>
-        </thead>
-        <tbody id="graph-object-table-body">
-        </tbody>
+    <div class="container">
+      <h2>II) Object Table</h2>
+      <div class="form-group">
+        <input type="text" class="form-control" id="tableSearch" placeholder="Search Table">
+      </div>
+    
+      <table id="graph-object-table" class="table table-hover table-striped">
+          <thead>
+              <tr>
+                  <th scope="col" class="sortable">ID</th>
+                  <th scope="col" class="sortable">Type</th>
+                  <th scope="col" class="sortable">Label</th>
+                  <th scope="col" class="sortable">Edit</th>
+                  <th scope="col" class="sortable">Remove</th>
+              </tr>
+          </thead>
+          <tbody id="graph-object-table-body">
+          </tbody>
       </table>
+    </div>
+
+  <!-- Include Bootstrap JS and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script>
+    $(document).ready(function() {
+        $('.sortable').click(function() {
+            var table = $(this).parents('table').eq(0)
+            var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+            this.asc = !this.asc
+            if (!this.asc) {
+                rows = rows.reverse()
+            }
+            for (var i = 0; i < rows.length; i++) {
+                table.append(rows[i])
+            }
+            setIcon($(this), this.asc);
+        })
+  
+        function comparer(index) {
+            return function(a, b) {
+                var valA = getCellValue(a, index), valB = getCellValue(b, index)
+                return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+            }
+        }
+  
+        function getCellValue(row, index) {
+            return $(row).children('td').eq(index).text()
+        }
+  
+        function setIcon(element, asc) {
+            $("th").find("i").remove(); // remove existing icons
+            if (asc) {
+                element.append(' <i class="bi bi-arrow-up-short"></i>');
+            } else {
+                element.append(' <i class="bi bi-arrow-down-short"></i>');
+            }
+        }
+        //Search bar function
+        $("#tableSearch").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#graph-object-table-body tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+  </script>
+  
 
     <hr>
     <h2>III) Object Import/Export</h2>
