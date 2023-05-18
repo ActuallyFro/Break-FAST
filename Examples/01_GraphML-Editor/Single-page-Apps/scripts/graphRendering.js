@@ -1,15 +1,24 @@
 // Add a colors object to keep track of node colors
 let nodeColors = JSON.parse(localStorage.getItem('nodeColors')) || {};
+let labelColor = localStorage.getItem('labelColor') || 'black';
+// let nodeOutlineColor = localStorage.getItem('nodeOutlineColor') || 'black';
 
 window.drawGraph = function(graphObjects, debug = false) {
     // Define the dimensions of the SVG
     const width = 1750;
     const height = 800;
 
+
+//     <defs>
+//     <filter id="text-shadow">
+//       <feDropShadow dx="1" dy="1" stdDeviation="0.5" flood-color="black" flood-opacity="0.5"/>
+//     </filter>
+//   </defs>
+
     // Define the SVG
     const svg = d3.select('#graph-svg')
         .attr('width', width)
-        .attr('height', height);
+        .attr('height', height)
 
     // Instead of appending elements directly to the SVG, we append them to a group element.
     const g = svg.append("g");
@@ -46,7 +55,6 @@ window.drawGraph = function(graphObjects, debug = false) {
         .force('link', d3.forceLink(links).id(d => d.id))
         .on('tick', ticked);
 
-
     // Modify the node drawing code to use the color from nodeColors
     const node = g.selectAll('.node')
         .data(nodeObjects) //replaced nodes
@@ -54,6 +62,7 @@ window.drawGraph = function(graphObjects, debug = false) {
         .attr('class', 'node')
         .attr('r', 20)
         .attr('fill', d => nodeColors[d.id] || 'lightblue') // Use the color from nodeColors if it exists
+        .attr('stroke', 'black') //or `nodeOutlineColor`
         .call(drag(simulation))
         .on('contextmenu', function(event, d) { // Add a right-click handler
             event.preventDefault();
@@ -83,6 +92,7 @@ window.drawGraph = function(graphObjects, debug = false) {
         .text(d => d.label)
         .attr('x', d => d.x)
         .attr('y', d => d.y)
+        .attr('fill', labelColor) // Use the labelColor variable for the fill color
         .attr('text-anchor', 'middle')
         .attr('dy', '.35em');
 
@@ -143,7 +153,7 @@ window.drawGraph = function(graphObjects, debug = false) {
     // Apply computed styles inline
     d3.selectAll('.node')
         .style('fill', nodesComputedStyles.fill)
-        .style('stroke', nodesComputedStyles.stroke)
+        .style('stroke', 'black') //or `nodesComputedStyles.stroke`
         .style('stroke-width', nodesComputedStyles.strokeWidth);
 
     d3.selectAll('.link')
@@ -224,6 +234,21 @@ window.drawGraph = function(graphObjects, debug = false) {
 
     return nodeObjects;
 }
+
+document.getElementById('toggle-label-color').addEventListener('click', () => {
+    // Toggle the label color between black and white
+    labelColor = labelColor === 'black' ? 'white' : 'black';
+    // nodeOutlineColor= nodeOutlineColor === 'black' ? 'black' : 'white';
+
+    // Update the color of the labels and the node stroke
+    d3.selectAll('.label').style('fill', labelColor);
+    //d3.selectAll('.edgelabel').style('fill', labelColor);
+    // d3.selectAll('.node').style('stroke', nodeOutlineColor); // Update the node stroke color
+
+    // Save the label color in localStorage
+    localStorage.setItem('labelColor', labelColor);
+    // localStorage.setItem('nodeOutlineColor', nodeOutlineColor);
+});
 
 
   //MOVE to other buttons?
