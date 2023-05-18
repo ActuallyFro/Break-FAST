@@ -207,6 +207,14 @@ const node = svg.selectAll('.node')
         }
     });
     
+    // New three-finger touch event -- to close context menu
+    document.addEventListener('touchstart', function(event) {
+        if (event.touches.length === 3) {
+            d3.select('#graph-context-menu')
+                .style('display', 'none');
+        }
+    });
+
 
     return nodes;
 }
