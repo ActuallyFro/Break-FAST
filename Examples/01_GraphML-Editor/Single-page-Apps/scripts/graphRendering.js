@@ -44,16 +44,6 @@ window.drawGraph = function(graphObjects, debug = false) {
         .force('link', d3.forceLink(links).id(d => d.id))
         .on('tick', ticked);
 
-    // // Draw nodes
-    // const node = svg.selectAll('.node')
-    //     .data(nodes)
-    //     .join('circle')
-    //     .attr('class', 'node')
-    //     .attr('r', 20)
-    //     .attr('fill', 'lightblue')
-    //     .call(drag(simulation));
-
-
 // Modify the node drawing code to use the color from nodeColors
 const node = svg.selectAll('.node')
     .data(nodes)
@@ -231,37 +221,6 @@ const node = svg.selectAll('.node')
     RenderNodes = drawGraph(graphObjects);
   });
 
-// Now you can export the SVG to a new tab
-// Puts graph into a new tab -- but cannot be saved as SVG
-// document.getElementById('print-button').addEventListener('click', () => {
-//     const svgElement = document.getElementById('graph-svg');
-//     const printWindow = window.open('', '_blank');
-//     printWindow.document.write('<html><head><title>Print</title>');
-//     printWindow.document.write('</head><body>');
-//     printWindow.document.write(svgElement.outerHTML);
-//     printWindow.document.write('</body></html>');
-//     printWindow.document.close();
-// });
-
-
-    // DOES NOT run: -- open in new tab
-    // const svgData = new XMLSerializer().serializeToString(svgElement);
-    // const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    // const svgUrl = URL.createObjectURL(svgBlob);
-
-    // const img = new Image();
-
-    // img.onload = function() {
-    //     const canvas = document.createElement('canvas');
-    //     const ctx = canvas.getContext('2d');
-    //     canvas.width = svgElement.viewBox.baseVal.width;
-    //     canvas.height = svgElement.viewBox.baseVal.height;
-    //     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    //     const pngUrl = canvas.toDataURL('image/png');
-    //     window.open(pngUrl, '_blank');
-    // };
-
-    // img.src = svgUrl;
     document.getElementById('print-button').addEventListener('click', () => {
         const svgElement = document.getElementById('graph-svg');
         const blob = new Blob([svgElement.outerHTML], {type: 'image/svg+xml'});
