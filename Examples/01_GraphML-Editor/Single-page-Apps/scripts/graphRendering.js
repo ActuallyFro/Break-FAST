@@ -3,21 +3,21 @@ let nodeColors = JSON.parse(localStorage.getItem('nodeColors')) || {};
 
 window.drawGraph = function(graphObjects, debug = false) {
     // Define the dimensions of the SVG
-    const width = 1200;
+    const width = 1750;
     const height = 800;
-
-    // Get nodes and edges from the graphObjects array
-    const nodes = graphObjects.filter(object => object.type === 'node');
-    const edges = graphObjects.filter(object => object.type === 'edge');
-
-    // Separate nodes and edges
-    const nodeObjects = graphObjects.filter(object => object.type === 'node');
-    const edgeObjects = graphObjects.filter(object => object.type === 'edge');
 
     // Define the SVG
     const svg = d3.select('#graph-svg')
         .attr('width', width)
         .attr('height', height);
+
+    // Instead of appending elements directly to the SVG, we append them to a group element.
+    const g = svg.append("g");
+
+
+    // const nodes = graphObjects.filter(object => object.type === 'node');
+    const nodeObjects = graphObjects.filter(object => object.type === 'node'); //SAME AS LINE ABOVE
+    const edgeObjects = graphObjects.filter(object => object.type === 'edge');
 
     // // Create a new array of edges where source and target are node ids
     const links = edgeObjects.map(edge => {
@@ -30,23 +30,26 @@ window.drawGraph = function(graphObjects, debug = false) {
         };
     });
 
+    
     // Draw edges (literal line)
-    const link = svg.selectAll('.link')
+    const link = g.selectAll('.link')
         .data(links) // use links instead of edges
         .join('line')
         .attr('class', 'link')
         .attr('stroke', 'black');
-        
+
+
     // Define the simulation
-    const simulation = d3.forceSimulation(nodes)
+    const simulation = d3.forceSimulation(nodeObjects) //replaced nodes
         .force('charge', d3.forceManyBody().strength(-50))
         .force('center', d3.forceCenter(width / 2, height / 2))
         .force('link', d3.forceLink(links).id(d => d.id))
         .on('tick', ticked);
 
+
     // Modify the node drawing code to use the color from nodeColors
-    const node = svg.selectAll('.node')
-        .data(nodes)
+    const node = g.selectAll('.node')
+        .data(nodeObjects) //replaced nodes
         .join('circle')
         .attr('class', 'node')
         .attr('r', 20)
@@ -73,8 +76,8 @@ window.drawGraph = function(graphObjects, debug = false) {
         });
 
     // Draw labels - FOR NODES
-    const label = svg.selectAll('.label')
-        .data(nodes)
+    const label = g.selectAll('.label')
+        .data(nodeObjects) //replaced nodes
         .join('text')
         .attr('class', 'label')
         .text(d => d.label)
@@ -84,7 +87,7 @@ window.drawGraph = function(graphObjects, debug = false) {
         .attr('dy', '.35em');
 
     // // Draw edge labels
-    const edgeLabel = svg.selectAll('.edgelabel')
+    const edgeLabel = g.selectAll('.edgelabel')
         .data(links)
         .join('text')
         .attr('class', 'edgelabel')
@@ -95,12 +98,12 @@ window.drawGraph = function(graphObjects, debug = false) {
         .style('fill', '#aaa')
         .text(d => d.label);
 
+    // Modify the zoom behavior to transform the group element instead of the SVG element
     const zoom = d3.zoom()
-    .scaleExtent([0.1, 10]) // this can be [zoomOutMax, zoomInMax]
-    .on('zoom', (event) => {
-        g.attr('transform', event.transform); // apply the new transform to the group
-    });
-
+        .scaleExtent([0.1, 10]) // this can be [zoomOutMax, zoomInMax]
+        .on('zoom', (event, d) => { 
+            g.attr('transform', event.transform);
+        });
     svg.call(zoom);
 
 
@@ -127,8 +130,9 @@ window.drawGraph = function(graphObjects, debug = false) {
             .attr('text-anchor', 'middle')
             .attr('dy', '.35em');            
 
-        edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
-                 .attr('y', d => (d.source.y + d.target.y) / 2);
+        // Don't think this did anything...
+        // edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
+        //          .attr('y', d => (d.source.y + d.target.y) / 2);
 
     }
 
@@ -183,19 +187,6 @@ window.drawGraph = function(graphObjects, debug = false) {
             .style('display', 'block');
     });
 
-    // Add click event listeners for the context menu buttons
-    document.getElementById('toggle-node-labels').addEventListener('click', () => {
-        const display = window.getComputedStyle(d3.select('.label').node()).display === 'none' ? 'block' : 'none';
-        d3.selectAll('.label').style('display', display);
-        localStorage.setItem('nodeLabelsDisplay', display);
-    });
-
-    document.getElementById('toggle-edge-labels').addEventListener('click', () => {
-        const display = window.getComputedStyle(d3.select('.edgelabel').node()).display === 'none' ? 'block' : 'none';
-        d3.selectAll('.edgelabel').style('display', display);
-        localStorage.setItem('edgeLabelsDisplay', display);
-    });
-
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             d3.select('#graph-context-menu')
@@ -210,18 +201,28 @@ window.drawGraph = function(graphObjects, debug = false) {
                 .style('display', 'none');
         }
     });
+    // Add click event listeners for the context menu buttons
+    document.getElementById('toggle-node-labels').addEventListener('click', () => {
+        const display = window.getComputedStyle(d3.select('.label').node()).display === 'none' ? 'block' : 'none';
+        d3.selectAll('.label').style('display', display);
+        localStorage.setItem('nodeLabelsDisplay', display);
+    });
+
+    document.getElementById('toggle-edge-labels').addEventListener('click', () => {
+        const display = window.getComputedStyle(d3.select('.edgelabel').node()).display === 'none' ? 'block' : 'none';
+        d3.selectAll('.edgelabel').style('display', display);
+        localStorage.setItem('edgeLabelsDisplay', display);
+    });
 
     document.getElementById('zoom-in-button').addEventListener('click', () => {
-        console.log('zoom in clicked');
         zoom.scaleBy(svg.transition().duration(750), 1.2);  // zoom in
     });
     
     document.getElementById('zoom-out-button').addEventListener('click', () => {
-        console.log('zoom out clicked');
         zoom.scaleBy(svg.transition().duration(750), 0.8);  // zoom out
     });    
 
-    return nodes;
+    return nodeObjects;
 }
 
 
