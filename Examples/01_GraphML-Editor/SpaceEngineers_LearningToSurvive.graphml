@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+    <!-- Attribute Keys -->
+        <!-- supported types: boolean|int|long|float|double|string ; DEFAULT == STRING-->
+        <key attr.name="KEY_NODE_ID_GPS-String" attr.type="string" for="node" id="GPS-String"/>
+        <key attr.name="KEY_NODE_ID_label" attr.type="string" for="node" id="label"/>
+        <key attr.name="KEY_NODE_ID_amount" attr.type="string" for="node" id="amount"/>
+        <key attr.name="KEY_NODE_ID_status" attr.type="string" for="node" id="status"/>
+        <key attr.name="KEY_NODE_ID_actions" attr.type="string" for="node" id="actions"/>
+        <key attr.name="KEY_EDGE_ID_label" attr.type="string" for="edge" id="label"/>
+    <graph id="SpaceEngineers_LearningToSurvive" edgedefault="undirected">
+        <!-- Node Entries -->
+            <node id="Base01">
+                <data key="label">Starting Base - Resources</data>
+                <data key="GPS-String">GPS:Base01#1:113:-119:14:#FF75C9F1:</data>
+            </node>
+            <node id="Base01Blk01">
+                <data key="label">O2-H2-Generator</data>
+                <data key="amount">1</data>
+                <data key="status"></data>
+            </node>
+            <node id="Base01Blk02">
+                <data key="label">SolarPanels</data>
+                <data key="amount">3</data>
+                <data key="status"></data>
+            </node>
+            <node id="Base01Blk03">
+                <data key="label">Batteries</data>
+                <data key="amount">2</data>
+                <data key="status">In the rock</data>
+            </node>
+            <node id="Base01Blk04">
+                <data key="label">CargoContainer</data>
+                <data key="label">Cargo Container</data>
+                <data key="amount">1</data>
+                <data key="status"></data>
+            </node>
+            <node id="Base01Blk05">
+                <data key="label">SurvivalKit</data>
+                <data key="amount">1</data>
+                <data key="status"></data>
+            </node>
+            <node id="Base01Blk06">
+                <data key="label">Gravity Generator</data>
+                <data key="amount">1</data>
+                <data key="status"></data>
+            </node>
+            <node id="Base01Blk07">
+                <data key="label">Beacon</data>
+                <data key="amount">1</data>
+                <data key="status"></data>
+            </node>
+            <node id="Base01Ship01">
+                <data key="label">Starter Ship</data>
+                <data key="amount">1</data>
+                <data key="status"></data>
+            </node>
+            <node id="Base01-Tasks">
+                <data key="label">Starting Base - Tasks</data>
+            </node>
+            <node id="BaseList01">
+                <data key="label">Base 1 (Starting Base)</data>
+            </node>
+            <node id="Base01Tsk01">
+                <data key="label">B1 - T1 (Survival Kit)</data>
+                <data key="label">Survival Kit (Usage)</data>
+                <data key="actions">auto-take damage; heal</data>
+            </node>
+            <node id="Base01Tsk02">
+                <data key="label">B1 - T2 (Solar Panels)</data>
+                <data key="label">Solar Panels (Fixing)</data>
+                <data key="actions">Repair pannel</data>
+            </node>
+            <node id="Base01Tsk03">
+                <data key="label">B1 - T3 (Mining)</data>
+                <data key="label">Mining (Performing)</data>
+                <data key="actions">locate drill; pick up Fe ore</data>
+            </node>
+            <node id="Base01Tsk04">
+                <data key="label">B1 - T4 (O2/H2 Connecting)</data>
+                <data key="label">O2/H2  (Connecting Pipes)</data>
+                <data key="actions">fix pipe; refill o2/h2 at survival kit</data>
+            </node>
+            <node id="Base01Tsk05">
+                <data key="label">B1 - T5 (Ship Connection)</data>
+                <data key="label">B1 - T5 (Ship Connection)</data>
+                <data key="actions">release ship from base</data>
+            </node>
+            <node id="BaseList02">
+                <data key="label">Base 2 (Ship Mining Base)</data>
+            </node>
+            <node id="BaseList">
+                <data key="label">Bases</data>
+            </node>
+        <!-- Edge Entries -->
+            <edge id="B1-Blk1" source="Base01Blk01" target="Base01">
+                <data key="label">B1-Blk1</data>
+            </edge>
+            <edge id="B1-Blk2" source="Base01Blk02" target="Base01">
+                <data key="label">B1-Blk2</data>
+            </edge>
+            <edge id="B1-Blk3" source="Base01Blk03" target="Base01">
+                <data key="label">B1-Blk3</data>
+            </edge>
+            <edge id="B1-Blk4" source="Base01Blk04" target="Base01">
+                <data key="label">B1-Blk4</data>
+            </edge>
+            <edge id="B1-Blk5" source="Base01Blk05" target="Base01">
+                <data key="label">B1-Blk5</data>
+            </edge>
+            <edge id="B1-Blk6" source="Base01Blk06" target="Base01">
+                <data key="label">B1-Blk6</data>
+            </edge>
+            <edge id="B1-Blk7" source="Base01Blk07" target="Base01">
+                <data key="label">B1-Blk7</data>
+            </edge>
+            <edge id="B1-Shp1" source="Base01Ship01" target="Base01">
+                <data key="label">B1-Shp1</data>
+            </edge>
+            <edge id="BL1-Res" source="Base01" target="BaseList01">
+                <data key="label">at</data>
+            </edge>
+            <edge id="BL1-Tsk" source="Base01-Tasks" target="BaseList01">
+                <data key="label">at</data>
+            </edge>
+            <edge id="B1-Tsk1" source="Base01Tsk01" target="Base01-Tasks">
+                <data key="label">starts at</data>
+            </edge>
+            <edge id="B1-Tsk2" source="Base01Tsk02" target="Base01-Tasks">
+                <data key="label">starts at</data>
+            </edge>
+            <edge id="B1-Tsk3" source="Base01Tsk03" target="Base01-Tasks">
+                <data key="label">starts at</data>
+            </edge>
+            <edge id="B1-Tsk4" source="Base01Tsk04" target="Base01-Tasks">
+                <data key="label">starts at</data>
+            </edge>
+            <edge id="B1-Tsk5" source="Base01Tsk05" target="Base01-Tasks">
+                <data key="label">starts at</data>
+            </edge>
+            <edge id="BaseList-to-B1" source="BaseList01" target="BaseList">
+                <data key="label">BaseList-to-B1</data>
+            </edge>
+            <edge id="BaseList-to-B2" source="BaseList02" target="BaseList">
+                <data key="label">BaseList-to-B2</data>
+            </edge>
+    </graph>
+</graphml>
