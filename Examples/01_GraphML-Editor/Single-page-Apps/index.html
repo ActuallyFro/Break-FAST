@@ -58,7 +58,9 @@
     <button id="export-config-button">Export Config</button>
     <input type="file" id="import-config-file" style="display:none" accept=".json">
     <button id="import-config-button">Import Config</button>
-
+    <button id="zoom-in-button">Zoom In</button>
+    <button id="zoom-out-button">Zoom Out</button>
+    
     <div id="context-menu" style="display: none; position: absolute; background-color: white; border: 1px solid black;">
       <label>
           Color:
@@ -66,8 +68,9 @@
       </label>
     </div>
   
-    <div id="graph-context-menu" style="position: absolute; display: none;">
-      <button id="toggle-node-labels">Toggle Node Labels</button>
+    <!-- position: absolute; display: none; -- hover to the left -->
+    <div id="graph-context-menu" style="position: absolute; display: none; background-color: rgb(21, 148, 207); border: 1px solid black;">
+      <button id="toggle-node-labels">Toggle Node Labels</button><br>
       <button id="toggle-edge-labels">Toggle Edge Labels</button>
     </div>
 

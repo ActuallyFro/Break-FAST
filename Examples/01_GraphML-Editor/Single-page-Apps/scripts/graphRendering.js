@@ -19,7 +19,7 @@ window.drawGraph = function(graphObjects, debug = false) {
         .attr('width', width)
         .attr('height', height);
 
-    // Create a new array of edges where source and target are node ids
+    // // Create a new array of edges where source and target are node ids
     const links = edgeObjects.map(edge => {
         const sourceNode = nodeObjects.find(node => node.id === edge.sourceId);
         const targetNode = nodeObjects.find(node => node.id === edge.targetId);
@@ -30,7 +30,7 @@ window.drawGraph = function(graphObjects, debug = false) {
         };
     });
 
-    // Draw edges
+    // Draw edges (literal line)
     const link = svg.selectAll('.link')
         .data(links) // use links instead of edges
         .join('line')
@@ -44,33 +44,33 @@ window.drawGraph = function(graphObjects, debug = false) {
         .force('link', d3.forceLink(links).id(d => d.id))
         .on('tick', ticked);
 
-// Modify the node drawing code to use the color from nodeColors
-const node = svg.selectAll('.node')
-    .data(nodes)
-    .join('circle')
-    .attr('class', 'node')
-    .attr('r', 20)
-    .attr('fill', d => nodeColors[d.id] || 'lightblue') // Use the color from nodeColors if it exists
-    .call(drag(simulation))
-    .on('contextmenu', function(event, d) { // Add a right-click handler
-        event.preventDefault();
+    // Modify the node drawing code to use the color from nodeColors
+    const node = svg.selectAll('.node')
+        .data(nodes)
+        .join('circle')
+        .attr('class', 'node')
+        .attr('r', 20)
+        .attr('fill', d => nodeColors[d.id] || 'lightblue') // Use the color from nodeColors if it exists
+        .call(drag(simulation))
+        .on('contextmenu', function(event, d) { // Add a right-click handler
+            event.preventDefault();
 
-        // Show the context menu at the mouse position
-        d3.select('#context-menu')
-            .style('left', `${event.pageX}px`)
-            .style('top', `${event.pageY}px`)
-            .style('display', 'block');
+            // Show the context menu at the mouse position
+            d3.select('#context-menu')
+                .style('left', `${event.pageX}px`)
+                .style('top', `${event.pageY}px`)
+                .style('display', 'block');
 
-        // Update the color picker when it changes
-        d3.select('#color-picker').node().value = nodeColors[d.id] || '#000000';
+            // Update the color picker when it changes
+            d3.select('#color-picker').node().value = nodeColors[d.id] || '#000000';
 
-        // When the color picker value changes, update nodeColors and the node color
-        d3.select('#color-picker').on('input', function() {
-            nodeColors[d.id] = this.value;
-            d3.select(event.currentTarget).style('fill', this.value);
-            localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
+            // When the color picker value changes, update nodeColors and the node color
+            d3.select('#color-picker').on('input', function() {
+                nodeColors[d.id] = this.value;
+                d3.select(event.currentTarget).style('fill', this.value);
+                localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
+            });
         });
-    });
 
     // Draw labels - FOR NODES
     const label = svg.selectAll('.label')
@@ -83,36 +83,32 @@ const node = svg.selectAll('.node')
         .attr('text-anchor', 'middle')
         .attr('dy', '.35em');
 
-    // Draw edge labels
+    // // Draw edge labels
     const edgeLabel = svg.selectAll('.edgelabel')
         .data(links)
         .join('text')
         .attr('class', 'edgelabel')
         .attr('id', (d, i) => 'edgelabel' + i)
-        .attr('dx', 80)
+        .attr('dx', 0)
         .attr('dy', 0)
         .attr('font-size', 10)
         .style('fill', '#aaa')
         .text(d => d.label);
 
-    // Update the positions of edge labels in ticked()
-    edgeLabel.attr('transform', function(d) {
-        if (d.target.x < d.source.x) {
-            const bbox = this.getBBox();
-
-            const rx = bbox.x + bbox.width / 2;
-            const ry = bbox.y + bbox.height / 2;
-            return 'rotate(180 ' + rx + ' ' + ry + ')';
-        } else {
-            return 'rotate(0)';
-        }
+    const zoom = d3.zoom()
+    .scaleExtent([0.1, 10]) // this can be [zoomOutMax, zoomInMax]
+    .on('zoom', (event) => {
+        g.attr('transform', event.transform); // apply the new transform to the group
     });
+
+    svg.call(zoom);
+
 
     // Update the positions of the nodes, edges, and labels
     function ticked() {
         node.attr('cx', d => d.x)
-        .attr('cy', d => d.y)
-        .style('fill', d => nodeColors[d.id] || 'lightblue');
+            .attr('cy', d => d.y)
+            .style('fill', d => nodeColors[d.id] || 'lightblue');
 
         node.attr('cx', d => d.x)
             .attr('cy', d => d.y);
@@ -124,6 +120,16 @@ const node = svg.selectAll('.node')
 
         label.attr('x', d => d.x)
             .attr('y', d => d.y);
+
+        // Update edge label positions
+        edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
+            .attr('y', d => (d.source.y + d.target.y) / 2)
+            .attr('text-anchor', 'middle')
+            .attr('dy', '.35em');            
+
+        edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
+                 .attr('y', d => (d.source.y + d.target.y) / 2);
+
     }
 
     // Get computed styles
@@ -166,13 +172,13 @@ const node = svg.selectAll('.node')
             //.on('end', dragended); <-- resets position VS leaving it
     }
 
-
     // On right click on the SVG, show the context menu
     svg.on('contextmenu', function(event) {
         event.preventDefault();
+        const menuWidth = document.getElementById('graph-context-menu').offsetWidth;
 
         d3.select('#graph-context-menu')
-            .style('left', `${event.pageX}px`)
+            .style('left', `${event.pageX - menuWidth}px`)
             .style('top', `${event.pageY}px`)
             .style('display', 'block');
     });
@@ -205,11 +211,18 @@ const node = svg.selectAll('.node')
         }
     });
 
+    document.getElementById('zoom-in-button').addEventListener('click', () => {
+        console.log('zoom in clicked');
+        zoom.scaleBy(svg.transition().duration(750), 1.2);  // zoom in
+    });
+    
+    document.getElementById('zoom-out-button').addEventListener('click', () => {
+        console.log('zoom out clicked');
+        zoom.scaleBy(svg.transition().duration(750), 0.8);  // zoom out
+    });    
 
     return nodes;
 }
-
-
 
 
   //MOVE to other buttons?
