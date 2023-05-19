@@ -1,19 +1,64 @@
+// {
+//     "id": "Base01",
+//     "type": "node",
+//     "label": "Starting Base - Resources",
+//     "properties": [
+//       {
+//         "key": "GPS-String",
+//         "value": "GPS:Base01#1:113:-119:14:#FF75C9F1:"
+//       }
+//     ],
+//     "index": 0,
+//     "x": 548.8119484201419,
+//     "y": 258.1803945902618,
+//     "vy": 0,
+//     "vx": 0,
+//     "fx": 548.8119484201419,
+//     "fy": 258.1803945902618
+//   },
+
+// {
+//     "nodeData": {
+//       "Base01": {
+//         "x": 548.8119484201419,
+//         "y": 258.1803945902618,
+//         "color": "#e39426"
+//       },
+//       "Base01Blk01": {
+//         "x": 726.8016649792704,
+//         "y": 418.99317042698374
+//       },
+//     "labelVisibility": {
+//       "nodeLabels": "block",
+//       "edgeLabels": "block"
+//     }
+//   }
+  
+
 // Add a colors object to keep track of node colors
-let nodeColors = JSON.parse(localStorage.getItem('nodeColors')) || {};
-let labelColor = localStorage.getItem('labelColor') || 'black';
 // let nodeOutlineColor = localStorage.getItem('nodeOutlineColor') || 'black';
-let nodeSettings = JSON.parse(localStorage.getItem('nodeSettings')) || {};
+// let nodeColors = JSON.parse(localStorage.getItem('nodeColors')) || {};
+// let labelColor = localStorage.getItem('labelColor') || 'black';
+// let nodeSettings = JSON.parse(localStorage.getItem('nodeSettings')) || {};
 
-// // Initialize new settings
-let fontSize = localStorage.getItem('fontSize') || '12';
-let offsetX = localStorage.getItem('offsetX') || '0';
-let offsetY = localStorage.getItem('offsetY') || '0';
-let nodeRadius = localStorage.getItem('nodeRadius') || '20';
+// let fontSize = localStorage.getItem('fontSize') || '12';
+// let offsetX = localStorage.getItem('offsetX') || '0';
+// let offsetY = localStorage.getItem('offsetY') || '0';
+// let nodeRadius = localStorage.getItem('nodeRadius') || '20';
+
+const localStorageData = {
+    nodeColors: JSON.parse(localStorage.getItem('nodeColors')) || {},
+    labelColor: localStorage.getItem('labelColor') || 'black',
+    nodeSettings: JSON.parse(localStorage.getItem('nodeSettings')) || {},
+    fontSize: localStorage.getItem('fontSize') || '12',
+    offsetX: localStorage.getItem('offsetX') || '0',
+    offsetY: localStorage.getItem('offsetY') || '0',
+    nodeRadius: localStorage.getItem('nodeRadius') || '20',
+};
+  
 
 
-
-
-window.drawGraph = function(graphObjects, debug = false) {
+window.drawGraph = function(graphObjects, nodeSettings, nodeColors, debug = false) {
     // Define the dimensions of the SVG
     const width = 1750;
     const height = 800;
@@ -72,7 +117,7 @@ window.drawGraph = function(graphObjects, debug = false) {
                 .style('left', `${event.pageX}px`)
                 .style('top', `${event.pageY}px`)
                 .style('display', 'block');
-
+            
             d3.select('#color-picker').node().value = nodeColors[d.id] || '#000000';
             d3.select('#font-size').node().value = nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize : '12';
             d3.select('#font-x-offset').node().value = nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0';
@@ -90,27 +135,35 @@ window.drawGraph = function(graphObjects, debug = false) {
                 nodeSettings[d.id] = nodeSettings[d.id] || {};
                 nodeSettings[d.id].fontSize = this.value;
                 localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                // redrawGraph(d3.select('.node')); // Call redrawGraph to update the graph
+                redrawAll();
             });
-
+            
             d3.select('#font-x-offset').on('input', function() {
                 d3.select(`#label${d.id}`).attr('dx', this.value);
                 nodeSettings[d.id] = nodeSettings[d.id] || {};
                 nodeSettings[d.id].offsetX = this.value;
                 localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                // redrawGraph(d3.select('.node')); // Call redrawGraph to update the graph
+                redrawAll();
             });
-
+            
             d3.select('#font-y-offset').on('input', function() {
                 d3.select(`#label${d.id}`).attr('dy', this.value);
                 nodeSettings[d.id] = nodeSettings[d.id] || {};
                 nodeSettings[d.id].offsetY = this.value;
                 localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                // redrawGraph(d3.select('.node')); // Call redrawGraph to update the graph
+                redrawAll();
             });
-
+            
             d3.select('#node-radius').on('input', function() {
                 d3.select(event.currentTarget).attr('r', this.value);
                 nodeSettings[d.id] = nodeSettings[d.id] || {};
                 nodeSettings[d.id].radius = this.value;
                 localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                // redrawGraph(d3.select('.node')); // Call redrawGraph to update the graph
+                redrawAll();
             });
         });
 
@@ -141,15 +194,13 @@ window.drawGraph = function(graphObjects, debug = false) {
         .style('fill', '#aaa')
         .text(d => d.label);
 
-    // Modify the zoom behavior to transform the group element instead of the SVG element
-    const zoom = d3.zoom()
-        .scaleExtent([0.1, 10]) // this can be [zoomOutMax, zoomInMax]
-        .on('zoom', (event, d) => { 
+    svg.call(
+        d3.zoom()
+          .scaleExtent([0.1, 10])
+          .on('zoom', (event, d) => {
             g.attr('transform', event.transform);
-        });
-    svg.call(zoom);
-
-    
+          })
+      );
 
     // Get computed styles
     const nodesComputedStyles = window.getComputedStyle(d3.select('.node').node());
@@ -179,11 +230,11 @@ window.drawGraph = function(graphObjects, debug = false) {
             d.fy = event.y;
         }
 
-        function dragended(event, d) {
-            if (!event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
+        // function dragended(event, d) {
+        //     if (!event.active) simulation.alphaTarget(0);
+        //     d.fx = null;
+        //     d.fy = null;
+        // }
 
         return d3.drag()
             .on('start', dragstarted)
@@ -261,33 +312,79 @@ window.drawGraph = function(graphObjects, debug = false) {
             .attr('dy', '.35em');            
     }    
 
+    function redrawGraph(selection) {
+        // Update the node radius and other properties
+        selection.attr('r', d => nodeSettings[d.id] && nodeSettings[d.id].radius ? nodeSettings[d.id].radius : 20)
+          .style('fill', d => nodeColors[d.id] || 'lightblue');
+      
+        // Update label positions
+        label.attr('x', d => d.x)
+          .attr('y', d => d.y)
+          .style('font-size', d => nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize + 'px' : '12px')
+          .attr('dx', d => nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0')
+          .attr('dy', d => nodeSettings[d.id] && nodeSettings[d.id].offsetY ? nodeSettings[d.id].offsetY : '0');
+      
+        // Update edge label positions
+        edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
+          .attr('y', d => (d.source.y + d.target.y) / 2)
+          .attr('text-anchor', 'middle')
+          .attr('dy', '.35em');
+      
+        // Perform any other necessary updates
+      
+        // Restart the simulation if needed
+        simulation.restart();
+      }
+      
+      // Redraw all properties
+      function redrawAll() {
+        // Update the node radius and other properties
+        node.attr('r', d => nodeSettings[d.id] && nodeSettings[d.id].radius ? nodeSettings[d.id].radius : 20)
+          .style('fill', d => nodeColors[d.id] || 'lightblue');
+      
+        // Update label positions
+        label.attr('x', d => d.x)
+          .attr('y', d => d.y)
+          .style('font-size', d => nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize + 'px' : '12px')
+          .attr('dx', d => nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0')
+          .attr('dy', d => nodeSettings[d.id] && nodeSettings[d.id].offsetY ? nodeSettings[d.id].offsetY : '0');
+      
+        // Update edge label positions
+        edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
+          .attr('y', d => (d.source.y + d.target.y) / 2)
+          .attr('text-anchor', 'middle')
+          .attr('dy', '.35em');
+      
+        // Restart the simulation if needed
+        simulation.restart();
+      }
+
     return nodeObjects;
 }
 
+
+////////////////
 document.getElementById('toggle-label-color').addEventListener('click', () => {
     // Toggle the label color between black and white
-    labelColor = labelColor === 'black' ? 'white' : 'black';
-    // nodeOutlineColor= nodeOutlineColor === 'black' ? 'black' : 'white';
-
-    // Update the color of the labels and the node stroke
-    d3.selectAll('.label').style('fill', labelColor);
-    //d3.selectAll('.edgelabel').style('fill', labelColor);
-    // d3.selectAll('.node').style('stroke', nodeOutlineColor); // Update the node stroke color
-
+    localStorageData.labelColor = localStorageData.labelColor === 'black' ? 'white' : 'black';
+  
+    // Update the color of the labels
+    d3.selectAll('.label').style('fill', localStorageData.labelColor);
+  
     // Save the label color in localStorage
-    localStorage.setItem('labelColor', labelColor);
-    // localStorage.setItem('nodeOutlineColor', nodeOutlineColor);
-});
+    localStorage.setItem('labelColor', localStorageData.labelColor);
+  });
+  
 
-
-  //MOVE to other buttons?
   document.getElementById('reset-d3-button').addEventListener('click', () => {
     RenderNodes.forEach(node => {
-        node.fx = null;
-        node.fy = null;
+      node.fx = undefined;
+      node.fy = undefined;
     });
-    RenderNodes = drawGraph(graphObjects);
+    saveNodePositions(); // Save the reset node positions
+    drawGraph(graphObjects, nodeSettings, nodeColors); // Redraw the graph with the updated positions
   });
+  
 
     document.getElementById('print-button').addEventListener('click', () => {
         const svgElement = document.getElementById('graph-svg');
@@ -344,82 +441,117 @@ document.getElementById('load-config-button').addEventListener('click', () => {
     // alert('Loaded from LocalStorage!');
 });
 
-
-// Save node positions to local storage
-function saveNodePositions() {
-    const nodePositions = {};
-    RenderNodes.forEach(node => {
-      nodePositions[node.id] = { x: node.x, y: node.y };
-    });
-    localStorage.setItem('nodePositions', JSON.stringify(nodePositions));
-  }
-  
-  // Load node positions from local storage
-  function loadNodePositions() {
-    const nodePositions = JSON.parse(localStorage.getItem('nodePositions'));
-    if (nodePositions) {
+const nodePositionUtils = {
+    saveNodePositions() {
+      const nodePositions = {};
       RenderNodes.forEach(node => {
-        const position = nodePositions[node.id];
-        if (position) {
-          node.fx = position.x;
-          node.fy = position.y;
-        }
+        nodePositions[node.id] = { x: node.x, y: node.y };
       });
-    }
-  }
-//////////////////////////////////////////////////
-
-//////////////////////////////////////////////////
-// Node X/Y save and load -- LOCALSTORAGE
-function saveNodePositionsToFile() {
-    const config = {
-        nodeData: {},
-        labelVisibility: {
-            nodeLabels: localStorage.getItem('nodeLabelsDisplay'),
-            edgeLabels: localStorage.getItem('edgeLabelsDisplay'),
-        },
-    };
-
-    RenderNodes.forEach(node => {
-        config.nodeData[node.id] = { x: node.x, y: node.y, color: nodeColors[node.id] };
-    });
-
-    const data = JSON.stringify(config);
-    const file = new Blob([data], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(file);
-    a.download = 'node-data-configuration.json';
-    a.click();
-}
-
+      localStorage.setItem('nodePositions', JSON.stringify(nodePositions));
+    },
   
-function loadNodePositionsFromFile(file) {
-    console.log('Loading node data from file...');
-    const reader = new FileReader();
-    reader.onload = event => {
-        const config = JSON.parse(event.target.result);
+    loadNodePositions() {
+      const nodePositions = JSON.parse(localStorage.getItem('nodePositions'));
+      if (nodePositions) {
         RenderNodes.forEach(node => {
-            const data = config.nodeData[node.id];
-            if (data) {
-                node.fx = data.x;
-                node.fy = data.y;
-                if (data.color) {
-                    nodeColors[node.id] = data.color;
-                }
-            }
+          const position = nodePositions[node.id];
+          if (position) {
+            node.fx = position.x;
+            node.fy = position.y;
+          }
+        });
+      }
+    },
+  
+    saveNodePositionsToFile() {
+        const config = {
+            nodeData: {},
+            labelVisibility: {
+                nodeLabels: localStorageData.nodeLabels,
+                edgeLabels: localStorageData.edgeLabels,
+            },
+            nodeSettings: {},
+            nodeColors: localStorageData.nodeColors,
+            fontSize: localStorageData.fontSize,
+            offsetX: localStorageData.offsetX,
+            offsetY: localStorageData.offsetY,
+            nodeRadius: localStorageData.nodeRadius,
+        };
+
+        RenderNodes.forEach(node => {
+        config.nodeData[node.id] = {
+            x: node.x,
+            y: node.y,
+            color: nodeColors[node.id],
+            fontSize: nodeSettings[node.id]?.fontSize,
+            offsetX: nodeSettings[node.id]?.offsetX,
+            offsetY: nodeSettings[node.id]?.offsetY,
+            radius: nodeSettings[node.id]?.radius,
+        };
         });
 
-    if (config.labelVisibility) {
-        d3.selectAll('.label').style('display', config.labelVisibility.nodeLabels);
-        d3.selectAll('.edgelabel').classed('hidden', config.labelVisibility.edgeLabels === 'none');
-        localStorage.setItem('nodeLabelsDisplay', config.labelVisibility.nodeLabels);
-        localStorage.setItem('edgeLabelsDisplay', config.labelVisibility.edgeLabels);
-    }
-
-    };
-    reader.readAsText(file);
-}
-
+        const data = JSON.stringify(config, null, 2);
+        const file = new Blob([data], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(file);
+        a.download = 'node-data-configuration.json';
+        a.click();
+    },
+      
+  
+    loadNodePositionsFromFile(file) {
+        console.log('Loading node data from file...');
+        const reader = new FileReader();
+        reader.onload = event => {
+          const config = JSON.parse(event.target.result);
+      
+          if (config.nodeColors) {
+            localStorage.setItem('nodeColors', JSON.stringify(config.nodeColors));
+          }
+      
+          if (config.labelVisibility) {
+            d3.selectAll('.label').style('display', config.labelVisibility.nodeLabels);
+            d3.selectAll('.edgelabel').classed('hidden', config.labelVisibility.edgeLabels === 'none');
+            localStorage.setItem('nodeLabelsDisplay', config.labelVisibility.nodeLabels);
+            localStorage.setItem('edgeLabelsDisplay', config.labelVisibility.edgeLabels);
+          }
+      
+          if (config.nodeSettings) {
+            localStorage.setItem('nodeSettings', JSON.stringify(config.nodeSettings));
+          }
+      
+          RenderNodes.forEach(node => {
+            const data = config.nodeData[node.id];
+            if (data) {
+              node.fx = data.x;
+              node.fy = data.y;
+              if (data.color) {
+                nodeColors[node.id] = data.color;
+              }
+              if (data.fontSize) {
+                nodeSettings[node.id] = nodeSettings[node.id] || {};
+                nodeSettings[node.id].fontSize = data.fontSize;
+              }
+              if (data.offsetX) {
+                nodeSettings[node.id] = nodeSettings[node.id] || {};
+                nodeSettings[node.id].offsetX = data.offsetX;
+              }
+              if (data.offsetY) {
+                nodeSettings[node.id] = nodeSettings[node.id] || {};
+                nodeSettings[node.id].offsetY = data.offsetY;
+              }
+              if (data.radius) {
+                nodeSettings[node.id] = nodeSettings[node.id] || {};
+                nodeSettings[node.id].radius = data.radius;
+              }
+            }
+          });
+        };
+        reader.readAsText(file);
+      },
+      
+  };
+  
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('export-config-button').addEventListener('click', () => {
         saveNodePositionsToFile();
@@ -435,28 +567,10 @@ function loadNodePositionsFromFile(file) {
     });
 
 });
-//////////////////////////////////////////////////
 
-
-
-// // Modify the ticked function to update the node color
-// function ticked() {
-
-//     // rest of your code
-// }
-
-// Add an event handler to hide the context menu when you click outside of it
 window.addEventListener('click', function(event) {
     const contextMenu = document.getElementById('context-menu');
     if (event.target !== contextMenu && !contextMenu.contains(event.target)) {
         contextMenu.style.display = 'none';
     }
 });
-
-
-
-
-///////////////////
-
-
-
