@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
+  <!-- ============================= NAV BAR ============================= -->
   <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container-fluid">
       <a class="navbar-brand" href="#">GraphML Editor</a>
@@ -47,9 +48,8 @@
       </div>
   </nav>
 
+  <!-- ============================= PART A ============================= -->
   <h1 id="section-a">A) Current Visual Graph</h1>
-    <!-- <div class="rectangle" style="height: 50px;width: 100px;background-color: #555;color: #FFF;"> PLACE HOLDER FOR D3.js</div> -->
-    <!-- Draw a 1px box around the div  -->
     <div id="d3-container" style="position: relative; width: 1752px; height: 800px; border: 1px solid black;">
       <svg id="graph-svg"></svg>
     </div>
@@ -65,37 +65,32 @@
     
     <div id="context-menu" style="display: none; position: absolute; background-color: white; border: 1px solid black;">
       <label>
-          Color:
-          <input id="color-picker" type="color" value="#000000" />
+        Color:
+        <input id="color-picker" type="color" value="#000000" />
       </label>
-      <br>
-      <!-- input for font size -->
-      <label for="font-size">Font Size:</label>
+
+      <br><label for="font-size">Font Size:</label>
       <input type="number" id="font-size" name="font-size" min="1" max="100" value="12">
-      <br>
-      <!-- Input for font y offset -->
-      <label for="font-y-offset">Font Y Offset:</label>
+
+      <br> <label for="font-y-offset">Font Y Offset:</label>
       <input type="number" id="font-y-offset" name="font-y-offset" min="-100" max="100" value="0">
-      <br>
-      <!-- Input for font x offset -->
-      <label for="font-x-offset">Font X Offset:</label>
+
+      <br><label for="font-x-offset">Font X Offset:</label>
       <input type="number" id="font-x-offset" name="font-x-offset" min="-100" max="100" value="0">
-      <br>
-      <!-- Input for node radius -->
-      <label for="node-radius">Node Radius:</label>
+
+      <br><label for="node-radius">Node Radius:</label>
       <input type="number" id="node-radius" name="node-radius" min="1" max="100" value="20">
-      <br>
     </div>
   
-    <!-- position: absolute; display: none; -- hover to the left -->
     <div id="graph-context-menu" style="position: absolute; display: none; background-color: rgb(21, 148, 207); border: 1px solid black;">
       <button id="toggle-node-labels">Toggle Node Labels</button><br>
       <button id="toggle-edge-labels">Toggle Edge Labels</button><br>
       <button id="toggle-label-color">Toggle Label Color</button>
     </div>
     
-
+    <!-- ============================= PART B ============================= -->
     <hr>
+    <!-- ------------- Section 0 - ------------- -->
     <h1 id="section-b">B) GraphML Object Editing</h1>
     <label for="graph-title">Graph Title:</label>
     <input type="text" id="graph-title" placeholder="Graph Title">
@@ -105,11 +100,10 @@
         <option value="undirected">Undirected</option>
         <option value="directed">Directed</option>
     </select>
-    <!-- <button id="graph-directionality-button" type="button">Update Directionality</button> -->
     <br>
     <button id="update-graph-settings-button" type="button">Update Graph Options</button>
 
-
+    <!-- ------------- Section 1 - ------------- -->
     <h2>I) Object Adding/Editing</h2>
     <button id="new-button">New Object</button><br>
     <hr style="width: 25%; float: left; margin-top: 0;">
@@ -132,7 +126,7 @@
             <br>
             <div id="node-properties"></div>
             <button id="add-property-button" type="button">+</button>
-          </div>
+        </div>
     
         <div id="edge-fields" style="display: none;">
             <label for="edge-label">Object Table Label:</label>
@@ -149,16 +143,15 @@
             <br>
             <label for="target-node">Target Node:</label>
             <select id="target-node"></select>
-            <!-- add hidden inputs for source and target nodes -->
             <input type="hidden" id="source-node-id" value="">
             <input type="hidden" id="target-node-id" value="">
-
         </div>
         
         <br>
         <button id="submit-button" type="submit">Add Object</button>
     </form>
 
+    <!-- ------------- Section 2 - ------------- -->
     <hr style="width: 90%; float: left; margin-top: 0;">
     <br>
     <div class="container">
@@ -182,59 +175,14 @@
       </table>
     </div>
 
-  <!-- Include Bootstrap JS and jQuery -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script>
-    $(document).ready(function() {
-        $('.sortable').click(function() {
-            var table = $(this).parents('table').eq(0)
-            var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
-            this.asc = !this.asc
-            if (!this.asc) {
-                rows = rows.reverse()
-            }
-            for (var i = 0; i < rows.length; i++) {
-                table.append(rows[i])
-            }
-            setIcon($(this), this.asc);
-        })
-  
-        function comparer(index) {
-            return function(a, b) {
-                var valA = getCellValue(a, index), valB = getCellValue(b, index)
-                return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
-            }
-        }
-  
-        function getCellValue(row, index) {
-            return $(row).children('td').eq(index).text()
-        }
-  
-        function setIcon(element, asc) {
-            $("th").find("i").remove(); // remove existing icons
-            if (asc) {
-                element.append(' <i class="bi bi-arrow-up-short"></i>');
-            } else {
-                element.append(' <i class="bi bi-arrow-down-short"></i>');
-            }
-        }
-        //Search bar function
-        $("#tableSearch").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#graph-object-table-body tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-  </script>
-  
-
+    <!-- ------------- Section 3 - ------------- -->
     <hr>
     <h2>III) Object Import/Export</h2>
       <input type="file" id="import-file" style="display:none" accept=".json">
       <button id="import-button">Import</button>
       <button id="export-button">Export</button>
 
+  <!-- ============================= PART C ============================= -->
   <hr>
   <h1 id="section-c">C) GraphML File Creation</h1>
   <div id="graphml-file"></div>
@@ -245,7 +193,11 @@
   <h3 style="color:red;font-weight:bold;">DANGER</h3>
   <button id="reset-button">Reset LocalStorage</button>
   
-  <!-- SCRIPTS -->
+
+  <!-- ============================= SCRIPTS ============================= -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="./scripts/tableSearchAndSort.js"></script>
+
   <script src="./scripts/graphRendering.js"></script>
   <script src="./scripts/fileIO.js"></script>
   <script src="./scripts/SJFI/lib-localstorage.js"></script>
