@@ -398,6 +398,30 @@ function loadNodePositionsFromFile(file) {
     const reader = new FileReader();
     reader.onload = event => {
         const config = JSON.parse(event.target.result);
+
+        // Load graph objects, title, and directionality
+        window.graphObjects = config.objects;
+        window.graphTitle = config.title;
+        window.graphDirectionality = config.directionality;
+
+        // Load your settings
+        nodeColors = config.nodeColors;
+        labelColor = config.labelColor;
+        nodeSettings = config.nodeSettings;
+        fontSize = config.fontSize;
+        offsetX = config.offsetX;
+        offsetY = config.offsetY;
+        nodeRadius = config.nodeRadius;
+
+        // Update localStorage with the new settings
+        localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
+        localStorage.setItem('labelColor', labelColor);
+        localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+        localStorage.setItem('fontSize', fontSize);
+        localStorage.setItem('offsetX', offsetX);
+        localStorage.setItem('offsetY', offsetY);
+        localStorage.setItem('nodeRadius', nodeRadius);
+
         RenderNodes.forEach(node => {
             const data = config.nodeData[node.id];
             if (data) {
@@ -409,16 +433,16 @@ function loadNodePositionsFromFile(file) {
             }
         });
 
-    if (config.labelVisibility) {
-        d3.selectAll('.label').style('display', config.labelVisibility.nodeLabels);
-        d3.selectAll('.edgelabel').classed('hidden', config.labelVisibility.edgeLabels === 'none');
-        localStorage.setItem('nodeLabelsDisplay', config.labelVisibility.nodeLabels);
-        localStorage.setItem('edgeLabelsDisplay', config.labelVisibility.edgeLabels);
-    }
-
+        if (config.labelVisibility) {
+            d3.selectAll('.label').style('display', config.labelVisibility.nodeLabels);
+            d3.selectAll('.edgelabel').classed('hidden', config.labelVisibility.edgeLabels === 'none');
+            localStorage.setItem('nodeLabelsDisplay', config.labelVisibility.nodeLabels);
+            localStorage.setItem('edgeLabelsDisplay', config.labelVisibility.edgeLabels);
+        }
     };
     reader.readAsText(file);
 }
+
 
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('export-config-button').addEventListener('click', () => {

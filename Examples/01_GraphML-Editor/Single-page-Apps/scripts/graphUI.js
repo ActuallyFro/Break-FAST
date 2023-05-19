@@ -62,9 +62,23 @@ function OperationsUIObjectsFormSetup() {
 
 // In your import and export functions
 window.exportGraphObjects = function(event) {
-  //console.log("X.X.2 Export graph objects to JSON file");
-  SJFIJSONExport({objects: window.graphObjects, title: window.graphTitle, directionality: window.graphDirectionality}); // Include title
+  // Include your settings into the exported object
+  let config = {
+    objects: window.graphObjects,
+    title: window.graphTitle,
+    directionality: window.graphDirectionality,
+    nodeColors: nodeColors,
+    labelColor: labelColor,
+    nodeSettings: nodeSettings,
+    fontSize: fontSize,
+    offsetX: offsetX,
+    offsetY: offsetY,
+    nodeRadius: nodeRadius
+  };
+
+  SJFIJSONExport(config);
 }
+
 
 window.importGraphObjects = async function(event) {
   //console.log("X.X.2 Import graph objects to JSON file");
