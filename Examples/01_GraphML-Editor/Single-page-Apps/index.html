@@ -92,65 +92,96 @@
     <hr>
     <!-- ------------- Section 0 - ------------- -->
     <h1 id="section-b">B) GraphML Object Editing</h1>
-    <label for="graph-title">Graph Title:</label>
-    <input type="text" id="graph-title" placeholder="Graph Title">
-    <br>
-    <label for="graph-directionality">Graph Directionality:</label>
-    <select id="graph-directionality">
-        <option value="undirected">Undirected</option>
-        <option value="directed">Directed</option>
-    </select>
-    <br>
-    <button id="update-graph-settings-button" type="button">Update Graph Options</button>
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <h2 id="section-b">0) GraphML Settings</h2>
+            </div>
+    
+            <div class="form-group">
+                <label for="graph-title">Graph Title:</label>
+                <input type="text" class="form-control" id="graph-title" placeholder="Graph Title">
+            </div>
+    
+            <div class="form-group">
+                <label for="graph-directionality">Graph Directionality:</label>
+                <select class="form-control" id="graph-directionality">
+                    <option value="undirected">Undirected</option>
+                    <option value="directed">Directed</option>
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <button class="btn btn-primary" id="update-graph-settings-button" type="button">Update Graph Options</button>
+            </div>
+        </form>
+    </div>
+    
 
     <!-- ------------- Section 1 - ------------- -->
-    <h2>I) Object Adding/Editing</h2>
-    <button id="new-button">New Object</button><br>
-    <hr style="width: 25%; float: left; margin-top: 0;">
-    <br>
-
-    <form id="graph-object-form">
-        <label for="graph-type">Select New Object Type:</label>
-        <select id="graph-type" onchange="toggleObjectTypeFields()">
-            <option value="node">Node</option>
-            <option value="edge">Edge</option>
-        </select>
-        <br>
+    <br><br>
+    <div class="container">
+        <form id="graph-object-form">
+            <div class="form-group">
+                <h2>I) Object Adding/Editing</h2>
+            </div>
     
-        <label for="object-id">Object ID:</label>
-        <input type="text" id="object-id" placeholder="Object ID">
-        
-        <div id="node-fields">
-            <label for="node-label">Object Table Label:</label>
-            <input type="text" id="node-label" placeholder="Label">
+            <div class="form-group">
+                <button class="btn btn-warning" id="new-button">New Object</button>
+            </div>
             <br>
-            <div id="node-properties"></div>
-            <button id="add-property-button" type="button">+</button>
-        </div>
+            <div class="form-group">
+                <hr class="w-25 float-left mt-0">
+            </div>
+            <br>
     
-        <div id="edge-fields" style="display: none;">
-            <label for="edge-label">Object Table Label:</label>
-            <input type="text" id="edge-label" placeholder="Label">
-            <br>
-            <label for="edge-key">Edge Key:</label>
-            <input type="text" id="edge-key" placeholder="color">
-            <br>
-            <label for="edge-value">Edge Value:</label>
-            <input type="text" id="edge-value" placeholder="purple">
-            <br>
-            <label for="source-node">Source Node:</label>
-            <select id="source-node"></select>
-            <br>
-            <label for="target-node">Target Node:</label>
-            <select id="target-node"></select>
-            <input type="hidden" id="source-node-id" value="">
-            <input type="hidden" id="target-node-id" value="">
-        </div>
-        
-        <br>
-        <button id="submit-button" type="submit">Add Object</button>
-    </form>
-
+            <div class="form-group">
+                <label for="graph-type">Select New Object Type:</label>
+                <select class="form-control" id="graph-type" onchange="toggleObjectTypeFields()">
+                    <option value="node">Node</option>
+                    <option value="edge">Edge</option>
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <label for="object-id">Object ID:</label>
+                <input type="text" class="form-control" id="object-id" placeholder="Object ID">
+            </div>
+    
+            <div id="node-fields" class="form-group">
+                <label for="node-label">Object Table Label:</label>
+                <input type="text" class="form-control" id="node-label" placeholder="Label">
+                <br>
+                <div id="node-properties"></div>
+                <button class="btn btn-primary" id="add-property-button" type="button">+</button>
+            </div>
+    
+            <div id="edge-fields" class="form-group" style="display: none;">
+                <label for="edge-label">Object Table Label:</label>
+                <input type="text" class="form-control" id="edge-label" placeholder="Label">
+                <br>
+                <label for="edge-key">Edge Key:</label>
+                <input type="text" class="form-control" id="edge-key" placeholder="color">
+                <br>
+                <label for="edge-value">Edge Value:</label>
+                <input type="text" class="form-control" id="edge-value" placeholder="purple">
+                <br>
+                <label for="source-node">Source Node:</label>
+                <select class="form-control" id="source-node"></select>
+                <br>
+                <label for="target-node">Target Node:</label>
+                <select class="form-control" id="target-node"></select>
+                <input type="hidden" id="source-node-id" value="">
+                <input type="hidden" id="target-node-id" value="">
+            </div>
+    
+            <div class="form-group">
+                <button class="btn btn-success" id="submit-button" type="submit">Add Object</button>
+            </div>
+        </form>
+    </div>
+    
+    
     <!-- ------------- Section 2 - ------------- -->
     <hr style="width: 90%; float: left; margin-top: 0;">
     <br>
@@ -176,12 +207,23 @@
     </div>
 
     <!-- ------------- Section 3 - ------------- -->
-    <hr>
-    <h2>III) Object Import/Export</h2>
-      <input type="file" id="import-file" style="display:none" accept=".json">
-      <button id="import-button">Import</button>
-      <button id="export-button">Export</button>
-
+    <div class="container">
+        <hr>
+        <div class="form-group">
+            <h2>III) Object Import/Export</h2>
+        </div>
+    
+        <div class="form-group">
+            <input type="file" class="form-control-file" id="import-file" style="display:none" accept=".json">
+        </div>
+    
+        <div class="form-group">
+            <button class="btn btn-primary" id="import-button">Import</button>
+            <button class="btn btn-primary" id="export-button">Export</button>
+        </div>
+    
+    </div>
+    
   <!-- ============================= PART C ============================= -->
   <hr>
   <h1 id="section-c">C) GraphML File Creation</h1>
