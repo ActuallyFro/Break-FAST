@@ -63,20 +63,21 @@ function OperationsUIObjectsFormSetup() {
 // In your import and export functions
 window.exportGraphObjects = function(event) {
   // Include your settings into the exported object
-  let config = {
-    objects: window.graphObjects,
-    title: window.graphTitle,
-    directionality: window.graphDirectionality,
-    nodeColors: nodeColors,
-    labelColor: labelColor,
-    nodeSettings: nodeSettings,
-    fontSize: fontSize,
-    offsetX: offsetX,
-    offsetY: offsetY,
-    nodeRadius: nodeRadius
-  };
+  // let config = {
+  //   objects: window.graphObjects,
+  //   title: window.graphTitle,
+  //   directionality: window.graphDirectionality,
+  //   nodeColors: nodeColors,
+  //   labelColor: labelColor,
+  //   nodeSettings: nodeSettings,
+  //   fontSize: fontSize,
+  //   offsetX: offsetX,
+  //   offsetY: offsetY,
+  //   nodeRadius: nodeRadius
+  // };
 
-  SJFIJSONExport(config);
+  // SJFIJSONExport(config);
+  SJFIJSONExport(window.SJFI_data);
 }
 
 
@@ -85,9 +86,10 @@ window.importGraphObjects = async function(event) {
 
   const importedData = await SJFIJSONImport(event.target.files[0]);
   if (importedData) {
-    window.graphObjects = importedData.objects;
-    window.graphTitle = importedData.title;
-    window.graphDirectionality = importedData.directionality;
+    // window.graphObjects = importedData.objects;
+    // window.graphTitle = importedData.title;
+    // window.graphDirectionality = importedData.directionality;
+    window.SJFI_data = importedData;
     updateTable();
     updateGraphSettings();
     saveFunction(window.SJFI_storageKey);
@@ -136,8 +138,10 @@ function OperationsUIObjectsButtonSetup() {
   const updateGraphSettingsButton = document.getElementById('update-graph-settings-button');
   updateGraphSettingsButton.addEventListener('click',() => {
     //console.log("[DEBUG] SAVE - GRAPH SETTINGS BUTTON CLICKED");
-    window.graphTitle = document.getElementById('graph-title').value;
-    window.graphDirectionality = document.getElementById('graph-directionality').value;
+    // window.graphTitle = document.getElementById('graph-title').value;
+    window.SJFI_data.graphSettingsTitle = document.getElementById('graph-title').value;
+    // window.graphDirectionality = document.getElementById('graph-directionality').value;
+    window.SJFI_data.graphSettingsDirectionality = document.getElementById('graph-directionality').value;
     saveGraphSettings(window.SJFI_storageKey);
   });
 }

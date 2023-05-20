@@ -399,10 +399,11 @@ function loadNodePositionsFromFile(file) {
     reader.onload = event => {
         const config = JSON.parse(event.target.result);
 
-        // Load graph objects, title, and directionality
-        window.graphObjects = config.objects;
-        window.graphTitle = config.title;
-        window.graphDirectionality = config.directionality;
+        // WHY ARE THESE HERE????
+        // // // Load graph objects, title, and directionality
+        // // window.graphObjects = config.objects;
+        // // window.graphTitle = config.title;
+        // // window.graphDirectionality = config.directionality;
 
         // Load your settings
         nodeColors = config.nodeColors;

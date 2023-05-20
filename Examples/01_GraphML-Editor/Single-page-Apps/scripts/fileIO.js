@@ -91,7 +91,7 @@ window.reprintGraphMLFile = function() {
 
     // <GRAPH>
     //OPTIONAL: <graph id="..."
-    setGraphMLContentAPPEND('    <graph id="' + window.graphTitle + '" edgedefault="' + window.graphDirectionality + '">\n');
+    setGraphMLContentAPPEND('    <graph id="' + window.SJFI_data.graphSettingsTitle + '" edgedefault="' + window.SJFI_data.graphSettingsTitle + '">\n');
 
     //--------------------------------------------------------------------------------
     setGraphMLContentAPPEND("        <!-- Node Entries -->\n");
@@ -138,5 +138,5 @@ window.reprintGraphMLFile = function() {
 
 window.saveGraphMLFile = function(event) {
     var blob = new Blob([window.GraphMLXMLData], {type: "application/xml;charset=utf-8"});
-    window.SJFIXMLExportText(blob, window.graphTitle+".graphml");    
+    window.SJFIXMLExportText(blob, window.SJFI_data.graphSettingsTitle+".graphml");    
 }
