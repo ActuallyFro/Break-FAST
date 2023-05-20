@@ -6,7 +6,7 @@ function OperationsUIObjectsFormSetup() {
 
   const graphTypeDropdown = document.getElementById('graph-type');
   graphTypeDropdown.addEventListener('change', () => {
-    const submitButton = document.getElementById('submit-button');
+    const submitButton = document.getElementById('submit-add_object-button');
     submitButton.textContent = 'Add Object';
     window.editingIndex = null;
     toggleObjectTypeFields();
@@ -237,7 +237,7 @@ function resetForm() {
   const form = document.getElementById('graph-object-form');
   form.reset();
   toggleObjectTypeFields();
-  const submitButton = document.getElementById('submit-button');
+  const submitButton = document.getElementById('submit-add_object-button');
   submitButton.textContent = 'Add Object';
   window.editingIndex = null;
 }

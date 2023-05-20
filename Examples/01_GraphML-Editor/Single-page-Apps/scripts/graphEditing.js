@@ -42,7 +42,7 @@ function editObject(object) {
   // Set editingIndex to the index of the object being edited
   window.editingIndex = window.SJFI_data.graphObjects.findIndex(obj => obj.id === object.id);
 
-  document.getElementById('submit-button').textContent = 'Update Object';
+  document.getElementById('submit-add_object-button').textContent = 'Update Object';
 }
 
 function removeObject(object) {
