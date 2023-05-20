@@ -18,7 +18,7 @@ window.addObjectOrUpdate = function(objectId, graphType, data) {
     window.graphObjects.push(objectData);
   }
 
-  saveFunction(window.SJFI_storageKey);
+  saveFunction(window.SJFI_storageKey, window.SJFI_data);
 }
 
 window.updateGraphSettings = function(debug = false) {
@@ -75,8 +75,9 @@ window.resetGraphSettings = function(storageKey, debug = false) {
   // window.graphDirectionality = "directed";
   window.SJFI_data.graphSettingsDirectionality = "directed";
 
-  alert("resetGraphSettings() not reimplemented yet! -- just reset the window.SJFI_data");
+  //alert("resetGraphSettings() not reimplemented yet! -- just reset the window.SJFI_data");
   //Do something like -- using the values above, then kick it out to "localStorage saveFunction()"
-
+  saveFunction(window.SJFI_storageKey, window.SJFI_data);
+  
   window.updateGraphSettings();
 };

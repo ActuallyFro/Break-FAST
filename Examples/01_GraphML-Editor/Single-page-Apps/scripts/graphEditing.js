@@ -49,6 +49,6 @@ function removeObject(object) {
   const index = graphObjects.indexOf(object);
   if (index > -1) {
     graphObjects.splice(index, 1);
-    saveFunction(window.SJFI_storageKey);
+    saveFunction(window.SJFI_storageKey, window.SJFI_data);
   }
 }

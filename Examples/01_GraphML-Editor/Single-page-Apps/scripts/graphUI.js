@@ -92,7 +92,7 @@ window.importGraphObjects = async function(event) {
     window.SJFI_data = importedData;
     updateTable();
     updateGraphSettings();
-    saveFunction(window.SJFI_storageKey);
+    saveFunction(window.SJFI_storageKey, window.SJFI_data);
     saveGraphSettings(window.SJFI_storageKey);
   }
 }
