@@ -29,8 +29,8 @@ function editObject(object) {
     targetNodeInput.value = object.target;
 
   //Loop thru nodes to find id -- source-node-id & target-node-id
-    const sourceNodeId = window.graphObjects.find(obj => obj.label === object.source).id;
-    const targetNodeId = window.graphObjects.find(obj => obj.label === object.target).id;
+    const sourceNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === object.source).id;
+    const targetNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === object.target).id;
 
     const sourceNodeIdInput = document.getElementById('source-node-id');
     sourceNodeIdInput.value = sourceNodeId;
@@ -40,15 +40,15 @@ function editObject(object) {
   }
 
   // Set editingIndex to the index of the object being edited
-  window.editingIndex = window.graphObjects.findIndex(obj => obj.id === object.id);
+  window.editingIndex = window.SJFI_data.graphObjects.findIndex(obj => obj.id === object.id);
 
   document.getElementById('submit-button').textContent = 'Update Object';
 }
 
 function removeObject(object) {
-  const index = graphObjects.indexOf(object);
+  const index = window.SJFI_data.graphObjects.indexOf(object);
   if (index > -1) {
-    graphObjects.splice(index, 1);
+    window.SJFI_data.graphObjects.splice(index, 1);
     saveFunction(window.SJFI_storageKey, window.SJFI_data);
   }
 }

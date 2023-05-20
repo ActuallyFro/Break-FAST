@@ -13,14 +13,14 @@ let nodeRadius = localStorage.getItem('nodeRadius') || '20';
 
 
 
-window.drawGraph = function(graphObjects, debug = false) {
+window.drawGraph = function(passedGraphObjects, debug = false) {
     // Define the dimensions of the SVG
     const width = 1750;
     const height = 800;
 
-    // const nodes = graphObjects.filter(object => object.type === 'node');
-    const nodeObjects = graphObjects.filter(object => object.type === 'node'); //SAME AS LINE ABOVE
-    const edgeObjects = graphObjects.filter(object => object.type === 'edge');
+    // const nodes = window.SJFI_data.graphObjects.filter(object => object.type === 'node');
+    const nodeObjects = passedGraphObjects.filter(object => object.type === 'node'); //SAME AS LINE ABOVE
+    const edgeObjects = passedGraphObjects.filter(object => object.type === 'edge');
 
 
     // Define the SVG
@@ -31,16 +31,39 @@ window.drawGraph = function(graphObjects, debug = false) {
     // Instead of appending elements directly to the SVG, we append them to a group element.
     const g = svg.append("g");
 
-    // // Create a new array of edges where source and target are node ids
-    const links = edgeObjects.map(edge => {
-        const sourceNode = nodeObjects.find(node => node.id === edge.sourceId);
-        const targetNode = nodeObjects.find(node => node.id === edge.targetId);
-        return {
-            ...edge,
-            source: sourceNode.id, // use node.id instead of nodeObjects.indexOf(sourceNode)
-            target: targetNode.id  // use node.id instead of nodeObjects.indexOf(targetNode)
-        };
-    });
+    // // // Create a new array of edges where source and target are node ids
+    // const links = edgeObjects.map(edge => {
+    //     const sourceNode = nodeObjects.find(node => node.id === edge.sourceId);
+    //     const targetNode = nodeObjects.find(node => node.id === edge.targetId);
+    //     return {
+    //         ...edge,
+    //         source: sourceNode.id, // use node.id instead of nodeObjects.indexOf(sourceNode)
+    //         target: targetNode.id  // use node.id instead of nodeObjects.indexOf(targetNode)
+    //     };
+    // });
+
+///////////////
+    // Create a new array of edges where source and target are node ids
+    const links = edgeObjects
+        .map(edge => {
+            const sourceNode = nodeObjects.find(node => node.id === edge.sourceId);
+            const targetNode = nodeObjects.find(node => node.id === edge.targetId);
+
+            if (!sourceNode || !targetNode) {
+                // Either sourceNode or targetNode couldn't be found,
+                // so we return null to exclude this edge from the links array
+                return null;
+            }
+
+            return {
+                ...edge,
+                source: sourceNode.id, // use node.id instead of nodeObjects.indexOf(sourceNode)
+                target: targetNode.id  // use node.id instead of nodeObjects.indexOf(targetNode)
+            };
+        })
+        .filter(link => link !== null); // filter out the null values
+////////////////
+
 
     // Define the simulation
     const simulation = d3.forceSimulation(nodeObjects) //replaced nodes
@@ -151,9 +174,24 @@ window.drawGraph = function(graphObjects, debug = false) {
 
     
 
+    // // Get computed styles
+    // const nodesComputedStyles = window.getComputedStyle(d3.select('.node').node());
+    // const linksComputedStyles = window.getComputedStyle(d3.select('.link').node());
+
     // Get computed styles
-    const nodesComputedStyles = window.getComputedStyle(d3.select('.node').node());
-    const linksComputedStyles = window.getComputedStyle(d3.select('.link').node());
+    const nodeElement = d3.select('.node').node();
+    const linkElement = d3.select('.link').node();
+
+    let nodesComputedStyles;
+    let linksComputedStyles;
+
+    if (nodeElement) {
+        nodesComputedStyles = window.getComputedStyle(nodeElement);
+    }
+
+    if (linkElement) {
+        linksComputedStyles = window.getComputedStyle(linkElement);
+    }
 
     // Apply computed styles inline
     d3.selectAll('.node')
@@ -161,10 +199,11 @@ window.drawGraph = function(graphObjects, debug = false) {
         .style('stroke', 'black') //or `nodesComputedStyles.stroke`
         .style('stroke-width', nodesComputedStyles.strokeWidth);
 
-    d3.selectAll('.link')
-        .style('stroke', linksComputedStyles.stroke)
-        .style('stroke-width', linksComputedStyles.strokeWidth);
-
+    if (linksComputedStyles) {
+        d3.selectAll('.link')
+            .style('stroke', linksComputedStyles.stroke)
+            .style('stroke-width', linksComputedStyles.strokeWidth);
+    }
 
     // Define drag behavior
     function drag(simulation) {
@@ -286,7 +325,7 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
         node.fx = null;
         node.fy = null;
     });
-    RenderNodes = drawGraph(graphObjects);
+    RenderNodes = drawGraph(window.SJFI_data.graphObjects);
   });
 
     document.getElementById('print-button').addEventListener('click', () => {
@@ -445,21 +484,21 @@ function loadNodePositionsFromFile(file) {
 }
 
 
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('export-config-button').addEventListener('click', () => {
-        saveNodePositionsToFile();
-    });
+//   document.addEventListener('DOMContentLoaded', () => {
+//     // document.getElementById('export-config-button').addEventListener('click', () => {
+//     //     saveNodePositionsToFile();
+//     // });
     
-    document.getElementById('import-config-button').addEventListener('click', () => {
-        document.getElementById('import-config-file').click();
-    });
+//     // document.getElementById('import-config-button').addEventListener('click', () => {
+//     //     document.getElementById('import-config-file').click();
+//     // });
     
-    document.getElementById('import-config-file').addEventListener('change', event => {
-        const file = event.target.files[0];
-        loadNodePositionsFromFile(file);
-    });
+//     // document.getElementById('import-config-file').addEventListener('change', event => {
+//     //     const file = event.target.files[0];
+//     //     loadNodePositionsFromFile(file);
+//     // });
 
-});
+// });
 //////////////////////////////////////////////////
 
 

@@ -4,18 +4,18 @@
 window.addObjectOrUpdate = function(objectId, graphType, data) {
   // Check if objectId is empty and generate a new ID based on the object count
   if (!objectId) {
-    objectId = `${graphType}_${window.graphObjects.length}`;
+    objectId = `${graphType}_${window.SJFI_data.graphObjects.length}`;
   }
 
   const objectData = { id: objectId, type: graphType, ...data };
-  const existingIndex = window.graphObjects.findIndex(obj => obj.id === objectId);
+  const existingIndex = window.SJFI_data.graphObjects.findIndex(obj => obj.id === objectId);
 
   if (existingIndex !== -1) {
     // Update existing object
-    window.graphObjects[existingIndex] = objectData;
+    window.SJFI_data.graphObjects[existingIndex] = objectData;
   } else {
     // Add new object
-    window.graphObjects.push(objectData);
+    window.SJFI_data.graphObjects.push(objectData);
   }
 
   saveFunction(window.SJFI_storageKey, window.SJFI_data);
@@ -49,20 +49,20 @@ window.loadGraphSettings = function(storageKey, debug = false) {
   
   //window.SJFI_data = JSON.parse(localStorage.getItem(storageKey));
 
-  if (storedTitle) {
-    // window.graphTitle = storedTitle;
-    needToUpdate = true;
-  }
+  // if (storedTitle) {
+  //   // window.graphTitle = storedTitle;
+  //   needToUpdate = true;
+  // }
 
-  if (storedDirectionality) {
-    // window.graphDirectionality = storedDirectionality;
-    needToUpdate = true;
-  }
+  // if (storedDirectionality) {
+  //   // window.graphDirectionality = storedDirectionality;
+  //   needToUpdate = true;
+  // }
 
-  if (needToUpdate) {
+  // if (needToUpdate) {
     alert("loadGraphSettings() not reimplemented yet! -- just load the window.SJFI_data");
     window.updateGraphSettings();
-  }
+  // }
 };
 
 window.resetGraphSettings = function(storageKey, debug = false) {

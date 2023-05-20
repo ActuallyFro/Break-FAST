@@ -46,8 +46,8 @@ function OperationsUIObjectsFormSetup() {
       const sourceNode = document.getElementById('source-node').value;
       const targetNode = document.getElementById('target-node').value;
 
-      const sourceNodeId = window.graphObjects.find(obj => obj.label === sourceNode).id;
-      const targetNodeId = window.graphObjects.find(obj => obj.label === targetNode).id;
+      const sourceNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === sourceNode).id;
+      const targetNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === targetNode).id;
 
       // addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId });
       addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
@@ -151,7 +151,7 @@ function updateTable() {
   const tableBody = document.getElementById('graph-object-table-body');
   tableBody.innerHTML = '';
 
-  for (const object of graphObjects) {
+  for (const object of window.SJFI_data.graphObjects) {
     const row = document.createElement('tr');
 
     const idCell = document.createElement('td');
@@ -193,7 +193,7 @@ function updateTable() {
 
   //RENDER D3.js GRAPH
   d3.select("#graph-svg").selectAll("*").remove();
-  RenderNodes = drawGraph(window.graphObjects);
+  RenderNodes = drawGraph(window.SJFI_data.graphObjects);
 }
 
 function updateNodeDropdowns() {
@@ -203,7 +203,7 @@ function updateNodeDropdowns() {
   sourceNodeDropdown.innerHTML = '';
   targetNodeDropdown.innerHTML = '';
 
-  const nodeObjects = graphObjects.filter(object => object.type === 'node');
+  const nodeObjects = window.SJFI_data.graphObjects.filter(object => object.type === 'node');
 
   for (const node of nodeObjects) {
     const sourceOption = document.createElement('option');
