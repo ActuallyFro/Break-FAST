@@ -27,13 +27,13 @@ window.addObjectOrUpdate = function(objectId, graphType, data) {
   resetGraphSettings  -- clears the form & window.SJFI_data & MISSING: reprintGraphMLFile()
 */
 
-// window.updateGraphSettings = function(debug = false) {
-//   const titleInput = document.getElementById('graph-title');
-//   const directionalitySelect = document.getElementById('graph-directionality');
+window.updateGraphSettings = function(debug = false) {
+  const titleInput = document.getElementById('graph-title');
+  const directionalitySelect = document.getElementById('graph-directionality');
 
-//   titleInput.value = window.SJFI_data.graphSettingsTitle;
-//   directionalitySelect.value = window.SJFI_data.graphSettingsDirectionality;
-// }
+  titleInput.value = window.SJFI_data.graphSettingsTitle;
+  directionalitySelect.value = window.SJFI_data.graphSettingsDirectionality;
+}
 
 // window.saveGraphSettings = function(storageKey, debug = false) {
 //   if (debug) console.log("[DEBUG] saveGraphSettings(" + storageKey + ") called -- THIS SHOULD BE REMOVED -- graphObjects and graphSettings are NOT separate anymore!");

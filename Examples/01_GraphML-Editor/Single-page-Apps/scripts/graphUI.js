@@ -145,6 +145,7 @@ function ButtonSetupAreaBObjectEditing() {
 
     storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
     alert("Graph settings updated!");
+
     window.reprintGraphMLFile();
   });
 }

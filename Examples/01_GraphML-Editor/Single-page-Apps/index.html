@@ -262,72 +262,73 @@
     // // window.SJFI_storageKey = 'SGE_graphObjects';
 
     window.SJFI_storageKey = 'SGE_graphObjects';
-    window.SJFI_data = { //LEAVING defaults until the export/import are fully, reimplemented
-    graphObjects: [
-        {
-            id: "Base01Blk01",
-            type: "node",
-            label: "O2-H2-Generator",
-            properties: [
-                {
-                    key: "label",
-                    value: "O2-H2-Generator"
-                },
-                {
-                    key: "amount",
-                    value: "1"
-                },
-                {
-                    key: "status",
-                    value: ""
-                }
-            ],
-            index: 1,
-            x: 730.1291796277079,
-            y: 427.80432765354624,
-            vy: 0,
-            vx: 0,
-            fx: 730.1291796277079,
-            fy: 427.80432765354624
-        },
-        {
-            id: "BL1-Tsk",
-            type: "edge",
-            label: "Base 1 Tasks",
-            key: "label",
-            value: "at",
-            source: "Starting Base - Tasks",
-            sourceId: "Base01-Tasks",
-            target: "Base 1 (Starting Base)",
-            targetId: "BaseList01"
-        }
-    ],
-    NodesRenderSettings: {
-        Base01Blk05: {
-            x: 476.3285966154599,
-            y: 494.82816933382105,
-            color: "#2ec27e"
-        },
-        Base01Blk06: {
-            x: 646.2132951379407,
-            y: 488.30766010004476
-        },
-        labelVisibility: {
-            nodeLabels: "block",
-            edgeLabels: "block"
-        }  
-    },
-    graphSettingsTitle: "EXAMPLE Title",
-    graphSettingsDirectionality: "directed",
-    GraphMLXMLData: ""
-};
+    window.SJFI_data = {};
+//     window.SJFI_data = { //LEAVING defaults until the export/import are fully, reimplemented
+//     graphObjects: [
+//         {
+//             id: "Base01Blk01",
+//             type: "node",
+//             label: "O2-H2-Generator",
+//             properties: [
+//                 {
+//                     key: "label",
+//                     value: "O2-H2-Generator"
+//                 },
+//                 {
+//                     key: "amount",
+//                     value: "1"
+//                 },
+//                 {
+//                     key: "status",
+//                     value: ""
+//                 }
+//             ],
+//             index: 1,
+//             x: 730.1291796277079,
+//             y: 427.80432765354624,
+//             vy: 0,
+//             vx: 0,
+//             fx: 730.1291796277079,
+//             fy: 427.80432765354624
+//         },
+//         {
+//             id: "BL1-Tsk",
+//             type: "edge",
+//             label: "Base 1 Tasks",
+//             key: "label",
+//             value: "at",
+//             source: "Starting Base - Tasks",
+//             sourceId: "Base01-Tasks",
+//             target: "Base 1 (Starting Base)",
+//             targetId: "BaseList01"
+//         }
+//     ],
+//     NodesRenderSettings: {
+//         Base01Blk05: {
+//             x: 476.3285966154599,
+//             y: 494.82816933382105,
+//             color: "#2ec27e"
+//         },
+//         Base01Blk06: {
+//             x: 646.2132951379407,
+//             y: 488.30766010004476
+//         },
+//         labelVisibility: {
+//             nodeLabels: "block",
+//             edgeLabels: "block"
+//         }  
+//     },
+//     graphSettingsTitle: "EXAMPLE Title",
+//     graphSettingsDirectionality: "directed",
+//     GraphMLXMLData: ""
+// };
 
 
     
     // window.addEventListener('DOMContentLoaded', () => { // FIRES BEFORE onload()
     window.onload = () => {
       //Load
-        loadJSONObjectsFromKey(SJFI_storageKey, SJFI_data, true);
+        SJFI_data = loadJSONObjectsFromKey(SJFI_storageKey);       
 
       //Restore
 
@@ -335,6 +336,7 @@
         //Addresses Area A
 
         //Addresses Area B
+        updateGraphSettings();
         //Addresses Area B.I
         ButtonSetupAreaBObjectAdding();
         ButtonSetupAreaBObjectEditing();
