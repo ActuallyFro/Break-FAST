@@ -54,7 +54,7 @@ function ButtonSetupAreaBObjectAdding() {
     }
 
     updateTable();
-    resetForm();
+    FormSetupAreaBObjectNew();
     reprintGraphMLFile();
   });
 
@@ -102,7 +102,7 @@ function ButtonSetupAreaBObjectEditing() {
   
   const newObjectOrCLEARButton = document.getElementById('new-button');
   newObjectOrCLEARButton.addEventListener('click', () => {
-    resetForm();
+    FormSetupAreaBObjectNew();
   });
 
   const importButton = document.getElementById('import-button');
@@ -234,7 +234,7 @@ function toggleObjectTypeFields() {
   }
 }
 
-function resetForm() {
+function FormSetupAreaBObjectNew() {
   const form = document.getElementById('graph-object-form');
   form.reset();
   toggleObjectTypeFields();
