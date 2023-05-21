@@ -33,6 +33,8 @@ window.updateGraphSettings = function(debug = false) {
 
   titleInput.value = window.SJFI_data.graphSettingsTitle;
   directionalitySelect.value = window.SJFI_data.graphSettingsDirectionality;
+
+  storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
 }
 
 // window.saveGraphSettings = function(storageKey, debug = false) {

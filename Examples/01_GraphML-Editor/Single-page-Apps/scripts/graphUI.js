@@ -6,6 +6,9 @@ function ButtonSetupAreaBObjectAdding() {
 
   const graphTypeDropdown = document.getElementById('graph-type');
   graphTypeDropdown.addEventListener('change', () => {
+    console.log("[DEBUG] graphTypeDropdown changed");
+    alert("graphTypeDropdown changed");
+
     const submitButton = document.getElementById('submit-add_object-button');
     submitButton.textContent = 'Add Object';
     window.editingIndex = null;
@@ -21,6 +24,10 @@ function ButtonSetupAreaBObjectAdding() {
   //const form = document.getElementById('graph-object-form'); // This will trigger for "ADD OBJECT" and "EDIT OBJECT"
   const form = document.getElementById('submit-add_object-button');
   form.addEventListener('submit', (e) => {
+    // console
+    console.log("[DEBUG] submit-add_object-button clicked");
+    alert("submit-add_object-button clicked");
+
     e.preventDefault();
     const graphType = document.getElementById('graph-type').value;
     const objectId = document.getElementById('object-id').value;
@@ -129,8 +136,9 @@ function ButtonSetupAreaBObjectEditing() {
 
   const resetButton = document.getElementById('reset-button');
   resetButton.addEventListener('click', function() {
-    window.resetLocalStorageByKey(window.SJFI_storageKey, window.SJFI_data);
-    window.resetGraphSettings();
+    window.resetLocalStorageByKey(window.SJFI_storageKey, window.SJFI_data); //<-- CANNOT perform `window.SJFI_data = [];`
+    //No longer a thing: window.resetGraphSettings();
+    window.SJFI_data = [];
     window.reprintGraphMLFile();
   });
 
@@ -238,13 +246,16 @@ function toggleObjectTypeFields() {
 }
 
 function FormSetupAreaBObjectNew() {
-  event.preventDefault(); //trying to PREVENT scroll to top of page
+  //event.preventDefault(); //trying to PREVENT scroll to top of page
   const form = document.getElementById('graph-object-form');
   form.reset();
   toggleObjectTypeFields();
   const submitButton = document.getElementById('submit-add_object-button');
   submitButton.textContent = 'Add Object';
   window.editingIndex = null;
+
+  console.log("[DEBUG] FormSetupAreaBObjectNew() - window.editingIndex: " + window.editingIndex);
+  alert("FormSetupAreaBObjectNew() - window.editingIndex: " + window.editingIndex);
 }
 
 function createPropertyInput(property) {

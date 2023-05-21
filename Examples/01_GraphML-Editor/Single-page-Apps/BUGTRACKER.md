@@ -17,6 +17,13 @@ Important, Not Urgent
 
 Not Important, Not Urgent
 =========================
+- [ ] Use of this function to reset storageData DOES NOT execute due to the pass by value vs. pass by reference.
+```window.resetLocalStorageByKey = function(storageKey, storageData, debug = false) {
+  if (debug) console.log("[SJFI] [DEBUG] resetLocalStorageByKey(" + storageKey + ") called");
+  localStorage.removeItem(storageKey);
+  storageData = [];
+};
+```
 
 
 SOLVED
