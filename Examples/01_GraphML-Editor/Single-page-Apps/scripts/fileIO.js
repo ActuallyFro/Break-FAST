@@ -91,7 +91,7 @@ window.reprintGraphMLFile = function() {
 
     // <GRAPH>
     //OPTIONAL: <graph id="..."
-    setGraphMLContentAPPEND('    <graph id="' + window.SJFI_data.graphSettingsTitle + '" edgedefault="' + window.SJFI_data.graphSettingsTitle + '">\n');
+    setGraphMLContentAPPEND('    <graph id="' + window.SJFI_data.graphSettingsTitle + '" edgedefault="' + window.SJFI_data.graphSettingsDirectionality + '">\n');
 
     //--------------------------------------------------------------------------------
     setGraphMLContentAPPEND("        <!-- Node Entries -->\n");

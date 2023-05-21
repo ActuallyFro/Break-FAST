@@ -55,7 +55,7 @@ function ButtonSetupAreaBObjectAdding() {
 
     updateTable();
     FormSetupAreaBObjectNew();
-    reprintGraphMLFile();
+    window.reprintGraphMLFile();
   });
 
 }
@@ -93,7 +93,6 @@ window.importGraphObjects = async function(event) {
     updateTable();
     updateGraphSettings();
     storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
-    saveGraphSettings(window.SJFI_storageKey); //REPLACE?!?!?!
   }
 }
 
@@ -137,13 +136,16 @@ function ButtonSetupAreaBObjectEditing() {
 
   const updateGraphSettingsButton = document.getElementById('update-graph-settings-button');
   updateGraphSettingsButton.addEventListener('click',() => {
-    //console.log("[DEBUG] SAVE - GRAPH SETTINGS BUTTON CLICKED");
-    // window.graphTitle = document.getElementById('graph-title').value;
     window.SJFI_data.graphSettingsTitle = document.getElementById('graph-title').value;
-    // window.graphDirectionality = document.getElementById('graph-directionality').value;
     window.SJFI_data.graphSettingsDirectionality = document.getElementById('graph-directionality').value;
 
-    saveGraphSettings(window.SJFI_storageKey); //REPLACE?!?!?!
+    // console.log("[DEBUG] SAVE - GRAPH SETTINGS BUTTON CLICKED");
+    // console.log("[DEBUG] window.SJFI_data.graphSettingsTitle: " + window.SJFI_data.graphSettingsTitle);
+    // console.log("[DEBUG] window.SJFI_data.graphSettingsDirectionality: " + window.SJFI_data.graphSettingsDirectionality);
+
+    storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+    alert("Graph settings updated!");
+    window.reprintGraphMLFile();
   });
 }
 
