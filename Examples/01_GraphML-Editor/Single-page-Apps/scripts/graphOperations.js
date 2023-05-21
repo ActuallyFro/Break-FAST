@@ -21,29 +21,35 @@ window.addObjectOrUpdate = function(objectId, graphType, data) {
   storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
 }
 
-window.updateGraphSettings = function(debug = false) {
-  const titleInput = document.getElementById('graph-title');
-  const directionalitySelect = document.getElementById('graph-directionality');
+/*
+  updateGraphSettings -- load window.SJFI_data into the form
+  saveGraphSettings   -- saves the form into window.SJFI_data & reprintGraphMLFile()
+  resetGraphSettings  -- clears the form & window.SJFI_data & MISSING: reprintGraphMLFile()
+*/
 
-  titleInput.value = window.SJFI_data.graphSettingsTitle;
-  directionalitySelect.value = window.SJFI_data.graphSettingsDirectionality;
-}
+// window.updateGraphSettings = function(debug = false) {
+//   const titleInput = document.getElementById('graph-title');
+//   const directionalitySelect = document.getElementById('graph-directionality');
 
-window.saveGraphSettings = function(storageKey, debug = false) {
-  if (debug) console.log("[DEBUG] saveGraphSettings(" + storageKey + ") called -- THIS SHOULD BE REMOVED -- graphObjects and graphSettings are NOT separate anymore!");
-  // alert("saveGraphSettings() not reimplemented yet! -- just save the window.SJFI_data");
+//   titleInput.value = window.SJFI_data.graphSettingsTitle;
+//   directionalitySelect.value = window.SJFI_data.graphSettingsDirectionality;
+// }
 
-  storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
-  reprintGraphMLFile();
-};
+// window.saveGraphSettings = function(storageKey, debug = false) {
+//   if (debug) console.log("[DEBUG] saveGraphSettings(" + storageKey + ") called -- THIS SHOULD BE REMOVED -- graphObjects and graphSettings are NOT separate anymore!");
+//   // alert("saveGraphSettings() not reimplemented yet! -- just save the window.SJFI_data");
 
-window.resetGraphSettings = function(storageKey, debug = false) {
-  if (debug) console.log("[DEBUG] resetGraphSettings(" + storageKey + ") called");
+//   storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+//   reprintGraphMLFile();
+// };
 
-  window.SJFI_data.graphSettingsTitle = "";
-  window.SJFI_data.graphSettingsDirectionality = "directed";
+// window.resetGraphSettings = function(storageKey, debug = false) {
+//   if (debug) console.log("[DEBUG] resetGraphSettings(" + storageKey + ") called");
 
-  storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+//   window.SJFI_data.graphSettingsTitle = "";
+//   window.SJFI_data.graphSettingsDirectionality = "directed";
+
+//   storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
   
-  window.updateGraphSettings();
-};
+//   window.updateGraphSettings();
+// };

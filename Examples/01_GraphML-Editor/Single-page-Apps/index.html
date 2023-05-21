@@ -326,17 +326,26 @@
     
     // window.addEventListener('DOMContentLoaded', () => { // FIRES BEFORE onload()
     window.onload = () => {
-        OperationsUIObjectsFormSetup();
-        OperationsUIObjectsButtonSetup();
-
+      //Load
         loadJSONObjectsFromKey(SJFI_storageKey, SJFI_data, true);
 
-        updateTable();
+      //Restore
+
+      //Update
+        //Addresses Area A
+
+        //Addresses Area B
+        ButtonSetupAreaBObjectAdding();
+        ButtonSetupAreaBObjectEditing();
+        //Addresses Area B.I
+        //DEAL WITH MISSING: updateGraphSettings(); ????
         resetForm();
+        //Addresses Area B.II
+        updateTable();
 
-        updateGraphSettings();
-
+        //Addresses Area C
         reprintGraphMLFile();
+
     };
   </script>
 

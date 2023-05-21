@@ -1,7 +1,7 @@
 //---------------------------
 // UI
 //---------------------------
-function OperationsUIObjectsFormSetup() {
+function ButtonSetupAreaBObjectAdding() {
   //console.log("#.#.#.# Develop user interface for adding objects");
 
   const graphTypeDropdown = document.getElementById('graph-type');
@@ -93,11 +93,11 @@ window.importGraphObjects = async function(event) {
     updateTable();
     updateGraphSettings();
     storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
-    saveGraphSettings(window.SJFI_storageKey);
+    saveGraphSettings(window.SJFI_storageKey); //REPLACE?!?!?!
   }
 }
 
-function OperationsUIObjectsButtonSetup() {
+function ButtonSetupAreaBObjectEditing() {
   //console.log("0.1.2 Initialize User Interface for adding objects");
   
   const newObjectOrCLEARButton = document.getElementById('new-button');
@@ -142,7 +142,8 @@ function OperationsUIObjectsButtonSetup() {
     window.SJFI_data.graphSettingsTitle = document.getElementById('graph-title').value;
     // window.graphDirectionality = document.getElementById('graph-directionality').value;
     window.SJFI_data.graphSettingsDirectionality = document.getElementById('graph-directionality').value;
-    saveGraphSettings(window.SJFI_storageKey);
+
+    saveGraphSettings(window.SJFI_storageKey); //REPLACE?!?!?!
   });
 }
 
