@@ -100,7 +100,7 @@ window.importGraphObjects = async function(event) {
 function ButtonSetupAreaBObjectEditing() {
   //console.log("0.1.2 Initialize User Interface for adding objects");
   
-  const newObjectOrCLEARButton = document.getElementById('new-button');
+  const newObjectOrCLEARButton = document.getElementById('new-object-button');
   newObjectOrCLEARButton.addEventListener('click', () => {
     FormSetupAreaBObjectNew();
   });
