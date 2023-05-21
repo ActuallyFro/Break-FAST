@@ -18,8 +18,8 @@ function ButtonSetupAreaBObjectAdding() {
     nodeProperties.appendChild(createPropertyInput());
   });
 
-  const form = document.getElementById('graph-object-form');
-
+  //const form = document.getElementById('graph-object-form'); // This will trigger for "ADD OBJECT" and "EDIT OBJECT"
+  const form = document.getElementById('submit-add_object-button');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const graphType = document.getElementById('graph-type').value;
@@ -235,6 +235,7 @@ function toggleObjectTypeFields() {
 }
 
 function FormSetupAreaBObjectNew() {
+  event.preventDefault(); //trying to PREVENT scroll to top of page
   const form = document.getElementById('graph-object-form');
   form.reset();
   toggleObjectTypeFields();
