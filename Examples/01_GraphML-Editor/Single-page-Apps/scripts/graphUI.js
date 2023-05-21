@@ -130,9 +130,9 @@ function OperationsUIObjectsButtonSetup() {
 
   const resetButton = document.getElementById('reset-button');
   resetButton.addEventListener('click', function() {
-    window.resetLocalStorage(window.SJFI_storageKey);
-    window.reprintGraphMLFile();
+    window.resetLocalStorageByKey(window.SJFI_storageKey, window.SJFI_data);
     window.resetGraphSettings();
+    window.reprintGraphMLFile();
   });
 
   const updateGraphSettingsButton = document.getElementById('update-graph-settings-button');
