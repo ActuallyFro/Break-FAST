@@ -330,12 +330,9 @@
 
         loadGraphObjects(SJFI_storageKey, SJFI_data);
 
-        const storedTitle = localStorage.getItem(`${SJFI_storageKey}_title`);
-
         updateTable();
         resetForm();
 
-        loadGraphSettings(SJFI_storageKey);
         updateGraphSettings();
 
         reprintGraphMLFile();

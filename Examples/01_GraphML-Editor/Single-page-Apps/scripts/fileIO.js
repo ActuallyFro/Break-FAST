@@ -95,7 +95,7 @@ window.reprintGraphMLFile = function() {
 
     //--------------------------------------------------------------------------------
     setGraphMLContentAPPEND("        <!-- Node Entries -->\n");
-    console.log(window.SJFI_data.graphObjects);
+    // console.log("[DEBUG] Here are the loaded objects:\n" + window.SJFI_data.graphObjects);
 
     let nodeObjects = [];
     if (Array.isArray(window.SJFI_data.graphObjects)) {
