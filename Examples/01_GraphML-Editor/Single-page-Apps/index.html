@@ -237,14 +237,14 @@
   
 
   <!-- ============================= SCRIPTS ============================= -->
+  <script src="./scripts/SJFI/lib-localstorage.js"></script>
+  <script src="./scripts/SJFI/lib-JSON-ImpExp.js"></script>
+  <script src="./scripts/SJFI/lib-XML-ImpExp.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="./scripts/tableSearchAndSort.js"></script>
 
   <script src="./scripts/graphRendering.js"></script>
   <script src="./scripts/fileIO.js"></script>
-  <script src="./scripts/SJFI/lib-localstorage.js"></script>
-  <script src="./scripts/SJFI/lib-JSON-ImpExp.js"></script>
-  <script src="./scripts/SJFI/lib-XML-ImpExp.js"></script>
   <script src="./scripts/graphUI.js"></script>
 
   <script src="./scripts/graphOperations.js"></script>
@@ -328,7 +328,7 @@
         OperationsUIObjectsFormSetup();
         OperationsUIObjectsButtonSetup();
 
-        loadJSONObjectsFromKey(SJFI_storageKey, SJFI_data);
+        loadJSONObjectsFromKey(SJFI_storageKey, SJFI_data, true);
 
         updateTable();
         resetForm();
