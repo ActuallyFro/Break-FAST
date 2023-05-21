@@ -18,7 +18,7 @@ window.addObjectOrUpdate = function(objectId, graphType, data) {
     window.SJFI_data.graphObjects.push(objectData);
   }
 
-  saveFunction(window.SJFI_storageKey, window.SJFI_data);
+  storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
 }
 
 window.updateGraphSettings = function(debug = false) {
@@ -30,9 +30,10 @@ window.updateGraphSettings = function(debug = false) {
 }
 
 window.saveGraphSettings = function(storageKey, debug = false) {
-  if (debug) console.log("[DEBUG] saveGraphSettings(" + storageKey + ") called");
-  alert("saveGraphSettings() not reimplemented yet! -- just save the window.SJFI_data");
+  if (debug) console.log("[DEBUG] saveGraphSettings(" + storageKey + ") called -- THIS SHOULD BE REMOVED -- graphObjects and graphSettings are NOT separate anymore!");
+  // alert("saveGraphSettings() not reimplemented yet! -- just save the window.SJFI_data");
 
+  storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
   reprintGraphMLFile();
 };
 
@@ -42,7 +43,7 @@ window.resetGraphSettings = function(storageKey, debug = false) {
   window.SJFI_data.graphSettingsTitle = "";
   window.SJFI_data.graphSettingsDirectionality = "directed";
 
-  saveFunction(window.SJFI_storageKey, window.SJFI_data);
+  storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
   
   window.updateGraphSettings();
 };
