@@ -21,49 +21,49 @@ function ButtonSetupAreaBObjectAdding() {
     nodeProperties.appendChild(createPropertyInput());
   });
 
-  //const form = document.getElementById('graph-object-form'); // This will trigger for "ADD OBJECT" and "EDIT OBJECT"
-  const form = document.getElementById('submit-add_object-button');
+  const form = document.getElementById('graph-object-form'); // This will trigger for "ADD OBJECT" and "EDIT OBJECT" --- BUT PREVENTS BUTTONS from RELOADING THE PAGE!
+  // const form = document.getElementById('submit-add_object-button');
   form.addEventListener('submit', (e) => {
 //UNDO THIS--- maybe?
-    // // console
-    // console.log("[DEBUG] submit-add_object-button clicked");
-    // alert("submit-add_object-button clicked");
+    // console
+    console.log("[DEBUG] submit-add_object-button clicked");
+    alert("submit-add_object-button clicked");
 
-    // e.preventDefault();
-    // const graphType = document.getElementById('graph-type').value;
-    // const objectId = document.getElementById('object-id').value;
+    e.preventDefault();
+    const graphType = document.getElementById('graph-type').value;
+    const objectId = document.getElementById('object-id').value;
 
-    // if (graphType === 'node') {
-    //   const nodeLabel = document.getElementById('node-label').value;
-    //   const nodePropertiesDiv = document.getElementById('node-properties');
-    //   const propertyInputs = nodePropertiesDiv.getElementsByClassName('property-input');
-    //   const properties = [];
+    if (graphType === 'node') {
+      const nodeLabel = document.getElementById('node-label').value;
+      const nodePropertiesDiv = document.getElementById('node-properties');
+      const propertyInputs = nodePropertiesDiv.getElementsByClassName('property-input');
+      const properties = [];
   
-    //   for (const propertyInput of propertyInputs) {
-    //     const keyInput = propertyInput.getElementsByTagName('input')[0];
-    //     const valueInput = propertyInput.getElementsByTagName('input')[1];
-    //     properties.push({ key: keyInput.value, value: valueInput.value });
-    //   }
+      for (const propertyInput of propertyInputs) {
+        const keyInput = propertyInput.getElementsByTagName('input')[0];
+        const valueInput = propertyInput.getElementsByTagName('input')[1];
+        properties.push({ key: keyInput.value, value: valueInput.value });
+      }
   
-    //   addObjectOrUpdate(objectId, graphType, { label: nodeLabel, properties });
+      addObjectOrUpdate(objectId, graphType, { label: nodeLabel, properties });
 
-    // } else {
-    //   const edgeLabel = document.getElementById('edge-label').value;
-    //   const edgeKey = document.getElementById('edge-key').value;
-    //   const edgeValue = document.getElementById('edge-value').value;
-    //   const sourceNode = document.getElementById('source-node').value;
-    //   const targetNode = document.getElementById('target-node').value;
+    } else {
+      const edgeLabel = document.getElementById('edge-label').value;
+      const edgeKey = document.getElementById('edge-key').value;
+      const edgeValue = document.getElementById('edge-value').value;
+      const sourceNode = document.getElementById('source-node').value;
+      const targetNode = document.getElementById('target-node').value;
 
-    //   const sourceNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === sourceNode).id;
-    //   const targetNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === targetNode).id;
+      const sourceNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === sourceNode).id;
+      const targetNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === targetNode).id;
 
-    //   // addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId });
-    //   addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
-    // }
+      // addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId });
+      addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
+    }
 
-    // updateTable();
-    // FormSetupAreaBObjectNew();
-    // window.reprintGraphMLFile();
+    updateTable();
+    FormSetupAreaBObjectNew();
+    window.reprintGraphMLFile();
   });
 
 }
@@ -267,12 +267,12 @@ function toggleObjectTypeFields() {
 function FormSetupAreaBObjectNew() {
   console.log("[DEBUG] FormSetupAreaBObjectNew()");
 //UNDO THIS--- maybe?  
-  // const form = document.getElementById('graph-object-form');
-  // form.reset();
-  // toggleObjectTypeFields();
-  // const submitButton = document.getElementById('submit-add_object-button');
-  // submitButton.textContent = 'Add Object';
-  // window.editingIndex = null;
+  const form = document.getElementById('graph-object-form');
+  form.reset();
+  toggleObjectTypeFields();
+  const submitButton = document.getElementById('submit-add_object-button');
+  submitButton.textContent = 'Add Object';
+  window.editingIndex = null;
 }
 
 function createPropertyInput(property) {
