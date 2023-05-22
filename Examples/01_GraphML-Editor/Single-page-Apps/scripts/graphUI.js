@@ -163,6 +163,17 @@ function updateTable() {
   const tableBody = document.getElementById('graph-object-table-body');
   tableBody.innerHTML = '';
 
+  if (window.SJFI_data.graphObjects.length === 0) {
+    const row = document.createElement('tr');
+    const cell = document.createElement('td');
+    cell.textContent = 'No objects';
+    cell.colSpan = 5;
+    row.appendChild(cell);
+    tableBody.appendChild(row);
+
+    return;
+  }
+
   for (const object of window.SJFI_data.graphObjects) {
     const row = document.createElement('tr');
 
@@ -253,9 +264,6 @@ function FormSetupAreaBObjectNew() {
   const submitButton = document.getElementById('submit-add_object-button');
   submitButton.textContent = 'Add Object';
   window.editingIndex = null;
-
-  console.log("[DEBUG] FormSetupAreaBObjectNew() - window.editingIndex: " + window.editingIndex);
-  alert("FormSetupAreaBObjectNew() - window.editingIndex: " + window.editingIndex);
 }
 
 function createPropertyInput(property) {

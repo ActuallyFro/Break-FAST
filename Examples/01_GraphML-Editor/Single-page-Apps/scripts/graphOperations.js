@@ -31,8 +31,13 @@ window.updateGraphSettings = function(debug = false) {
   const titleInput = document.getElementById('graph-title');
   const directionalitySelect = document.getElementById('graph-directionality');
 
-  titleInput.value = window.SJFI_data.graphSettingsTitle;
-  directionalitySelect.value = window.SJFI_data.graphSettingsDirectionality;
+  if (typeof window.SJFI_data.graphSettingsTitle !== "string"){
+    window.SJFI_data.graphSettingsTitle = "";
+  }
+
+  if (window.SJFI_data.graphSettingsDirectionality !== "directed" && window.SJFI_data.graphSettingsDirectionality !== "undirected"){
+    directionalitySelect.value = "directed"
+  }
 
   storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
 }

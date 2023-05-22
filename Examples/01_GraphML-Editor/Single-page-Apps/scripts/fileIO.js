@@ -59,24 +59,25 @@ window.reprintGraphMLFile = function() {
     // Extract unique keys from node and edge properties
     let uniqueKeys = new Map();
 
-    window.SJFI_data.graphObjects.forEach(object => {
-        // Check if the properties array exists before trying to iterate over it
-        if (object.type === 'node' && object.properties) {
-            object.properties.forEach(property => {
-                // Store the unique keys per type
+    if (window.SJFI_data.graphObjects) {
+        window.SJFI_data.graphObjects.forEach(object => {
+            // Check if the properties array exists before trying to iterate over it
+            if (object.type === 'node' && object.properties) {
+                object.properties.forEach(property => {
+                    // Store the unique keys per type
+                    if (!uniqueKeys.has(object.type)) {
+                        uniqueKeys.set(object.type, new Set());
+                    }
+                    uniqueKeys.get(object.type).add(property.key);
+                });
+            } else if (object.type === 'edge') {
                 if (!uniqueKeys.has(object.type)) {
                     uniqueKeys.set(object.type, new Set());
                 }
-                uniqueKeys.get(object.type).add(property.key);
-            });
-        } else if (object.type === 'edge') {
-            if (!uniqueKeys.has(object.type)) {
-                uniqueKeys.set(object.type, new Set());
+                uniqueKeys.get(object.type).add(object.key);
             }
-            uniqueKeys.get(object.type).add(object.key);
-        }
-    });
-
+        });
+    }
     // Generate key XML for each unique key
     setGraphMLContentAPPEND("        <!-- supported types: boolean|int|long|float|double|string ; DEFAULT == STRING-->\n");
     uniqueKeys.forEach((keys, type) => {
@@ -123,18 +124,19 @@ window.reprintGraphMLFile = function() {
 
     //--------------------------------------------------------------------------------
     setGraphMLContentAPPEND("        <!-- Edge Entries -->\n");
-    const edgeObjects = window.SJFI_data.graphObjects.filter(object => object.type === 'edge');
+    if (window.SJFI_data.graphObjects) {
+        const edgeObjects = window.SJFI_data.graphObjects.filter(object => object.type === 'edge');
 
-    // Iterate over edgeObjects and append edge XML for each object
-    //source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId 
-    edgeObjects.forEach((edge) => {
-        let edgeXML = `            <edge id="${edge.id}" source="${edge.sourceId}" target="${edge.targetId}">
-                <data key="${edge.key}">${edge.value}</data>
-            </edge>\n`;
+        // Iterate over edgeObjects and append edge XML for each object
+        //source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId 
+        edgeObjects.forEach((edge) => {
+            let edgeXML = `            <edge id="${edge.id}" source="${edge.sourceId}" target="${edge.targetId}">
+                    <data key="${edge.key}">${edge.value}</data>
+                </edge>\n`;
 
-        setGraphMLContentAPPEND(edgeXML);
-    });
-
+            setGraphMLContentAPPEND(edgeXML);
+        });
+    }
 
     setGraphMLContentAPPEND(defaultGraphMLFOOTER);
 
