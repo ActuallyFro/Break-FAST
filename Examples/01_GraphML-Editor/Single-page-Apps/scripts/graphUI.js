@@ -27,7 +27,7 @@ function ButtonSetupAreaBObjectAdding() {
 //UNDO THIS--- maybe?
     // console
     console.log("[DEBUG] submit-add_object-button clicked");
-    alert("submit-add_object-button clicked");
+    // alert("submit-add_object-button clicked");
 
     e.preventDefault();
     const graphType = document.getElementById('graph-type').value;
@@ -44,7 +44,7 @@ function ButtonSetupAreaBObjectAdding() {
         const valueInput = propertyInput.getElementsByTagName('input')[1];
         properties.push({ key: keyInput.value, value: valueInput.value });
       }
-  
+      console.log("addObjectOrUpdate(" + objectId + ", " + graphType + ", { label: " + nodeLabel + ", properties: " + properties + " })");
       addObjectOrUpdate(objectId, graphType, { label: nodeLabel, properties });
 
     } else {
@@ -58,6 +58,7 @@ function ButtonSetupAreaBObjectAdding() {
       const targetNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === targetNode).id;
 
       // addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId });
+      console.log("addObjectOrUpdate(" + objectId + ", " + graphType + ", { label: " + edgeLabel + ", key: " + edgeKey + ", value: " + edgeValue + ", source: " + sourceNode + ", sourceId: " + sourceNodeId + ", target: " + targetNode + ", targetNode: " + targetNodeId + " })");
       addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
     }
 

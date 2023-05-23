@@ -2,24 +2,20 @@
 // Objects
 //---------------------------
 window.addObjectOrUpdate = function(objectId, graphType, data) {
-  // Check if objectId is empty and generate a new ID based on the object count
-  if (!objectId) {
-    objectId = `${graphType}_${window.SJFI_data.graphObjects.length}`;
-  }
-
   const objectData = { id: objectId, type: graphType, ...data };
+  window.SJFI_data.graphObjects = window.SJFI_data.graphObjects || [];
   const existingIndex = window.SJFI_data.graphObjects.findIndex(obj => obj.id === objectId);
 
   if (existingIndex !== -1) {
-    // Update existing object
     window.SJFI_data.graphObjects[existingIndex] = objectData;
   } else {
-    // Add new object
     window.SJFI_data.graphObjects.push(objectData);
   }
 
   storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
 }
+
+
 
 /*
   updateGraphSettings -- load window.SJFI_data into the form
