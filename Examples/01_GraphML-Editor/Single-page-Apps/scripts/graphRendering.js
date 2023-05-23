@@ -321,11 +321,11 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
 
   //MOVE to other buttons?
   document.getElementById('reset-d3-button').addEventListener('click', () => {
-    RenderNodes.forEach(node => {
+    window.SJFI_data.NodesRenderSettings.forEach(node => {
         node.fx = null;
         node.fy = null;
     });
-    RenderNodes = drawGraph(window.SJFI_data.graphObjects);
+    window.SJFI_data.NodesRenderSettings = drawGraph(window.SJFI_data.graphObjects);
   });
 
     document.getElementById('print-button').addEventListener('click', () => {
@@ -387,7 +387,7 @@ document.getElementById('load-config-button').addEventListener('click', () => {
 // Save node positions to local storage
 function saveNodePositions() {
     const nodePositions = {};
-    RenderNodes.forEach(node => {
+    window.SJFI_data.NodesRenderSettings.forEach(node => {
       nodePositions[node.id] = { x: node.x, y: node.y };
     });
     localStorage.setItem('nodePositions', JSON.stringify(nodePositions));
@@ -397,7 +397,7 @@ function saveNodePositions() {
   function loadNodePositions() {
     const nodePositions = JSON.parse(localStorage.getItem('nodePositions'));
     if (nodePositions) {
-      RenderNodes.forEach(node => {
+      window.SJFI_data.NodesRenderSettings.forEach(node => {
         const position = nodePositions[node.id];
         if (position) {
           node.fx = position.x;
@@ -419,7 +419,7 @@ function saveNodePositionsToFile() {
         },
     };
 
-    RenderNodes.forEach(node => {
+    window.SJFI_data.NodesRenderSettings.forEach(node => {
         config.nodeData[node.id] = { x: node.x, y: node.y, color: nodeColors[node.id] };
     });
 
@@ -462,7 +462,7 @@ function loadNodePositionsFromFile(file) {
         localStorage.setItem('offsetY', offsetY);
         localStorage.setItem('nodeRadius', nodeRadius);
 
-        RenderNodes.forEach(node => {
+        window.SJFI_data.NodesRenderSettings.forEach(node => {
             const data = config.nodeData[node.id];
             if (data) {
                 node.fx = data.x;

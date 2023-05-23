@@ -6,8 +6,8 @@ function ButtonSetupAreaBObjectAdding() {
 
   const graphTypeDropdown = document.getElementById('graph-type');
   graphTypeDropdown.addEventListener('change', () => {
-    console.log("[DEBUG] graphTypeDropdown changed");
-    alert("graphTypeDropdown changed");
+    //console.log("[DEBUG] graphTypeDropdown changed");
+    //alert("graphTypeDropdown changed");
 
     const submitButton = document.getElementById('submit-add_object-button');
     submitButton.textContent = 'Add Object';
@@ -63,7 +63,7 @@ function ButtonSetupAreaBObjectAdding() {
     }
 
     updateTable();
-    FormSetupAreaBObjectNew();
+    //FormSetupAreaBObjectNew();
     window.reprintGraphMLFile();
   });
 
@@ -220,7 +220,7 @@ function updateTable() {
 
     //RENDER D3.js GRAPH
     d3.select("#graph-svg").selectAll("*").remove();
-    RenderNodes = drawGraph(window.SJFI_data.graphObjects);
+    window.SJFI_data.NodesRenderSettings = drawGraph(window.SJFI_data.graphObjects);
 
     }
   }

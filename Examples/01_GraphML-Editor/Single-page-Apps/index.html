@@ -258,18 +258,10 @@
   <script type="text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
 
   <script>
-    // OLD
-    // // window.graphObjects = [];
-    // // window.graphTitle = "";
-    // // window.RenderNodes = [];
-    // // window.graphDirectionality ="";
-    // // window.GraphMLXMLData = "";
-    // // window.editingIndex = null;
-    // // window.SJFI_storageKey = 'SGE_graphObjects';
-
+    let hasBeenSetup = false;
     window.SJFI_storageKey = 'SGE_graphObjects';
     
-    window.SJFI_data = window.SJFI_data || {
+    window.SJFI_data = {
         graphObjects: [],
         NodesRenderSettings: [],
         graphSettingsTitle: {},
@@ -277,108 +269,52 @@
         GraphMLXMLData: ""
     };
 
-    // // window.SJFI_data = [];
-    // window.SJFI_data = { //LEAVING defaults until the export/import are fully, reimplemented
-    // graphObjects: [
-    //     {
-    //         id: "Base01Blk01",
-    //         type: "node",
-    //         label: "O2-H2-Generator",
-    //         properties: [
-    //             {
-    //                 key: "label",
-    //                 value: "O2-H2-Generator"
-    //             },
-    //             {
-    //                 key: "amount",
-    //                 value: "1"
-    //             },
-    //             {
-    //                 key: "status",
-    //                 value: ""
-    //             }
-    //         ],
-    //         index: 1,
-    //         x: 730.1291796277079,
-    //         y: 427.80432765354624,
-    //         vy: 0,
-    //         vx: 0,
-    //         fx: 730.1291796277079,
-    //         fy: 427.80432765354624
-    //     },
-    //     {
-    //         id: "BL1-Tsk",
-    //         type: "edge",
-    //         label: "Base 1 Tasks",
-    //         key: "label",
-    //         value: "at",
-    //         source: "Starting Base - Tasks",
-    //         sourceId: "Base01-Tasks",
-    //         target: "Base 1 (Starting Base)",
-    //         targetId: "BaseList01"
-    //     }
-    //     ],
-    //     NodesRenderSettings: {
-    //         Base01Blk05: {
-    //             x: 476.3285966154599,
-    //             y: 494.82816933382105,
-    //             color: "#2ec27e"
-    //         },
-    //         Base01Blk06: {
-    //             x: 646.2132951379407,
-    //             y: 488.30766010004476
-    //         },
-    //         labelVisibility: {
-    //             nodeLabels: "block",
-    //             edgeLabels: "block"
-    //         }  
-    //     },
-    //     graphSettingsTitle: "EXAMPLE Title",
-    //     graphSettingsDirectionality: "directed",
-    //     GraphMLXMLData: ""
-    //     };
-    
     // window.addEventListener('DOMContentLoaded', () => { // FIRES BEFORE onload()
     window.onload = () => {
-      //Load
-        //console.log("window.SJFI_data: ", window.SJFI_data);
-        let temp = loadJSONObjectsFromKey(SJFI_storageKey);       
-        //console.log("loaded JSON from key: ", temp);
+        if (!hasBeenSetup) {
+            hasBeenSetup = true;
 
-        if (temp != null) {
-            window.SJFI_data = temp;
+            //Load
+            console.log("window.SJFI_data: ", window.SJFI_data);
+            let temp = loadJSONObjectsFromKey(SJFI_storageKey);       
+            console.log("loaded JSON from key: ", temp);
+
+            if (temp != null) {
+                window.SJFI_data = temp;
+            }
+            //console.log("window.SJFI_data: ", window.SJFI_data);
+
+            //Restore
+
+            //Update
+            //Addresses Area A
+
+            //Addresses Area B
+            // if NOT null, then updateGraphSettings() with the data
+            // if (window.SJFI_data != null && window.SJFI_data.graphSettingsTitle != null) {
+                // console.log("window.SJFI_data.graphSettingsTitle: ", window.SJFI_data.graphSettingsTitle);
+            updateGraphSettings();
+            // }
+            // else {
+            //     console.log("window.SJFI_data is null");
+            // }
+            //Addresses Area B.I
+            ButtonSetupAreaBObjectAdding();
+            ButtonSetupAreaBObjectEditing();
+            FormSetupAreaBObjectNew();
+            //DEAL WITH MISSING: updateGraphSettings(); ????
+            //Addresses Area B.II
+            if (window.SJFI_data != null) {
+                updateTable();
+            }
+            //Addresses Area C
+            if (window.SJFI_data != null) {
+                reprintGraphMLFile();
+            } else {
+                document.getElementById("graphml-file").innerHTML = "No GraphML File to display.";
+            }
         }
-        //console.log("window.SJFI_data: ", window.SJFI_data);
 
-      //Restore
-
-      //Update
-        //Addresses Area A
-
-        //Addresses Area B
-        // if NOT null, then updateGraphSettings() with the data
-        // if (window.SJFI_data != null && window.SJFI_data.graphSettingsTitle != null) {
-            // console.log("window.SJFI_data.graphSettingsTitle: ", window.SJFI_data.graphSettingsTitle);
-        updateGraphSettings();
-        // }
-        // else {
-        //     console.log("window.SJFI_data is null");
-        // }
-        //Addresses Area B.I
-        ButtonSetupAreaBObjectAdding();
-        ButtonSetupAreaBObjectEditing();
-        FormSetupAreaBObjectNew();
-        //DEAL WITH MISSING: updateGraphSettings(); ????
-        //Addresses Area B.II
-        if (window.SJFI_data != null) {
-            updateTable();
-        }
-        //Addresses Area C
-        if (window.SJFI_data != null) {
-            reprintGraphMLFile();
-        } else {
-            document.getElementById("graphml-file").innerHTML = "No GraphML File to display.";
-        }
     };
   </script>
 
