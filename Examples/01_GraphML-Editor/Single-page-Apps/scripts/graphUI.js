@@ -28,6 +28,12 @@ function ButtonSetupAreaBObjectAdding(debug=false) {
     const graphType = document.getElementById('graph-type').value;
     const objectId = document.getElementById('object-id').value;
 
+    console.log("[DEBUG] graphType = " + graphType);
+    console.log("[DEBUG] objectId = " + objectId);
+    if (objectId === "" || objectId === null) { //New Object clicked, and empty
+      return;
+    }
+
     if (graphType === 'node') {
       const nodeLabel = document.getElementById('node-label').value;
       const nodePropertiesDiv = document.getElementById('node-properties');
@@ -39,10 +45,13 @@ function ButtonSetupAreaBObjectAdding(debug=false) {
         const valueInput = propertyInput.getElementsByTagName('input')[1];
         properties.push({ key: keyInput.value, value: valueInput.value });
       }
-      console.log("addObjectOrUpdate(" + objectId + ", " + graphType + ", { label: " + nodeLabel + ", properties: " + properties + " })");
+      // console.log("addObjectOrUpdate(" + objectId + ", " + graphType + ", { label: " + nodeLabel + ", properties: " + properties + " })");
       addObjectOrUpdate(objectId, graphType, { label: nodeLabel, properties });
 
     } else {
+      console.log("addObjectOrUpdate(" + objectId + "... )");
+      // length of objectID
+      console.log("objectId.length = " + objectId.length);
       const edgeLabel = document.getElementById('edge-label').value;
       const edgeKey = document.getElementById('edge-key').value;
       const edgeValue = document.getElementById('edge-value').value;
@@ -52,11 +61,12 @@ function ButtonSetupAreaBObjectAdding(debug=false) {
       const sourceNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === sourceNode).id;
       const targetNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === targetNode).id;
 
-      console.log("addObjectOrUpdate(" + objectId + ", " + graphType + ", { label: " + edgeLabel + ", key: " + edgeKey + ", value: " + edgeValue + ", source: " + sourceNode + ", sourceId: " + sourceNodeId + ", target: " + targetNode + ", targetNode: " + targetNodeId + " })");
+      // console.log("addObjectOrUpdate(" + objectId + ", " + graphType + ", { label: " + edgeLabel + ", key: " + edgeKey + ", value: " + edgeValue + ", source: " + sourceNode + ", sourceId: " + sourceNodeId + ", target: " + targetNode + ", targetNode: " + targetNodeId + " })");
       addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
     }
 
-    updateTable();
+    FormSetupAreaBObjectNew();
+    window.updateTable();
     window.reprintGraphMLFile();
   });
 
