@@ -28,7 +28,6 @@ function editObject(object) {
     const targetNodeInput = document.getElementById('target-node');
     targetNodeInput.value = object.target;
 
-  //Loop thru nodes to find id -- source-node-id & target-node-id
     const sourceNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === object.source).id;
     const targetNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === object.target).id;
 
@@ -39,7 +38,6 @@ function editObject(object) {
 
   }
 
-  // Set editingIndex to the index of the object being edited
   window.editingIndex = window.SJFI_data.graphObjects.findIndex(obj => obj.id === object.id);
 
   document.getElementById('submit-add_object-button').textContent = 'Update Object';

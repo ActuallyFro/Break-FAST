@@ -444,7 +444,6 @@ function loadNodePositionsFromFile(file) {
         // // window.graphTitle = config.title;
         // // window.graphDirectionality = config.directionality;
 
-        // Load your settings
         nodeColors = config.nodeColors;
         labelColor = config.labelColor;
         nodeSettings = config.nodeSettings;
@@ -453,7 +452,6 @@ function loadNodePositionsFromFile(file) {
         offsetY = config.offsetY;
         nodeRadius = config.nodeRadius;
 
-        // Update localStorage with the new settings
         localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
         localStorage.setItem('labelColor', labelColor);
         localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
@@ -484,43 +482,9 @@ function loadNodePositionsFromFile(file) {
 }
 
 
-//   document.addEventListener('DOMContentLoaded', () => {
-//     // document.getElementById('export-config-button').addEventListener('click', () => {
-//     //     saveNodePositionsToFile();
-//     // });
-    
-//     // document.getElementById('import-config-button').addEventListener('click', () => {
-//     //     document.getElementById('import-config-file').click();
-//     // });
-    
-//     // document.getElementById('import-config-file').addEventListener('change', event => {
-//     //     const file = event.target.files[0];
-//     //     loadNodePositionsFromFile(file);
-//     // });
-
-// });
-//////////////////////////////////////////////////
-
-
-
-// // Modify the ticked function to update the node color
-// function ticked() {
-
-//     // rest of your code
-// }
-
-// Add an event handler to hide the context menu when you click outside of it
 window.addEventListener('click', function(event) {
     const contextMenu = document.getElementById('context-menu');
     if (event.target !== contextMenu && !contextMenu.contains(event.target)) {
         contextMenu.style.display = 'none';
     }
 });
-
-
-
-
-///////////////////
-
-
-

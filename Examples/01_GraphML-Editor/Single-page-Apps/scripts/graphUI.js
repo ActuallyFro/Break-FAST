@@ -24,10 +24,7 @@ function ButtonSetupAreaBObjectAdding() {
   const form = document.getElementById('graph-object-form'); // This will trigger for "ADD OBJECT" and "EDIT OBJECT" --- BUT PREVENTS BUTTONS from RELOADING THE PAGE!
   // const form = document.getElementById('submit-add_object-button');
   form.addEventListener('submit', (e) => {
-//UNDO THIS--- maybe?
-    // console
     console.log("[DEBUG] submit-add_object-button clicked");
-    // alert("submit-add_object-button clicked");
 
     e.preventDefault();
     const graphType = document.getElementById('graph-type').value;
@@ -57,35 +54,17 @@ function ButtonSetupAreaBObjectAdding() {
       const sourceNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === sourceNode).id;
       const targetNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === targetNode).id;
 
-      // addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId });
       console.log("addObjectOrUpdate(" + objectId + ", " + graphType + ", { label: " + edgeLabel + ", key: " + edgeKey + ", value: " + edgeValue + ", source: " + sourceNode + ", sourceId: " + sourceNodeId + ", target: " + targetNode + ", targetNode: " + targetNodeId + " })");
       addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
     }
 
     updateTable();
-    //FormSetupAreaBObjectNew();
     window.reprintGraphMLFile();
   });
 
 }
 
-// In your import and export functions
 window.exportGraphObjects = function(event) {
-  // Include your settings into the exported object
-  // let config = {
-  //   objects: window.graphObjects,
-  //   title: window.graphTitle,
-  //   directionality: window.graphDirectionality,
-  //   nodeColors: nodeColors,
-  //   labelColor: labelColor,
-  //   nodeSettings: nodeSettings,
-  //   fontSize: fontSize,
-  //   offsetX: offsetX,
-  //   offsetY: offsetY,
-  //   nodeRadius: nodeRadius
-  // };
-
-  // SJFIJSONExport(config);
   SJFIJSONExport(window.SJFI_data);
 }
 
@@ -95,9 +74,6 @@ window.importGraphObjects = async function(event) {
 
   const importedData = await SJFIJSONImport(event.target.files[0]);
   if (importedData) {
-    // window.graphObjects = importedData.objects;
-    // window.graphTitle = importedData.title;
-    // window.graphDirectionality = importedData.directionality;
     window.SJFI_data = importedData;
     updateTable();
     updateGraphSettings();
@@ -105,8 +81,8 @@ window.importGraphObjects = async function(event) {
   }
 }
 
-function ButtonSetupAreaBObjectEditing() {
-  //console.log("0.1.2 Initialize User Interface for adding objects");
+function ButtonSetupAreaBObjectEditing(debug=true) {
+  if (debug) console.log("[DEBUG] graphUI.js - ButtonSetupAreaBObjectEditing() called");
   
   const newObjectOrCLEARButton = document.getElementById('new-object-button');
   newObjectOrCLEARButton.addEventListener('click', () => {
@@ -160,8 +136,9 @@ function ButtonSetupAreaBObjectEditing() {
   });
 }
 
-function updateTable() {
-  //console.log("X.X.1 Update table of graph objects");
+function updateTable(debug=true) {
+  if (debug) console.log("[DEBUG] graphUI.js - updateTable() called");
+
   const tableBody = document.getElementById('graph-object-table-body');
   tableBody.innerHTML = '';
 
@@ -264,10 +241,9 @@ function toggleObjectTypeFields() {
   }
 }
 
-//DOES NOTHING for 'page reload bug'
-function FormSetupAreaBObjectNew() {
-  console.log("[DEBUG] FormSetupAreaBObjectNew()");
-//UNDO THIS--- maybe?  
+function FormSetupAreaBObjectNew(debug=true) {
+  if (debug) console.log("[DEBUG] graphUI.js - FormSetupAreaBObjectNew() called");
+
   const form = document.getElementById('graph-object-form');
   form.reset();
   toggleObjectTypeFields();
@@ -306,4 +282,24 @@ function createPropertyInput(property) {
 //--------------------
 // Graph Properties
 //--------------------
-// MOVE TITLE ACTIONS HERE!
+window.updateGraphSettings = function(debug = true) {
+  if (debug) console.log("[DEBUG] graphUI.js - updateGraphSettings() called");
+
+  const titleInput = document.getElementById('graph-title');
+  const directionalitySelect = document.getElementById('graph-directionality');
+
+  if (typeof window.SJFI_data.graphSettingsTitle !== "string"){
+    window.SJFI_data.graphSettingsTitle = "";
+
+  } else {
+    window.SJFI_data.graphSettingsTitle = titleInput.value;
+  }
+
+  if (window.SJFI_data.graphSettingsDirectionality !== "directed" && window.SJFI_data.graphSettingsDirectionality !== "undirected"){
+    directionalitySelect.value = "directed"
+  } else {
+    window.SJFI_data.graphSettingsDirectionality = directionalitySelect.value;
+  }
+
+  storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+}
