@@ -1,6 +1,8 @@
 Important, Urgent
 =================
-- Drawn D3.js drawing errors
+- [ ] Export gives empty data -- Import is assumed to be broken too
+- [ ] Local storage is assumed to NOT work
+- [ ] Drawn D3.js drawing errors
   - "reset drawing" will NOT clear past objects; Zoom can leave artifact objects
   - Changed node setting do NOT immediately update (e.g., color coding)
 
