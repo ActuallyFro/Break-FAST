@@ -1,7 +1,7 @@
 //---------------------------
 // UI
 //---------------------------
-function ButtonSetupAreaBObjectAdding(debug=true) {
+function ButtonSetupAreaBObjectAdding(debug=false) {
   if (debug) console.log("[DEBUG] graphUI.js - 1. ButtonSetupAreaBObjectAdding() called");
 
   const graphTypeDropdown = document.getElementById('graph-type');
@@ -56,8 +56,8 @@ function ButtonSetupAreaBObjectAdding(debug=true) {
       addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
     }
 
-    // updateTable();
-    // window.reprintGraphMLFile();
+    updateTable();
+    window.reprintGraphMLFile();
   });
 
 }
@@ -68,7 +68,6 @@ window.exportGraphObjects = function(event) {
 
 
 window.importGraphObjects = async function(event) {
-  //console.log("X.X.2 Import graph objects to JSON file");
 
   const importedData = await SJFIJSONImport(event.target.files[0]);
   if (importedData) {
@@ -79,7 +78,7 @@ window.importGraphObjects = async function(event) {
   }
 }
 
-function ButtonSetupAreaBObjectEditing(debug=true) {
+function ButtonSetupAreaBObjectEditing(debug=false) {
   if (debug) console.log("[DEBUG] graphUI.js - 2. ButtonSetupAreaBObjectEditing() called");
   
   const newObjectOrCLEARButton = document.getElementById('new-object-button');
@@ -112,9 +111,9 @@ function ButtonSetupAreaBObjectEditing(debug=true) {
 
   const resetButton = document.getElementById('reset-button');
   resetButton.addEventListener('click', function() {
-    window.resetLocalStorageByKey(window.SJFI_storageKey, window.SJFI_data); //<-- CANNOT perform `window.SJFI_data = [];`
-    //No longer a thing: window.resetGraphSettings();
-    window.SJFI_data = [];
+    window.SJFI_data = window.resetLocalStorageByKey(window.SJFI_storageKey);
+    window.updateTable();
+    window.updateGraphSettings();
     window.reprintGraphMLFile();
   });
 
@@ -123,18 +122,13 @@ function ButtonSetupAreaBObjectEditing(debug=true) {
     window.SJFI_data.graphSettingsTitle = document.getElementById('graph-title').value;
     window.SJFI_data.graphSettingsDirectionality = document.getElementById('graph-directionality').value;
 
-    // console.log("[DEBUG] SAVE - GRAPH SETTINGS BUTTON CLICKED");
-    // console.log("[DEBUG] window.SJFI_data.graphSettingsTitle: " + window.SJFI_data.graphSettingsTitle);
-    // console.log("[DEBUG] window.SJFI_data.graphSettingsDirectionality: " + window.SJFI_data.graphSettingsDirectionality);
-
     storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
-    alert("Graph settings updated!");
-
     window.reprintGraphMLFile();
+    alert("Graph settings updated!");
   });
 }
 
-function updateTable(debug=true) {
+function updateTable(debug=false) {
   if (debug) console.log("[DEBUG] graphUI.js - updateTable() called");
 
   const tableBody = document.getElementById('graph-object-table-body');
@@ -239,7 +233,7 @@ function toggleObjectTypeFields() {
   }
 }
 
-function FormSetupAreaBObjectNew(debug=true) {
+function FormSetupAreaBObjectNew(debug=false) {
   if (debug) console.log("[DEBUG] graphUI.js - 3. FormSetupAreaBObjectNew() called");
 
   const form = document.getElementById('graph-object-form');
@@ -280,7 +274,7 @@ function createPropertyInput(property) {
 //--------------------
 // Graph Properties
 //--------------------
-window.updateGraphSettings = function(debug = true) {
+window.updateGraphSettings = function(debug = false) {
   if (debug) console.log("[DEBUG] graphUI.js - updateGraphSettings() called");
 
   const titleInput = document.getElementById('graph-title');
@@ -299,5 +293,15 @@ window.updateGraphSettings = function(debug = true) {
     window.SJFI_data.graphSettingsDirectionality = directionalitySelect.value;
   }
 
-  storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+    storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+}
+
+window.loadGraphSettings = function(debug = false) {
+  if (debug) console.log("[DEBUG] graphUI.js - loadGraphSettings() called");
+
+  const titleInput = document.getElementById('graph-title');
+  const directionalitySelect = document.getElementById('graph-directionality');
+
+  titleInput.value = window.SJFI_data.graphSettingsTitle;
+  directionalitySelect.value = window.SJFI_data.graphSettingsDirectionality;
 }

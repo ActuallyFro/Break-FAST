@@ -47,6 +47,7 @@ function removeObject(object) {
   const index = window.SJFI_data.graphObjects.indexOf(object);
   if (index > -1) {
     window.SJFI_data.graphObjects.splice(index, 1);
-    storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+    //storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data, true);
+    localStorage.setItem(window.SJFI_storageKey, JSON.stringify(window.SJFI_data));
   }
 }

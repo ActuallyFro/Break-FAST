@@ -251,10 +251,11 @@
   <script type="text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
 
   <script>
+    const isDebug = false;
     let hasBeenSetup = false;
     window.SJFI_storageKey = 'SGE_graphObjects';
     
-    window.SJFI_data = {
+    window.SJFI_data = { // Object === {}; Array === []
         graphObjects: [],
         NodesRenderSettings: [],
         graphSettingsTitle: {},
@@ -265,17 +266,21 @@
     // window.addEventListener('DOMContentLoaded', () => { // FIRES BEFORE onload()
     window.onload = () => {
         if (!hasBeenSetup) {
-            console.log("[DEBUG] ===================================");
-            console.log("[DEBUG] window.onload()");
+            if (isDebug) console.log("[DEBUG] ===================================");
+            if (isDebug) console.log("[DEBUG] window.onload()");
             hasBeenSetup = true;
 
             //Load
-            console.log("window.SJFI_data: ", window.SJFI_data);
+            if (isDebug) console.log("[DEBUG] window.SJFI_storageKey: ", window.SJFI_storageKey);
+            if (isDebug) console.log("[DEBUG] window.SJFI_data: ", window.SJFI_data);
             let temp = loadJSONObjectsFromKey(SJFI_storageKey);       
-            console.log("loaded JSON from key: ", temp);
+            if (isDebug) console.log("[DEBUG] loaded JSON from key: ", temp);
 
-            if (temp != null) {
+            if (temp !== null) {
                 window.SJFI_data = temp;
+
+            } else {
+                console.error("Data loaded from key is empty...skipping");
             }
 
             //Restore
@@ -286,11 +291,11 @@
             //Addresses Area B
             // if NOT null, then updateGraphSettings() with the data
             if (window.SJFI_data != null && window.SJFI_data.graphSettingsTitle != null) {
-                console.log("[DEBUG] index.html - 0. window.SJFI_data.graphSettingsTitle: ", window.SJFI_data.graphSettingsTitle);
-                updateGraphSettings();
+                if (isDebug) console.log("[DEBUG] index.html - 0. window.SJFI_data.graphSettingsTitle: ", window.SJFI_data.graphSettingsTitle);
+                loadGraphSettings();
             }
             else {
-                console.log("[DEBUG] index.html - 0. window.SJFI_data is null");
+                if (isDebug) console.log("[DEBUG] index.html - 0. window.SJFI_data is null");
             }
             //Addresses Area B.I
             ButtonSetupAreaBObjectAdding();
@@ -307,7 +312,7 @@
             } else {
                 document.getElementById("graphml-file").innerHTML = "No GraphML File to display.";
             }
-            console.log("[DEBUG] ===================================");
+            if (isDebug) console.log("[DEBUG] ===================================");
         }
 
     };
