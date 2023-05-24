@@ -265,6 +265,8 @@
     // window.addEventListener('DOMContentLoaded', () => { // FIRES BEFORE onload()
     window.onload = () => {
         if (!hasBeenSetup) {
+            console.log("[DEBUG] ===================================");
+            console.log("[DEBUG] window.onload()");
             hasBeenSetup = true;
 
             //Load
@@ -275,7 +277,6 @@
             if (temp != null) {
                 window.SJFI_data = temp;
             }
-            //console.log("window.SJFI_data: ", window.SJFI_data);
 
             //Restore
 
@@ -284,28 +285,29 @@
 
             //Addresses Area B
             // if NOT null, then updateGraphSettings() with the data
-            // if (window.SJFI_data != null && window.SJFI_data.graphSettingsTitle != null) {
-                // console.log("window.SJFI_data.graphSettingsTitle: ", window.SJFI_data.graphSettingsTitle);
-            updateGraphSettings();
-            // }
-            // else {
-            //     console.log("window.SJFI_data is null");
-            // }
+            if (window.SJFI_data != null && window.SJFI_data.graphSettingsTitle != null) {
+                console.log("[DEBUG] index.html - 0. window.SJFI_data.graphSettingsTitle: ", window.SJFI_data.graphSettingsTitle);
+                updateGraphSettings();
+            }
+            else {
+                console.log("[DEBUG] index.html - 0. window.SJFI_data is null");
+            }
             //Addresses Area B.I
             ButtonSetupAreaBObjectAdding();
             ButtonSetupAreaBObjectEditing();
             FormSetupAreaBObjectNew();
-            //DEAL WITH MISSING: updateGraphSettings(); ????
+
             //Addresses Area B.II
-            if (window.SJFI_data != null) {
+            if (window.SJFI_data != null && window.SJFI_data.graphObjects != null) {
                 updateTable();
             }
             //Addresses Area C
-            if (window.SJFI_data != null) {
+            if (window.SJFI_data != null && window.SJFI_data.GraphMLXMLData != null) {
                 reprintGraphMLFile();
             } else {
                 document.getElementById("graphml-file").innerHTML = "No GraphML File to display.";
             }
+            console.log("[DEBUG] ===================================");
         }
 
     };
