@@ -1,18 +1,16 @@
 //---------------------------
 // UI
 //---------------------------
-function ButtonSetupAreaBObjectAdding() {
-  //console.log("#.#.#.# Develop user interface for adding objects");
+function ButtonSetupAreaBObjectAdding(debug=true) {
+  if (debug) console.log("[DEBUG] graphUI.js - 1. ButtonSetupAreaBObjectAdding() called");
 
   const graphTypeDropdown = document.getElementById('graph-type');
   graphTypeDropdown.addEventListener('change', () => {
-    //console.log("[DEBUG] graphTypeDropdown changed");
-    //alert("graphTypeDropdown changed");
-
     const submitButton = document.getElementById('submit-add_object-button');
     submitButton.textContent = 'Add Object';
     window.editingIndex = null;
-    toggleObjectTypeFields();
+
+    // toggleObjectTypeFields(); -- IDK why this is here...
   });
   
   const addPropertyButton = document.getElementById('add-property-button');
@@ -58,8 +56,8 @@ function ButtonSetupAreaBObjectAdding() {
       addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
     }
 
-    updateTable();
-    window.reprintGraphMLFile();
+    // updateTable();
+    // window.reprintGraphMLFile();
   });
 
 }
@@ -82,7 +80,7 @@ window.importGraphObjects = async function(event) {
 }
 
 function ButtonSetupAreaBObjectEditing(debug=true) {
-  if (debug) console.log("[DEBUG] graphUI.js - ButtonSetupAreaBObjectEditing() called");
+  if (debug) console.log("[DEBUG] graphUI.js - 2. ButtonSetupAreaBObjectEditing() called");
   
   const newObjectOrCLEARButton = document.getElementById('new-object-button');
   newObjectOrCLEARButton.addEventListener('click', () => {
@@ -242,7 +240,7 @@ function toggleObjectTypeFields() {
 }
 
 function FormSetupAreaBObjectNew(debug=true) {
-  if (debug) console.log("[DEBUG] graphUI.js - FormSetupAreaBObjectNew() called");
+  if (debug) console.log("[DEBUG] graphUI.js - 3. FormSetupAreaBObjectNew() called");
 
   const form = document.getElementById('graph-object-form');
   form.reset();

@@ -51,7 +51,8 @@ function renderGraphMLToFileArea() {
 }
 
 //create window function reprintGraphMLFile()
-window.reprintGraphMLFile = function() {
+window.reprintGraphMLFile = function(debug=true) {
+    if (debug) { console.log("[DEBUG] fileIO.js - reprintGraphMLFile()"); }
     setGraphMLContent(defaultGraphMLHEADER+"\n");
 
     //<KEYS>
