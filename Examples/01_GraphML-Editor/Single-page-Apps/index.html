@@ -266,15 +266,15 @@
     // window.addEventListener('DOMContentLoaded', () => { // FIRES BEFORE onload()
     window.onload = () => {
         if (!hasBeenSetup) {
-            if (isDebug) console.log("[DEBUG] ===================================");
-            if (isDebug) console.log("[DEBUG] window.onload()");
+            //if (isDebug) console.log("[DEBUG] ===================================");
+            //if (isDebug) console.log("[DEBUG] window.onload()");
             hasBeenSetup = true;
 
             //Load
-            if (isDebug) console.log("[DEBUG] window.SJFI_storageKey: ", window.SJFI_storageKey);
-            if (isDebug) console.log("[DEBUG] window.SJFI_data: ", window.SJFI_data);
+            //if (isDebug) console.log("[DEBUG] window.SJFI_storageKey: ", window.SJFI_storageKey);
+            //if (isDebug) console.log("[DEBUG] window.SJFI_data: ", window.SJFI_data);
             let temp = loadJSONObjectsFromKey(SJFI_storageKey);       
-            if (isDebug) console.log("[DEBUG] loaded JSON from key: ", temp);
+            //if (isDebug) console.log("[DEBUG] loaded JSON from key: ", temp);
 
             if (temp !== null) {
                 window.SJFI_data = temp;
@@ -291,12 +291,12 @@
             //Addresses Area B
             // if NOT null, then updateGraphSettings() with the data
             if (window.SJFI_data != null && window.SJFI_data.graphSettingsTitle != null) {
-                if (isDebug) console.log("[DEBUG] index.html - 0. window.SJFI_data.graphSettingsTitle: ", window.SJFI_data.graphSettingsTitle);
+                //if (isDebug) console.log("[DEBUG] index.html - 0. window.SJFI_data.graphSettingsTitle: ", window.SJFI_data.graphSettingsTitle);
                 loadGraphSettings();
             }
-            else {
-                if (isDebug) console.log("[DEBUG] index.html - 0. window.SJFI_data is null");
-            }
+            // else {
+            //     if (isDebug) console.log("[DEBUG] index.html - 0. window.SJFI_data is null");
+            // }
             //Addresses Area B.I
             ButtonSetupAreaBObjectAdding();
             ButtonSetupAreaBObjectEditing();
@@ -307,12 +307,14 @@
                 updateTable();
             }
             //Addresses Area C
-            if (window.SJFI_data != null && window.SJFI_data.GraphMLXMLData != null) {
+            if (window.SJFI_data !== null && window.SJFI_data.GraphMLXMLData !== null) {
+                if (isDebug) console.log("[DEBUG] index.html - SETTING UP GraphML Print");
                 reprintGraphMLFile();
             } else {
+                if (isDebug) console.log("[DEBUG] [WARNING] index.html - NO GraphML XML Data to print!");
                 document.getElementById("graphml-file").innerHTML = "No GraphML File to display.";
             }
-            if (isDebug) console.log("[DEBUG] ===================================");
+            // if (isDebug) console.log("[DEBUG] ===================================");
         }
 
     };
