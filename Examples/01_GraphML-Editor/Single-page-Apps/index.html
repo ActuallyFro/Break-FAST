@@ -55,11 +55,6 @@
     </div>
     <button id="reset-d3-button">Reset Drawing</button>
     <button id="print-button">Print</button>
-    <button id="save-config-button">Temp Save (REMOVE!)</button>
-    <button id="load-config-button">Temp Load (TODO)</button>
-    <!-- <button id="export-config-button">Export Config</button>
-    <input type="file" id="import-config-file" style="display:none" accept=".json">
-    <button id="import-config-button">Import Config</button> -->
     <button id="zoom-in-button">Zoom In</button>
     <button id="zoom-out-button">Zoom Out</button>
     
@@ -80,6 +75,8 @@
 
       <br><label for="node-radius">Node Radius:</label>
       <input type="number" id="node-radius" name="node-radius" min="1" max="100" value="20">
+
+      <br><button id="unlock-node-button">Unlock Node</button>
     </div>
   
     <div id="graph-context-menu" style="position: absolute; display: none; background-color: rgb(21, 148, 207); border: 1px solid black;">
@@ -127,7 +124,7 @@
             </div>
     
             <div class="form-group">
-                <button class="btn btn-warning" id="new-button">New Object</button>
+                <button class="btn btn-warning" id="new-object-button">New Object</button>
             </div>
             <br>
             <div class="form-group">
@@ -136,7 +133,7 @@
             <br>
     
             <div class="form-group">
-                <label for="graph-type">Select New Object Type:</label>
+                <label for="graph-type">Select Object Type:</label>
                 <select class="form-control" id="graph-type" onchange="toggleObjectTypeFields()">
                     <option value="node">Node</option>
                     <option value="edge">Edge</option>
@@ -176,11 +173,10 @@
             </div>
     
             <div class="form-group">
-                <button class="btn btn-success" id="submit-button" type="submit">Add Object</button>
+                <button class="btn btn-success" id="submit-add_object-button" type="submit">Add Object</button>
             </div>
         </form>
     </div>
-    
     
     <!-- ------------- Section 2 - ------------- -->
     <hr style="width: 90%; float: left; margin-top: 0;">
@@ -237,50 +233,96 @@
   
 
   <!-- ============================= SCRIPTS ============================= -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="./scripts/tableSearchAndSort.js"></script>
+  <script type="text/javascript" src="./scripts/SJFI/lib-localstorage.js"></script>
+  <script type="text/javascript" src="./scripts/SJFI/lib-JSON-ImpExp.js"></script>
+  <script type="text/javascript" src="./scripts/SJFI/lib-XML-ImpExp.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script type="text/javascript" src="./scripts/tableSearchAndSort.js"></script>
 
-  <script src="./scripts/graphRendering.js"></script>
-  <script src="./scripts/fileIO.js"></script>
-  <script src="./scripts/SJFI/lib-localstorage.js"></script>
-  <script src="./scripts/SJFI/lib-JSON-ImpExp.js"></script>
-  <script src="./scripts/SJFI/lib-XML-ImpExp.js"></script>
-  <script src="./scripts/graphUI.js"></script>
+  <script type="text/javascript" src="./scripts/graphRendering.js"></script>
+  <script type="text/javascript" src="./scripts/fileIO.js"></script>
+  <script type="text/javascript" src="./scripts/graphUI.js"></script>
 
-  <script src="./scripts/graphOperations.js"></script>
-  <script src="./scripts/graphEditing.js"></script>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script type="text/javascript" src="./scripts/graphOperations.js"></script>
+  <script type="text/javascript" src="./scripts/graphEditing.js"></script>
+  <script type="text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
 
   <script>
-    window.graphObjects = [];
-    window.graphTitle = "";
-    window.RenderNodes = [];
-    window.graphDirectionality ="";
-    window.GraphMLXMLData = "";
-    window.editingIndex = null;
+    const isDebug = false;
+    let hasBeenSetup = false;
     window.SJFI_storageKey = 'SGE_graphObjects';
+    
+    window.SJFI_data = { // Object === {}; Array === []
+        graphObjects: [],
+        graphSettingsTitle: {},
+        graphSettingsDirectionality: "", //defined in updateGraphSettings()
+        GraphMLXMLData: "",
+        renderSettings: []
+    };
 
-    window.addEventListener('DOMContentLoaded', () => {
-        OperationsUIObjectsFormSetup();
-        OperationsUIObjectsButtonSetup();
+    // window.addEventListener('DOMContentLoaded', () => { // FIRES BEFORE onload()
+    window.onload = () => {
+        if (!hasBeenSetup) {
+            //if (isDebug) console.log("[DEBUG] ===================================");
+            //if (isDebug) console.log("[DEBUG] window.onload()");
+            hasBeenSetup = true;
 
-        loadGraphObjects(SJFI_storageKey);
+            //Load
+            //if (isDebug) console.log("[DEBUG] window.SJFI_storageKey: ", window.SJFI_storageKey);
+            //if (isDebug) console.log("[DEBUG] window.SJFI_data: ", window.SJFI_data);
+            let temp = loadJSONObjectsFromKey(SJFI_storageKey);       
+            //if (isDebug) console.log("[DEBUG] loaded JSON from key: ", temp);
 
-        const storedTitle = localStorage.getItem(`${SJFI_storageKey}_title`);
+            if (temp !== null) {
+                window.SJFI_data = temp;
 
-        loadGraphSettings(SJFI_storageKey);
-        updateGraphSettings();
+            } else {
+                console.error("Data loaded from key is empty...skipping");
+            }
 
-        reprintGraphMLFile();
-    });
+            //Restore
+
+            //Update
+            //Addresses Area A
+
+            //Addresses Area B
+            // if NOT null, then updateGraphSettings() with the data
+            if (window.SJFI_data != null && window.SJFI_data.graphSettingsTitle != null) {
+                //if (isDebug) console.log("[DEBUG] index.html - 0. window.SJFI_data.graphSettingsTitle: ", window.SJFI_data.graphSettingsTitle);
+                loadGraphSettings();
+            }
+            // else {
+            //     if (isDebug) console.log("[DEBUG] index.html - 0. window.SJFI_data is null");
+            // }
+            //Addresses Area B.I
+            ButtonSetupAreaBObjectAdding();
+            ButtonSetupAreaBObjectEditing();
+            FormSetupAreaBObjectNew();
+
+            //Addresses Area B.II
+            if (window.SJFI_data != null && window.SJFI_data.graphObjects != null) {
+                updateTable();
+            }
+            //Addresses Area C
+            if (window.SJFI_data !== null && window.SJFI_data.GraphMLXMLData !== null) {
+                if (isDebug) console.log("[DEBUG] index.html - SETTING UP GraphML Print");
+                reprintGraphMLFile();
+            } else {
+                if (isDebug) console.log("[DEBUG] [WARNING] index.html - NO GraphML XML Data to print!");
+                document.getElementById("graphml-file").innerHTML = "No GraphML File to display.";
+            }
+            // if (isDebug) console.log("[DEBUG] ===================================");
+        }
+
+    };
   </script>
 
   <button onclick="scrollPageToTopOfPage()" id="scrollButtonToTop" title="Go to top">Top</button>
-  <script src="./scripts/SJUS_1-0-0_ScrollToTopButton.js"></script>
+  <script type="text/javascript" src="./scripts/SJUS_1-0-0_ScrollToTopButton.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
-  <script src="./scripts/SJUS_1-0-0_DarkModeSwitch.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="./scripts/SJUS_1-0-0_DarkModeSwitch.js"></script>
 
 </body>
 </html>

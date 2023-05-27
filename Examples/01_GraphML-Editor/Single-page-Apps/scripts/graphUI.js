@@ -1,15 +1,16 @@
 //---------------------------
 // UI
 //---------------------------
-function OperationsUIObjectsFormSetup() {
-  //console.log("#.#.#.# Develop user interface for adding objects");
+function ButtonSetupAreaBObjectAdding(debug=false) {
+  if (debug) console.log("[DEBUG] graphUI.js - 1. ButtonSetupAreaBObjectAdding() called");
 
   const graphTypeDropdown = document.getElementById('graph-type');
   graphTypeDropdown.addEventListener('change', () => {
-    const submitButton = document.getElementById('submit-button');
+    const submitButton = document.getElementById('submit-add_object-button');
     submitButton.textContent = 'Add Object';
     window.editingIndex = null;
-    toggleObjectTypeFields();
+
+    // toggleObjectTypeFields(); -- IDK why this is here...
   });
   
   const addPropertyButton = document.getElementById('add-property-button');
@@ -18,12 +19,20 @@ function OperationsUIObjectsFormSetup() {
     nodeProperties.appendChild(createPropertyInput());
   });
 
-  const form = document.getElementById('graph-object-form');
-
+  const form = document.getElementById('graph-object-form'); // This will trigger for "ADD OBJECT" and "EDIT OBJECT" --- BUT PREVENTS BUTTONS from RELOADING THE PAGE!
+  // const form = document.getElementById('submit-add_object-button');
   form.addEventListener('submit', (e) => {
+    console.log("[DEBUG] submit-add_object-button clicked");
+
     e.preventDefault();
     const graphType = document.getElementById('graph-type').value;
     const objectId = document.getElementById('object-id').value;
+
+    console.log("[DEBUG] graphType = " + graphType);
+    console.log("[DEBUG] objectId = " + objectId);
+    if (objectId === "" || objectId === null) { //New Object clicked, and empty
+      return;
+    }
 
     if (graphType === 'node') {
       const nodeLabel = document.getElementById('node-label').value;
@@ -36,81 +45,66 @@ function OperationsUIObjectsFormSetup() {
         const valueInput = propertyInput.getElementsByTagName('input')[1];
         properties.push({ key: keyInput.value, value: valueInput.value });
       }
-  
+      // console.log("addObjectOrUpdate(" + objectId + ", " + graphType + ", { label: " + nodeLabel + ", properties: " + properties + " })");
       addObjectOrUpdate(objectId, graphType, { label: nodeLabel, properties });
 
     } else {
+      console.log("addObjectOrUpdate(" + objectId + "... )");
+      // length of objectID
+      console.log("objectId.length = " + objectId.length);
       const edgeLabel = document.getElementById('edge-label').value;
       const edgeKey = document.getElementById('edge-key').value;
       const edgeValue = document.getElementById('edge-value').value;
       const sourceNode = document.getElementById('source-node').value;
       const targetNode = document.getElementById('target-node').value;
 
-      const sourceNodeId = window.graphObjects.find(obj => obj.label === sourceNode).id;
-      const targetNodeId = window.graphObjects.find(obj => obj.label === targetNode).id;
+      const sourceNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === sourceNode).id;
+      const targetNodeId = window.SJFI_data.graphObjects.find(obj => obj.label === targetNode).id;
 
-      // addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetNode: targetNodeId });
+      // console.log("addObjectOrUpdate(" + objectId + ", " + graphType + ", { label: " + edgeLabel + ", key: " + edgeKey + ", value: " + edgeValue + ", source: " + sourceNode + ", sourceId: " + sourceNodeId + ", target: " + targetNode + ", targetNode: " + targetNodeId + " })");
       addObjectOrUpdate(objectId, graphType, { label: edgeLabel, key: edgeKey, value: edgeValue, source: sourceNode, sourceId: sourceNodeId, target: targetNode, targetId: targetNodeId });
     }
 
-    updateTable();
-    resetForm();
-    reprintGraphMLFile();
+    FormSetupAreaBObjectNew();
+    window.updateTable();
+    window.reprintGraphMLFile();
   });
 
 }
 
-// In your import and export functions
 window.exportGraphObjects = function(event) {
-  // Include your settings into the exported object
-  let config = {
-    objects: window.graphObjects,
-    title: window.graphTitle,
-    directionality: window.graphDirectionality,
-    nodeColors: nodeColors,
-    labelColor: labelColor,
-    nodeSettings: nodeSettings,
-    fontSize: fontSize,
-    offsetX: offsetX,
-    offsetY: offsetY,
-    nodeRadius: nodeRadius
-  };
-
-  SJFIJSONExport(config);
+  SJFIJSONExport(window.SJFI_data);
 }
 
 
 window.importGraphObjects = async function(event) {
-  //console.log("X.X.2 Import graph objects to JSON file");
 
   const importedData = await SJFIJSONImport(event.target.files[0]);
   if (importedData) {
-    window.graphObjects = importedData.objects;
-    window.graphTitle = importedData.title;
-    window.graphDirectionality = importedData.directionality;
+    window.SJFI_data = importedData;
     updateTable();
+    loadGraphSettings();
     updateGraphSettings();
-    saveFunction(window.SJFI_storageKey);
-    saveGraphSettings(window.SJFI_storageKey);
+    reprintGraphMLFile();
+    storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
   }
 }
 
-function OperationsUIObjectsButtonSetup() {
-  //console.log("0.1.2 Initialize User Interface for adding objects");
+function ButtonSetupAreaBObjectEditing(debug=false) {
+  if (debug) console.log("[DEBUG] graphUI.js - 2. ButtonSetupAreaBObjectEditing() called");
   
-  const newObjectOrCLEARButton = document.getElementById('new-button');
+  const newObjectOrCLEARButton = document.getElementById('new-object-button');
   newObjectOrCLEARButton.addEventListener('click', () => {
-    resetForm();
-  });
-
-  const importButton = document.getElementById('import-button');
-  importButton.addEventListener('click', () => {
-    const importFileInput = document.getElementById('import-file');
-    importFileInput.click();
+    FormSetupAreaBObjectNew();
   });
 
   const importFileInput = document.getElementById('import-file');
   importFileInput.addEventListener('change', window.importGraphObjects);
+
+  const importButton = document.getElementById('import-button');
+  importButton.addEventListener('click', () => {
+    importFileInput.click();
+  });
 
   const exportButton = document.getElementById('export-button');
   exportButton.addEventListener('click', (e) => { // Updated this line
@@ -128,68 +122,102 @@ function OperationsUIObjectsButtonSetup() {
 
   const resetButton = document.getElementById('reset-button');
   resetButton.addEventListener('click', function() {
-    window.resetLocalStorage(window.SJFI_storageKey);
+    window.SJFI_data = window.resetLocalStorageByKey(window.SJFI_storageKey);
+    // localStorage.clear();
+    window.updateTable();
+    window.updateGraphSettings();
     window.reprintGraphMLFile();
-    window.resetGraphSettings();
   });
 
   const updateGraphSettingsButton = document.getElementById('update-graph-settings-button');
   updateGraphSettingsButton.addEventListener('click',() => {
-    //console.log("[DEBUG] SAVE - GRAPH SETTINGS BUTTON CLICKED");
-    window.graphTitle = document.getElementById('graph-title').value;
-    window.graphDirectionality = document.getElementById('graph-directionality').value;
-    saveGraphSettings(window.SJFI_storageKey);
+    window.SJFI_data.graphSettingsTitle = document.getElementById('graph-title').value;
+    window.SJFI_data.graphSettingsDirectionality = document.getElementById('graph-directionality').value;
+
+    storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+    window.reprintGraphMLFile();
+    alert("Graph settings updated!");
   });
 }
 
-function updateTable() {
-  //console.log("X.X.1 Update table of graph objects");
+function updateTable(debug=false) {
+  if (debug) console.log("[DEBUG] graphUI.js - updateTable() called");
+
   const tableBody = document.getElementById('graph-object-table-body');
   tableBody.innerHTML = '';
 
-  for (const object of graphObjects) {
-    const row = document.createElement('tr');
+  if (window.SJFI_data !== undefined) {
+    if (window.SJFI_data.graphObjects !== undefined) {
+      if (window.SJFI_data.graphObjects.length === 0) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.textContent = 'No objects';
+        cell.colSpan = 5;
+        row.appendChild(cell);
+        tableBody.appendChild(row);
 
-    const idCell = document.createElement('td');
-    idCell.textContent = object.id;
-    row.appendChild(idCell);
+        return;
+      }
 
-    const typeCell = document.createElement('td');
-    typeCell.textContent = object.type;
-    row.appendChild(typeCell);
+    for (const object of window.SJFI_data.graphObjects) {
+      const row = document.createElement('tr');
 
-    const labelCell = document.createElement('td');
-    labelCell.textContent = object.label;
-    row.appendChild(labelCell);
+      const idCell = document.createElement('td');
+      idCell.textContent = object.id;
+      row.appendChild(idCell);
 
-    const editCell = document.createElement('td');
-    const editButton = document.createElement('button');
-    editButton.textContent = 'Edit';
-    editButton.addEventListener('click', () => {
-      editObject(object);
-    });
-    editCell.appendChild(editButton);
-    row.appendChild(editCell);
+      const typeCell = document.createElement('td');
+      typeCell.textContent = object.type;
+      row.appendChild(typeCell);
 
-    // Add the remove button
-    const removeCell = document.createElement('td');
-    const removeButton = document.createElement('button');
-    removeButton.textContent = 'Remove';
-    removeButton.addEventListener('click', () => {
-      removeObject(object);
-      updateTable();
-    });
-    removeCell.appendChild(removeButton);
-    row.appendChild(removeCell);
+      const labelCell = document.createElement('td');
+      labelCell.textContent = object.label;
+      row.appendChild(labelCell);
 
-    tableBody.appendChild(row);
+      const editCell = document.createElement('td');
+      const editButton = document.createElement('button');
+      editButton.textContent = 'Edit';
+      editButton.addEventListener('click', () => {
+        editObject(object);
+      });
+      editCell.appendChild(editButton);
+      row.appendChild(editCell);
+
+      // Add the remove button
+      const removeCell = document.createElement('td');
+      const removeButton = document.createElement('button');
+      removeButton.textContent = 'Remove';
+      removeButton.addEventListener('click', () => {
+        removeObject(object);
+        updateTable();
+      });
+      removeCell.appendChild(removeButton);
+      row.appendChild(removeCell);
+
+      tableBody.appendChild(row);
+    }
+
+    updateNodeDropdowns();
+
+    //RENDER D3.js GRAPH
+    d3.select("#graph-svg").selectAll("*").remove();
+    // window.SJFI_data.NodesRenderSettings = drawGraph(window.SJFI_data.graphObjects);
+
+    drawGraph(window.SJFI_data.graphObjects);
+
+    // let changes = drawGraph(window.SJFI_data.graphObjects);
+    // changes.forEach(change => {
+    //     let graphObject = window.SJFI_data.graphObjects.find(o => o.id === change.id && o.type === 'node');
+    //     if (graphObject) {
+    //         graphObject.x = change.x;
+    //         graphObject.y = change.y;
+    //     }
+    // });
+    
+
+    }
   }
 
-  updateNodeDropdowns();
-
-  //RENDER D3.js GRAPH
-  d3.select("#graph-svg").selectAll("*").remove();
-  RenderNodes = drawGraph(window.graphObjects);
 }
 
 function updateNodeDropdowns() {
@@ -199,7 +227,7 @@ function updateNodeDropdowns() {
   sourceNodeDropdown.innerHTML = '';
   targetNodeDropdown.innerHTML = '';
 
-  const nodeObjects = graphObjects.filter(object => object.type === 'node');
+  const nodeObjects = window.SJFI_data.graphObjects.filter(object => object.type === 'node');
 
   for (const node of nodeObjects) {
     const sourceOption = document.createElement('option');
@@ -229,11 +257,13 @@ function toggleObjectTypeFields() {
   }
 }
 
-function resetForm() {
+function FormSetupAreaBObjectNew(debug=false) {
+  if (debug) console.log("[DEBUG] graphUI.js - 3. FormSetupAreaBObjectNew() called");
+
   const form = document.getElementById('graph-object-form');
   form.reset();
   toggleObjectTypeFields();
-  const submitButton = document.getElementById('submit-button');
+  const submitButton = document.getElementById('submit-add_object-button');
   submitButton.textContent = 'Add Object';
   window.editingIndex = null;
 }
@@ -268,4 +298,34 @@ function createPropertyInput(property) {
 //--------------------
 // Graph Properties
 //--------------------
-// MOVE TITLE ACTIONS HERE!
+window.updateGraphSettings = function(debug = false) {
+  if (debug) console.log("[DEBUG] graphUI.js - updateGraphSettings() called");
+
+  const titleInput = document.getElementById('graph-title');
+  const directionalitySelect = document.getElementById('graph-directionality');
+
+  if (typeof window.SJFI_data.graphSettingsTitle !== "string"){
+    window.SJFI_data.graphSettingsTitle = "";
+
+  } else {
+    window.SJFI_data.graphSettingsTitle = titleInput.value;
+  }
+
+  if (window.SJFI_data.graphSettingsDirectionality !== "directed" && window.SJFI_data.graphSettingsDirectionality !== "undirected"){
+    directionalitySelect.value = "directed"
+  } else {
+    window.SJFI_data.graphSettingsDirectionality = directionalitySelect.value;
+  }
+
+    storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+}
+
+window.loadGraphSettings = function(debug = false) {
+  if (debug) console.log("[DEBUG] graphUI.js - loadGraphSettings() called");
+
+  const titleInput = document.getElementById('graph-title');
+  const directionalitySelect = document.getElementById('graph-directionality');
+
+  titleInput.value = window.SJFI_data.graphSettingsTitle;
+  directionalitySelect.value = window.SJFI_data.graphSettingsDirectionality;
+}
