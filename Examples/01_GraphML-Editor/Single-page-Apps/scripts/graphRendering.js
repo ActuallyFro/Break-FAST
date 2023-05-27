@@ -387,76 +387,76 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
 
 //////////////////////////////////////////////////
 // Node X/Y save and load -- LOCALSTORAGE
-function saveNodePositionsToFile() {
-    const config = {
-        nodeData: {},
-        labelVisibility: {
-            nodeLabels: localStorage.getItem('nodeLabelsDisplay'),
-            edgeLabels: localStorage.getItem('edgeLabelsDisplay'),
-        },
-    };
+// function saveNodePositionsToFile() {
+//     const config = {
+//         nodeData: {},
+//         labelVisibility: {
+//             nodeLabels: localStorage.getItem('nodeLabelsDisplay'),
+//             edgeLabels: localStorage.getItem('edgeLabelsDisplay'),
+//         },
+//     };
 
-    window.SJFI_data.graphObjects.forEach(node => {
-        config.nodeData[node.id] = { x: node.x, y: node.y, color: nodeColors[node.id] };
-    });
+//     window.SJFI_data.graphObjects.forEach(node => {
+//         config.nodeData[node.id] = { x: node.x, y: node.y, color: nodeColors[node.id] };
+//     });
 
-    const data = JSON.stringify(config);
-    const file = new Blob([data], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(file);
-    a.download = 'node-data-configuration.json';
-    a.click();
-}
+//     const data = JSON.stringify(config);
+//     const file = new Blob([data], { type: 'application/json' });
+//     const a = document.createElement('a');
+//     a.href = URL.createObjectURL(file);
+//     a.download = 'node-data-configuration.json';
+//     a.click();
+// }
 
   
-function loadNodePositionsFromFile(file) {
-    console.log('Loading node data from file...');
-    const reader = new FileReader();
-    reader.onload = event => {
-        const config = JSON.parse(event.target.result);
+// function loadNodePositionsFromFile(file) {
+//     console.log('Loading node data from file...');
+//     const reader = new FileReader();
+//     reader.onload = event => {
+//         const config = JSON.parse(event.target.result);
 
-        // WHY ARE THESE HERE????
-        // // // Load graph objects, title, and directionality
-        // // window.graphObjects = config.objects;
-        // // window.graphTitle = config.title;
-        // // window.graphDirectionality = config.directionality;
+//         // WHY ARE THESE HERE????
+//         // // // Load graph objects, title, and directionality
+//         // // window.graphObjects = config.objects;
+//         // // window.graphTitle = config.title;
+//         // // window.graphDirectionality = config.directionality;
 
-        nodeColors = config.nodeColors;
-        labelColor = config.labelColor;
-        nodeSettings = config.nodeSettings;
-        fontSize = config.fontSize;
-        offsetX = config.offsetX;
-        offsetY = config.offsetY;
-        nodeRadius = config.nodeRadius;
+//         nodeColors = config.nodeColors;
+//         labelColor = config.labelColor;
+//         nodeSettings = config.nodeSettings;
+//         fontSize = config.fontSize;
+//         offsetX = config.offsetX;
+//         offsetY = config.offsetY;
+//         nodeRadius = config.nodeRadius;
 
-        localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
-        localStorage.setItem('labelColor', labelColor);
-        localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
-        localStorage.setItem('fontSize', fontSize);
-        localStorage.setItem('offsetX', offsetX);
-        localStorage.setItem('offsetY', offsetY);
-        localStorage.setItem('nodeRadius', nodeRadius);
+//         localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
+//         localStorage.setItem('labelColor', labelColor);
+//         localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+//         localStorage.setItem('fontSize', fontSize);
+//         localStorage.setItem('offsetX', offsetX);
+//         localStorage.setItem('offsetY', offsetY);
+//         localStorage.setItem('nodeRadius', nodeRadius);
 
-        window.SJFI_data.graphObjects.forEach(node => {
-            const data = config.nodeData[node.id];
-            if (data) {
-                node.fx = data.x;
-                node.fy = data.y;
-                if (data.color) {
-                    nodeColors[node.id] = data.color;
-                }
-            }
-        });
+//         window.SJFI_data.graphObjects.forEach(node => {
+//             const data = config.nodeData[node.id];
+//             if (data) {
+//                 node.fx = data.x;
+//                 node.fy = data.y;
+//                 if (data.color) {
+//                     nodeColors[node.id] = data.color;
+//                 }
+//             }
+//         });
 
-        if (config.labelVisibility) {
-            d3.selectAll('.label').style('display', config.labelVisibility.nodeLabels);
-            d3.selectAll('.edgelabel').classed('hidden', config.labelVisibility.edgeLabels === 'none');
-            localStorage.setItem('nodeLabelsDisplay', config.labelVisibility.nodeLabels);
-            localStorage.setItem('edgeLabelsDisplay', config.labelVisibility.edgeLabels);
-        }
-    };
-    reader.readAsText(file);
-}
+//         if (config.labelVisibility) {
+//             d3.selectAll('.label').style('display', config.labelVisibility.nodeLabels);
+//             d3.selectAll('.edgelabel').classed('hidden', config.labelVisibility.edgeLabels === 'none');
+//             localStorage.setItem('nodeLabelsDisplay', config.labelVisibility.nodeLabels);
+//             localStorage.setItem('edgeLabelsDisplay', config.labelVisibility.edgeLabels);
+//         }
+//     };
+//     reader.readAsText(file);
+// }
 
 
 window.addEventListener('click', function(event) {
