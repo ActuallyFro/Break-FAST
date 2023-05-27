@@ -315,15 +315,38 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
     // //localStorage.setItem('nodeOutlineColor', nodeOutlineColor);
 });
 
+/////////////////////////////////////////////////////////////////////////////////////
+//   document.getElementById('reset-d3-button').addEventListener('click', () => {
+//     window.SJFI_data.graphObjects.forEach(node => {
+//         node.fx = null;
+//         node.fy = null;
+//     });
 
-  document.getElementById('reset-d3-button').addEventListener('click', () => {
+//     drawGraph(window.SJFI_data.graphObjects);
+//   });
+
+document.getElementById('reset-d3-button').addEventListener('click', () => {
+    // Show confirm modal
+    $('#confirmModal').modal('show');
+});
+
+document.getElementById('confirmResetButton').addEventListener('click', () => {
     window.SJFI_data.graphObjects.forEach(node => {
         node.fx = null;
         node.fy = null;
     });
 
     drawGraph(window.SJFI_data.graphObjects);
-  });
+
+    // Hide confirm modal
+    $('#confirmModal').modal('hide');
+    storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+});
+
+  /////////////////////////////////////////////////////////////////////////////////////
+
+
+  
 
     document.getElementById('print-button').addEventListener('click', () => {
         const svgElement = document.getElementById('graph-svg');

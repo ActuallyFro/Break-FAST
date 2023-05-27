@@ -48,7 +48,6 @@ window.addObjectOrUpdate = function(objectId, graphType, data) {
     window.SJFI_data.graphObjects.push(objectData);
   }
 
-    //storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data, true);
-    localStorage.setItem(window.SJFI_storageKey, JSON.stringify(window.SJFI_data));
+    storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
 }
 

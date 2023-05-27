@@ -1,9 +1,6 @@
 Important, Urgent
 =================
-- [ ] The iteration in fileIO.js MISSES the key attr of 'label'
-  - if added as a property, then it will be included for iteration
-  - HOWEVER, when label is added, then it is added TWICE in <node> as <data ... label> <data ... label>
-
+- [ ] context Menu's toggle for node and edge labels are not working
 
 Not Important, Urgent
 =====================
@@ -13,6 +10,9 @@ Important, Not Urgent
 =====================
 - [ ] The new zoom/click features can cause the window to get stuck
   - (e.g. the "scroll doldrums" -- you can move and zoom the graph, but NOT move up/down the page)
+- [ ] Editing edges still says "Add object" vs. Update
+  - BUT when it adds, as an overwriting action, it acts as a "Update"
+- [ ] User settings for the three context menus (font color. label display for edges/nodes) are not being saved
 
 Not Important, Not Urgent
 =========================
@@ -45,4 +45,7 @@ SOLVED
 - [X] Reset of 'locked position' for the context-menu (i.e., add a button that will reset the x/y lock to allow free movement of the D3.js objects)
 - [X] GraphML is NOT properly iterating/rendering information
 - [X] Graph Title is not properly loading
+- [X] The iteration in fileIO.js MISSES the key attr of 'label'
+  - if added as a property, then it will be included for iteration
+  - HOWEVER, when label is added, then it is added TWICE in <node> as <data ... label> <data ... label>
 
