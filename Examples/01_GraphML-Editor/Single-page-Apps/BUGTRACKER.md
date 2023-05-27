@@ -1,7 +1,5 @@
 Important, Urgent
 =================
-- [ ] GraphML is NOT properly iterating/rendering information
-- [ ] Graph Title is not properly loading
 - [ ] The iteration in fileIO.js MISSES the key attr of 'label'
   - if added as a property, then it will be included for iteration
   - HOWEVER, when label is added, then it is added TWICE in <node> as <data ... label> <data ... label>
@@ -44,4 +42,7 @@ SOLVED
 - [X] Drawn D3.js drawing errors
   - "reset drawing" will NOT clear past objects; Zoom can leave artifact objects
   - Changed node setting do NOT immediately update (e.g., color coding)
+- [X] Reset of 'locked position' for the context-menu (i.e., add a button that will reset the x/y lock to allow free movement of the D3.js objects)
+- [X] GraphML is NOT properly iterating/rendering information
+- [X] Graph Title is not properly loading
 

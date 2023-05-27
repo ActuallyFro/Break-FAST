@@ -83,7 +83,9 @@ window.importGraphObjects = async function(event) {
   if (importedData) {
     window.SJFI_data = importedData;
     updateTable();
+    loadGraphSettings();
     updateGraphSettings();
+    reprintGraphMLFile();
     storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
   }
 }
@@ -96,14 +98,13 @@ function ButtonSetupAreaBObjectEditing(debug=false) {
     FormSetupAreaBObjectNew();
   });
 
-  const importButton = document.getElementById('import-button');
-  importButton.addEventListener('click', () => {
-    const importFileInput = document.getElementById('import-file');
-    importFileInput.click();
-  });
-
   const importFileInput = document.getElementById('import-file');
   importFileInput.addEventListener('change', window.importGraphObjects);
+
+  const importButton = document.getElementById('import-button');
+  importButton.addEventListener('click', () => {
+    importFileInput.click();
+  });
 
   const exportButton = document.getElementById('export-button');
   exportButton.addEventListener('click', (e) => { // Updated this line

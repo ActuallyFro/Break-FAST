@@ -114,8 +114,14 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
                 d3.select(event.currentTarget).attr('r', this.value);
             });
 
+            d3.select('#unlock-node-button').on('click', function() {
+            /// - if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            });
+
             d3.select('#context-menu').on('mouseleave', function() {
-                console.log('[DEBUG] Context Menu LEFT! -- SAVING TO LOCAL STORAGE');
+                //console.log('[DEBUG] Context Menu LEFT! -- SAVING TO LOCAL STORAGE');
                 storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
                 drawGraph();  // Refresh graph
             });            
@@ -206,11 +212,8 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
 
         function dragended(event, d) {
             if (!event.active) simulation.alphaTarget(0);
-            console.log('[DEBUG] drag ended -- SAVING TO LOCAL STORAGE');
-            console.log('[DEBUG] nodeSettings', nodeSettings);
-            // if (!event.active) simulation.alphaTarget(0);
-            // d.fx = null;
-            // d.fy = null;
+            // console.log('[DEBUG] drag ended -- SAVING TO LOCAL STORAGE');
+            // console.log('[DEBUG] nodeSettings', nodeSettings);
             storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
         }
     
@@ -362,120 +365,6 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
         img.src = svgUrl;
         setTimeout(() => URL.revokeObjectURL(url), 100);
     });
-
-
-//////////////////////////////////////////////////
-// Node X/Y save and load -- LOCALSTORAGE
-
-//TODO: FIX, by removing, THIS CODE hacked in "one off" LocalStorage save/load -- it needs to be in the global code
-
-// document.getElementById('save-config-button').addEventListener('click', () => {
-//     saveNodePositions();
-//     alert('Saved to LocalStorage!');
-// });
-
-// document.getElementById('load-config-button').addEventListener('click', () => {
-//     loadNodePositions();
-//     // alert('Loaded from LocalStorage!');
-// });
-
-
-// // Save node positions to local storage
-// function saveNodePositions() {
-//     const nodePositions = {};
-//     window.SJFI_data.graphObjects.forEach(node => {
-//       nodePositions[node.id] = { x: node.x, y: node.y };
-//     });
-//     //localStorage.setItem('nodePositions', JSON.stringify(nodePositions));
-//   }
-  
-//   // Load node positions from local storage
-//   function loadNodePositions() {
-//     const nodePositions = JSON.parse(//localStorage.getItem('nodePositions'));
-//     if (nodePositions) {
-//       window.SJFI_data.graphObjects.forEach(node => {
-//         const position = nodePositions[node.id];
-//         if (position) {
-//           node.fx = position.x;
-//           node.fy = position.y;
-//         }
-//       });
-//     }
-//   }
-//////////////////////////////////////////////////
-
-//////////////////////////////////////////////////
-// Node X/Y save and load -- LOCALSTORAGE
-// function saveNodePositionsToFile() {
-//     const config = {
-//         nodeData: {},
-//         labelVisibility: {
-//             nodeLabels: //localStorage.getItem('nodeLabelsDisplay'),
-//             edgeLabels: //localStorage.getItem('edgeLabelsDisplay'),
-//         },
-//     };
-
-//     window.SJFI_data.graphObjects.forEach(node => {
-//         config.nodeData[node.id] = { x: node.x, y: node.y, color: nodeColors[node.id] };
-//     });
-
-//     const data = JSON.stringify(config);
-//     const file = new Blob([data], { type: 'application/json' });
-//     const a = document.createElement('a');
-//     a.href = URL.createObjectURL(file);
-//     a.download = 'node-data-configuration.json';
-//     a.click();
-// }
-
-  
-// function loadNodePositionsFromFile(file) {
-//     console.log('Loading node data from file...');
-//     const reader = new FileReader();
-//     reader.onload = event => {
-//         const config = JSON.parse(event.target.result);
-
-//         // WHY ARE THESE HERE????
-//         // // // Load graph objects, title, and directionality
-//         // // window.graphObjects = config.objects;
-//         // // window.graphTitle = config.title;
-//         // // window.graphDirectionality = config.directionality;
-
-//         nodeColors = config.nodeColors;
-//         labelColor = config.labelColor;
-//         nodeSettings = config.nodeSettings;
-//         fontSize = config.fontSize;
-//         offsetX = config.offsetX;
-//         offsetY = config.offsetY;
-//         nodeRadius = config.nodeRadius;
-
-//         //localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
-//         //localStorage.setItem('labelColor', labelColor);
-//         //localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
-//         //localStorage.setItem('fontSize', fontSize);
-//         //localStorage.setItem('offsetX', offsetX);
-//         //localStorage.setItem('offsetY', offsetY);
-//         //localStorage.setItem('nodeRadius', nodeRadius);
-
-//         window.SJFI_data.graphObjects.forEach(node => {
-//             const data = config.nodeData[node.id];
-//             if (data) {
-//                 node.fx = data.x;
-//                 node.fy = data.y;
-//                 if (data.color) {
-//                     nodeColors[node.id] = data.color;
-//                 }
-//             }
-//         });
-
-//         if (config.labelVisibility) {
-//             d3.selectAll('.label').style('display', config.labelVisibility.nodeLabels);
-//             d3.selectAll('.edgelabel').classed('hidden', config.labelVisibility.edgeLabels === 'none');
-//             //localStorage.setItem('nodeLabelsDisplay', config.labelVisibility.nodeLabels);
-//             //localStorage.setItem('edgeLabelsDisplay', config.labelVisibility.edgeLabels);
-//         }
-//     };
-//     reader.readAsText(file);
-// }
 
 
 window.addEventListener('click', function(event) {
