@@ -202,14 +202,16 @@ function updateTable(debug=false) {
     d3.select("#graph-svg").selectAll("*").remove();
     // window.SJFI_data.NodesRenderSettings = drawGraph(window.SJFI_data.graphObjects);
 
-    let changes = drawGraph(window.SJFI_data.graphObjects);
-    changes.forEach(change => {
-        let graphObject = window.SJFI_data.graphObjects.find(o => o.id === change.id && o.type === 'node');
-        if (graphObject) {
-            graphObject.x = change.x;
-            graphObject.y = change.y;
-        }
-    });
+    drawGraph(window.SJFI_data.graphObjects);
+
+    // let changes = drawGraph(window.SJFI_data.graphObjects);
+    // changes.forEach(change => {
+    //     let graphObject = window.SJFI_data.graphObjects.find(o => o.id === change.id && o.type === 'node');
+    //     if (graphObject) {
+    //         graphObject.x = change.x;
+    //         graphObject.y = change.y;
+    //     }
+    // });
     
 
     }
