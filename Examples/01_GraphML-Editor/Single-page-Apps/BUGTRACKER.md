@@ -1,11 +1,11 @@
 Important, Urgent
 =================
-- [ ] Drawn D3.js drawing errors
-  - "reset drawing" will NOT clear past objects; Zoom can leave artifact objects
-  - Changed node setting do NOT immediately update (e.g., color coding)
+- [ ] GraphML is NOT properly iterating/rendering information
+- [ ] Graph Title is not properly loading
 - [ ] The iteration in fileIO.js MISSES the key attr of 'label'
   - if added as a property, then it will be included for iteration
   - HOWEVER, when label is added, then it is added TWICE in <node> as <data ... label> <data ... label>
+
 
 Not Important, Urgent
 =====================
@@ -40,5 +40,8 @@ SOLVED
 ```
   - Related to {} vs. []
 - [X] Pressing 'Add Object' does not clear the form
-= [X] Pressing 'New Object' will add a blank node (BUT will clear the settings!)
+- [X] Pressing 'New Object' will add a blank node (BUT will clear the settings!)
+- [X] Drawn D3.js drawing errors
+  - "reset drawing" will NOT clear past objects; Zoom can leave artifact objects
+  - Changed node setting do NOT immediately update (e.g., color coding)
 

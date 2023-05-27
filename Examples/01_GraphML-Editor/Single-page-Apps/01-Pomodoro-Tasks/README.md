@@ -150,3 +150,7 @@ Determine means and methods to move the drawing/rendering settings into the glob
 ### Task Statement
 Implement new code to leverage settings that store/load D3.js render settings (i.e., presently the graph will NOT hold settings, and resets to a default state on reload).
 
+24. Bug Hunting
+---------------
+### Task Statement
+Identify, update documentation, and attempt to code fixes for software bugs in the GraphML and Import/Export capabilities.
