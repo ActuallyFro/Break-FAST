@@ -16,136 +16,127 @@ let offsetY = localStorage.getItem('offsetY') || '0';
 
 
 window.drawGraph = function(passedGraphObjects, debug = false) {
-    // Define the dimensions of the drawing area/canvas
     const width = 1750;
     const height = 800;
 
-    // const nodes = window.SJFI_data.graphObjects.filter(object => object.type === 'node');
-    const nodeObjects = passedGraphObjects.filter(object => object.type === 'node'); //SAME AS LINE ABOVE
-    const edgeObjects = passedGraphObjects.filter(object => object.type === 'edge');
-
-
-    // Define the SVG
     const svg = d3.select('#graph-svg')
         .attr('width', width)
         .attr('height', height)
 
     const g = svg.append("g");
 
-    const links = edgeObjects
+    const links = window.SJFI_data.graphObjects
+        .filter(object => object.type === 'edge')
         .map(edge => {
-            const sourceNode = nodeObjects.find(node => node.id === edge.sourceId);
-            const targetNode = nodeObjects.find(node => node.id === edge.targetId);
+            const sourceNode = window.SJFI_data.graphObjects.find(node => node.id === edge.sourceId);
+            const targetNode = window.SJFI_data.graphObjects.find(node => node.id === edge.targetId);
 
             if (!sourceNode || !targetNode) {
-                // Either sourceNode or targetNode couldn't be found,
-                // so we return null to exclude this edge from the links array
                 return null;
             }
 
             return {
                 ...edge,
-                source: sourceNode.id, // use node.id instead of nodeObjects.indexOf(sourceNode)
-                target: targetNode.id  // use node.id instead of nodeObjects.indexOf(targetNode)
+                source: sourceNode.id,
+                target: targetNode.id
             };
         })
-        .filter(link => link !== null); // filter out the null values
+        .filter(link => link !== null);
 
 
-    // Define the simulation
-    const simulation = d3.forceSimulation(nodeObjects) //replaced nodes
+    const simulation = d3.forceSimulation(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
         .force('charge', d3.forceManyBody().strength(-50))
         .force('center', d3.forceCenter(width / 2, height / 2))
         .force('link', d3.forceLink(links).id(d => d.id))
         .on('tick', ticked);
 
-    // Draw edges (literal line)
     const link = g.selectAll('.link')
-        .data(links) // use links instead of edges
+        .data(links)
         .join('line')
         .attr('class', 'link')
         .attr('stroke', 'black');
 
-    // Modify the node drawing code to use the color from nodeColors
-    const node = g.selectAll('.node')
-        .data(nodeObjects)
+        const node = g.selectAll('.node')
+        .data(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
         .join('circle')
         .attr('class', 'node')
-        .attr('r', d => nodeSettings[d.id] && nodeSettings[d.id].radius ? nodeSettings[d.id].radius : 20)
-        .style('fill', d => nodeColors[d.id] || 'lightblue')
-        .style('stroke', labelColor)
-        .call(drag(simulation))
+        .attr('r', d => d.renderSettings[0].radiusSize)
+        .style('fill', d => d.renderSettings[0].nodeColor)
+        .style('stroke', d => d.renderSettings[0].outlineColor)
+        .each(function(d) {
+            d.x = this.cx.baseVal.value;
+            d.y = this.cy.baseVal.value;
+        })
         .on('contextmenu', function(event, d) {
             event.preventDefault();
-
+    
             d3.select('#context-menu')
                 .style('left', `${event.pageX}px`)
                 .style('top', `${event.pageY}px`)
                 .style('display', 'block');
-
-            d3.select('#color-picker').node().value = nodeColors[d.id] || '#000000';
-            d3.select('#font-size').node().value = nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize : '12';
-            d3.select('#font-x-offset').node().value = nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0';
-            d3.select('#font-y-offset').node().value = nodeSettings[d.id] && nodeSettings[d.id].offsetY ? nodeSettings[d.id].offsetY : '0';
-            d3.select('#node-radius').node().value = nodeSettings[d.id] && nodeSettings[d.id].radius ? nodeSettings[d.id].radius : '20';
-
+    
+            let nodeSettings = window.SJFI_data.graphObjects.find(node => node.id === d.id).renderSettings[0];
+    
+            d3.select('#color-picker').node().value = nodeSettings.nodeColor || '#000000';
+            d3.select('#font-size').node().value = nodeSettings.labelFontSize || '12';
+            d3.select('#font-x-offset').node().value = nodeSettings.labelOffsetX || '0';
+            d3.select('#font-y-offset').node().value = nodeSettings.labelOffsetY || '0';
+            d3.select('#node-radius').node().value = nodeSettings.radiusSize || '20';
+    
             d3.select('#color-picker').on('input', function() {
-                nodeColors[d.id] = this.value;
+                nodeSettings.nodeColor = this.value;
+                nodeSettings.fillColor = this.value;
                 d3.select(event.currentTarget).style('fill', this.value);
-                //localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
             });
-
+    
             d3.select('#font-size').on('input', function() {
-                d3.select(`#label${d.id}`).style('font-size', this.value + 'px');
-                nodeSettings[d.id] = nodeSettings[d.id] || {};
-                nodeSettings[d.id].fontSize = this.value;
-                //localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                nodeSettings.labelFontSize = this.value;
             });
-
+    
             d3.select('#font-x-offset').on('input', function() {
-                d3.select(`#label${d.id}`).attr('dx', this.value);
-                nodeSettings[d.id] = nodeSettings[d.id] || {};
-                nodeSettings[d.id].offsetX = this.value;
-                //localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                nodeSettings.labelOffsetX = this.value;
             });
-
+    
             d3.select('#font-y-offset').on('input', function() {
-                d3.select(`#label${d.id}`).attr('dy', this.value);
-                nodeSettings[d.id] = nodeSettings[d.id] || {};
-                nodeSettings[d.id].offsetY = this.value;
-                //localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                nodeSettings.labelOffsetY = this.value;
             });
-
+    
             d3.select('#node-radius').on('input', function() {
+                nodeSettings.radiusSize = this.value;
                 d3.select(event.currentTarget).attr('r', this.value);
-                nodeSettings[d.id] = nodeSettings[d.id] || {};
-                nodeSettings[d.id].radius = this.value;
-                //localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
             });
-        });
+        })
+        .call(drag(simulation));
+    
+    // const nodesData = window.SJFI_data.graphObjects.filter(object => object.type === 'node');
+    const nodesData = window.SJFI_data.graphObjects
+        .filter(object => object.type === 'node')
+        .map(node => ({...node, x: 0, y: 0}));
 
+    const edgesData = window.SJFI_data.graphObjects.filter(object => object.type === 'edge');
+    
     const label = g.selectAll('.label')
-        .data(nodeObjects)
+        .data(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
         .join('text')
         .attr('class', 'label')
         .text(d => d.label)
-        .attr('dx', offsetX)
-        .attr('dy', offsetY)
-        .style('fill', labelColor)
-        .style('font-size', fontSize + 'px')
+        .attr('dx', d => d.renderSettings[0].labelOffsetX)
+        .attr('dy', d => d.renderSettings[0].labelOffsetY)
+        .style('fill', d => d.renderSettings[0].labelColor)
+        .style('font-size', d => `${d.renderSettings[0].labelFontSize}px`)
         .attr('x', d => d.x)
         .attr('y', d => d.y)
         .attr('text-anchor', 'middle');
 
     const edgeLabel = g.selectAll('.edgelabel')
-        .data(links)
+        .data(edgesData)
         .join('text')
         .attr('class', 'edgelabel')
         .text(d => d.label)
         .attr('dx', 0)
         .attr('dy', 0)
-        .style('fill', '#aaa')
-        .attr('font-size', 10)
+        .style('fill', d => d.renderSettings[0].labelColor)
+        .attr('font-size', d => `${d.renderSettings[0].labelFontSize}px`)
         .attr('id', (d, i) => 'edgelabel' + i);
 
     const zoom = d3.zoom()
@@ -186,25 +177,33 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             d.fx = d.x;
             d.fy = d.y;
         }
-
+    
         function dragged(event, d) {
             d.fx = event.x;
             d.fy = event.y;
         }
+    
+        /*
+        The robot says:
+        Also, note that simulation.alphaTarget(0.3).restart(); and simulation.alphaTarget(0); are used to heat up and cool down the simulation, respectively.
+        When the simulation is "heated" (i.e., when alphaTarget is set to a higher value), the forces have a greater impact and nodes move more freely.
+        When it's "cooled down" (i.e., when alphaTarget is set to a lower value), the forces have less impact and nodes move less.
+        */
 
         function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
             console.log('[DEBUG] drag ended -- SAVING TO LOCAL STORAGE');
-            // nodeSettings
             console.log('[DEBUG] nodeSettings', nodeSettings);
-            // if (!event.active) simulation.alphaTarget(0); <-- resets position VS leaving it
-            // d.fx = null; <-- resets position VS leaving it
-            // d.fy = null; <-- resets position VS leaving it
+            // if (!event.active) simulation.alphaTarget(0);
+            // d.fx = null;
+            // d.fy = null;
+            storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
         }
-
+    
         return d3.drag()
-            .on('start', dragstarted)
-            .on('drag', dragged)
-            .on('end', dragended);
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended);
     }
 
     // On right click on the SVG, show the context menu
@@ -250,35 +249,38 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
     
     document.getElementById('zoom-out-button').addEventListener('click', () => {
         zoom.scaleBy(svg.transition().duration(750), 0.8);  // zoom out
-    });    
-
+    });
+     
     function ticked() {
-        node.attr('cx', d => d.x)
-            .attr('cy', d => d.y)
-            .attr('r', d => nodeSettings[d.id] && nodeSettings[d.id].radius ? nodeSettings[d.id].radius : 20)
-            .style('fill', d => nodeColors[d.id] || 'lightblue');
+        node.attr('cx', d => (d.x && !isNaN(d.x)) ? d.x : 0)
+            .attr('cy', d => (d.y && !isNaN(d.y)) ? d.y : 0)
+            .attr('r', d => d.renderSettings[0].radiusSize)
+            .style('fill', d => d.renderSettings[0].nodeColor);
     
-        link.attr('x1', d => d.source.x)
-            .attr('y1', d => d.source.y)
-            .attr('x2', d => d.target.x)
-            .attr('y2', d => d.target.y);
+        link.attr('x1', d => (d.source.x && !isNaN(d.source.x)) ? d.source.x : 0)
+            .attr('y1', d => (d.source.y && !isNaN(d.source.y)) ? d.source.y : 0)
+            .attr('x2', d => (d.target.x && !isNaN(d.target.x)) ? d.target.x : 0)
+            .attr('y2', d => (d.target.y && !isNaN(d.target.y)) ? d.target.y : 0);
     
-        label.attr('x', d => d.x)
-            .attr('y', d => d.y)
-            .style('font-size', d => nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize + 'px' : '12px')
-            .attr('dx', d => nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0')
-            .attr('dy', d => nodeSettings[d.id] && nodeSettings[d.id].offsetY ? nodeSettings[d.id].offsetY : '0');
+        label.attr('x', d => (d.x && !isNaN(d.x)) ? d.x : 0)
+            .attr('y', d => (d.y && !isNaN(d.y)) ? d.y : 0)
+            .style('font-size', d => `${d.renderSettings[0].labelFontSize}px`)
+            .attr('dx', d => `${d.renderSettings[0].labelOffsetX}`)
+            .attr('dy', d => `${d.renderSettings[0].labelOffsetY}`);
     
-        // Update edge label positions
-        edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
-            .attr('y', d => (d.source.y + d.target.y) / 2)
+        edgeLabel.attr('x', d => {
+            let edge = links.find(link => link.id === d.id);
+            return edge ? (edge.source.x + edge.target.x) / 2 : 0;
+        })
+            .attr('y', d => {
+                let edge = links.find(link => link.id === d.id);
+                return edge ? (edge.source.y + edge.target.y) / 2 : 0;
+            })
             .attr('text-anchor', 'middle')
-            .attr('dy', '.35em');            
-    }    
+            .attr('dy', '.35em');
+    }
+    
 
-    // return nodeObjects;
-    const changes = nodeObjects.map(n => ({id: n.id, x: n.x, y: n.y}));
-    return changes;
 }
 
 document.getElementById('toggle-label-color').addEventListener('click', () => {
@@ -302,7 +304,8 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
         node.fx = null;
         node.fy = null;
     });
-    window.SJFI_data.graphObjects = drawGraph(window.SJFI_data.graphObjects);
+
+    drawGraph(window.SJFI_data.graphObjects);
   });
 
     document.getElementById('print-button').addEventListener('click', () => {
