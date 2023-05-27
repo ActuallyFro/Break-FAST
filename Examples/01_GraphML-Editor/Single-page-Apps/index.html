@@ -257,10 +257,15 @@
     
     window.SJFI_data = { // Object === {}; Array === []
         graphObjects: [],
-        NodesRenderSettings: [],
         graphSettingsTitle: {},
         graphSettingsDirectionality: "", //defined in updateGraphSettings()
-        GraphMLXMLData: ""
+        GraphMLXMLData: "",
+        renderSettings: [],
+        renderDisplayNodeLabels: true,
+        renderDisplayEdgeLabels: true,
+        nodeColors: {},
+        labelColor: "black",
+        nodeSettings: {}
     };
 
     // window.addEventListener('DOMContentLoaded', () => { // FIRES BEFORE onload()

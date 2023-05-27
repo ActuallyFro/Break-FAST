@@ -122,6 +122,7 @@ function ButtonSetupAreaBObjectEditing(debug=false) {
   const resetButton = document.getElementById('reset-button');
   resetButton.addEventListener('click', function() {
     window.SJFI_data = window.resetLocalStorageByKey(window.SJFI_storageKey);
+    // localStorage.clear();
     window.updateTable();
     window.updateGraphSettings();
     window.reprintGraphMLFile();
@@ -199,7 +200,17 @@ function updateTable(debug=false) {
 
     //RENDER D3.js GRAPH
     d3.select("#graph-svg").selectAll("*").remove();
-    window.SJFI_data.NodesRenderSettings = drawGraph(window.SJFI_data.graphObjects);
+    // window.SJFI_data.NodesRenderSettings = drawGraph(window.SJFI_data.graphObjects);
+
+    let changes = drawGraph(window.SJFI_data.graphObjects);
+    changes.forEach(change => {
+        let graphObject = window.SJFI_data.graphObjects.find(o => o.id === change.id && o.type === 'node');
+        if (graphObject) {
+            graphObject.x = change.x;
+            graphObject.y = change.y;
+        }
+    });
+    
 
     }
   }

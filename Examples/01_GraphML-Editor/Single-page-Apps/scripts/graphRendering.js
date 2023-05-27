@@ -1,16 +1,18 @@
 // Add a colors object to keep track of node colors
-let nodeColors = JSON.parse(localStorage.getItem('nodeColors')) || {};
-let labelColor = localStorage.getItem('labelColor') || 'black';
 // let nodeOutlineColor = localStorage.getItem('nodeOutlineColor') || 'black';
-let nodeSettings = JSON.parse(localStorage.getItem('nodeSettings')) || {};
+// let nodeColors = JSON.parse(localStorage.getItem('nodeColors')) || {};
+// let labelColor = localStorage.getItem('labelColor') || 'black';
+// let nodeSettings = JSON.parse(localStorage.getItem('nodeSettings')) || {};
+
+let nodeColors = window.SJFI_data?.nodeColors || {};
+let labelColor = window.SJFI_data?.labelColor || 'black';
+let nodeSettings = window.SJFI_data?.nodeSettings || {};
 
 // // Initialize new settings
-let fontSize = localStorage.getItem('fontSize') || '12';
-let offsetX = localStorage.getItem('offsetX') || '0';
-let offsetY = localStorage.getItem('offsetY') || '0';
-let nodeRadius = localStorage.getItem('nodeRadius') || '20';
-
-
+// let fontSize = localStorage.getItem('fontSize') || '12';
+// let offsetX = localStorage.getItem('offsetX') || '0';
+// let offsetY = localStorage.getItem('offsetY') || '0';
+// let nodeRadius = localStorage.getItem('nodeRadius') || '20';
 
 
 window.drawGraph = function(passedGraphObjects, debug = false) {
@@ -28,22 +30,8 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         .attr('width', width)
         .attr('height', height)
 
-    // Instead of appending elements directly to the SVG, we append them to a group element.
     const g = svg.append("g");
 
-    // // // Create a new array of edges where source and target are node ids
-    // const links = edgeObjects.map(edge => {
-    //     const sourceNode = nodeObjects.find(node => node.id === edge.sourceId);
-    //     const targetNode = nodeObjects.find(node => node.id === edge.targetId);
-    //     return {
-    //         ...edge,
-    //         source: sourceNode.id, // use node.id instead of nodeObjects.indexOf(sourceNode)
-    //         target: targetNode.id  // use node.id instead of nodeObjects.indexOf(targetNode)
-    //     };
-    // });
-
-///////////////
-    // Create a new array of edges where source and target are node ids
     const links = edgeObjects
         .map(edge => {
             const sourceNode = nodeObjects.find(node => node.id === edge.sourceId);
@@ -62,7 +50,6 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             };
         })
         .filter(link => link !== null); // filter out the null values
-////////////////
 
 
     // Define the simulation
@@ -218,11 +205,11 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             d.fy = event.y;
         }
 
-        function dragended(event, d) {
-            if (!event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
+        // function dragended(event, d) {
+        //     if (!event.active) simulation.alphaTarget(0);
+        //     d.fx = null;
+        //     d.fy = null;
+        // }
 
         return d3.drag()
             .on('start', dragstarted)
@@ -259,13 +246,14 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
     document.getElementById('toggle-node-labels').addEventListener('click', () => {
         const display = window.getComputedStyle(d3.select('.label').node()).display === 'none' ? 'block' : 'none';
         d3.selectAll('.label').style('display', display);
-        localStorage.setItem('nodeLabelsDisplay', display);
+        //localStorage.setItem('nodeLabelsDisplay', display);
+   
     });
 
     document.getElementById('toggle-edge-labels').addEventListener('click', () => {
         const display = window.getComputedStyle(d3.select('.edgelabel').node()).display === 'none' ? 'block' : 'none';
         d3.selectAll('.edgelabel').style('display', display);
-        localStorage.setItem('edgeLabelsDisplay', display);
+        //localStorage.setItem('edgeLabelsDisplay', display);
     });
 
     document.getElementById('zoom-in-button').addEventListener('click', () => {
@@ -287,20 +275,22 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             .attr('x2', d => d.target.x)
             .attr('y2', d => d.target.y);
     
-        label.attr('x', d => d.x)
-            .attr('y', d => d.y)
-            .style('font-size', d => nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize + 'px' : '12px')
-            .attr('dx', d => nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0')
-            .attr('dy', d => nodeSettings[d.id] && nodeSettings[d.id].offsetY ? nodeSettings[d.id].offsetY : '0');
+        // label.attr('x', d => d.x)
+        //     .attr('y', d => d.y)
+        //     .style('font-size', d => nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize + 'px' : '12px')
+        //     .attr('dx', d => nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0')
+        //     .attr('dy', d => nodeSettings[d.id] && nodeSettings[d.id].offsetY ? nodeSettings[d.id].offsetY : '0');
     
-        // Update edge label positions
-        edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
-            .attr('y', d => (d.source.y + d.target.y) / 2)
-            .attr('text-anchor', 'middle')
-            .attr('dy', '.35em');            
+        // // Update edge label positions
+        // edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
+        //     .attr('y', d => (d.source.y + d.target.y) / 2)
+        //     .attr('text-anchor', 'middle')
+        //     .attr('dy', '.35em');            
     }    
 
-    return nodeObjects;
+    // return nodeObjects;
+    const changes = nodeObjects.map(n => ({id: n.id, x: n.x, y: n.y}));
+    return changes;
 }
 
 document.getElementById('toggle-label-color').addEventListener('click', () => {
@@ -321,11 +311,11 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
 
   //MOVE to other buttons?
   document.getElementById('reset-d3-button').addEventListener('click', () => {
-    window.SJFI_data.NodesRenderSettings.forEach(node => {
+    window.SJFI_data.graphObjects.forEach(node => {
         node.fx = null;
         node.fy = null;
     });
-    window.SJFI_data.NodesRenderSettings = drawGraph(window.SJFI_data.graphObjects);
+    window.SJFI_data.graphObjects = drawGraph(window.SJFI_data.graphObjects);
   });
 
     document.getElementById('print-button').addEventListener('click', () => {
@@ -387,7 +377,7 @@ document.getElementById('load-config-button').addEventListener('click', () => {
 // Save node positions to local storage
 function saveNodePositions() {
     const nodePositions = {};
-    window.SJFI_data.NodesRenderSettings.forEach(node => {
+    window.SJFI_data.graphObjects.forEach(node => {
       nodePositions[node.id] = { x: node.x, y: node.y };
     });
     localStorage.setItem('nodePositions', JSON.stringify(nodePositions));
@@ -397,7 +387,7 @@ function saveNodePositions() {
   function loadNodePositions() {
     const nodePositions = JSON.parse(localStorage.getItem('nodePositions'));
     if (nodePositions) {
-      window.SJFI_data.NodesRenderSettings.forEach(node => {
+      window.SJFI_data.graphObjects.forEach(node => {
         const position = nodePositions[node.id];
         if (position) {
           node.fx = position.x;
@@ -419,7 +409,7 @@ function saveNodePositionsToFile() {
         },
     };
 
-    window.SJFI_data.NodesRenderSettings.forEach(node => {
+    window.SJFI_data.graphObjects.forEach(node => {
         config.nodeData[node.id] = { x: node.x, y: node.y, color: nodeColors[node.id] };
     });
 
@@ -460,7 +450,7 @@ function loadNodePositionsFromFile(file) {
         localStorage.setItem('offsetY', offsetY);
         localStorage.setItem('nodeRadius', nodeRadius);
 
-        window.SJFI_data.NodesRenderSettings.forEach(node => {
+        window.SJFI_data.graphObjects.forEach(node => {
             const data = config.nodeData[node.id];
             if (data) {
                 node.fx = data.x;
