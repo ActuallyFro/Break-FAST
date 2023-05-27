@@ -137,8 +137,6 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         .attr('y', d => d.y)
         .attr('text-anchor', 'middle');
 
-
-    // // Draw edge labels
     const edgeLabel = g.selectAll('.edgelabel')
         .data(links)
         .join('text')
@@ -150,21 +148,13 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         .attr('font-size', 10)
         .attr('id', (d, i) => 'edgelabel' + i);
 
-    // Modify the zoom behavior to transform the group element instead of the SVG element
     const zoom = d3.zoom()
         .scaleExtent([0.1, 10]) // this can be [zoomOutMax, zoomInMax]
         .on('zoom', (event, d) => { 
             g.attr('transform', event.transform);
         });
     svg.call(zoom);
-
     
-
-    // // Get computed styles
-    // const nodesComputedStyles = window.getComputedStyle(d3.select('.node').node());
-    // const linksComputedStyles = window.getComputedStyle(d3.select('.link').node());
-
-    // Get computed styles
     const nodeElement = d3.select('.node').node();
     const linkElement = d3.select('.link').node();
 
@@ -179,7 +169,6 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         linksComputedStyles = window.getComputedStyle(linkElement);
     }
 
-    // Apply computed styles inline
     d3.selectAll('.node')
         .style('fill', nodesComputedStyles.fill)
         .style('stroke', 'black') //or `nodesComputedStyles.stroke`
@@ -234,19 +223,17 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         }
     });
     
-    // New three-finger touch event -- to close context menu
     document.addEventListener('touchstart', function(event) {
         if (event.touches.length === 3) {
             d3.select('#graph-context-menu')
                 .style('display', 'none');
         }
     });
-    // Add click event listeners for the context menu buttons
+
     document.getElementById('toggle-node-labels').addEventListener('click', () => {
         const display = window.getComputedStyle(d3.select('.label').node()).display === 'none' ? 'block' : 'none';
         d3.selectAll('.label').style('display', display);
         //localStorage.setItem('nodeLabelsDisplay', display);
-   
     });
 
     document.getElementById('toggle-edge-labels').addEventListener('click', () => {
