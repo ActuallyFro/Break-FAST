@@ -23,6 +23,8 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         .attr('width', width)
         .attr('height', height)
 
+    svg.selectAll('*').remove();
+
     const g = svg.append("g");
 
     const links = window.SJFI_data.graphObjects
@@ -74,9 +76,9 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
                 .style('left', `${event.pageX}px`)
                 .style('top', `${event.pageY}px`)
                 .style('display', 'block');
-    
+
             let nodeSettings = window.SJFI_data.graphObjects.find(node => node.id === d.id).renderSettings[0];
-    
+
             d3.select('#color-picker').node().value = nodeSettings.nodeColor || '#000000';
             d3.select('#font-size').node().value = nodeSettings.labelFontSize || '12';
             d3.select('#font-x-offset').node().value = nodeSettings.labelOffsetX || '0';
@@ -91,20 +93,32 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
     
             d3.select('#font-size').on('input', function() {
                 nodeSettings.labelFontSize = this.value;
+                d3.select("#label-" + d.id).style('font-size', this.value + 'px');
+                drawGraph();  // Refresh graph
             });
-    
+        
             d3.select('#font-x-offset').on('input', function() {
                 nodeSettings.labelOffsetX = this.value;
+                d3.select("#label-" + d.id).attr('dx', this.value);
+                drawGraph();  // Refresh graph
             });
-    
+        
             d3.select('#font-y-offset').on('input', function() {
                 nodeSettings.labelOffsetY = this.value;
+                d3.select("#label-" + d.id).attr('dy', this.value);
+                drawGraph();  // Refresh graph
             });
     
             d3.select('#node-radius').on('input', function() {
                 nodeSettings.radiusSize = this.value;
                 d3.select(event.currentTarget).attr('r', this.value);
             });
+
+            d3.select('#context-menu').on('mouseleave', function() {
+                console.log('[DEBUG] Context Menu LEFT! -- SAVING TO LOCAL STORAGE');
+                storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+                drawGraph();  // Refresh graph
+            });            
         })
         .call(drag(simulation));
     

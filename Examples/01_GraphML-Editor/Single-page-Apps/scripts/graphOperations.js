@@ -6,12 +6,12 @@ window.addObjectOrUpdate = function(objectId, graphType, data) {
     {
       labelOffsetX: 0,
       labelOffsetY: 0,
-      fillColor: "lightblue",
+      fillColor: "#00b4f0",
       labelFontSize: 12,
       labelColor: "black",
       outlineColor: "black",
       radiusSize: 20,
-      nodeColor: "lightblue",
+      nodeColor: "#00b4f0",
       nodeColorOutline: "black",
       labelAnchor: "middle"
     }
