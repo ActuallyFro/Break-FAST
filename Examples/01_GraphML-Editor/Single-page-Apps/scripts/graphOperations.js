@@ -2,9 +2,25 @@
 // Objects
 //---------------------------
 window.addObjectOrUpdate = function(objectId, graphType, data) {
-  const objectData = { id: objectId, type: graphType, ...data };
+  let defaultRenderSettings = [
+    {
+      nodeColor: "lightblue",
+      outlineColor: "black",
+      radiusSize: 20,
+      labelColor: "black",
+      labelOffsetX: 0,
+      labelOffsetY: 0,
+      labelFontSize: 12,
+      labelAnchor: "middle"
+    }
+  ];
+
+  // const objectData = { id: objectId, type: graphType, ...data };
+  const objectData = { id: objectId, type: graphType, renderSettings: defaultRenderSettings, ...data };
+
   window.SJFI_data.graphObjects = window.SJFI_data.graphObjects || [];
   const existingIndex = window.SJFI_data.graphObjects.findIndex(obj => obj.id === objectId);
+
 
   if (existingIndex !== -1) {
     window.SJFI_data.graphObjects[existingIndex] = objectData;
