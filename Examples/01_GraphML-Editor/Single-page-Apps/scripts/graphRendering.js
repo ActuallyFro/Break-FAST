@@ -9,14 +9,14 @@ let labelColor = window.SJFI_data?.labelColor || 'black';
 let nodeSettings = window.SJFI_data?.nodeSettings || {};
 
 // // Initialize new settings
-// let fontSize = localStorage.getItem('fontSize') || '12';
-// let offsetX = localStorage.getItem('offsetX') || '0';
-// let offsetY = localStorage.getItem('offsetY') || '0';
+let fontSize = localStorage.getItem('fontSize') || '12';
+let offsetX = localStorage.getItem('offsetX') || '0';
+let offsetY = localStorage.getItem('offsetY') || '0';
 // let nodeRadius = localStorage.getItem('nodeRadius') || '20';
 
 
 window.drawGraph = function(passedGraphObjects, debug = false) {
-    // Define the dimensions of the SVG
+    // Define the dimensions of the drawing area/canvas
     const width = 1750;
     const height = 800;
 
@@ -180,7 +180,6 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             .style('stroke-width', linksComputedStyles.strokeWidth);
     }
 
-    // Define drag behavior
     function drag(simulation) {
         function dragstarted(event, d) {
             if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -193,16 +192,19 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             d.fy = event.y;
         }
 
-        // function dragended(event, d) {
-        //     if (!event.active) simulation.alphaTarget(0);
-        //     d.fx = null;
-        //     d.fy = null;
-        // }
+        function dragended(event, d) {
+            console.log('[DEBUG] drag ended -- SAVING TO LOCAL STORAGE');
+            // nodeSettings
+            console.log('[DEBUG] nodeSettings', nodeSettings);
+            // if (!event.active) simulation.alphaTarget(0); <-- resets position VS leaving it
+            // d.fx = null; <-- resets position VS leaving it
+            // d.fy = null; <-- resets position VS leaving it
+        }
 
         return d3.drag()
             .on('start', dragstarted)
-            .on('drag', dragged);
-            //.on('end', dragended); <-- resets position VS leaving it
+            .on('drag', dragged)
+            .on('end', dragended);
     }
 
     // On right click on the SVG, show the context menu
@@ -261,17 +263,17 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             .attr('x2', d => d.target.x)
             .attr('y2', d => d.target.y);
     
-        // label.attr('x', d => d.x)
-        //     .attr('y', d => d.y)
-        //     .style('font-size', d => nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize + 'px' : '12px')
-        //     .attr('dx', d => nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0')
-        //     .attr('dy', d => nodeSettings[d.id] && nodeSettings[d.id].offsetY ? nodeSettings[d.id].offsetY : '0');
+        label.attr('x', d => d.x)
+            .attr('y', d => d.y)
+            .style('font-size', d => nodeSettings[d.id] && nodeSettings[d.id].fontSize ? nodeSettings[d.id].fontSize + 'px' : '12px')
+            .attr('dx', d => nodeSettings[d.id] && nodeSettings[d.id].offsetX ? nodeSettings[d.id].offsetX : '0')
+            .attr('dy', d => nodeSettings[d.id] && nodeSettings[d.id].offsetY ? nodeSettings[d.id].offsetY : '0');
     
-        // // Update edge label positions
-        // edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
-        //     .attr('y', d => (d.source.y + d.target.y) / 2)
-        //     .attr('text-anchor', 'middle')
-        //     .attr('dy', '.35em');            
+        // Update edge label positions
+        edgeLabel.attr('x', d => (d.source.x + d.target.x) / 2)
+            .attr('y', d => (d.source.y + d.target.y) / 2)
+            .attr('text-anchor', 'middle')
+            .attr('dy', '.35em');            
     }    
 
     // return nodeObjects;
