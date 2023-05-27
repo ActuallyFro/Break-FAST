@@ -139,3 +139,14 @@ Did Edge, then node, then key
 --------------------
 ### Task Statement
 Develop the means (code modifications) to display in the SPA a current graph (nodes + edges) in a "view area" above the editing area.
+
+22. REFACTOR - Merging D3.js Render settings into Global Graph settings
+-----------------------------------------------------------------------
+### Task Statement
+Determine means and methods to move the drawing/rendering settings into the global object/settings for load|save|import|export
+
+23. REFACTOR - Implementing D3.js Render settings into Global Graph settings
+---------------------------------------------------------------------------
+### Task Statement
+Implement new code to leverage settings that store/load D3.js render settings (i.e., presently the graph will NOT hold settings, and resets to a default state on reload).
+
