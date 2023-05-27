@@ -124,18 +124,17 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             });
         });
 
-    // Draw labels - FOR NODES
     const label = g.selectAll('.label')
         .data(nodeObjects)
         .join('text')
         .attr('class', 'label')
         .text(d => d.label)
-        .attr('x', d => d.x)
-        .attr('y', d => d.y)
-        .style('fill', labelColor)
-        .style('font-size', fontSize + 'px')
         .attr('dx', offsetX)
         .attr('dy', offsetY)
+        .style('fill', labelColor)
+        .style('font-size', fontSize + 'px')
+        .attr('x', d => d.x)
+        .attr('y', d => d.y)
         .attr('text-anchor', 'middle');
 
 
@@ -144,12 +143,12 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         .data(links)
         .join('text')
         .attr('class', 'edgelabel')
-        .attr('id', (d, i) => 'edgelabel' + i)
+        .text(d => d.label)
         .attr('dx', 0)
         .attr('dy', 0)
-        .attr('font-size', 10)
         .style('fill', '#aaa')
-        .text(d => d.label);
+        .attr('font-size', 10)
+        .attr('id', (d, i) => 'edgelabel' + i);
 
     // Modify the zoom behavior to transform the group element instead of the SVG element
     const zoom = d3.zoom()
