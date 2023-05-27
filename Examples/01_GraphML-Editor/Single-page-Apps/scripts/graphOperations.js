@@ -2,21 +2,41 @@
 // Objects
 //---------------------------
 window.addObjectOrUpdate = function(objectId, graphType, data) {
-  let defaultRenderSettings = [
+  let defaultNodeRenderSettings = [
     {
-      nodeColor: "lightblue",
-      outlineColor: "black",
-      radiusSize: 20,
-      labelColor: "black",
       labelOffsetX: 0,
       labelOffsetY: 0,
+      fillColor: "lightblue",
       labelFontSize: 12,
+      labelColor: "black",
+      outlineColor: "black",
+      radiusSize: 20,
+      nodeColor: "lightblue",
+      nodeColorOutline: "black",
       labelAnchor: "middle"
     }
   ];
 
+  let defaultEdgeRenderSettings = [
+    {
+      labelOffsetX: 0,
+      labelOffsetY: 0,
+      fillColor: "black",
+      labelFontSize: 12,
+      labelColor: "#aaa"
+    }
+  ];
+
   // const objectData = { id: objectId, type: graphType, ...data };
-  const objectData = { id: objectId, type: graphType, renderSettings: defaultRenderSettings, ...data };
+  let objectData = {};
+  
+  if (graphType === 'node') {
+    objectData = { id: objectId, type: graphType, renderSettings: defaultNodeRenderSettings, ...data };
+  } else {  // else if (graphType === 'edge') {
+    objectData = { id: objectId, type: graphType, renderSettings: defaultEdgeRenderSettings, ...data };
+  }
+
+  // { id: objectId, type: graphType, renderSettings: defaultRenderSettings, ...data };
 
   window.SJFI_data.graphObjects = window.SJFI_data.graphObjects || [];
   const existingIndex = window.SJFI_data.graphObjects.findIndex(obj => obj.id === objectId);
