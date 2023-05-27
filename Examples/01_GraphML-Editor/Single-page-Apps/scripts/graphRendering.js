@@ -295,7 +295,6 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
 });
 
 
-  //MOVE to other buttons?
   document.getElementById('reset-d3-button').addEventListener('click', () => {
     window.SJFI_data.graphObjects.forEach(node => {
         node.fx = null;
@@ -349,39 +348,41 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
 //////////////////////////////////////////////////
 // Node X/Y save and load -- LOCALSTORAGE
 
-document.getElementById('save-config-button').addEventListener('click', () => {
-    saveNodePositions();
-    alert('Saved to LocalStorage!');
-});
+//TODO: FIX, by removing, THIS CODE hacked in "one off" LocalStorage save/load -- it needs to be in the global code
 
-document.getElementById('load-config-button').addEventListener('click', () => {
-    loadNodePositions();
-    // alert('Loaded from LocalStorage!');
-});
+// document.getElementById('save-config-button').addEventListener('click', () => {
+//     saveNodePositions();
+//     alert('Saved to LocalStorage!');
+// });
+
+// document.getElementById('load-config-button').addEventListener('click', () => {
+//     loadNodePositions();
+//     // alert('Loaded from LocalStorage!');
+// });
 
 
-// Save node positions to local storage
-function saveNodePositions() {
-    const nodePositions = {};
-    window.SJFI_data.graphObjects.forEach(node => {
-      nodePositions[node.id] = { x: node.x, y: node.y };
-    });
-    localStorage.setItem('nodePositions', JSON.stringify(nodePositions));
-  }
+// // Save node positions to local storage
+// function saveNodePositions() {
+//     const nodePositions = {};
+//     window.SJFI_data.graphObjects.forEach(node => {
+//       nodePositions[node.id] = { x: node.x, y: node.y };
+//     });
+//     localStorage.setItem('nodePositions', JSON.stringify(nodePositions));
+//   }
   
-  // Load node positions from local storage
-  function loadNodePositions() {
-    const nodePositions = JSON.parse(localStorage.getItem('nodePositions'));
-    if (nodePositions) {
-      window.SJFI_data.graphObjects.forEach(node => {
-        const position = nodePositions[node.id];
-        if (position) {
-          node.fx = position.x;
-          node.fy = position.y;
-        }
-      });
-    }
-  }
+//   // Load node positions from local storage
+//   function loadNodePositions() {
+//     const nodePositions = JSON.parse(localStorage.getItem('nodePositions'));
+//     if (nodePositions) {
+//       window.SJFI_data.graphObjects.forEach(node => {
+//         const position = nodePositions[node.id];
+//         if (position) {
+//           node.fx = position.x;
+//           node.fy = position.y;
+//         }
+//       });
+//     }
+//   }
 //////////////////////////////////////////////////
 
 //////////////////////////////////////////////////
