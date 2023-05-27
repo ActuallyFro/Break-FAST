@@ -92,35 +92,35 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             d3.select('#color-picker').on('input', function() {
                 nodeColors[d.id] = this.value;
                 d3.select(event.currentTarget).style('fill', this.value);
-                localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
+                //localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
             });
 
             d3.select('#font-size').on('input', function() {
                 d3.select(`#label${d.id}`).style('font-size', this.value + 'px');
                 nodeSettings[d.id] = nodeSettings[d.id] || {};
                 nodeSettings[d.id].fontSize = this.value;
-                localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                //localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
             });
 
             d3.select('#font-x-offset').on('input', function() {
                 d3.select(`#label${d.id}`).attr('dx', this.value);
                 nodeSettings[d.id] = nodeSettings[d.id] || {};
                 nodeSettings[d.id].offsetX = this.value;
-                localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                //localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
             });
 
             d3.select('#font-y-offset').on('input', function() {
                 d3.select(`#label${d.id}`).attr('dy', this.value);
                 nodeSettings[d.id] = nodeSettings[d.id] || {};
                 nodeSettings[d.id].offsetY = this.value;
-                localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                //localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
             });
 
             d3.select('#node-radius').on('input', function() {
                 d3.select(event.currentTarget).attr('r', this.value);
                 nodeSettings[d.id] = nodeSettings[d.id] || {};
                 nodeSettings[d.id].radius = this.value;
-                localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+                //localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
             });
         });
 
@@ -290,8 +290,8 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
     // d3.selectAll('.node').style('stroke', nodeOutlineColor); // Update the node stroke color
 
     // Save the label color in localStorage
-    localStorage.setItem('labelColor', labelColor);
-    // localStorage.setItem('nodeOutlineColor', nodeOutlineColor);
+    //localStorage.setItem('labelColor', labelColor);
+    // //localStorage.setItem('nodeOutlineColor', nodeOutlineColor);
 });
 
 
@@ -367,12 +367,12 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
 //     window.SJFI_data.graphObjects.forEach(node => {
 //       nodePositions[node.id] = { x: node.x, y: node.y };
 //     });
-//     localStorage.setItem('nodePositions', JSON.stringify(nodePositions));
+//     //localStorage.setItem('nodePositions', JSON.stringify(nodePositions));
 //   }
   
 //   // Load node positions from local storage
 //   function loadNodePositions() {
-//     const nodePositions = JSON.parse(localStorage.getItem('nodePositions'));
+//     const nodePositions = JSON.parse(//localStorage.getItem('nodePositions'));
 //     if (nodePositions) {
 //       window.SJFI_data.graphObjects.forEach(node => {
 //         const position = nodePositions[node.id];
@@ -391,8 +391,8 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
 //     const config = {
 //         nodeData: {},
 //         labelVisibility: {
-//             nodeLabels: localStorage.getItem('nodeLabelsDisplay'),
-//             edgeLabels: localStorage.getItem('edgeLabelsDisplay'),
+//             nodeLabels: //localStorage.getItem('nodeLabelsDisplay'),
+//             edgeLabels: //localStorage.getItem('edgeLabelsDisplay'),
 //         },
 //     };
 
@@ -429,13 +429,13 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
 //         offsetY = config.offsetY;
 //         nodeRadius = config.nodeRadius;
 
-//         localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
-//         localStorage.setItem('labelColor', labelColor);
-//         localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
-//         localStorage.setItem('fontSize', fontSize);
-//         localStorage.setItem('offsetX', offsetX);
-//         localStorage.setItem('offsetY', offsetY);
-//         localStorage.setItem('nodeRadius', nodeRadius);
+//         //localStorage.setItem('nodeColors', JSON.stringify(nodeColors));
+//         //localStorage.setItem('labelColor', labelColor);
+//         //localStorage.setItem('nodeSettings', JSON.stringify(nodeSettings));
+//         //localStorage.setItem('fontSize', fontSize);
+//         //localStorage.setItem('offsetX', offsetX);
+//         //localStorage.setItem('offsetY', offsetY);
+//         //localStorage.setItem('nodeRadius', nodeRadius);
 
 //         window.SJFI_data.graphObjects.forEach(node => {
 //             const data = config.nodeData[node.id];
@@ -451,8 +451,8 @@ document.getElementById('toggle-label-color').addEventListener('click', () => {
 //         if (config.labelVisibility) {
 //             d3.selectAll('.label').style('display', config.labelVisibility.nodeLabels);
 //             d3.selectAll('.edgelabel').classed('hidden', config.labelVisibility.edgeLabels === 'none');
-//             localStorage.setItem('nodeLabelsDisplay', config.labelVisibility.nodeLabels);
-//             localStorage.setItem('edgeLabelsDisplay', config.labelVisibility.edgeLabels);
+//             //localStorage.setItem('nodeLabelsDisplay', config.labelVisibility.nodeLabels);
+//             //localStorage.setItem('edgeLabelsDisplay', config.labelVisibility.edgeLabels);
 //         }
 //     };
 //     reader.readAsText(file);
