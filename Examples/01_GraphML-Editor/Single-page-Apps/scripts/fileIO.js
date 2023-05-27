@@ -53,6 +53,12 @@ function renderGraphMLToFileArea() {
 //create window function reprintGraphMLFile()
 window.reprintGraphMLFile = function(debug=false) {
     if (debug) { console.log("[DEBUG] fileIO.js - reprintGraphMLFile()"); }
+
+    if (!Array.isArray(window.SJFI_data.graphObjects) || window.SJFI_data.graphObjects.length === 0) {
+        setGraphMLContentAPPEND("EMPTY");
+        return;
+    }
+
     setGraphMLContent(defaultGraphMLHEADER+"\n");
 
     //<KEYS>
