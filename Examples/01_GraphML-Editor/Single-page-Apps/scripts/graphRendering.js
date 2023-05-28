@@ -129,8 +129,14 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             d3.select('#context-menu-details').html(`
                 <b><u>Node ID:</u> ${d.id}</b><br>
                 ${d.properties.map(prop => `${prop.key}: ${prop.value}<br>`).join('')}
+                <button id="edit-button">Edit</button>
                 <hr>
-            `);                        
+            `);
+        
+            d3.select("#edit-button").on('click', () => {
+                editObject(d);
+                document.getElementById("edit-header").scrollIntoView();
+            });
 
         })
         .call(drag(simulation));

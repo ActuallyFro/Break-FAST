@@ -179,6 +179,7 @@ function updateTable(debug=false) {
       editButton.textContent = 'Edit';
       editButton.addEventListener('click', () => {
         editObject(object);
+        document.getElementById("edit-header").scrollIntoView();
       });
       editCell.appendChild(editButton);
       row.appendChild(editCell);
