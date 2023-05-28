@@ -1,6 +1,7 @@
 Important, Urgent
 =================
 - [ ] context Menu's toggle for node and edge labels are not working
+- [ ] REMOVE gives NO WARNING
 
 Not Important, Urgent
 =====================
