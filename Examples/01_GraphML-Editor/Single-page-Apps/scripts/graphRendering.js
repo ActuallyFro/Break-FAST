@@ -124,7 +124,14 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
                 //console.log('[DEBUG] Context Menu LEFT! -- SAVING TO LOCAL STORAGE');
                 storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
                 drawGraph();  // Refresh graph
-            });            
+            });
+            
+            d3.select('#context-menu-details').html(`
+                <b><u>Node ID:</u> ${d.id}</b><br>
+                ${d.properties.map(prop => `${prop.key}: ${prop.value}<br>`).join('')}
+                <hr>
+            `);                        
+
         })
         .call(drag(simulation));
     
@@ -394,5 +401,6 @@ window.addEventListener('click', function(event) {
     const contextMenu = document.getElementById('context-menu');
     if (event.target !== contextMenu && !contextMenu.contains(event.target)) {
         contextMenu.style.display = 'none';
+        document.getElementById('context-menu-details').innerHTML = '';
     }
 });
