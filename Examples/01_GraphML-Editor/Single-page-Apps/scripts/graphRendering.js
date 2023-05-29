@@ -45,35 +45,12 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         })
         .filter(link => link !== null);
 
-
-    //IMPORT DIES:
-    // const simulation = d3.forceSimulation(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
-    // .force('charge', d3.forceCollide().radius(defaultNodeRadius))
-    // .force('link', d3.forceLink(links).id(d => d.id).distance(defaultLinkDistance))
-    // .force('center', d3.forceCenter(width / 2, height / 2))
-    // .force('edgeRepel', function(alpha) {
-    //     for (let i = 0, n = window.SJFI_data.graphObjects.length; i < n; ++i) {
-    //         let node = window.SJFI_data.graphObjects[i];
-    //         if (node.type === 'node' && node.links.length == 1) { // Assuming each node has a links array
-    //             node.vx -= node.x * alpha; 
-    //             node.vy -= node.y * alpha;
-    //         }
-    //     }
-    // })
-    // .on('tick', ticked);
-
-    //Better auto-layout
-    // const simulation = d3.forceSimulation(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
-    //     .force('charge', d3.forceCollide().radius(defaultNodeRadius))
-    //     .force('center', d3.forceCenter(width / 2, height / 2))
-    //     .force('link', d3.forceLink(links).id(d => d.id).distance(defaultLinkDistance))
-    //     .on('tick', ticked);
-
-    //Works -- down from -50 to -5
+    //Works -- down from -50 to -5 ... then to this
     const simulation = d3.forceSimulation(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
-        .force('charge', d3.forceManyBody().strength(-5))
+        .force('charge', d3.forceManyBody().strength(-0.01))
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('link', d3.forceLink(links).id(d => d.id))
+        .force('link', d3.forceLink(links).id(d => d.id).strength(0.7))
+        .force('collide', d3.forceCollide(20))
         .on('tick', ticked);
 
     const link = g.selectAll('.link')
