@@ -45,12 +45,19 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         })
         .filter(link => link !== null);
 
+    const defaultNodeRadius = 20;  // Set this value according to your needs
 
     const simulation = d3.forceSimulation(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
-        .force('charge', d3.forceManyBody().strength(-50))
+        .force('charge', d3.forceCollide().radius(defaultNodeRadius))
         .force('center', d3.forceCenter(width / 2, height / 2))
         .force('link', d3.forceLink(links).id(d => d.id))
-        .on('tick', ticked);
+        .on('tick', ticked);  
+
+    // const simulation = d3.forceSimulation(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
+    //     .force('charge', d3.forceManyBody().strength(-50))
+    //     .force('center', d3.forceCenter(width / 2, height / 2))
+    //     .force('link', d3.forceLink(links).id(d => d.id))
+    //     .on('tick', ticked);
 
     const link = g.selectAll('.link')
         .data(links)
@@ -309,8 +316,6 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             .attr('text-anchor', 'middle')
             .attr('dy', '.35em');
     }
-    
-
 }
 
 document.getElementById('toggle-label-color').addEventListener('click', () => {
