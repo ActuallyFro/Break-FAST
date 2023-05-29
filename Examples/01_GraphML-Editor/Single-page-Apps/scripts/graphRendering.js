@@ -44,13 +44,11 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             };
         })
         .filter(link => link !== null);
-
-    //Works -- down from -50 to -5 ... then to this
+    
     const simulation = d3.forceSimulation(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
-        .force('charge', d3.forceManyBody().strength(-0.01))
-        .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('link', d3.forceLink(links).id(d => d.id).strength(0.7))
-        .force('collide', d3.forceCollide(20))
+        .force('charge', d3.forceManyBody().strength(-0.1))
+        .force('collide', d3.forceCollide(30))
+        .force('link', d3.forceLink(links).id(d => d.id).strength(0.35))
         .on('tick', ticked);
 
     const link = g.selectAll('.link')
