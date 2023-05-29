@@ -49,11 +49,29 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
     const defaultLinkDistance = defaultNodeRadius * 3;  // 3 times the node radius
 
     const simulation = d3.forceSimulation(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
-        .force('charge', d3.forceCollide().radius(defaultNodeRadius))
-        .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('link', d3.forceLink(links).id(d => d.id).distance(defaultLinkDistance))
-        .on('tick', ticked);
-        //     .force('charge', d3.forceManyBody().strength(-50))
+    .force('charge', d3.forceCollide().radius(defaultNodeRadius))
+    .force('link', d3.forceLink(links).id(d => d.id).distance(defaultLinkDistance))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('edgeRepel', function(alpha) {
+        for (let i = 0, n = window.SJFI_data.graphObjects.length; i < n; ++i) {
+            let node = window.SJFI_data.graphObjects[i];
+            if (node.type === 'node' && node.links.length == 1) { // Assuming each node has a links array
+                node.vx -= node.x * alpha; 
+                node.vy -= node.y * alpha;
+            }
+        }
+    })
+    .on('tick', ticked);
+
+    //Better auto-layout
+    // const simulation = d3.forceSimulation(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
+    //     .force('charge', d3.forceCollide().radius(defaultNodeRadius))
+    //     .force('center', d3.forceCenter(width / 2, height / 2))
+    //     .force('link', d3.forceLink(links).id(d => d.id).distance(defaultLinkDistance))
+    //     .on('tick', ticked);
+
+    //Works
+    //     .force('charge', d3.forceManyBody().strength(-50))
 
     const link = g.selectAll('.link')
         .data(links)
