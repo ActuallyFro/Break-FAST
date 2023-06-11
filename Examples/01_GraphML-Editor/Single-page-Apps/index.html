@@ -203,6 +203,23 @@
       </table>
     </div>
 
+    <div id="orphaned-nodes-container" class="container" style="display: none;">
+        <h2>Orphaned Nodes</h2>
+  
+        <table id="orphaned-nodes-table" class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th scope="col" class="sortable">ID</th>
+                    <th scope="col" class="sortable">Type</th>
+                    <th scope="col" class="sortable">Label</th>
+                </tr>
+            </thead>
+            <tbody id="orphaned-nodes-table-body">
+            </tbody>
+        </table>
+      </div>  
+
+
     <!-- ------------- Section 3 - ------------- -->
     <div class="container">
         <hr>
@@ -222,8 +239,7 @@
     
     </div>
     
-  <!-- ============================= PART C ============================= -->
-  <hr>
+  <!-- ============================= PART C ============================= -->  <hr>
   <h1 id="section-c">C) GraphML File Creation</h1>
   <div id="graphml-file"></div>
   <button id="save-graphml-button">Save .graphml File</button>

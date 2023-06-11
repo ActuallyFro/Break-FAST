@@ -217,10 +217,55 @@ function updateTable(debug=false) {
     // });
     
 
+    /*
+    */
+      
+      // New code to update orphaned nodes table
+      const orphanedNodesContainer = document.getElementById('orphaned-nodes-container');
+      const orphanedNodesTableBody = document.getElementById('orphaned-nodes-table-body');
+      orphanedNodesTableBody.innerHTML = '';
+
+      const nodeIds = window.SJFI_data.graphObjects.filter(obj => obj.type === "node").map(node => node.id);
+      const edgeIds = window.SJFI_data.graphObjects.filter(obj => obj.type === "edge").flatMap(edge => [edge.sourceId, edge.targetId]);
+      
+      const orphanedNodeIds = nodeIds.filter(id => !edgeIds.includes(id));
+
+      if (orphanedNodeIds.length === 0) {
+        orphanedNodesContainer.style.display = 'none';
+      } else {
+        orphanedNodesContainer.style.display = 'block';
+
+        for (const nodeId of orphanedNodeIds) {
+          const nodeObject = window.SJFI_data.graphObjects.find(obj => obj.id === nodeId);
+
+          const row = document.createElement('tr');
+
+          const idCell = document.createElement('td');
+          idCell.textContent = nodeObject.id;
+          row.appendChild(idCell);
+
+          const typeCell = document.createElement('td');
+          typeCell.textContent = nodeObject.type;
+          row.appendChild(typeCell);
+
+          const labelCell = document.createElement('td');
+          labelCell.textContent = nodeObject.label;
+          row.appendChild(labelCell);
+
+          orphanedNodesTableBody.appendChild(row);
+        }
+      }
+
+    /*
+    */
+
+
+
     }
   }
-
 }
+
+
 
 function updateNodeDropdowns() {
   const sourceNodeDropdown = document.getElementById('source-node');
