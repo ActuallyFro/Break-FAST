@@ -127,6 +127,7 @@ function ButtonSetupAreaBObjectEditing(debug=false) {
     window.updateTable();
     window.updateGraphSettings();
     window.reprintGraphMLFile();
+    window.location.reload();
   });
 
   const updateGraphSettingsButton = document.getElementById('update-graph-settings-button');
