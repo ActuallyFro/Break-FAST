@@ -261,15 +261,19 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
     });
 
     document.getElementById('toggle-node-labels').addEventListener('click', () => {
-        const display = window.getComputedStyle(d3.select('.label').node()).display === 'none' ? 'block' : 'none';
-        d3.selectAll('.label').style('display', display);
-        //localStorage.setItem('nodeLabelsDisplay', display);
+        const currentDisplay = window.SJFI_data.renderDisplayLabelsNodes;
+        const newDisplay = currentDisplay === 'none' ? 'block' : 'none';
+        window.SJFI_data.renderDisplayLabelsNodes = newDisplay;
+        storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+        drawGraph();
     });
 
     document.getElementById('toggle-edge-labels').addEventListener('click', () => {
-        const display = window.getComputedStyle(d3.select('.edgelabel').node()).display === 'none' ? 'block' : 'none';
-        d3.selectAll('.edgelabel').style('display', display);
-        //localStorage.setItem('edgeLabelsDisplay', display);
+        const currentDisplay = window.SJFI_data.renderDisplayLabelsEdges;
+        const newDisplay = currentDisplay === 'none' ? 'block' : 'none';
+        window.SJFI_data.renderDisplayLabelsEdges = newDisplay;
+        storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+        drawGraph();
     });
 
     document.getElementById('zoom-in-button').addEventListener('click', () => {
@@ -307,6 +311,9 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             })
             .attr('text-anchor', 'middle')
             .attr('dy', '.35em');
+
+        d3.selectAll('.label').style('display', window.SJFI_data.renderDisplayLabelsNodes);
+        d3.selectAll('.edgelabel').style('display', window.SJFI_data.renderDisplayLabelsEdges);        
     }
 }
 
