@@ -272,6 +272,23 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             .style('left', `${event.pageX - menuWidth}px`)
             .style('top', `${event.pageY}px`)
             .style('display', 'block');
+        
+        //Find <button id="object-add-node">
+        const addNodeButton = document.getElementById('object-add-node');
+
+        //CLAUDE -- START
+        // const addNodeButton = document.createElement('button');
+        // addNodeButton.id = 'add-node-button'; 
+        // addNodeButton.textContent = 'Add Node';
+        
+        // document.getElementById('graph-context-menu')
+        //     .appendChild(addNodeButton);            
+        addNodeButton.addEventListener('click', () => {
+            addObjectNodeFromRightClickMenu("Node#");
+            document.getElementById("edit-header").scrollIntoView();
+            
+        });
+        //CLAUDE -- END
     });
 
     document.addEventListener('keydown', function(event) {

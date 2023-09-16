@@ -62,6 +62,15 @@ function addObjectEdgeFromContextMenu(sourceNode) {
   document.getElementById('target-node').value = targetNodeLabel;
   document.getElementById('target-node-id').value = targetNodeId;
 }
+
+function addObjectNodeFromRightClickMenu(nodeId) {
+
+  document.getElementById('object-id').value = nodeId;
+
+  document.getElementById('graph-type').value = 'node';
+  toggleObjectTypeFields(); 
+
+}
 //CLAUDE -- END
 
 function removeObject(object) {
