@@ -154,8 +154,7 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
                     <button id="connect-edge-button">Add Edge</button>
                     <hr>
                 `);
-
-        
+                
             d3.select("#edit-button").on('click', () => {
                 editObject(d);
                 document.getElementById("edit-header").scrollIntoView();
@@ -166,7 +165,32 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
                 document.getElementById("edit-header").scrollIntoView();
             });
 
+            //CLAUDE -- START
+            d3.select('#ok-to-save-button').on('click', () => {
 
+                // Get current node
+                const node = d;
+              
+                // Get settings
+                const color = d3.select('#color-picker').node().value;
+                const fontSize = d3.select('#font-size').node().value; 
+                const offsetX = d3.select('#font-x-offset').node().value;
+                const offsetY = d3.select('#font-y-offset').node().value;
+                const radius = d3.select('#node-radius').node().value;
+              
+                // Update node settings
+                const nodeSettings = node.renderSettings[0];
+                nodeSettings.nodeColorDefault = color;
+                nodeSettings.labelFontSize = fontSize;
+                nodeSettings.labelOffsetX = offsetX;
+                nodeSettings.labelOffsetY = offsetY;
+                nodeSettings.radiusSize = radius;
+              
+                storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+                drawGraph();
+              
+              });
+            //CLAUDE -- END
         })
         .call(drag(simulation));
     
