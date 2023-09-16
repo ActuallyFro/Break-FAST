@@ -120,6 +120,8 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             });
 
             d3.select('#context-menu').on('mouseleave', function() {
+                simulation.alpha(startingAlpha); //CLAUDE
+                simulation.restart(); //CLAUDE
                 //console.log('[DEBUG] Context Menu LEFT! -- SAVING TO LOCAL STORAGE');
                 storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
                 drawGraph();  // Refresh graph
@@ -266,6 +268,9 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
     // On right click on the SVG, show the context menu
     svg.on('contextmenu', function(event) {
         event.preventDefault();
+        
+        const startingAlpha = simulation.alpha(); // CLAUDE
+        
         const menuWidth = document.getElementById('graph-context-menu').offsetWidth;
 
         d3.select('#graph-context-menu')
@@ -330,6 +335,8 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
     });
      
     function ticked() {
+        if (simulation.alpha() < 0.005) return; //CLAUDE
+
         node.attr('cx', d => (d.x && !isNaN(d.x)) ? d.x : 0)
             .attr('cy', d => (d.y && !isNaN(d.y)) ? d.y : 0)
             .attr('r', d => d.renderSettings[0].radiusSize)
@@ -357,24 +364,20 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             .attr('text-anchor', 'middle')
             .attr('dy', '.35em');
 
+        d3.selectAll('.label').style('fill', window.SJFI_data.labelColor);
         d3.selectAll('.label').style('display', window.SJFI_data.renderDisplayLabelsNodes);
         d3.selectAll('.edgelabel').style('display', window.SJFI_data.renderDisplayLabelsEdges);        
     }
 }
 
 document.getElementById('toggle-label-color').addEventListener('click', () => {
-    // Toggle the label color between black and white
-    labelColor = labelColor === 'black' ? 'white' : 'black';
-    // nodeOutlineColor= nodeOutlineColor === 'black' ? 'black' : 'white';
+    let flippedLabelColor = window.SJFI_data.labelColor === 'black' ? 'white' : 'black';
 
-    // Update the color of the labels and the node stroke
-    d3.selectAll('.label').style('fill', labelColor);
-    //d3.selectAll('.edgelabel').style('fill', labelColor);
-    // d3.selectAll('.node').style('stroke', nodeOutlineColor); // Update the node stroke color
+    window.SJFI_data.labelColor = flippedLabelColor;
+    storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
 
-    // Save the label color in localStorage
-    //localStorage.setItem('labelColor', labelColor);
-    // //localStorage.setItem('nodeOutlineColor', nodeOutlineColor);
+    d3.selectAll('.label').style('fill', flippedLabelColor);
+    drawGraph();
 });
 
 /////////////////////////////////////////////////////////////////////////////////////
