@@ -131,11 +131,39 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
                 <button id="edit-button">Edit</button>
                 <hr>
             `);
+
+            d3.select('#context-menu-details').append('div')
+                .attr('id', 'connect-edge-div')
+                .html(`<u><b>Connect to Edge:</b></u><br>`);
+
+            //Add a dropdown menu to select node to connect to, pulled from all other nodes
+            d3.select('#connect-edge-div').append('select')
+                .attr('id', 'connect-edge-select')
+                .selectAll('option')
+                .data(window.SJFI_data.graphObjects.filter(object => object.type === 'node'))
+                .enter()
+                .append('option')
+                .attr('value', d => d.id)
+                .text(d => d.label);
+            
+            d3.select('#context-menu-details').append('div')
+                .attr('id', 'connect-edge-div')
+                .html(`
+                    <button id="connect-edge-button">Add Edge</button>
+                    <hr>
+                `);
+
         
             d3.select("#edit-button").on('click', () => {
                 editObject(d);
                 document.getElementById("edit-header").scrollIntoView();
             });
+
+            d3.select("#connect-edge-button").on('click', () => {
+                addObjectEdgeFromContextMenu(d);
+                document.getElementById("edit-header").scrollIntoView();
+            });
+
 
         })
         .call(drag(simulation));

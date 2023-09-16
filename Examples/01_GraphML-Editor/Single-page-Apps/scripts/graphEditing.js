@@ -43,6 +43,27 @@ function editObject(object) {
   document.getElementById('submit-add_object-button').textContent = 'Update Object';
 }
 
+//CLAUDE -- START
+function addObjectEdgeFromContextMenu(sourceNode) {
+
+  const targetNodeId = d3.select('#connect-edge-select').node().value;
+  const targetNodeLabel = d3.select('#connect-edge-select').node().selectedOptions[0].text;
+
+  const objectId = `${sourceNode.id}-to-${targetNodeId}`;
+
+  document.getElementById('object-id').value = objectId;
+
+  document.getElementById('graph-type').value = 'edge';
+  toggleObjectTypeFields();
+
+  document.getElementById('source-node').value = sourceNode.label;
+  document.getElementById('source-node-id').value = sourceNode.id;
+
+  document.getElementById('target-node').value = targetNodeLabel;
+  document.getElementById('target-node-id').value = targetNodeId;
+}
+//CLAUDE -- END
+
 function removeObject(object) {
   const index = window.SJFI_data.graphObjects.indexOf(object);
   if (index > -1) {
