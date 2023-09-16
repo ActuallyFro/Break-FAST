@@ -186,9 +186,14 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
                 nodeSettings.labelOffsetY = offsetY;
                 nodeSettings.radiusSize = radius;
               
+                // Close context menus
+                d3.select('#context-menu').style('display', 'none'); 
+                d3.select('#graph-context-menu').style('display', 'none');
+
                 storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
                 drawGraph();
-              
+
+                
               });
             //CLAUDE -- END
         })
