@@ -55,7 +55,7 @@ function showNodePopup(node, event) {
     // popup.style.left = x + 'px';
     // popup.style.top = y + 'px';
     
-    popup.style.display = 'block';  
+    //TEST for 'ok' not working: popup.style.display = 'block';  
 }
 
 function hideNodePopup() {
