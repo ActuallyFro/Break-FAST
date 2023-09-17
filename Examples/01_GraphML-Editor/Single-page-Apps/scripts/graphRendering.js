@@ -126,14 +126,14 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
 
             let nodeSettings = window.SJFI_data.graphObjects.find(node => node.id === d.id).renderSettings[0];
 
-            d3.select('#color-picker').node().value = nodeSettings.nodeColorDefault || '#000000';
+            d3.select('#color-picker').node().value = nodeSettings.nodeColor || '#000000';
             d3.select('#font-size').node().value = nodeSettings.labelFontSize || '12';
             d3.select('#font-x-offset').node().value = nodeSettings.labelOffsetX || '0';
             d3.select('#font-y-offset').node().value = nodeSettings.labelOffsetY || '0';
             d3.select('#node-radius').node().value = nodeSettings.radiusSize || '20';
     
             d3.select('#color-picker').on('input', function() {
-                nodeSettings.nodeColorDefault = this.value;
+                nodeSettings.nodeColor = this.value;
                 // nodeSettings.fillColor = this.value;
                 d3.select(event.currentTarget).style('fill', this.value);
             });
@@ -192,7 +192,7 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
               
                 // Update node settings
                 const nodeSettings = node.renderSettings[0];
-                nodeSettings.nodeColorDefault = color;
+                nodeSettings.nodeColor = color;
                 nodeSettings.labelFontSize = fontSize;
                 nodeSettings.labelOffsetX = offsetX;
                 nodeSettings.labelOffsetY = offsetY;
