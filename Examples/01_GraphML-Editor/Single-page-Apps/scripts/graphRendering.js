@@ -55,7 +55,7 @@ function showNodePopup(node, event) {
     // popup.style.left = x + 'px';
     // popup.style.top = y + 'px';
     
-    //TEST for 'ok' not working: popup.style.display = 'block';  
+    popup.style.display = 'block';  
 }
 
 function hideNodePopup() {
@@ -202,7 +202,10 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
                 storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
 
                 drawGraph();
-              
+
+                // Hide context menus
+                d3.select('#context-menu').style('display', 'none'); 
+                d3.select('#graph-context-menu').style('display', 'none');
               });
             //CLAUDE -- END            
             
