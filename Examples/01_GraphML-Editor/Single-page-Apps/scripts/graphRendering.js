@@ -14,6 +14,54 @@ let offsetX = localStorage.getItem('offsetX') || '0';
 let offsetY = localStorage.getItem('offsetY') || '0';
 // let nodeRadius = localStorage.getItem('nodeRadius') || '20';
 
+function showNodePopup(node, event) {
+
+    const popup = document.getElementById('node-popup');
+  
+    // // FULL DEBUG content:
+    // let popupContent = '';
+    // for (const [key, value] of Object.entries(node)) {
+    //     popupContent += `<p><strong>${key}:</strong> ${value}</p>`;
+    // }
+    // popup.innerHTML = popupContent;
+
+    // Render the Node ID name (underlined and bolded, ending in a colon)
+    let popupContent = `<p><strong><u>ID: ${node.id}</u></strong></p>`;
+
+    // Render ALL the key/value pairs from the properties object within entries
+    const nodeProperties = node.properties || [];
+    for (const property of nodeProperties) {
+        popupContent += `<p><strong>${property.key}:</strong> ${property.value}</p>`;
+    }
+
+    popup.innerHTML = popupContent;
+
+    // Get mouse position
+    const mouseX = event.pageX; 
+    const mouseY = event.pageY;
+
+    // Float by Mouse code
+    // Offset popup to right
+    const x = mouseX + 20;
+    // Center vertically on mouse
+    const y = mouseY - (popup.offsetHeight / 2);
+    popup.style.left = x + 'px';
+    popup.style.top = y + 'px';
+
+    // // Position relative to node
+    // const x = node.x; 
+    // const y = node.y;
+  
+    // popup.style.left = x + 'px';
+    // popup.style.top = y + 'px';
+    
+    popup.style.display = 'block';  
+}
+
+function hideNodePopup() {
+    const popup = document.getElementById('node-popup');
+    popup.style.display = 'none';
+}
 
 window.drawGraph = function(passedGraphObjects, debug = false) {
     const width = 1750;
@@ -78,15 +126,15 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
 
             let nodeSettings = window.SJFI_data.graphObjects.find(node => node.id === d.id).renderSettings[0];
 
-            d3.select('#color-picker').node().value = nodeSettings.nodeColor || '#000000';
+            d3.select('#color-picker').node().value = nodeSettings.nodeColorDefault || '#000000';
             d3.select('#font-size').node().value = nodeSettings.labelFontSize || '12';
             d3.select('#font-x-offset').node().value = nodeSettings.labelOffsetX || '0';
             d3.select('#font-y-offset').node().value = nodeSettings.labelOffsetY || '0';
             d3.select('#node-radius').node().value = nodeSettings.radiusSize || '20';
     
             d3.select('#color-picker').on('input', function() {
-                nodeSettings.nodeColor = this.value;
-                nodeSettings.fillColor = this.value;
+                nodeSettings.nodeColorDefault = this.value;
+                // nodeSettings.fillColor = this.value;
                 d3.select(event.currentTarget).style('fill', this.value);
             });
     
@@ -120,12 +168,43 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             });
 
             d3.select('#context-menu').on('mouseleave', function() {
-                simulation.alpha(startingAlpha); //CLAUDE
-                simulation.restart(); //CLAUDE
+                // simulation.alpha(startingAlpha); //CLAUDE
+                // simulation.restart(); //CLAUDE
                 //console.log('[DEBUG] Context Menu LEFT! -- SAVING TO LOCAL STORAGE');
                 storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
                 drawGraph();  // Refresh graph
             });
+
+
+            // ok-to-save-button -- when clicked, save 'nodeSettings' from all 'this'
+            //CLAUDE -- START
+            d3.select('#ok-to-save-button').on('click', () => {
+
+                // Get current node
+                const node = d;
+              
+                // Get settings
+                const color = d3.select('#color-picker').node().value;
+                const fontSize = d3.select('#font-size').node().value; 
+                const offsetX = d3.select('#font-x-offset').node().value;
+                const offsetY = d3.select('#font-y-offset').node().value;
+                const radius = d3.select('#node-radius').node().value;
+              
+                // Update node settings
+                const nodeSettings = node.renderSettings[0];
+                nodeSettings.nodeColorDefault = color;
+                nodeSettings.labelFontSize = fontSize;
+                nodeSettings.labelOffsetX = offsetX;
+                nodeSettings.labelOffsetY = offsetY;
+                nodeSettings.radiusSize = radius;
+              
+
+                storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
+
+                drawGraph();
+              
+              });
+            //CLAUDE -- END            
             
             d3.select('#context-menu-details').html(`
                 <b><u>Node ID:</u> ${d.id}</b><br>
@@ -154,7 +233,8 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
                     <button id="connect-edge-button">Add Edge</button>
                     <hr>
                 `);
-                
+
+        
             d3.select("#edit-button").on('click', () => {
                 editObject(d);
                 document.getElementById("edit-header").scrollIntoView();
@@ -165,37 +245,7 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
                 document.getElementById("edit-header").scrollIntoView();
             });
 
-            //CLAUDE -- START
-            d3.select('#ok-to-save-button').on('click', () => {
 
-                // Get current node
-                const node = d;
-              
-                // Get settings
-                const color = d3.select('#color-picker').node().value;
-                const fontSize = d3.select('#font-size').node().value; 
-                const offsetX = d3.select('#font-x-offset').node().value;
-                const offsetY = d3.select('#font-y-offset').node().value;
-                const radius = d3.select('#node-radius').node().value;
-              
-                // Update node settings
-                const nodeSettings = node.renderSettings[0];
-                nodeSettings.nodeColorDefault = color;
-                nodeSettings.labelFontSize = fontSize;
-                nodeSettings.labelOffsetX = offsetX;
-                nodeSettings.labelOffsetY = offsetY;
-                nodeSettings.radiusSize = radius;
-              
-                // Close context menus
-                d3.select('#context-menu').style('display', 'none'); 
-                d3.select('#graph-context-menu').style('display', 'none');
-
-                storeJSONObjectsIntoKey(window.SJFI_storageKey, window.SJFI_data);
-                drawGraph();
-
-                
-              });
-            //CLAUDE -- END
         })
         .call(drag(simulation));
     
@@ -364,12 +414,17 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
     });
      
     function ticked() {
-        if (simulation.alpha() < 0.005) return; //CLAUDE
+        // if (simulation.alpha() < 0.005) return; //CLAUDE
 
         node.attr('cx', d => (d.x && !isNaN(d.x)) ? d.x : 0)
             .attr('cy', d => (d.y && !isNaN(d.y)) ? d.y : 0)
             .attr('r', d => d.renderSettings[0].radiusSize)
-            .style('fill', d => d.renderSettings[0].nodeColor);
+            .style('fill', d => d.renderSettings[0].nodeColor)
+            .on('mouseover', function(event, d) {
+                showNodePopup(d, event); 
+                console.log('[DEBUG] mouseover -- Trying to render popup');
+            })
+            .on('mouseout', hideNodePopup);
     
         link.attr('x1', d => (d.source.x && !isNaN(d.source.x)) ? d.source.x : 0)
             .attr('y1', d => (d.source.y && !isNaN(d.source.y)) ? d.source.y : 0)
