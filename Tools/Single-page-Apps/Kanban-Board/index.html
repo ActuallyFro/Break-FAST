@@ -118,6 +118,38 @@
       input[type="text"]:focus {
         outline: auto;
       }
+
+      /*  -----------------------  */
+      .gear-icon {
+        margin-left: 0.5rem;
+        cursor: pointer;
+      }
+
+      .color-picker {
+        display: none;
+        margin-left: 0.5rem;
+      }
+
+      .dark-mode {
+        background-color: #222;
+        color: #eee;
+      }
+
+      .dark-mode .card {
+        background-color: #444;
+        color: #fff;
+      }
+
+      .dark-mode .bucket {
+        border-color: #555;
+      }
+
+      .dark-mode input[type="text"],
+      .dark-mode textarea {
+        background-color: #333;
+        color: #fff;
+      }
+
     </style>
 </head>
 <body>
@@ -129,6 +161,9 @@
       <button id="addBucketButton">Add Bucket</button>
       <button id="exportButton">Export</button>
       <label for="importButton" style="cursor:pointer">Import</label>
+      <label style="margin-left: 2rem;">
+        <input type="checkbox" id="darkModeToggle"> Darkmode
+      </label>
       <input type="file" id="importButton" style="display:none">
       <button id="resetButton" onclick="resetLocalStorage()">Reset LocalStorage</button>
   </div>
@@ -173,9 +208,11 @@
       document.querySelectorAll(".bucket").forEach((bucket, index) => {
         const cards = Array.from(bucket.querySelectorAll(".card"));
         const cardsData = cards.map(card => {
+          const colorInput = card.querySelector("input[type='color']");
           return {
             label: card.querySelector("input[type='text']").value,
-            body: card.querySelector(".card-body").outerHTML
+            body: card.querySelector(".card-body").outerHTML,
+            color: colorInput ? colorInput.value : null
           };
         });
         const titleElement = bucket.querySelector(".title");
@@ -557,6 +594,31 @@
           }
       });
 
+      const gearIcon = document.createElement("i");
+      gearIcon.className = "fas fa-gear gear-icon";
+      card.appendChild(gearIcon);
+
+      const colorInput = document.createElement("input");
+      colorInput.type = "color";
+      colorInput.value = "#f0f0f0";
+      colorInput.className = "color-picker";
+      gearIcon.addEventListener("click", () => {
+        colorInput.click();
+      });
+      colorInput.addEventListener("input", (e) => {
+        const color = e.target.value;
+        card.style.backgroundColor = color;
+        saveToLocalStorage();
+      });
+      card.appendChild(colorInput);
+
+      // Load stored color from data attribute (after all elements added)
+      const cardData = findCardData(card);
+      if (cardData && cardData.color && cardData.color !== "#000000") {
+        card.style.backgroundColor = cardData.color;
+        colorInput.value = cardData.color;
+      }
+
       card.appendChild(cardBody);
 
       return card;
@@ -746,6 +808,32 @@
     document.getElementById("addBucketButton").addEventListener("click", addBucketButton);
     document.getElementById("exportButton").addEventListener("click", exportMatrix);
     document.getElementById("importButton").addEventListener("change", importMatrix);
+
+    // Darkmode support
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    if (localStorage.getItem("darkMode") === "true") {
+      document.body.classList.add("dark-mode");
+      darkModeToggle.checked = true;
+    }
+
+    darkModeToggle.addEventListener("change", () => {
+      const enabled = darkModeToggle.checked;
+      document.body.classList.toggle("dark-mode", enabled);
+      localStorage.setItem("darkMode", enabled);
+    });
+
+    // Helper to find cardData by label (used to restore color on reload)
+    function findCardData(card) {
+      const input = card.querySelector("input[type='text']");
+      const allData = JSON.parse(localStorage.getItem("kanbanBoard") || "[]");
+      for (const bucket of allData) {
+        for (const c of bucket.cards) {
+          if (c.label === input.value) return c;
+        }
+      }
+      return null;
+    }
+
   </script>
 
 </body>
