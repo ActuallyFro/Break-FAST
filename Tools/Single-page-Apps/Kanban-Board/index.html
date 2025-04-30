@@ -245,7 +245,7 @@
             const card = createCard();
             card.querySelector("input[type='text']").value = cardData.label;
 
-            const cardBody = card.querySelector(".card-body");
+            let cardBody = card.querySelector(".card-body");
             if (cardData.body.includes("textarea")) {
               // Card body data was created with a textarea, switch to edit view
               const textarea = document.createElement("textarea");
