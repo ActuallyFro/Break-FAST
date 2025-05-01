@@ -157,6 +157,38 @@
         resize: vertical;
       }
 
+      /* Bottom Tool Bar for Loading JSON/other Cards */
+      .bottom-toolbar {
+        margin-top: 10px;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .json-input-container {
+        margin-top: 10px;
+        display: none;
+      }
+
+      .json-textarea {
+        width: 100%;
+        min-height: 100px;
+        margin-bottom: 10px;
+        font-family: monospace;
+      }
+
+      .button-container {
+        display: flex;
+        gap: 10px;
+      }
+
+      .dark-mode .json-textarea {
+        background-color: #333;
+        color: #fff;
+      }
+
     </style>
 </head>
 <body>
@@ -176,6 +208,15 @@
   </div>
 
   <script>
+    // UUID generation function - RFC 9562 
+    function generateUUID() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
     // --------------------
     // Board Title Functions
     function makeBoardTitleEditable() {
@@ -219,11 +260,19 @@
           const cardBody = card.querySelector(".card-body");
           const bodyContent = cardBody.tagName === "TEXTAREA" ? cardBody.value : cardBody.innerHTML;
           
+          // Get existing UUID or generate a new one
+          let uuid = card.getAttribute("data-uuid");
+          if (!uuid) {
+            uuid = generateUUID();
+            card.setAttribute("data-uuid", uuid);
+          }
+          
           return {
             label: card.querySelector("input[type='text']").value,
             body: bodyContent,
             isTextarea: cardBody.tagName === "TEXTAREA",
-            color: colorInput ? colorInput.value : null
+            color: colorInput ? colorInput.value : null,
+            uuid: uuid
           };
         });
         const titleElement = bucket.querySelector(".title");
@@ -256,6 +305,13 @@
           bucketData.cards.forEach(cardData => {
             const card = createCard();
             card.querySelector("input[type='text']").value = cardData.label;
+            
+            // Set UUID if available
+            if (cardData.uuid) {
+              card.setAttribute("data-uuid", cardData.uuid);
+            } else {
+              card.setAttribute("data-uuid", generateUUID());
+            }
 
             // Apply card color if available
             if (cardData.color) {
@@ -327,7 +383,6 @@
         });
       }
     }
-
 
 
     function resetLocalStorage() {
@@ -497,6 +552,7 @@
       const card = document.createElement("div");
       card.className = "card";
       card.setAttribute("draggable", "true");
+      card.setAttribute("data-uuid", generateUUID()); // Add UUID to new cards
 
       const cardLabelInput = document.createElement("input");
       cardLabelInput.addEventListener("input", saveToLocalStorage);
@@ -758,7 +814,8 @@
             label: card.querySelector("input[type='text']").value,
             body: bodyContent,
             isTextarea: cardBody.tagName === "TEXTAREA",
-            color: colorInput ? colorInput.value : null
+            color: colorInput ? colorInput.value : null,
+            uuid: card.getAttribute("data-uuid") || generateUUID() // Include UUID in export
           };
         });
         const titleElement = bucket.querySelector(".title");
@@ -865,6 +922,336 @@
       document.body.classList.toggle("dark-mode", enabled);
       localStorage.setItem("darkMode", enabled);
     });
+
+
+
+    // Function to handle the JSON input area visibility
+    function setupBottomToolbar() {
+      const showJsonInputBtn = document.getElementById("showJsonInputBtn");
+      const jsonInputContainer = document.getElementById("jsonInputContainer");
+      const jsonInputTextarea = document.getElementById("jsonInputTextarea");
+      const mergeJsonBtn = document.getElementById("mergeJsonBtn");
+      const copyLlmPromptBtn = document.getElementById("copyLlmPromptBtn");
+
+      showJsonInputBtn.addEventListener("click", () => {
+        if (jsonInputContainer.style.display === "block") {
+          jsonInputContainer.style.display = "none";
+          showJsonInputBtn.textContent = "Show JSON Import Area";
+        } else {
+          jsonInputContainer.style.display = "block";
+          showJsonInputBtn.textContent = "Hide JSON Import Area";
+        }
+      });
+
+      // Function to merge JSON with current board
+      mergeJsonBtn.addEventListener("click", () => {
+        try {
+          const jsonStr = jsonInputTextarea.value.trim();
+          if (!jsonStr) {
+            alert("Please paste JSON content first!");
+            return;
+          }
+
+          const importedData = JSON.parse(jsonStr);
+          
+          // Check if it's valid board data
+          if (!importedData.bucketsData || !Array.isArray(importedData.bucketsData)) {
+            alert("Invalid Kanban board data format!");
+            return;
+          }
+
+          // Get current board data
+          const currentBucketsData = [];
+          document.querySelectorAll(".bucket").forEach((bucket, index) => {
+            const cards = Array.from(bucket.querySelectorAll(".card"));
+            const cardsData = cards.map(card => {
+              const colorInput = card.querySelector("input[type='color']");
+              const cardBody = card.querySelector(".card-body");
+              const bodyContent = cardBody.tagName === "TEXTAREA" ? cardBody.value : cardBody.innerHTML;
+              
+              return {
+                label: card.querySelector("input[type='text']").value,
+                body: bodyContent,
+                isTextarea: cardBody.tagName === "TEXTAREA",
+                color: colorInput ? colorInput.value : null,
+                uuid: card.getAttribute("data-uuid") || generateUUID()
+              };
+            });
+            const titleElement = bucket.querySelector(".title");
+            const title = titleElement.tagName === "INPUT" ? titleElement.value : titleElement.textContent;
+            currentBucketsData[index] = {
+              title: title,
+              cards: cardsData
+            };
+          });
+
+          // Merge boards by adding new cards
+          importedData.bucketsData.forEach((importedBucket, i) => {
+            // Find matching bucket by title or create new
+            let matchingBucketIndex = currentBucketsData.findIndex(b => b.title === importedBucket.title);
+            
+            if (matchingBucketIndex === -1) {
+              // Add new bucket if it doesn't exist
+              currentBucketsData.push({
+                title: importedBucket.title,
+                cards: []
+              });
+              matchingBucketIndex = currentBucketsData.length - 1;
+            }
+            
+            // Add cards that don't exist (by UUID)
+            importedBucket.cards.forEach(importedCard => {
+              const existingCardIndex = currentBucketsData[matchingBucketIndex].cards.findIndex(
+                card => card.uuid && importedCard.uuid && card.uuid === importedCard.uuid
+              );
+              
+              if (existingCardIndex === -1) {
+                // Add new card
+                currentBucketsData[matchingBucketIndex].cards.push(importedCard);
+              }
+            });
+          });
+
+          // Save the merged board
+          localStorage.setItem("kanbanBoard", JSON.stringify(currentBucketsData));
+          
+          // Reload the page to display merged board
+          alert("Boards merged successfully! Reloading...");
+          location.reload();
+          
+        } catch (error) {
+          alert("Error merging JSON: " + error.message);
+        }
+      });
+
+      // Function to copy LLM prompt to clipboard
+      copyLlmPromptBtn.addEventListener("click", () => {
+        try {
+          // Get first bucket name
+          const firstBucket = document.querySelector(".bucket");
+          let firstBucketName = "Backlog"; // Default
+          
+          if (firstBucket) {
+            const titleElement = firstBucket.querySelector(".title");
+            firstBucketName = titleElement.textContent || firstBucketName;
+          }
+
+// Generate the prompt
+const promptTemplate = `Convert the pasted/attached email to one (or several) cards in the following JSON format:
+\`\`\`
+{
+  "boardTitle": "Kanban Board",
+  "bucketsData": [
+    {
+      "title": "Backlog",
+      "cards": [
+        {
+          "label": "Example Card",
+          "body": "",
+          "isTextarea": false,
+          "color": "#f0f0f0",
+          "uuid": "fa6ff9ad-9343-40fc-8cd4-c64c1b562805"
+        }
+      ]
+    },
+    {
+      "title": "Blocked",
+      "cards": []
+    },
+    {
+      "title": "In Progress",
+      "cards": []
+    },
+    {
+      "title": "Done",
+      "cards": []
+    }
+  ]
+}
+\`\`\`
+
+The initial bucket will be ${firstBucketName}
+
+Select a thematic color from the following template:
+\`\`\`
+##OKLCH - GRAYS
+rgb (196, 200, 200)
+rgb (175, 175, 179)
+rgb (153, 156, 156)
+rgb (133, 134, 136)
+rgb (106, 108, 109)
+rgb (84, 84, 86)
+rgb (62, 65, 66)
+rgb (45, 47, 49)
+rgb (243, 156, 173)
+
+##OKLCH - REDS
+rgb (233, 85, 112)
+rgb (220, 39, 66)
+rgb (210, 12, 33)
+rgb (200, 1, 13)
+rgb (159, 1, 11)
+rgb (122, 1, 9)
+rgb (93, 1, 8)
+rgb (67, 1, 6)
+rgb (254, 212, 226)
+
+##OKLCH - PINKS
+rgb (255, 177, 206)
+rgb (255, 149, 184)
+rgb (255, 121, 166)
+rgb (255, 97, 147)
+rgb (201, 79, 118)
+rgb (156, 62, 92)
+rgb (118, 47, 71)
+rgb (85, 35, 52)
+rgb (194, 168, 231)
+
+##OKLCH - PURPLES
+rgb (146, 104, 207)
+rgb (105, 58, 186)
+rgb (72, 26, 166)
+rgb (45, 8, 147)
+rgb (37, 7, 118)
+rgb (29, 6, 92)
+rgb (23, 5, 71)
+rgb (17, 4, 52)
+rgb (154, 186, 249)
+
+##OKLCH - BLUES
+rgb (83, 134, 242)
+rgb (37, 92, 233)
+rgb (10, 59, 226)
+rgb (1, 33, 220)
+rgb (1, 27, 176)
+rgb (1, 22, 136)
+rgb (1, 17, 105)
+rgb (1, 13, 77)
+rgb (170, 233, 177)
+
+##OKLCH - GREENS
+rgb (109, 214, 119)
+rgb (65, 194, 74)
+rgb (33, 177, 41)
+rgb (13, 159, 20)
+rgb (10, 128, 16)
+rgb (9, 99, 13)
+rgb (7, 75, 11)
+rgb (6, 54, 9)
+rgb (255, 233, 176)
+
+##OKLCH - YELLOWS
+rgb (255, 218, 124)
+rgb (252, 202, 83)
+rgb (253, 188, 50)
+rgb (253, 173, 27)
+rgb (200, 138, 23)
+rgb (154, 108, 18)
+rgb (118, 81, 15)
+rgb (85, 60, 11)
+rgb (255, 200, 167)
+
+##OKLCH - ORANGES
+rgb (255, 156, 104)
+rgb (255, 121, 58)
+rgb (255, 88, 27)
+rgb (255, 63, 9)
+rgb (202, 51, 7)
+rgb (156, 40, 6)
+rgb (118, 31, 5)
+rgb (85, 23, 4)
+rgb (196, 198, 202)
+
+##OKLCH - YINS - DARK GRAYS
+rgb (154, 154, 159)
+rgb (113, 116, 120)
+rgb (82, 85, 87)
+rgb (57, 58, 61)
+rgb (37, 37, 40)
+rgb (21, 22, 23)
+rgb (10, 11, 12)
+rgb (4, 4, 5)
+\`\`\`
+
+Ask all relevant questions before starting.`;
+
+          // Copy to clipboard
+          navigator.clipboard.writeText(promptTemplate).then(() => {
+            alert("LLM prompt copied to clipboard!");
+          }).catch(err => {
+            console.error('Failed to copy: ', err);
+            alert("Failed to copy. Please check console for errors.");
+          });
+        } catch (error) {
+          alert("Error generating LLM prompt: " + error.message);
+        }
+      });
+    }
+
+    // Add this to the bottom of your existing initialization code
+    function initializeBottomToolbar() {
+      // Add CSS styles for bottom toolbar
+      const styleElement = document.createElement('style');
+      styleElement.textContent = `
+        .bottom-toolbar {
+          margin-top: 10px;
+          padding: 10px;
+          border-top: 1px solid #ccc;
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+        }
+        
+        .json-input-container {
+          margin-top: 10px;
+          display: none;
+        }
+        
+        .json-textarea {
+          width: 100%;
+          min-height: 100px;
+          margin-bottom: 10px;
+          font-family: monospace;
+        }
+        
+        .button-container {
+          display: flex;
+          gap: 10px;
+        }
+        
+        .dark-mode .json-textarea {
+          background-color: #333;
+          color: #fff;
+        }
+      `;
+      document.head.appendChild(styleElement);
+      
+      // Create and add the bottom toolbar HTML
+      const toolbarHTML = `
+        <div class="bottom-toolbar">
+          <div class="button-container">
+            <button id="showJsonInputBtn">Show JSON Import Area</button>
+            <button id="copyLlmPromptBtn">Press to Copy: 'Email to Cards' LLM Prompt</button>
+          </div>
+          <div id="jsonInputContainer" class="json-input-container">
+            <textarea id="jsonInputTextarea" class="json-textarea" placeholder="Paste JSON here to merge with current board..."></textarea>
+            <button id="mergeJsonBtn">Merge Board</button>
+          </div>
+        </div>
+      `;
+      
+      // Insert the toolbar before the existing controls
+      const controls = document.querySelector('.controls');
+      controls.insertAdjacentHTML('afterend', toolbarHTML);
+      
+      // Setup the toolbar functionality
+      setupBottomToolbar();
+    }
+
+    // Call this function after the page loads
+    // Add this to the end of your automatic functions section
+    initializeBottomToolbar();
+
 
   </script>
 
