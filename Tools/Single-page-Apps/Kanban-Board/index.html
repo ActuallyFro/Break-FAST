@@ -150,6 +150,13 @@
         color: #fff;
       }
 
+      textarea.card-body {
+        width: 100%;
+        min-height: 50px;
+        font-family: inherit;
+        resize: vertical;
+      }
+
     </style>
 </head>
 <body>
@@ -209,9 +216,13 @@
         const cards = Array.from(bucket.querySelectorAll(".card"));
         const cardsData = cards.map(card => {
           const colorInput = card.querySelector("input[type='color']");
+          const cardBody = card.querySelector(".card-body");
+          const bodyContent = cardBody.tagName === "TEXTAREA" ? cardBody.value : cardBody.innerHTML;
+          
           return {
             label: card.querySelector("input[type='text']").value,
-            body: card.querySelector(".card-body").outerHTML,
+            body: bodyContent,
+            isTextarea: cardBody.tagName === "TEXTAREA",
             color: colorInput ? colorInput.value : null
           };
         });
@@ -240,65 +251,74 @@
           const container = bucket.querySelector(".container");
           const title = bucket.querySelector(".title");
           title.textContent = bucketData.title;
-          makeBucketTitleEditable(title); // Add this line
+          makeBucketTitleEditable(title);
+          
           bucketData.cards.forEach(cardData => {
             const card = createCard();
             card.querySelector("input[type='text']").value = cardData.label;
 
+            // Apply card color if available
+            if (cardData.color) {
+              card.style.backgroundColor = cardData.color;
+              const colorInput = card.querySelector("input[type='color']");
+              if (colorInput) {
+                colorInput.value = cardData.color;
+              }
+            }
+
             let cardBody = card.querySelector(".card-body");
-            if (cardData.body.includes("textarea")) {
-              // Card body data was created with a textarea, switch to edit view
+            
+            // Handle body content based on whether it should be a textarea or not
+            if (cardData.isTextarea) {
+              // Switch to textarea view
               const textarea = document.createElement("textarea");
               textarea.className = "card-body";
               textarea.placeholder = "Enter description...";
-              textarea.value = cardData.body.match(/<textarea(.|\n)*<\/textarea>/g)[0];
-              card.replaceChild(textarea, cardBody);
-              cardBody.remove();
+              textarea.value = cardData.body || '';
+              
+              if (card.contains(cardBody)) {
+                card.replaceChild(textarea, cardBody);
+              } else {
+                card.appendChild(textarea);
+              }
+              
               cardBody = textarea;
-
+              
+              // Show edit icon, hide view icon
               const viewAsHtmlIcon = card.querySelector(".view-as-html");
               const editIcon = card.querySelector(".edit");
-              const lockIcon = card.querySelector(".lock");
-
-              viewAsHtmlIcon.style.display = "none";
-              editIcon.style.display = "inline";
-
+              
+              if (viewAsHtmlIcon) viewAsHtmlIcon.style.display = "inline";
+              if (editIcon) editIcon.style.display = "none";
+              
+            } else {
+              // Display as HTML
+              cardBody.innerHTML = cardData.body || '';
+              
+              // Show view icon, hide edit icon
+              const viewAsHtmlIcon = card.querySelector(".view-as-html");
+              const editIcon = card.querySelector(".edit");
+              
+              if (viewAsHtmlIcon) viewAsHtmlIcon.style.display = "none";
+              if (editIcon) editIcon.style.display = "inline";
+            }
+            
+            // Setup lock icon functionality
+            const lockIcon = card.querySelector(".lock");
+            if (lockIcon) {
               lockIcon.addEventListener("click", () => {
                 if (cardBody.classList.contains("locked")) {
                   cardBody.classList.remove("locked");
                   lockIcon.classList.remove("fa-lock");
                   lockIcon.classList.add("fa-unlock");
-                  card.classList.remove("disable-hover"); // Remove disable-hover class
+                  card.classList.remove("disable-hover");
                 } else {
                   cardBody.classList.add("locked");
                   lockIcon.classList.remove("fa-unlock");
                   lockIcon.classList.add("fa-lock");
-                  card.classList.add("disable-hover"); // Add disable-hover class
+                  card.classList.add("disable-hover");
                 }
               });
-
-              editIcon.addEventListener("click", () => {
-                const newCardBody = document.createElement("div");
-                newCardBody.className = "card-body";
-                newCardBody.innerHTML = cardBody.value;
-
-                if (card.contains(cardBody)) {
-                  card.replaceChild(newCardBody, cardBody);
-                } else {
-                  card.appendChild(newCardBody);
-                }
-
-                cardBody = newCardBody;
-
-                viewAsHtmlIcon.style.display = "inline";
-                editIcon.style.display = "none";
-
-                // Remove event listener added to textarea when editing
-                cardBody.removeEventListener("input", saveToLocalStorage);
-              });
-
-            } else {
-              cardBody.innerHTML = cardData.body;
             }
 
             container.appendChild(card);
@@ -362,7 +382,7 @@
 
       resizeWidthBuckets();
 
-      makeAllBucketTitlesEditable(); //Too much?!?!
+      makeAllBucketTitlesEditable();
 
     }
 
@@ -557,6 +577,8 @@
               viewAsHtmlIcon.style.display = "inline";
               editIcon.style.display = "none";
           }
+          
+          saveToLocalStorage();
         });
         
         editIcon.addEventListener("click", () => {
@@ -586,12 +608,14 @@
 
               cardBody = newCardBody;
 
-              viewAsHtmlIcon.style.display = "inline";
-              editIcon.style.display = "none";
+              viewAsHtmlIcon.style.display = "none";
+              editIcon.style.display = "inline";
 
               // Remove event listener added to textarea when editing
               cardBody.removeEventListener("input", saveToLocalStorage);
           }
+          
+          saveToLocalStorage();
       });
 
       const gearIcon = document.createElement("i");
@@ -602,6 +626,9 @@
       colorInput.type = "color";
       colorInput.value = "#f0f0f0";
       colorInput.className = "color-picker";
+      colorInput.title = "Select card color"; // Add title attribute for accessibility
+      colorInput.ariaLabel = "Color picker"; // Add ARIA label for accessibility
+      
       gearIcon.addEventListener("click", () => {
         colorInput.click();
       });
@@ -611,13 +638,6 @@
         saveToLocalStorage();
       });
       card.appendChild(colorInput);
-
-      // Load stored color from data attribute (after all elements added)
-      const cardData = findCardData(card);
-      if (cardData && cardData.color && cardData.color !== "#000000") {
-        card.style.backgroundColor = cardData.color;
-        colorInput.value = cardData.color;
-      }
 
       card.appendChild(cardBody);
 
@@ -725,9 +745,33 @@
     function exportMatrix() {
       const boardTitle = document.querySelector(".board-title").textContent;
 
+      // Prepare data for export
+      const bucketsData = [];
+      document.querySelectorAll(".bucket").forEach((bucket, index) => {
+        const cards = Array.from(bucket.querySelectorAll(".card"));
+        const cardsData = cards.map(card => {
+          const colorInput = card.querySelector("input[type='color']");
+          const cardBody = card.querySelector(".card-body");
+          const bodyContent = cardBody.tagName === "TEXTAREA" ? cardBody.value : cardBody.innerHTML;
+          
+          return {
+            label: card.querySelector("input[type='text']").value,
+            body: bodyContent,
+            isTextarea: cardBody.tagName === "TEXTAREA",
+            color: colorInput ? colorInput.value : null
+          };
+        });
+        const titleElement = bucket.querySelector(".title");
+        const title = titleElement.tagName === "INPUT" ? titleElement.value : titleElement.textContent;
+        bucketsData[index] = {
+          title: title,
+          cards: cardsData
+        };
+      });
+
       const data = {
           boardTitle: boardTitle,
-          bucketsData: JSON.parse(localStorage.getItem("kanbanBoard")),
+          bucketsData: bucketsData,
       };
 
       const ISOdateTime = new Date().toISOString().replace(/:/g, '-').replace('.', '_');
@@ -821,18 +865,6 @@
       document.body.classList.toggle("dark-mode", enabled);
       localStorage.setItem("darkMode", enabled);
     });
-
-    // Helper to find cardData by label (used to restore color on reload)
-    function findCardData(card) {
-      const input = card.querySelector("input[type='text']");
-      const allData = JSON.parse(localStorage.getItem("kanbanBoard") || "[]");
-      for (const bucket of allData) {
-        for (const c of bucket.cards) {
-          if (c.label === input.value) return c;
-        }
-      }
-      return null;
-    }
 
   </script>
 
