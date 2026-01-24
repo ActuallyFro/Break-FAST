@@ -60,11 +60,21 @@
         margin-bottom: 0.5rem;
         position: relative;
         cursor: move;
+        transition: transform 120ms ease, opacity 120ms ease;
+      }
+      .card.dragging {
+        opacity: 0.8;
+        transform: scale(0.99);
       }
       .card-body {
         display: none;
         margin-top: 0.5rem;
         white-space: pre-wrap;
+      }
+
+      /* Highlight bucket while dragging over */
+      .bucket.drag-over {
+        box-shadow: inset 0 0 0 2px rgba(0,0,0,0.06);
       }
       .card:hover .card-body {
         display: block;
@@ -107,6 +117,29 @@
         font-size: 1.4rem;
         cursor: pointer;
       }
+
+      /* Short ID badge: subtle when empty, highlighted when assigned */
+      .card-id-badge {
+        position: absolute;
+        top: 0.25rem;
+        right: 40px; /* left of the '-' icon */
+        font-size: 0.75rem;
+        padding: 2px 6px;
+        border-radius: 3px;
+        background: transparent; /* subtle for empty state */
+        color: rgba(0,0,0,0.6);
+        cursor: pointer;
+        display: inline-block;
+        min-width: 24px;
+        text-align: center;
+        transition: background 180ms ease, color 180ms ease;
+      }
+
+      .card-id-badge.has-id {
+        background: rgba(0,0,0,0.06);
+        color: inherit;
+      }
+
       input[type="text"] {
         font-family: inherit;
         font-size: inherit;
@@ -123,6 +156,18 @@
       .gear-icon {
         margin-left: 0.5rem;
         cursor: pointer;
+      }
+
+      /* Ensure interactive child icons show pointer and are clickable (override .card cursor:move) */
+      .card .view-as-html,
+      .card .edit,
+      .card .lock,
+      .card .gear-icon,
+      .card .minus,
+      .card .card-id-badge,
+      .plus {
+        cursor: pointer;
+        pointer-events: auto;
       }
 
       .color-picker {
@@ -199,12 +244,12 @@
   <div class="controls">
       <button id="addBucketButton">Add Bucket</button>
       <button id="exportButton">Export</button>
-      <label for="importButton" style="cursor:pointer">Import</label>
+      <button id="importBtn">Import</button>
       <label style="margin-left: 2rem;">
         <input type="checkbox" id="darkModeToggle"> Darkmode
       </label>
       <input type="file" id="importButton" style="display:none">
-      <button id="resetButton" onclick="resetLocalStorage()">Reset LocalStorage</button>
+      <button id="resetButton">Reset LocalStorage</button>
   </div>
 
   <script>
@@ -215,6 +260,17 @@
         const v = c === 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
       });
+    }
+
+    // Short ID generator (7 hex chars, uppercase) — used for user-assigned visible IDs
+    function generateShortId() {
+      const arr = new Uint8Array(8);
+      if (window.crypto && crypto.getRandomValues) {
+        crypto.getRandomValues(arr);
+      } else {
+        for (let i = 0; i < arr.length; i++) arr[i] = Math.floor(Math.random() * 256);
+      }
+      return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('').slice(0,7).toUpperCase();
     }
 
     // --------------------
@@ -272,8 +328,10 @@
             body: bodyContent,
             isTextarea: cardBody.tagName === "TEXTAREA",
             color: colorInput ? colorInput.value : null,
-            uuid: uuid
-          };
+            uuid: uuid,
+            shortId: card.getAttribute("data-short-id") || null,
+            locked: cardBody.classList.contains('locked')
+          }; 
         });
         const titleElement = bucket.querySelector(".title");
         const title = titleElement.tagName === "INPUT" ? titleElement.value : titleElement.textContent;
@@ -322,6 +380,22 @@
               }
             }
 
+            // Ensure badge text/title is set based on shortId presence
+            const idBadge = card.querySelector(".card-id-badge");
+            if (idBadge) {
+              if (cardData.shortId) {
+                card.setAttribute("data-short-id", cardData.shortId);
+                idBadge.textContent = cardData.shortId;
+                idBadge.title = "Click to remove ID; Ctrl+Click to insert; Shift+Click to copy";
+                idBadge.classList.add('has-id');
+              } else {
+                idBadge.textContent = '[]';
+                idBadge.title = 'Add ID';
+                idBadge.classList.remove('has-id');
+              }
+              idBadge.style.display = "inline-block";
+            }
+
             let cardBody = card.querySelector(".card-body");
             
             // Handle body content based on whether it should be a textarea or not
@@ -359,22 +433,22 @@
               if (editIcon) editIcon.style.display = "inline";
             }
             
-            // Setup lock icon functionality
+            // Setup lock icon reference and apply initial locked state from saved data
             const lockIcon = card.querySelector(".lock");
             if (lockIcon) {
-              lockIcon.addEventListener("click", () => {
-                if (cardBody.classList.contains("locked")) {
-                  cardBody.classList.remove("locked");
-                  lockIcon.classList.remove("fa-lock");
-                  lockIcon.classList.add("fa-unlock");
-                  card.classList.remove("disable-hover");
-                } else {
-                  cardBody.classList.add("locked");
-                  lockIcon.classList.remove("fa-unlock");
-                  lockIcon.classList.add("fa-lock");
-                  card.classList.add("disable-hover");
-                }
-              });
+              const currentBody = card.querySelector('.card-body');
+              if (cardData.locked) {
+                if (currentBody) currentBody.classList.add('locked');
+                lockIcon.classList.remove('fa-unlock');
+                lockIcon.classList.add('fa-lock');
+                card.classList.add('disable-hover');
+                if (currentBody && currentBody.tagName === 'TEXTAREA') currentBody.readOnly = true;
+              } else {
+                if (currentBody && currentBody.tagName === 'TEXTAREA') currentBody.readOnly = false;
+                card.classList.remove('disable-hover');
+                lockIcon.classList.remove('fa-lock');
+                lockIcon.classList.add('fa-unlock');
+              }
             }
 
             container.appendChild(card);
@@ -386,8 +460,12 @@
 
 
     function resetLocalStorage() {
+      if (!confirm("Are you sure you want to reset the board and clear local storage? This cannot be undone.")) {
+        return;
+      }
       localStorage.removeItem("kanbanBoard");
       localStorage.removeItem("boardTitle");
+      localStorage.removeItem("darkMode");
       location.reload();
     }
 
@@ -431,6 +509,7 @@
       bucket.addEventListener("dragover", bucketDragOver);
       bucket.addEventListener("drop", bucketDrop);
       bucket.addEventListener("dragenter", bucketDragEnter);
+      bucket.addEventListener("dragleave", bucketDragLeave);
 
       const bucketsElement = document.querySelector(".buckets");
       bucketsElement.insertAdjacentElement("beforeend", bucket);
@@ -475,6 +554,11 @@
 
     function removeBucketButton(e) {
       const bucket = e.target.closest(".bucket");
+      const titleElement = bucket.querySelector('.title');
+      const bucketTitle = titleElement ? titleElement.textContent.trim() : 'this bucket';
+      if (!confirm(`Delete bucket "${bucketTitle}" and all its cards? This action cannot be undone.`)) {
+        return;
+      }
       bucket.remove();
       saveToLocalStorage();
 
@@ -517,32 +601,50 @@
 
     function bucketDragOver(e) {
       e.preventDefault();
+      const container = e.currentTarget.querySelector('.container');
+      const dragging = document.querySelector('.dragging');
+      if (!container || !dragging) return;
+
+      const afterElement = getDragAfterElement(container, e.clientY);
+      if (!afterElement) {
+        container.appendChild(dragging);
+      } else {
+        container.insertBefore(dragging, afterElement);
+      }
+
+      // remove highlight from other buckets
+      document.querySelectorAll('.bucket').forEach(b => b.classList.remove('drag-over'));
+      e.currentTarget.classList.add('drag-over');
     }
 
     function bucketDrop(e) {
       e.preventDefault();
-      const cardId = e.dataTransfer.getData("text");
-      const card = document.getElementById(cardId);
       const container = e.currentTarget.querySelector(".container");
 
-      if (card) {
-        const oldBucket = card.parentElement.parentElement;
+      // Prefer dataTransfer id, but fall back to the currently dragging element
+      const cardId = e.dataTransfer.getData("text");
+      let card = document.getElementById(cardId);
+      if (!card) card = document.querySelector('.dragging');
+      if (!card || !container) return;
+
+      const afterElement = getDragAfterElement(container, e.clientY);
+      if (!afterElement) {
         container.appendChild(card);
-        updateCardCount(oldBucket, -1); // Decrease the card count in the old bucket by 1
-        updateCardCount(e.currentTarget, 1); // Increase the card count in the new bucket by 1
       } else {
-        const draggedCard = document.querySelector('.dragging');
-        if (draggedCard) {
-          const oldBucket = draggedCard.parentElement.parentElement;
-          container.appendChild(draggedCard);
-          updateCardCount(oldBucket, -1); // Decrease the card count in the old bucket by 1
-          updateCardCount(e.currentTarget, 1); // Increase the card count in the new bucket by 1
-        }
+        container.insertBefore(card, afterElement);
       }
+
+      // Counts will be adjusted in dragend where we know the starting bucket
     }
 
     function bucketDragEnter(e) {
       e.preventDefault();
+      // optional visual highlight
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function bucketDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
     }
 
     // --------------------
@@ -552,7 +654,10 @@
       const card = document.createElement("div");
       card.className = "card";
       card.setAttribute("draggable", "true");
-      card.setAttribute("data-uuid", generateUUID()); // Add UUID to new cards
+      const newUuid = generateUUID();
+      card.setAttribute("data-uuid", newUuid); // Add UUID to new cards
+      // Give a short DOM id so dataTransfer can reference it
+      card.id = 'card-' + newUuid.slice(0,8);
 
       const cardLabelInput = document.createElement("input");
       cardLabelInput.addEventListener("input", saveToLocalStorage);
@@ -563,7 +668,11 @@
       const minus = document.createElement("span");
       minus.textContent = "-";
       minus.className = "minus";
+      minus.draggable = false;
+      minus.addEventListener('mousedown', e => e.stopPropagation());
+      minus.addEventListener('touchstart', e => e.stopPropagation());
       minus.addEventListener("click", () => {
+          if (!confirm("Delete this card? This action cannot be undone.")) return;
           const bucket = card.parentElement.parentElement;
           card.remove();
           updateCardCount(bucket, -1);
@@ -576,16 +685,25 @@
       viewAsHtmlIcon.className = "fas fa-eye view-as-html";
       viewAsHtmlIcon.style.marginLeft = "0.5rem";
       viewAsHtmlIcon.style.display = "none";
+      viewAsHtmlIcon.draggable = false;
+      viewAsHtmlIcon.addEventListener('mousedown', e => e.stopPropagation());
+      viewAsHtmlIcon.addEventListener('touchstart', e => e.stopPropagation());
       card.appendChild(viewAsHtmlIcon);
 
       const editIcon = document.createElement("i");
       editIcon.className = "fas fa-edit edit";
       editIcon.style.marginLeft = "0.5rem";
+      editIcon.draggable = false;
+      editIcon.addEventListener('mousedown', e => e.stopPropagation());
+      editIcon.addEventListener('touchstart', e => e.stopPropagation());
       card.appendChild(editIcon);
 
       const lockIcon = document.createElement("i"); // Add lock icon
       lockIcon.className = "fa fa-unlock lock";
       lockIcon.style.marginLeft = "0.5rem";
+      lockIcon.draggable = false;
+      lockIcon.addEventListener('mousedown', e => e.stopPropagation());
+      lockIcon.addEventListener('touchstart', e => e.stopPropagation());
       card.appendChild(lockIcon);
 
       let cardBody = document.createElement("div");
@@ -598,37 +716,100 @@
       lockIcon.style.display = "inline";
 
       lockIcon.addEventListener("click", () => {
-        if (cardBody.classList.contains("locked")) {
-            cardBody.classList.remove("locked");
+        const currentBody = card.querySelector('.card-body');
+        if (!currentBody) return;
+        if (currentBody.classList.contains("locked")) {
+            currentBody.classList.remove("locked");
             lockIcon.classList.remove("fa-lock");
             lockIcon.classList.add("fa-unlock");
             card.classList.remove("disable-hover"); // Remove disable-hover class
+            if (currentBody.tagName === 'TEXTAREA') currentBody.readOnly = false;
         } else {
-            cardBody.classList.add("locked");
+            currentBody.classList.add("locked");
             lockIcon.classList.remove("fa-unlock");
             lockIcon.classList.add("fa-lock");
             card.classList.add("disable-hover"); // Add disable-hover class
+            if (currentBody.tagName === 'TEXTAREA') currentBody.readOnly = true;
+        }
+        saveToLocalStorage();
+      });
+
+      // ID badge — visible as '[]' when no ID; clicking assigns/copies/inserts/removes the short ID
+      const idBadge = document.createElement("span");
+      idBadge.className = "card-id-badge";
+      // Short hover label when no ID
+      idBadge.title = "Add ID";
+      // Show placeholder if no ID present
+      const existingShort = card.getAttribute('data-short-id');
+      idBadge.textContent = existingShort ? existingShort : '[]';
+      if (existingShort) {
+        idBadge.classList.add('has-id');
+        idBadge.title = "Click to remove ID; Ctrl+Click to insert; Shift+Click to copy";
+      }
+      card.appendChild(idBadge);
+
+      idBadge.addEventListener('click', (e) => {
+        const existing = card.getAttribute('data-short-id');
+        if (!existing) {
+          const newId = generateShortId();
+          card.setAttribute('data-short-id', newId);
+          idBadge.textContent = newId;
+          idBadge.title = "Click to remove ID; Ctrl+Click to insert; Shift+Click to copy";
+          idBadge.classList.add('has-id');
+          saveToLocalStorage();
+          return;
+        }
+
+        if (e.ctrlKey) {
+          const cb = card.querySelector('.card-body');
+          if (cb) {
+            if (cb.tagName === 'TEXTAREA') {
+              cb.value = (cb.value ? cb.value + ' ' : '') + existing;
+            } else {
+              cb.innerHTML = (cb.innerHTML ? cb.innerHTML + ' ' : '') + existing;
+            }
+            saveToLocalStorage();
+          }
+          return;
+        }
+
+        if (e.shiftKey) {
+          navigator.clipboard.writeText(existing).then(()=> alert('Copied ID: ' + existing));
+          return;
+        }
+
+        if (confirm('Remove ID ' + existing + '?')) {
+          card.removeAttribute('data-short-id');
+          idBadge.textContent = '[]';
+          idBadge.title = 'Add ID';
+          idBadge.classList.remove('has-id');
+          saveToLocalStorage();
         }
       });
 
       viewAsHtmlIcon.addEventListener("click", () => {
-          if (cardBody.tagName === "TEXTAREA") {
-              const sanitizedHtml = sanitizeHTML(cardBody.value);
+          let currentBody = card.querySelector('.card-body');
+          const wasLocked = currentBody && currentBody.classList.contains('locked');
+          if (currentBody && currentBody.tagName === "TEXTAREA") {
+              const sanitizedHtml = sanitizeHTML(currentBody.value);
               const renderedHtml = document.createElement("div");
               renderedHtml.className = "card-body";
               renderedHtml.innerHTML = sanitizedHtml;
-              card.replaceChild(renderedHtml, cardBody);
-              cardBody = renderedHtml;
+              if (wasLocked) renderedHtml.classList.add('locked');
+              currentBody.replaceWith(renderedHtml);
               viewAsHtmlIcon.style.display = "none";
               editIcon.style.display = "inline";
 
-          } else {
+          } else if (currentBody) {
               const textarea = document.createElement("textarea");
               textarea.className = "card-body";
               textarea.placeholder = "Enter description...";
-              textarea.innerHTML = cardBody.innerHTML;
-              card.replaceChild(textarea, cardBody);
-              cardBody = textarea;
+              textarea.innerHTML = currentBody.innerHTML;
+              if (wasLocked) {
+                textarea.classList.add('locked');
+                textarea.readOnly = true;
+              }
+              currentBody.replaceWith(textarea);
 
               viewAsHtmlIcon.style.display = "inline";
               editIcon.style.display = "none";
@@ -638,37 +819,34 @@
         });
         
         editIcon.addEventListener("click", () => {
-          if (cardBody.tagName === "DIV") {
+          let currentBody = card.querySelector('.card-body');
+          const wasLocked = currentBody && currentBody.classList.contains('locked');
+          if (currentBody && currentBody.tagName === "DIV") {
               const textarea = document.createElement("textarea");
               textarea.className = "card-body";
               textarea.placeholder = "Enter description...";
-              textarea.value = cardBody.innerHTML;
-              card.replaceChild(textarea, cardBody);
-              cardBody = textarea;
+              textarea.value = currentBody.innerHTML;
+              if (wasLocked) { textarea.classList.add('locked'); textarea.readOnly = true; }
+              currentBody.replaceWith(textarea);
 
               viewAsHtmlIcon.style.display = "inline";
               editIcon.style.display = "none";
 
               // Add event listener to save changes on input
-              cardBody.addEventListener("input", saveToLocalStorage);
-          } else {
+              textarea.addEventListener("input", saveToLocalStorage);
+          } else if (currentBody) {
               const newCardBody = document.createElement("div");
               newCardBody.className = "card-body";
-              newCardBody.innerHTML = cardBody.value;
+              newCardBody.innerHTML = currentBody.value;
 
-              if (card.contains(cardBody)) {
-                  card.replaceChild(newCardBody, cardBody);
-              } else {
-                  card.appendChild(newCardBody);
-              }
+              if (wasLocked) newCardBody.classList.add('locked');
 
-              cardBody = newCardBody;
+              currentBody.replaceWith(newCardBody);
 
               viewAsHtmlIcon.style.display = "none";
               editIcon.style.display = "inline";
 
-              // Remove event listener added to textarea when editing
-              cardBody.removeEventListener("input", saveToLocalStorage);
+              // no extra event listeners on DIV
           }
           
           saveToLocalStorage();
@@ -676,10 +854,16 @@
 
       const gearIcon = document.createElement("i");
       gearIcon.className = "fas fa-gear gear-icon";
+      gearIcon.draggable = false;
+      gearIcon.addEventListener('mousedown', e => e.stopPropagation());
+      gearIcon.addEventListener('touchstart', e => e.stopPropagation());
       card.appendChild(gearIcon);
 
       const colorInput = document.createElement("input");
       colorInput.type = "color";
+      colorInput.draggable = false;
+      colorInput.addEventListener('mousedown', e => e.stopPropagation());
+      colorInput.addEventListener('touchstart', e => e.stopPropagation());
       colorInput.value = "#f0f0f0";
       colorInput.className = "color-picker";
       colorInput.title = "Select card color"; // Add title attribute for accessibility
@@ -727,12 +911,24 @@
       if (e.target.classList.contains("card")) {
           e.target.classList.add("dragging");
           e.dataTransfer.setData("text", e.target.id);
+          // store the starting bucket id to update counts later
+          const startBucket = e.target.parentElement && e.target.parentElement.parentElement ? e.target.parentElement.parentElement.id : null;
+          if (startBucket) e.target.dataset.startBucket = startBucket;
       }
     });
 
     document.addEventListener("dragend", (e) => {
       if (e.target.classList.contains("card")) {
           e.target.classList.remove("dragging");
+          // cleanup any bucket highlight
+          document.querySelectorAll('.bucket').forEach(b => b.classList.remove('drag-over'));
+
+          if (startBucketId && newBucket && startBucketId !== newBucket.id) {
+            const startBucketEl = document.getElementById(startBucketId);
+            if (startBucketEl) updateCardCount(startBucketEl, -1);
+            updateCardCount(newBucket, 1);
+          }
+          delete e.target.dataset.startBucket;
       }
       saveToLocalStorage();
     });
@@ -748,6 +944,30 @@
     if (e.target.classList.contains("card")) {
       draggedCard = e.target;
       StartingBucket = draggedCard.parentElement.parentElement;
+      if (StartingBucket && StartingBucket.id) draggedCard.dataset.startBucket = StartingBucket.id;
+      // make it draggable-like
+      draggedCard.classList.add('dragging');
+    }
+    });
+
+    document.addEventListener("touchmove", (e) => {
+    if (draggedCard) {
+      e.preventDefault();
+      const x = e.touches[0].clientX;
+      const y = e.touches[0].clientY;
+      draggedCard.style.position = "absolute";
+      draggedCard.style.left = x + "px";
+      draggedCard.style.top = y + "px";
+
+      // While dragging on touch, provide live reordering feedback
+      const hit = document.elementFromPoint(x, y);
+      const bucket = hit ? hit.closest('.bucket') : null;
+      if (bucket) {
+        const container = bucket.querySelector('.container');
+        const afterElement = getDragAfterElement(container, y);
+        if (!afterElement) container.appendChild(draggedCard);
+        else container.insertBefore(draggedCard, afterElement);
+      }
     }
     });
 
@@ -764,22 +984,43 @@
       if (draggedCard) {
         const touchX = e.changedTouches[0].clientX;
         const touchY = e.changedTouches[0].clientY;
-        const bucket = document.elementFromPoint(touchX, touchY).closest(".bucket");
+        const hit = document.elementFromPoint(touchX, touchY);
+        const bucket = hit ? hit.closest(".bucket") : null;
         if (bucket) {
           const container = bucket.querySelector(".container");
-          container.appendChild(draggedCard);
+          // find insertion point
+          const afterElement = getDragAfterElement(container, touchY);
+          if (!afterElement) container.appendChild(draggedCard);
+          else container.insertBefore(draggedCard, afterElement);
+
           const newBucket = draggedCard.parentElement.parentElement;
-          updateCardCount(StartingBucket, -1);
-          updateCardCount(newBucket, 1);
+          const startBucketEl = document.getElementById(draggedCard.dataset.startBucket);
+          if (startBucketEl && startBucketEl !== newBucket) {
+            updateCardCount(startBucketEl, -1);
+            updateCardCount(newBucket, 1);
+          }
         }
         draggedCard.style.position = "";
         draggedCard.style.left = "";
         draggedCard.style.top = "";
+        draggedCard.classList.remove('dragging');
         draggedCard = null;
         saveToLocalStorage();
       }
     });
 
+
+function getDragAfterElement(container, y) {
+      const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')];
+      for (const child of draggableElements) {
+        const box = child.getBoundingClientRect();
+        const childCenter = box.top + box.height / 2;
+        if (y < childCenter) {
+          return child;
+        }
+      }
+      return null;
+    }
 
     function findBucket(x, y) {
     const buckets = document.querySelectorAll(".bucket");
@@ -815,7 +1056,9 @@
             body: bodyContent,
             isTextarea: cardBody.tagName === "TEXTAREA",
             color: colorInput ? colorInput.value : null,
-            uuid: card.getAttribute("data-uuid") || generateUUID() // Include UUID in export
+            uuid: card.getAttribute("data-uuid") || generateUUID(), // Include UUID in export
+            shortId: card.getAttribute('data-short-id') || null,
+            locked: cardBody.classList.contains('locked')
           };
         });
         const titleElement = bucket.querySelector(".title");
@@ -932,6 +1175,89 @@
       const jsonInputTextarea = document.getElementById("jsonInputTextarea");
       const mergeJsonBtn = document.getElementById("mergeJsonBtn");
       const copyLlmPromptBtn = document.getElementById("copyLlmPromptBtn");
+      const helpBtn = document.getElementById('helpBtn');
+
+      // Ensure the JSON import area is hidden by default
+      if (jsonInputContainer) {
+        jsonInputContainer.style.display = 'none';
+      }
+      if (showJsonInputBtn) {
+        showJsonInputBtn.textContent = 'Show JSON Import Area';
+      }
+
+      // Help modal creation
+      function createHelpModal() {
+        if (document.getElementById('helpModalOverlay')) return; // already created
+        const overlay = document.createElement('div');
+        overlay.id = 'helpModalOverlay';
+        overlay.className = 'help-modal-overlay';
+        const modal = document.createElement('div');
+        modal.className = 'help-modal';
+        modal.innerHTML = `
+          <h2>Kanban Help & Shortcuts</h2>
+          
+          <div class="help-section">
+            <h3>Buckets</h3>
+            <ul>
+              <li><strong>Add Bucket:</strong> Use the <code>Add Bucket</code> button at top to add new buckets.</li>
+              <li><strong>Move Bucket (&lt; &gt;):</strong> Reorder buckets left or right using the &lt; and &gt; icons.</li>
+              <li><strong>Edit Bucket Title:</strong> Click the bucket title to edit inline and press Enter or blur to save.</li>
+              <li><strong>Delete Bucket [X]:</strong> Click to delete a bucket and all its cards (confirmation required).</li>
+              <li><strong>Bucket Counters:</strong> The counter next to the title shows the number of cards in that bucket.</li>
+            </ul>
+          </div>
+
+          <div class="help-section">
+            <h3>Cards</h3>
+            <ul>
+              <li><strong>Add Card (+):</strong> Click <code>+</code> inside a bucket to add a new card.</li>
+              <li><strong>Delete Card (-):</strong> Click <code>-</code> to delete a card (confirmation required).</li>
+              <li><strong>Label & Description:</strong> Use the top text field for label. Click the eye/edit icons to toggle rendered HTML and edit mode for the description.</li>
+              <li><strong>Lock:</strong> Click the lock icon to lock/unlock the card body; when locked the description is read-only.</li>
+              <li><strong>IDs (Badge []):</strong> Click <code>[]</code> to assign an ID; <em>Ctrl+Click</em> appends the ID to the description; <em>Shift+Click</em> copies the ID.</li>
+              <li><strong>Color & Gear:</strong> Use the gear icon to open the color picker for the card.</li>
+              <li><strong>Drag & Drop:</strong> Drag a card to reorder within a bucket or move between buckets (live preview while dragging).</li>
+            </ul>
+          </div>
+
+          <div class="help-section">
+            <h3>Board Controls</h3>
+            <ul>
+              <li><strong>Export:</strong> Exports the current board as JSON for backup or sharing.</li>
+              <li><strong>Import (Top Import button):</strong> Replace the board from a JSON file (file picker opens).</li>
+              <li><strong>Show JSON Import Area:</strong> Toggle an embedded textarea to paste JSON and use <code>Merge Board</code> to merge into the current board.</li>
+              <li><strong>Clear Card Colors:</strong> Resets card colors to default (confirmation required).</li>
+              <li><strong>Reset LocalStorage:</strong> Clears the entire board and settings (confirmation required).</li>
+              <li><strong>Dark Mode:</strong> Toggle the checkbox to change theme; this setting is persisted.</li>
+            </ul>
+          </div>
+
+          <div class="help-section">
+            <h3>Advanced & External</h3>
+            <ul>
+              <li><strong>Copy LLM Prompt:</strong> Copies a template prompt to your clipboard to help convert emails to cards.</li>
+              <li><strong>Merge Behavior:</strong> Use <code>Show JSON Import Area</code> to paste JSON and merge by UUID — duplicates are detected by UUID.</li>
+              <li><strong>Export/Import:</strong> Exports include card colors, IDs and locked state so import restores them.</li>
+            </ul>
+          </div>
+
+          <div style="text-align:right; margin-top:10px;"><button id="closeHelpBtn">Close</button></div>
+        `; 
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+
+        // Close handlers
+        function closeHelp() {
+          overlay.remove();
+        }
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeHelp(); });
+        modal.querySelector('#closeHelpBtn').addEventListener('click', closeHelp);
+        document.addEventListener('keydown', function escHandler(e) { if (e.key === 'Escape') { closeHelp(); document.removeEventListener('keydown', escHandler); } });
+      }
+
+      if (helpBtn) {
+        helpBtn.addEventListener('click', createHelpModal);
+      }
 
       showJsonInputBtn.addEventListener("click", () => {
         if (jsonInputContainer.style.display === "block") {
@@ -1186,6 +1512,35 @@ Ask all relevant questions before starting.`;
           alert("Error generating LLM prompt: " + error.message);
         }
       });
+
+      // Wire up Import top button and Reset button, and new bottom toolbar actions
+      const clearColorsBtn = document.getElementById("clearColorsBtn");
+      const importBtnControl = document.getElementById("importBtn");
+      const resetBtn = document.getElementById("resetButton");
+
+      if (importBtnControl) {
+        importBtnControl.addEventListener('click', () => document.getElementById('importButton').click());
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', resetLocalStorage);
+      }
+
+      if (clearColorsBtn) {
+        clearColorsBtn.addEventListener('click', () => {
+          if (!confirm("Clear all card colors? This will reset card colors to default.")) return;
+          document.querySelectorAll('.card').forEach(card => {
+            card.style.backgroundColor = '';
+            const colorInput = card.querySelector("input[type='color']");
+            if (colorInput) colorInput.value = '#f0f0f0';
+          });
+          saveToLocalStorage();
+          alert('Cleared colors on all cards.');
+        });
+      }
+
+
+
     }
 
     // Add this to the bottom of your existing initialization code
@@ -1200,8 +1555,18 @@ Ask all relevant questions before starting.`;
           display: flex;
           flex-direction: column;
           width: 100%;
+          box-sizing: border-box;
+          overflow-x: hidden;
         }
         
+        /* Top row of the toolbar should wrap to avoid creating a horizontal scroll */
+        .bottom-toolbar > div {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
         .json-input-container {
           margin-top: 10px;
           display: none;
@@ -1217,28 +1582,67 @@ Ask all relevant questions before starting.`;
         .button-container {
           display: flex;
           gap: 10px;
+          flex-wrap: wrap; /* allow buttons to wrap instead of overflowing */
+        }
+
+        #versionLabel {
+          white-space: nowrap; /* keep version compact */
+          margin-left: auto;
+          font-weight: 600;
         }
         
         .dark-mode .json-textarea {
           background-color: #333;
           color: #fff;
         }
+
+        /* Help modal styles */
+        .help-modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10000;
+        }
+        .help-modal {
+          background: #fff;
+          color: #000;
+          max-width: 640px;
+          width: 90%;
+          padding: 16px;
+          border-radius: 6px;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        .help-modal h3 { margin: 8px 0 6px; font-size: 1.05rem; }
+        .help-section { margin-bottom: 12px; }
+        .help-section ul { margin-left: 1rem; }
+        .dark-mode .help-modal { background: #222; color: #eee; }
       `;
       document.head.appendChild(styleElement);
       
       // Create and add the bottom toolbar HTML
       const toolbarHTML = `
         <div class="bottom-toolbar">
-          <div class="button-container">
-            <button id="showJsonInputBtn">Show JSON Import Area</button>
-            <button id="copyLlmPromptBtn">Press to Copy: 'Email to Cards' LLM Prompt</button>
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <div class="button-container">
+              <button id="showJsonInputBtn">Show JSON Import Area</button>
+              <button id="copyLlmPromptBtn">Copy "Convert an Email to Cards" LLM Prompt</button>
+              <button id="clearColorsBtn">Clear Card Colors</button>
+              <button id="helpBtn">Help</button>
+            </div>
+            <div style="margin-left:auto; font-weight:600;" id="versionLabel">v1.1.0</div>
           </div>
           <div id="jsonInputContainer" class="json-input-container">
             <textarea id="jsonInputTextarea" class="json-textarea" placeholder="Paste JSON here to merge with current board..."></textarea>
             <button id="mergeJsonBtn">Merge Board</button>
           </div>
         </div>
-      `;
+      `; 
       
       // Insert the toolbar before the existing controls
       const controls = document.querySelector('.controls');
