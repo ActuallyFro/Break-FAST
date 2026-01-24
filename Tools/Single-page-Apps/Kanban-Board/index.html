@@ -330,7 +330,8 @@
             color: colorInput ? colorInput.value : null,
             uuid: uuid,
             shortId: card.getAttribute("data-short-id") || null,
-            locked: cardBody.classList.contains('locked')
+            collapsed: cardBody.classList.contains('collapsed'),
+            height: cardBody.style.height || ''
           }; 
         });
         const titleElement = bucket.querySelector(".title");
@@ -364,23 +365,21 @@
             const card = createCard();
             card.querySelector("input[type='text']").value = cardData.label;
             
-            // Set UUID if available
+            // Set UUID
             if (cardData.uuid) {
               card.setAttribute("data-uuid", cardData.uuid);
             } else {
               card.setAttribute("data-uuid", generateUUID());
             }
 
-            // Apply card color if available
+            // Apply Color
             if (cardData.color) {
               card.style.backgroundColor = cardData.color;
               const colorInput = card.querySelector("input[type='color']");
-              if (colorInput) {
-                colorInput.value = cardData.color;
-              }
+              if (colorInput) colorInput.value = cardData.color;
             }
 
-            // Ensure badge text/title is set based on shortId presence
+            // Short ID Badge
             const idBadge = card.querySelector(".card-id-badge");
             if (idBadge) {
               if (cardData.shortId) {
@@ -393,64 +392,46 @@
                 idBadge.title = 'Add ID';
                 idBadge.classList.remove('has-id');
               }
-              idBadge.style.display = "inline-block";
             }
 
-            let cardBody = card.querySelector(".card-body");
+            // --- Restore State ---
+            let cardBody = card.querySelector(".card-body"); // Default is textarea created by createCard
             
-            // Handle body content based on whether it should be a textarea or not
+            // 1. Mode (Textarea vs Div)
             if (cardData.isTextarea) {
-              // Switch to textarea view
-              const textarea = document.createElement("textarea");
-              textarea.className = "card-body";
-              textarea.placeholder = "Enter description...";
-              textarea.value = cardData.body || '';
-              
-              if (card.contains(cardBody)) {
-                card.replaceChild(textarea, cardBody);
-              } else {
-                card.appendChild(textarea);
-              }
-              
-              cardBody = textarea;
-              
-              // Show edit icon, hide view icon
-              const viewAsHtmlIcon = card.querySelector(".view-as-html");
-              const editIcon = card.querySelector(".edit");
-              
-              if (viewAsHtmlIcon) viewAsHtmlIcon.style.display = "inline";
-              if (editIcon) editIcon.style.display = "none";
-              
+              // It is already a textarea (default). Just set value.
+              cardBody.value = cardData.body || '';
             } else {
-              // Display as HTML
-              cardBody.innerHTML = cardData.body || '';
+              // Needs to be a DIV
+              const div = document.createElement("div");
+              div.className = "card-body";
+              div.innerHTML = cardData.body || '';
+              // Enable text selection without dragging card
+              ['mousedown','touchstart','pointerdown'].forEach(ev => div.addEventListener(ev, e => e.stopPropagation()));
               
-              // Show view icon, hide edit icon
-              const viewAsHtmlIcon = card.querySelector(".view-as-html");
-              const editIcon = card.querySelector(".edit");
+              div.style.display = 'block'; 
               
-              if (viewAsHtmlIcon) viewAsHtmlIcon.style.display = "none";
-              if (editIcon) editIcon.style.display = "inline";
+              cardBody.replaceWith(div);
+              cardBody = div;
             }
-            
-            // Setup lock icon reference and apply initial locked state from saved data
-            const lockIcon = card.querySelector(".lock");
-            if (lockIcon) {
-              const currentBody = card.querySelector('.card-body');
-              if (cardData.locked) {
-                if (currentBody) currentBody.classList.add('locked');
-                lockIcon.classList.remove('fa-unlock');
-                lockIcon.classList.add('fa-lock');
-                card.classList.add('disable-hover');
-                if (currentBody && currentBody.tagName === 'TEXTAREA') currentBody.readOnly = true;
-              } else {
-                if (currentBody && currentBody.tagName === 'TEXTAREA') currentBody.readOnly = false;
-                card.classList.remove('disable-hover');
-                lockIcon.classList.remove('fa-lock');
-                lockIcon.classList.add('fa-unlock');
+
+            // 2. Height
+            if (cardData.height) {
+              cardBody.style.height = cardData.height;
+            }
+
+            // 3. Collapsed (Eye)
+            if (cardData.collapsed) {
+              cardBody.classList.add('collapsed');
+              cardBody.style.display = 'none';
+              const eyeIcon = card.querySelector('.eye-icon');
+              if (eyeIcon) {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash'); // Closed eye
               }
             }
 
+            const container = bucket.querySelector(".container");
             container.appendChild(card);
             updateCardCount(bucket, 1);
           });
@@ -655,8 +636,7 @@
       card.className = "card";
       card.setAttribute("draggable", "true");
       const newUuid = generateUUID();
-      card.setAttribute("data-uuid", newUuid); // Add UUID to new cards
-      // Give a short DOM id so dataTransfer can reference it
+      card.setAttribute("data-uuid", newUuid); 
       card.id = 'card-' + newUuid.slice(0,8);
 
       const cardLabelInput = document.createElement("input");
@@ -678,68 +658,151 @@
           updateCardCount(bucket, -1);
           saveToLocalStorage();
       });
-
       card.appendChild(minus);
 
-      const viewAsHtmlIcon = document.createElement("i");
-      viewAsHtmlIcon.className = "fas fa-eye view-as-html";
-      viewAsHtmlIcon.style.marginLeft = "0.5rem";
-      viewAsHtmlIcon.style.display = "none";
-      viewAsHtmlIcon.draggable = false;
-      viewAsHtmlIcon.addEventListener('mousedown', e => e.stopPropagation());
-      viewAsHtmlIcon.addEventListener('touchstart', e => e.stopPropagation());
-      card.appendChild(viewAsHtmlIcon);
+      // --- New Icons Block [Eye] [Lock] [Edit] [Gear] ---
 
-      const editIcon = document.createElement("i");
-      editIcon.className = "fas fa-edit edit";
-      editIcon.style.marginLeft = "0.5rem";
-      editIcon.draggable = false;
-      editIcon.addEventListener('mousedown', e => e.stopPropagation());
-      editIcon.addEventListener('touchstart', e => e.stopPropagation());
-      card.appendChild(editIcon);
+      // 1. Eye Icon (Visibility)
+      const eyeIcon = document.createElement("i");
+      eyeIcon.className = "fas fa-eye eye-icon";
+      eyeIcon.style.marginLeft = "0.5rem";
+      eyeIcon.title = "Toggle Content Visibility";
+      eyeIcon.draggable = false;
+      eyeIcon.addEventListener('mousedown', e => e.stopPropagation());
+      eyeIcon.addEventListener('touchstart', e => e.stopPropagation());
+      card.appendChild(eyeIcon);
 
-      const lockIcon = document.createElement("i"); // Add lock icon
-      lockIcon.className = "fa fa-unlock lock";
-      lockIcon.style.marginLeft = "0.5rem";
-      lockIcon.draggable = false;
-      lockIcon.addEventListener('mousedown', e => e.stopPropagation());
-      lockIcon.addEventListener('touchstart', e => e.stopPropagation());
-      card.appendChild(lockIcon);
+      // 3. Edit Pad Icon (Mode)
+      const editPadIcon = document.createElement("i");
+      editPadIcon.className = "fas fa-pen-to-square edit-pad-icon"; // FontAwesome 6 style or fa-edit
+      // If fa-pen-to-square not available in the set, fallback to fa-edit
+      if (!document.querySelector('.fa-pen-to-square')) editPadIcon.className = "fas fa-edit edit-pad-icon";
 
-      let cardBody = document.createElement("div");
+      editPadIcon.style.marginLeft = "0.5rem";
+      editPadIcon.title = "Toggle Edit/View Mode";
+      editPadIcon.draggable = false;
+      editPadIcon.addEventListener('mousedown', e => e.stopPropagation());
+      editPadIcon.addEventListener('touchstart', e => e.stopPropagation());
+      card.appendChild(editPadIcon);
+
+      // 4. Gear Icon (Color)
+      const gearIcon = document.createElement("i");
+      gearIcon.className = "fas fa-gear gear-icon";
+      gearIcon.style.marginLeft = "0.5rem";
+      gearIcon.draggable = false;
+      gearIcon.addEventListener('mousedown', e => e.stopPropagation());
+      gearIcon.addEventListener('touchstart', e => e.stopPropagation());
+      card.appendChild(gearIcon);
+
+      // Default Card Body
+      let cardBody = document.createElement("textarea");
       cardBody.className = "card-body";
       cardBody.placeholder = "Enter description...";
+      cardBody.draggable = false;
+      // prevent parent drag from stealing focus
+      ['mousedown','touchstart','pointerdown'].forEach(ev => cardBody.addEventListener(ev, e => e.stopPropagation()));
       
-      // Update initial state of viewAsHtmlIcon, editIcon and lockIcon
-      viewAsHtmlIcon.style.display = "inline";
-      editIcon.style.display = "none";
-      lockIcon.style.display = "inline";
+      // Default state: Editable textarea
+      cardBody.style.display = 'block';
 
-      lockIcon.addEventListener("click", () => {
-        const currentBody = card.querySelector('.card-body');
-        if (!currentBody) return;
-        if (currentBody.classList.contains("locked")) {
-            currentBody.classList.remove("locked");
-            lockIcon.classList.remove("fa-lock");
-            lockIcon.classList.add("fa-unlock");
-            card.classList.remove("disable-hover"); // Remove disable-hover class
-            if (currentBody.tagName === 'TEXTAREA') currentBody.readOnly = false;
+      // Attach body
+      card.appendChild(cardBody);
+      
+      // --- Event Handlers ---
+
+      // 1. Eye (Toggle Visibility)
+      eyeIcon.addEventListener("click", () => {
+        const body = card.querySelector('.card-body');
+        if (!body) return;
+        const isHidden = body.classList.contains('collapsed');
+        
+        if (isHidden) {
+          // Open
+          body.classList.remove('collapsed');
+          body.style.display = 'block';
+          eyeIcon.classList.remove('fa-eye-slash');
+          eyeIcon.classList.add('fa-eye');
         } else {
-            currentBody.classList.add("locked");
-            lockIcon.classList.remove("fa-unlock");
-            lockIcon.classList.add("fa-lock");
-            card.classList.add("disable-hover"); // Add disable-hover class
-            if (currentBody.tagName === 'TEXTAREA') currentBody.readOnly = true;
+          // Close
+          body.classList.add('collapsed');
+          body.style.display = 'none';
+          eyeIcon.classList.remove('fa-eye');
+          eyeIcon.classList.add('fa-eye-slash');
         }
         saveToLocalStorage();
       });
 
-      // ID badge — visible as '[]' when no ID; clicking assigns/copies/inserts/removes the short ID
+      // 3. Edit Pad (Toggle Mode)
+      editPadIcon.addEventListener("click", () => {
+        let currentBody = card.querySelector('.card-body');
+        if (!currentBody) return;
+        
+        // Preserve state
+        const isCollapsed = currentBody.classList.contains('collapsed');
+        
+        let heightVal = currentBody.style.height;
+        // If we switch modes, we might want to capture current computed height if explicit height is not set?
+        if (!heightVal) {
+             heightVal = window.getComputedStyle(currentBody).height;
+        }
+
+        if (currentBody.tagName === 'TEXTAREA') {
+          // Switch to DIV (View)
+          const val = currentBody.value;
+          const sanitizedHtml = sanitizeHTML(val); 
+          
+          const div = document.createElement('div');
+          div.className = 'card-body';
+          div.innerHTML = sanitizedHtml;
+          ['mousedown','touchstart','pointerdown'].forEach(ev => div.addEventListener(ev, e => e.stopPropagation()));
+          div.style.display = isCollapsed ? 'none' : 'block';
+          
+          // Maintain height
+          div.style.height = heightVal;
+          div.style.overflow = 'auto'; 
+          
+          if (isCollapsed) div.classList.add('collapsed');
+
+          currentBody.replaceWith(div);
+          
+          editPadIcon.classList.add('active-mode'); 
+
+        } else {
+          // Switch to TEXTAREA (Edit)
+          const html = currentBody.innerHTML;
+          
+          const textarea = document.createElement('textarea');
+          textarea.className = 'card-body';
+          textarea.value = html; 
+          
+          textarea.style.display = isCollapsed ? 'none' : 'block';
+          textarea.draggable = false;
+          textarea.tabIndex = 0;
+          ['mousedown','touchstart','pointerdown'].forEach(ev => textarea.addEventListener(ev, e => e.stopPropagation()));
+          
+          textarea.style.height = heightVal;
+          textarea.style.resize = 'vertical';
+          
+          if (isCollapsed) textarea.classList.add('collapsed');
+
+          currentBody.replaceWith(textarea);
+          
+          setTimeout(() => { try { textarea.focus(); } catch (err) {} }, 0);
+          
+          editPadIcon.classList.remove('active-mode');
+
+          textarea.addEventListener("input", saveToLocalStorage);
+          // Save height changes on mouseup (resize end)
+          textarea.addEventListener("mouseup", saveToLocalStorage);
+        }
+        saveToLocalStorage();
+      });
+
+      // ID badge logic remains similar...
       const idBadge = document.createElement("span");
       idBadge.className = "card-id-badge";
-      // Short hover label when no ID
       idBadge.title = "Add ID";
-      // Show placeholder if no ID present
+      
       const existingShort = card.getAttribute('data-short-id');
       idBadge.textContent = existingShort ? existingShort : '[]';
       if (existingShort) {
@@ -786,79 +849,8 @@
           saveToLocalStorage();
         }
       });
-
-      viewAsHtmlIcon.addEventListener("click", () => {
-          let currentBody = card.querySelector('.card-body');
-          const wasLocked = currentBody && currentBody.classList.contains('locked');
-          if (currentBody && currentBody.tagName === "TEXTAREA") {
-              const sanitizedHtml = sanitizeHTML(currentBody.value);
-              const renderedHtml = document.createElement("div");
-              renderedHtml.className = "card-body";
-              renderedHtml.innerHTML = sanitizedHtml;
-              if (wasLocked) renderedHtml.classList.add('locked');
-              currentBody.replaceWith(renderedHtml);
-              viewAsHtmlIcon.style.display = "none";
-              editIcon.style.display = "inline";
-
-          } else if (currentBody) {
-              const textarea = document.createElement("textarea");
-              textarea.className = "card-body";
-              textarea.placeholder = "Enter description...";
-              textarea.innerHTML = currentBody.innerHTML;
-              if (wasLocked) {
-                textarea.classList.add('locked');
-                textarea.readOnly = true;
-              }
-              currentBody.replaceWith(textarea);
-
-              viewAsHtmlIcon.style.display = "inline";
-              editIcon.style.display = "none";
-          }
-          
-          saveToLocalStorage();
-        });
-        
-        editIcon.addEventListener("click", () => {
-          let currentBody = card.querySelector('.card-body');
-          const wasLocked = currentBody && currentBody.classList.contains('locked');
-          if (currentBody && currentBody.tagName === "DIV") {
-              const textarea = document.createElement("textarea");
-              textarea.className = "card-body";
-              textarea.placeholder = "Enter description...";
-              textarea.value = currentBody.innerHTML;
-              if (wasLocked) { textarea.classList.add('locked'); textarea.readOnly = true; }
-              currentBody.replaceWith(textarea);
-
-              viewAsHtmlIcon.style.display = "inline";
-              editIcon.style.display = "none";
-
-              // Add event listener to save changes on input
-              textarea.addEventListener("input", saveToLocalStorage);
-          } else if (currentBody) {
-              const newCardBody = document.createElement("div");
-              newCardBody.className = "card-body";
-              newCardBody.innerHTML = currentBody.value;
-
-              if (wasLocked) newCardBody.classList.add('locked');
-
-              currentBody.replaceWith(newCardBody);
-
-              viewAsHtmlIcon.style.display = "none";
-              editIcon.style.display = "inline";
-
-              // no extra event listeners on DIV
-          }
-          
-          saveToLocalStorage();
-      });
-
-      const gearIcon = document.createElement("i");
-      gearIcon.className = "fas fa-gear gear-icon";
-      gearIcon.draggable = false;
-      gearIcon.addEventListener('mousedown', e => e.stopPropagation());
-      gearIcon.addEventListener('touchstart', e => e.stopPropagation());
-      card.appendChild(gearIcon);
-
+      
+      // Color Picker Logic
       const colorInput = document.createElement("input");
       colorInput.type = "color";
       colorInput.draggable = false;
@@ -866,20 +858,18 @@
       colorInput.addEventListener('touchstart', e => e.stopPropagation());
       colorInput.value = "#f0f0f0";
       colorInput.className = "color-picker";
-      colorInput.title = "Select card color"; // Add title attribute for accessibility
-      colorInput.ariaLabel = "Color picker"; // Add ARIA label for accessibility
+      colorInput.title = "Select card color"; 
+      
+      card.appendChild(colorInput);
       
       gearIcon.addEventListener("click", () => {
-        colorInput.click();
+         colorInput.click();
       });
+      
       colorInput.addEventListener("input", (e) => {
-        const color = e.target.value;
-        card.style.backgroundColor = color;
+        card.style.backgroundColor = e.target.value;
         saveToLocalStorage();
       });
-      card.appendChild(colorInput);
-
-      card.appendChild(cardBody);
 
       return card;
     }
@@ -922,6 +912,9 @@
           e.target.classList.remove("dragging");
           // cleanup any bucket highlight
           document.querySelectorAll('.bucket').forEach(b => b.classList.remove('drag-over'));
+
+          const startBucketId = e.target.dataset.startBucket;
+          const newBucket = e.target.closest('.bucket');
 
           if (startBucketId && newBucket && startBucketId !== newBucket.id) {
             const startBucketEl = document.getElementById(startBucketId);
@@ -1635,7 +1628,7 @@ Ask all relevant questions before starting.`;
               <button id="clearColorsBtn">Clear Card Colors</button>
               <button id="helpBtn">Help</button>
             </div>
-            <div style="margin-left:auto; font-weight:600;" id="versionLabel">v1.1.0</div>
+            <div style="margin-left:auto; font-weight:600;" id="versionLabel">v1.1.1</div>
           </div>
           <div id="jsonInputContainer" class="json-input-container">
             <textarea id="jsonInputTextarea" class="json-textarea" placeholder="Paste JSON here to merge with current board..."></textarea>
