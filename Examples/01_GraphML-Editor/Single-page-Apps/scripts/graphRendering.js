@@ -118,12 +118,16 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         })
         .on('contextmenu', function(event, d) {
             event.preventDefault();
+            event.stopPropagation(); // <-- Stops the event from hitting the parent SVG container!
     
+        // Force hide the global background menu just in case it was lingering
+            d3.select('#graph-context-menu').style('display', 'none');
+
             d3.select('#context-menu')
                 .style('left', `${event.pageX}px`)
                 .style('top', `${event.pageY}px`)
                 .style('display', 'block');
-
+                
             let nodeSettings = window.SJFI_data.graphObjects.find(node => node.id === d.id).renderSettings[0];
 
             d3.select('#color-picker').node().value = nodeSettings.nodeColor || '#000000';
@@ -309,6 +313,13 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         .style('stroke', 'black') //or `nodesComputedStyles.stroke`
         .style('stroke-width', nodesComputedStyles.strokeWidth);
 
+    //REPLACE THE HARD, blackoutlines: -- TO DO: make this a toggle?
+    // d3.selectAll('.node')
+    //     .style('fill', nodesComputedStyles.fill)
+    //     .style('stroke', 'var(--bs-body-bg)') // Smooth edge blending in both modes
+    //     .style('stroke-width', nodesComputedStyles.strokeWidth);
+
+
     if (linksComputedStyles) {
         d3.selectAll('.link')
             .style('stroke', linksComputedStyles.stroke)
@@ -451,7 +462,15 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
             .attr('text-anchor', 'middle')
             .attr('dy', '.35em');
 
-        d3.selectAll('.label').style('fill', window.SJFI_data.labelColor);
+        //d3.selectAll('.label').style('fill', window.SJFI_data.labelColor);
+        
+        //Dark mode compatibility for label colors -- if user has set a custom color, keep it. Otherwise, use dynamic color that changes with theme.
+        if (window.SJFI_data.labelColor && window.SJFI_data.labelColor !== 'black' && window.SJFI_data.labelColor !== 'white') {
+            d3.selectAll('.label').style('fill', window.SJFI_data.labelColor); // Keep custom user picked color
+        } else {
+            d3.selectAll('.label').style('fill', 'var(--bs-body-color)'); // Dynamic light/dark theme color
+        }
+
         d3.selectAll('.label').style('display', window.SJFI_data.renderDisplayLabelsNodes);
         d3.selectAll('.edgelabel').style('display', window.SJFI_data.renderDisplayLabelsEdges);        
     }

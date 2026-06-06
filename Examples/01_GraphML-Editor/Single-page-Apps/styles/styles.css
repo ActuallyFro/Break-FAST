@@ -1,22 +1,26 @@
 /* ============================= */
-/* Web Page */
+/* Web Page Styling */
 body {
     font-family: Arial, sans-serif;
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
 }
 
+/* Let Bootstrap handle tables dynamically—removed hardcoded blacks */
 table {
     border-collapse: collapse;
     width: 100%;
 }
 
 th, td {
-    border: 1px solid black;
+    border: 1px solid var(--bs-border-color);
     padding: 8px;
     text-align: left;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-heading-color);
 }
 
 h1 {
@@ -27,27 +31,30 @@ h1 {
 
 
 /* ============================= */
-/* D3.js */
+/* D3.js Dynamic Theme-Aware Elements */
 .link {
+    stroke: var(--bs-border-color-translucent); /* Automatically dark or light grey line */
     stroke-width: 2px;
 }
 
+[data-bs-theme="dark"] .link {
+    stroke: rgba(255, 255, 255, 0.4); /* Enhanced visibility contrast for dark mode paths */
+}
+
 .node {
-    stroke: white;
+    stroke: var(--bs-body-bg); /* Node border matches background context */
     stroke-width: 2px;
-    fill: lightblue; /* or any other color */
+    fill: #0d6efd; /* Bootstrap primary blue token for reliable visibility */
 }
 
 .label {
     font-family: sans-serif;
     font-size: 12px;
-    fill: black;
-    fill: black; /* or any other color */
+    fill: var(--bs-body-color); /* Dynamically scales: White on dark mode, Black on light mode */
+    pointer-events: none; /* Prevents text from blocking mouse clicks on nodes */
 }
 
 .hidden {
     display: none !important;
 }
-
-
 /* ============================= */
