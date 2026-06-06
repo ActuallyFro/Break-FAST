@@ -50,50 +50,57 @@
 
   <!-- ============================= PART A ============================= -->
   <h1 id="section-a">A) Current Visual Graph</h1>
-    <div id="d3-container" style="position: relative; width: 1752px; height: 800px; border: 1px solid black;">
-      <svg id="graph-svg"></svg>
+    <div id="d3-container" class="w-100 border border-secondary rounded position-relative mb-3" style="height: 70vh; min-height: 500px; background-color: #ffffff00; overflow: hidden;">
+      <svg id="graph-svg" class="w-100 h-100"></svg>
     </div>
     <button id="reset-d3-button">Reset Drawing</button>
     <button id="print-button">Print</button>
     <button id="zoom-in-button">Zoom In</button>
     <button id="zoom-out-button">Zoom Out</button>
     
-    <div id="context-menu" style="display: none; position: absolute; background-color: white; border: 1px solid black;">
-      <div id="context-menu-details"></div>
-      <label>
+    <div id="context-menu" class="card shadow p-3 bg-body-tertiary" style="display: none; position: absolute; z-index: 1050; min-width: 220px;">
+      <div id="context-menu-details" class="fw-bold mb-2"></div>
+      <label class="form-label d-flex align-items-center gap-2 mb-2">
         Color:
-        <input id="color-picker" type="color" value="#000000" />
+        <input id="color-picker" type="color" class="form-control form-control-color form-control-sm" value="#000000" />
       </label>
 
-      <br><label for="font-size">Font Size:</label>
-      <input type="number" id="font-size" name="font-size" min="1" max="100" value="12">
+      <div class="mb-1">
+        <label for="font-size" class="form-label small mb-0">Font Size:</label>
+        <input type="number" id="font-size" class="form-control form-control-sm" name="font-size" min="1" max="100" value="12">
+      </div>
 
-      <br> <label for="font-y-offset">Font Y Offset:</label>
-      <input type="number" id="font-y-offset" name="font-y-offset" min="-100" max="100" value="0">
+      <div class="mb-1">
+        <label for="font-y-offset" class="form-label small mb-0">Font Y Offset:</label>
+        <input type="number" id="font-y-offset" class="form-control form-control-sm" name="font-y-offset" min="-100" max="100" value="0">
+      </div>
 
-      <br><label for="font-x-offset">Font X Offset:</label>
-      <input type="number" id="font-x-offset" name="font-x-offset" min="-100" max="100" value="0">
+      <div class="mb-1">
+        <label for="font-x-offset" class="form-label small mb-0">Font X Offset:</label>
+        <input type="number" id="font-x-offset" class="form-control form-control-sm" name="font-x-offset" min="-100" max="100" value="0">
+      </div>
 
-      <br><label for="node-radius">Node Radius:</label>
-      <input type="number" id="node-radius" name="node-radius" min="1" max="100" value="20">
+      <div class="mb-3">
+        <label for="node-radius" class="form-label small mb-0">Node Radius:</label>
+        <input type="number" id="node-radius" class="form-control form-control-sm" name="node-radius" min="1" max="100" value="20">
+      </div>
 
-      <br><button id="unlock-node-button">Unlock Node</button>
-      <br><button id="ok-to-save-button">Ok</button>
+      <button id="unlock-node-button" class="btn btn-sm btn-outline-warning w-100 mb-1">Unlock Node</button>
+      <button id="ok-to-save-button" class="btn btn-sm btn-primary w-100">Ok</button>
     </div>
   
-    <div id="node-popup" class="popup" style="position: absolute; z-index: 9999; border: 2px solid rgb(0, 0, 0); background-color: rgba(200, 200, 200, 0.97);"></div>
+    <div id="node-popup" class="popup card p-2 shadow-sm" style="position: absolute; z-index: 9999; display: none;"></div>
 
-    <div id="graph-context-menu" style="position: absolute; display: none; background-color: rgb(21, 148, 207); border: 1px solid black;">
-      <button id="toggle-node-labels">Toggle Node Labels</button><br>
-      <button id="toggle-edge-labels">Toggle Edge Labels</button><br>
-      <button id="toggle-label-color">Toggle Label Color</button>
-      <button id="object-add-node">Add Node</button>
+    <div id="graph-context-menu" class="btn-group-vertical shadow p-1 bg-dark border border-secondary rounded" style="position: absolute; display: none; z-index: 1050; min-width: 160px;">
+      <button id="toggle-node-labels" class="btn btn-sm btn-outline-light text-start mb-1 border-0">Toggle Node Labels</button>
+      <button id="toggle-edge-labels" class="btn btn-sm btn-outline-light text-start mb-1 border-0">Toggle Edge Labels</button>
+      <button id="toggle-label-color" class="btn btn-sm btn-outline-light text-start mb-1 border-0">Toggle Label Color</button>
+      <button id="object-add-node" class="btn btn-sm btn-success text-start border-0">Add Node</button>
     </div>
     
     <!-- ============================= PART B ============================= -->
     <hr>
-    <!-- ------------- Section 0 - ------------- -->
-    <h1 id="section-b">B) GraphML Object Editing</h1>
+    <!-- ------------- Section 0 - ------------- -->    <h1 id="section-b">B) GraphML Object Editing</h1>
     <div class="container">
         <form>
             <div class="form-group">
@@ -119,7 +126,6 @@
         </form>
     </div>
     
-
     <!-- ------------- Section 1 - ------------- -->
     <br><br>
     <div class="container">
@@ -139,7 +145,7 @@
     
             <div class="form-group">
                 <label for="graph-type">Select Object Type:</label>
-                <select class="form-control" id="graph-type" onchange="toggleObjectTypeFields()">
+                <select class="form-control" id="graph-type">
                     <option value="node">Node</option>
                     <option value="edge">Edge</option>
                 </select>
@@ -223,7 +229,6 @@
         </table>
       </div>  
 
-
     <!-- ------------- Section 3 - ------------- -->
     <div class="container">
         <hr>
@@ -245,17 +250,21 @@
     
   <!-- ============================= PART C ============================= -->  <hr>
   <h1 id="section-c">C) GraphML File Creation</h1>
-  <div id="graphml-file"></div>
-  <button id="save-graphml-button">Save .graphml File</button>
+  <div class="card bg-dark border-secondary mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center py-2">
+      <span class="text-secondary small font-monospace">Output Preview</span>
+      <button id="copy-graphml-button" class="btn btn-sm btn-outline-secondary"><i class="bi bi-clipboard"></i> Copy</button>
+    </div>
+    <pre id="graphml-file" class="card-body m-0 p-3 text-light font-monospace" style="max-height: 400px; overflow-y: auto; white-space: pre-wrap; font-size: 0.875rem;"></pre>
+  </div>
+  <button id="save-graphml-button" class="btn btn-primary">Save .graphml File</button>
 
   <hr>
-  <!-- make red, bold text in <h3> -->
   <h3 style="color:red;font-weight:bold;">DANGER</h3>
   <button id="reset-button">Reset LocalStorage</button>
   
 
 
-  <!-- Confirm reset Modal -->
   <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -306,11 +315,33 @@
         renderDisplayLabelsEdges: "block"
     };
 
-    // window.addEventListener('DOMContentLoaded', () => { // FIRES BEFORE onload()
-    window.onload = () => {
+    window.addEventListener('DOMContentLoaded', () => {
+        // Handle descriptive object fields toggle via structural event listener instead of inline attribute
+        const graphTypeSelect = document.getElementById('graph-type');
+        if (graphTypeSelect) {
+            graphTypeSelect.addEventListener('change', toggleObjectTypeFields);
+        }
+
+        // Clip-board utility operations for enhanced GraphML raw workspace workflow
+        const copyBtn = document.getElementById('copy-graphml-button');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                const outputContainer = document.getElementById('graphml-file');
+                if (outputContainer) {
+                    navigator.clipboard.writeText(outputContainer.innerText).then(() => {
+                        const originalContent = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<i class="bi bi-check-lg"></i> Copied!';
+                        setTimeout(() => { copyBtn.innerHTML = originalContent; }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy text: ', err);
+                    });
+                }
+            });
+        }
+
         if (!hasBeenSetup) {
             //if (isDebug) console.log("[DEBUG] ===================================");
-            //if (isDebug) console.log("[DEBUG] window.onload()");
+            //if (isDebug) console.log("[DEBUG] DOMContentLoaded initialization processing loop");
             hasBeenSetup = true;
 
             //Load
@@ -359,8 +390,7 @@
             }
             // if (isDebug) console.log("[DEBUG] ===================================");
         }
-
-    };
+    });
   </script>
 
   <button onclick="scrollPageToTopOfPage()" id="scrollButtonToTop" title="Go to top">Top</button>
