@@ -308,17 +308,14 @@ window.drawGraph = function(passedGraphObjects, debug = false) {
         linksComputedStyles = window.getComputedStyle(linkElement);
     }
 
+    // Get the checkbox element
+    const blendBordersCheckbox = document.getElementById('toggleNodeOutline');
+    const shouldBlend = blendBordersCheckbox ? blendBordersCheckbox.checked : false;
+
     d3.selectAll('.node')
         .style('fill', nodesComputedStyles.fill)
-        .style('stroke', 'black') //or `nodesComputedStyles.stroke`
+        .style('stroke', shouldBlend ? 'black' : 'var(--bs-heading-color)') // Dynamic crisp color vs blended background color; MORE SMOOTH: 'var(--bs-body-bg)' vs. 'black'
         .style('stroke-width', nodesComputedStyles.strokeWidth);
-
-    //REPLACE THE HARD, blackoutlines: -- TO DO: make this a toggle?
-    // d3.selectAll('.node')
-    //     .style('fill', nodesComputedStyles.fill)
-    //     .style('stroke', 'var(--bs-body-bg)') // Smooth edge blending in both modes
-    //     .style('stroke-width', nodesComputedStyles.strokeWidth);
-
 
     if (linksComputedStyles) {
         d3.selectAll('.link')
@@ -568,3 +565,18 @@ window.addEventListener('click', function(event) {
         document.getElementById('context-menu-details').innerHTML = '';
     }
 });
+
+// Watch for theme toggles to automatically update D3 styles without touching the universal switcher script
+const themeObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-bs-theme') {
+            if (typeof window.drawGraph === 'function' && window.SJFI_data && window.SJFI_data.graphObjects) {
+                // Trigger a re-render to fetch the new CSS variable states
+                window.drawGraph(window.SJFI_data.graphObjects);
+            }
+        }
+    });
+});
+
+// Start monitoring the root HTML element for theme changes
+themeObserver.observe(document.documentElement, { attributes: trueList, attributeFilter: ['data-bs-theme'] });

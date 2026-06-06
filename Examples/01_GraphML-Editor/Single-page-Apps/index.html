@@ -18,31 +18,39 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
           <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Jump to...
-              </a>
-              <ul class="dropdown-menu dropdown-menu-light">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Jump to...
+                </a>
+                <ul class="dropdown-menu dropdown-menu-light">
                 <li><a class="dropdown-item" href="#section-a">A) Current Visual Graph</a></li>
                 <li><a class="dropdown-item" href="#section-b">B) GraphML Object Editing</a></li>
                 <li><a class="dropdown-item" href="#section-c">C) GraphML File Creation</a></li>
-              </ul>
-          </li>
-          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDarkSettingsMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Settings
-              </a>
-              <ul class="dropdown-menu dropdown-menu-light">
-              <li>
-                  <div class="dropdown-item">
-                  <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="toggleDarkMode" checked>
-                      <label class="form-check-label" for="toggleDarkMode">Dark Mode</label>
-                  </div>
-                  </div>
-              </li>
-              </ul>
-          </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkSettingsMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Settings
+                </a>
+                <ul class="dropdown-menu dropdown-menu-light">
+                <li>
+                    <div class="dropdown-item">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="toggleDarkMode" checked>
+                        <label class="form-check-label" for="toggleDarkMode">Dark Mode</label>
+                    </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown-item">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="toggleNodeOutline">
+                        <label class="form-check-label" for="toggleNodeOutline">Harsh Node Borders</label>
+                    </div>
+                    </div>
+                </li>
+                </ul>
+            </li>
           </ul>
       </div>
       </div>
@@ -389,6 +397,22 @@
                 document.getElementById("graphml-file").innerHTML = "No GraphML File to display.";
             }
             // if (isDebug) console.log("[DEBUG] ===================================");
+        }
+    });
+    window.addEventListener('DOMContentLoaded', () => {
+        const blendCheckbox = document.getElementById('toggleNodeOutline');
+        if (blendCheckbox) {
+            // Load saved preference from local storage if it exists
+            const savedPreference = localStorage.getItem('GME_blendNodeBorders') === 'true';
+            blendCheckbox.checked = savedPreference;
+
+            // Redraw graph instantly when clicked
+            blendCheckbox.addEventListener('change', (e) => {
+                localStorage.setItem('GME_blendNodeBorders', e.target.checked);
+                if (typeof window.drawGraph === 'function' && window.SJFI_data && window.SJFI_data.graphObjects) {
+                    window.drawGraph(window.SJFI_data.graphObjects);
+                }
+            });
         }
     });
   </script>
