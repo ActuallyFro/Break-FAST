@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LPG Graph Editor v0.1</title>
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg0:#0d1117;--bg1:#161b22;--bg2:#21262d;--bg3:#30363d;
+  --border:#30363d;--border2:#484f58;
+  --text:#e6edf3;--text2:#8b949e;--text3:#6e7681;
+  --accent:#58a6ff;--accent2:#1f6feb;--accent-glow:rgba(88,166,255,.25);
+  --green:#3fb950;--orange:#d29922;--red:#f85149;--purple:#a371f7;
+  --node-default:#1f6feb;--node-ring:#58a6ff;
+  --edge:#58a6ff;--edge-sel:#f0883e;
+  --sel-fill:rgba(88,166,255,.12);--sel-stroke:#58a6ff;
+  --font-mono:'JetBrains Mono','Fira Code','Cascadia Code',monospace;
+  --font-ui:'IBM Plex Sans','Segoe UI',sans-serif;
+  --radius:6px;--radius2:10px;
+  --toolbar-h:42px;--inspector-w:300px;--drawer-h:220px;
+  --transition:.15s ease;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--text);font-family:var(--font-ui);font-size:13px}
+
+/* ── LAYOUT ───────────────────────────────────────────────────── */
+#app{display:grid;grid-template-rows:var(--toolbar-h) 1fr auto;grid-template-columns:1fr var(--inspector-w);height:100vh}
+#toolbar{grid-column:1/-1;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:4px;padding:0 10px;user-select:none;z-index:10}
+#canvas-wrap{position:relative;overflow:hidden;background:var(--bg0);grid-row:2;grid-column:1}
+#svg-canvas{width:100%;height:100%;display:block;cursor:default}
+#inspector{grid-row:2;grid-column:2;background:var(--bg1);border-left:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+#drawer{grid-column:1/-1;background:var(--bg1);border-top:1px solid var(--border);height:var(--drawer-h);display:flex;flex-direction:column;transition:height var(--transition)}
+#drawer.collapsed{height:28px}
+
+/* ── TOOLBAR ──────────────────────────────────────────────────── */
+.tb-sep{width:1px;height:22px;background:var(--border);margin:0 4px;flex-shrink:0}
+.tb-btn{display:flex;align-items:center;gap:5px;padding:4px 9px;border:1px solid transparent;border-radius:var(--radius);background:transparent;color:var(--text2);cursor:pointer;font-size:12px;font-family:var(--font-ui);white-space:nowrap;transition:all var(--transition)}
+.tb-btn:hover{background:var(--bg2);border-color:var(--border);color:var(--text)}
+.tb-btn.active{background:var(--accent2);border-color:var(--accent);color:#fff}
+.tb-btn.danger:hover{background:rgba(248,81,73,.15);border-color:var(--red);color:var(--red)}
+.tb-btn svg{width:14px;height:14px;flex-shrink:0}
+.tb-label{color:var(--text3);font-size:11px;font-family:var(--font-mono);padding:0 4px}
+#toolbar-title{font-family:var(--font-mono);font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.05em;margin-right:6px}
+.tb-spacer{flex:1}
+#zoom-display{font-family:var(--font-mono);font-size:11px;color:var(--text3);padding:0 6px;min-width:50px;text-align:right}
+
+/* ── TOOL MODES ───────────────────────────────────────────────── */
+body[data-tool="node"] #svg-canvas{cursor:crosshair}
+body[data-tool="edge"] #svg-canvas{cursor:cell}
+body[data-tool="select"] #svg-canvas{cursor:default}
+body[data-tool="pan"] #svg-canvas{cursor:grab}
+body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
+
+/* ── SVG GRAPH ELEMENTS ───────────────────────────────────────── */
+.node-group{cursor:pointer}
+.node-group .node-circle{fill:var(--node-default);stroke:var(--node-ring);stroke-width:1.5;transition:filter .1s}
+.node-group.selected .node-circle{stroke:#fff;stroke-width:2.5;filter:drop-shadow(0 0 8px var(--accent-glow))}
+.node-group.orphan .node-circle{stroke:var(--orange);stroke-dasharray:4 2}
+.node-group .node-label{fill:var(--text);font-family:var(--font-ui);font-size:11px;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
+.edge-line{stroke:var(--edge);stroke-width:1.5;fill:none;cursor:pointer;transition:stroke .1s}
+.edge-line.selected{stroke:var(--edge-sel);stroke-width:2.5}
+.edge-line:hover{stroke:var(--accent);stroke-width:2}
+.edge-label-text{fill:var(--text2);font-family:var(--font-ui);font-size:10px;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
+.edge-arrow{fill:var(--edge)}
+.edge-arrow.selected{fill:var(--edge-sel)}
+#sel-rect{fill:var(--sel-fill);stroke:var(--sel-stroke);stroke-width:1;stroke-dasharray:4 2;pointer-events:none}
+.edge-ghost{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:6 3;fill:none;pointer-events:none}
+.node-port{fill:var(--accent);opacity:0;cursor:crosshair;transition:opacity .1s}
+.node-group:hover .node-port{opacity:1}
+
+/* ── INSPECTOR ────────────────────────────────────────────────── */
+#inspector-header{padding:10px 12px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+#inspector-title{font-family:var(--font-mono);font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+#inspector-body{flex:1;padding:10px 12px;overflow-y:auto}
+.insp-section{margin-bottom:14px}
+.insp-section-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:var(--font-mono)}
+.insp-row{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
+.insp-row label{font-size:11px;color:var(--text2)}
+.insp-row input,.insp-row select,.insp-row textarea{background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:5px 8px;font-size:12px;font-family:var(--font-ui);width:100%;outline:none;transition:border-color var(--transition)}
+.insp-row input:focus,.insp-row select:focus,.insp-row textarea:focus{border-color:var(--accent)}
+.insp-row textarea{resize:vertical;min-height:60px;font-family:var(--font-mono);font-size:11px}
+.insp-row input[type=color]{padding:2px;height:28px;cursor:pointer}
+.insp-btn{width:100%;padding:6px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-size:12px;font-family:var(--font-ui);transition:all var(--transition);margin-top:3px}
+.insp-btn:hover{background:var(--bg3);border-color:var(--border2)}
+.insp-btn.danger{border-color:rgba(248,81,73,.4);color:var(--red)}
+.insp-btn.danger:hover{background:rgba(248,81,73,.1)}
+.insp-empty{color:var(--text3);font-size:12px;padding:20px 0;text-align:center;line-height:1.6}
+.prop-list{display:flex;flex-direction:column;gap:4px}
+.prop-item{display:flex;gap:4px;align-items:center}
+.prop-item input{flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:4px 6px;font-size:11px;font-family:var(--font-mono);outline:none}
+.prop-item input:focus{border-color:var(--accent)}
+.prop-rm{background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;line-height:1;padding:2px 4px;opacity:.6}
+.prop-rm:hover{opacity:1}
+#stats-bar{padding:6px 12px;border-top:1px solid var(--border);display:flex;gap:12px;font-size:10px;color:var(--text3);font-family:var(--font-mono)}
+.stat-item span{color:var(--text2)}
+
+/* ── OBJECT TABLE ─────────────────────────────────────────────── */
+#obj-table-wrap{flex:1;overflow:auto}
+#obj-search{width:100%;background:var(--bg2);border:none;border-bottom:1px solid var(--border);color:var(--text);padding:6px 12px;font-size:12px;font-family:var(--font-ui);outline:none}
+#obj-search::placeholder{color:var(--text3)}
+#obj-table{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--font-mono)}
+#obj-table th{background:var(--bg2);color:var(--text3);padding:5px 8px;text-align:left;position:sticky;top:0;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
+#obj-table th:hover{color:var(--text)}
+#obj-table th.sort-asc::after{content:" ↑"}
+#obj-table th.sort-desc::after{content:" ↓"}
+#obj-table td{padding:4px 8px;border-bottom:1px solid rgba(48,54,61,.5);color:var(--text2);vertical-align:top;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#obj-table tr:hover td{background:var(--bg2);color:var(--text);cursor:pointer}
+#obj-table tr.selected-row td{background:rgba(88,166,255,.08);color:var(--text)}
+.type-badge{display:inline-block;padding:1px 5px;border-radius:3px;font-size:9px;text-transform:uppercase;letter-spacing:.05em}
+.type-node{background:rgba(31,111,235,.3);color:#58a6ff}
+.type-edge{background:rgba(163,113,247,.3);color:#a371f7}
+
+/* ── GRAPHML DRAWER ───────────────────────────────────────────── */
+#drawer-header{display:flex;align-items:center;gap:8px;padding:0 10px;height:28px;cursor:pointer;border-bottom:1px solid var(--border);user-select:none;flex-shrink:0}
+#drawer-header-title{font-family:var(--font-mono);font-size:11px;color:var(--text3);letter-spacing:.05em}
+#drawer-toggle{margin-left:auto;color:var(--text3);font-size:14px;transition:transform var(--transition)}
+#drawer.collapsed #drawer-toggle{transform:rotate(180deg)}
+#drawer-content{display:flex;flex:1;overflow:hidden;min-height:0}
+#drawer.collapsed #drawer-content{display:none}
+#graphml-output{flex:1;background:transparent;border:none;color:var(--green);font-family:var(--font-mono);font-size:11px;padding:8px 12px;resize:none;outline:none;overflow:auto;line-height:1.5}
+#drawer-actions{display:flex;flex-direction:column;gap:4px;padding:8px;border-left:1px solid var(--border);flex-shrink:0;width:110px}
+.drawer-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text2);border-radius:var(--radius);padding:5px 8px;font-size:11px;font-family:var(--font-ui);cursor:pointer;text-align:center;transition:all var(--transition)}
+.drawer-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
+
+/* ── MODALS ───────────────────────────────────────────────────── */
+#modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;align-items:center;justify-content:center}
+#modal-overlay.open{display:flex}
+.modal{background:var(--bg1);border:1px solid var(--border);border-radius:var(--radius2);min-width:380px;max-width:560px;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.modal-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:var(--font-mono);font-size:13px;color:var(--text);font-weight:600}
+.modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;line-height:1;padding:2px 6px}
+.modal-close:hover{color:var(--text)}
+.modal-body{padding:16px 18px;overflow-y:auto;flex:1}
+.modal-footer{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.modal-btn{padding:6px 16px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-size:12px;font-family:var(--font-ui);transition:all var(--transition)}
+.modal-btn:hover{background:var(--bg3)}
+.modal-btn.primary{background:var(--accent2);border-color:var(--accent);color:#fff}
+.modal-btn.primary:hover{background:var(--accent)}
+.modal-body textarea{width:100%;height:220px;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:8px;font-family:var(--font-mono);font-size:11px;resize:vertical;outline:none}
+.modal-body textarea:focus{border-color:var(--accent)}
+.modal-note{font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5}
+
+/* ── CONTEXT MENU ─────────────────────────────────────────────── */
+#ctx-menu{position:fixed;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:200;display:none;min-width:160px;padding:4px 0}
+#ctx-menu.open{display:block}
+.ctx-item{padding:6px 14px;cursor:pointer;color:var(--text2);font-size:12px;display:flex;align-items:center;gap:8px;transition:background var(--transition)}
+.ctx-item:hover{background:var(--bg3);color:var(--text)}
+.ctx-item.danger{color:var(--red)}
+.ctx-item.danger:hover{background:rgba(248,81,73,.1)}
+.ctx-sep{height:1px;background:var(--border);margin:3px 0}
+
+/* ── NOTIFICATIONS ────────────────────────────────────────────── */
+#notif{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 16px;font-size:12px;color:var(--text);pointer-events:none;opacity:0;transition:opacity .2s;z-index:300;white-space:nowrap}
+#notif.show{opacity:1}
+
+/* ── NODE COLOR PALETTE ──────────────────────────────────────── */
+.color-row{display:flex;gap:6px;flex-wrap:wrap}
+.color-swatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .1s}
+.color-swatch:hover,.color-swatch.active{border-color:#fff}
+
+/* ── SCROLLBARS ───────────────────────────────────────────────── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg0)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ── ORPHAN TABLE in Inspector ─────────────────────────────────── */
+#orphan-list{display:flex;flex-direction:column;gap:3px}
+.orphan-item{display:flex;align-items:center;justify-content:space-between;padding:4px 8px;background:var(--bg2);border-radius:var(--radius);font-size:11px;font-family:var(--font-mono);color:var(--orange);border:1px solid rgba(210,153,34,.2)}
+.orphan-item button{background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px}
+.orphan-item button:hover{color:var(--accent)}
+</style>
+</head>
+<body data-tool="select">
+
+<div id="app">
+
+  <!-- ── TOOLBAR ── -->
+  <div id="toolbar">
+    <span id="toolbar-title">⬡ LPG</span>
+    <div class="tb-sep"></div>
+    <!-- File ops -->
+    <button class="tb-btn" onclick="App.newGraph()" title="New graph">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75A.75.75 0 012.75 1h6.586a.75.75 0 01.53.22l3.914 3.914a.75.75 0 01.22.53V14.25a.75.75 0 01-.75.75H2.75a.75.75 0 01-.75-.75V1.75zm1.5.75v11h9V6.5H9.25A.75.75 0 018.5 5.75V2.5H3.5zm6.5.56l2.19 2.19H10V3.06z"/></svg>
+      New
+    </button>
+    <button class="tb-btn" onclick="App.importJson()" title="Import JSON">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M7.47 10.78a.75.75 0 001.06 0l3.5-3.5a.75.75 0 00-1.06-1.06L8.75 8.44V1.75a.75.75 0 00-1.5 0v6.69L5.03 6.22a.75.75 0 00-1.06 1.06l3.5 3.5zM3.75 13a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5z"/></svg>
+      Import
+    </button>
+    <button class="tb-btn" onclick="App.exportJson()" title="Export JSON">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M7.47 5.22a.75.75 0 011.06 0l3.5 3.5a.75.75 0 01-1.06 1.06L8.75 7.56v6.69a.75.75 0 01-1.5 0V7.56L5.03 9.78a.75.75 0 01-1.06-1.06l3.5-3.5zM3.75 1a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5z"/></svg>
+      JSON
+    </button>
+    <div class="tb-sep"></div>
+    <!-- Tools -->
+    <span class="tb-label">Tool:</span>
+    <button class="tb-btn" id="tool-select" onclick="App.setTool('select')" title="Select (S)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3.5 1.5l9 6-5 1.5-1.5 5-2.5-12.5z"/></svg>
+      Select
+    </button>
+    <button class="tb-btn" id="tool-pan" onclick="App.setTool('pan')" title="Pan (P)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M7.25 2a.75.75 0 011.5 0v2.25H11a.75.75 0 010 1.5H8.75v1.5H11a.75.75 0 010 1.5H8.75V11a.75.75 0 01-1.5 0V8.75H5a.75.75 0 010-1.5h2.25v-1.5H5a.75.75 0 010-1.5h2.25V2z"/></svg>
+      Pan
+    </button>
+    <button class="tb-btn" id="tool-node" onclick="App.setTool('node')" title="Add Node (N)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="2"/></svg>
+      Node
+    </button>
+    <button class="tb-btn" id="tool-edge" onclick="App.setTool('edge')" title="Add Edge (E)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="3" cy="8" r="2" fill="currentColor"/><circle cx="13" cy="8" r="2" fill="currentColor"/><line x1="5" y1="8" x2="11" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
+      Edge
+    </button>
+    <div class="tb-sep"></div>
+    <!-- Edit -->
+    <button class="tb-btn" onclick="App.undo()" title="Undo (Ctrl+Z)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.22 7.22a.75.75 0 000 1.06l3.5 3.5a.75.75 0 001.06-1.06L3.56 8.5H10a3.5 3.5 0 110 7h-2a.75.75 0 000 1.5h2a5 5 0 100-10H3.56l2.22-2.22a.75.75 0 10-1.06-1.06l-3.5 3.5z"/></svg>
+      Undo
+    </button>
+    <button class="tb-btn" onclick="App.redo()" title="Redo (Ctrl+Y)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M14.78 7.22a.75.75 0 010 1.06l-3.5 3.5a.75.75 0 01-1.06-1.06l2.22-2.22H6a3.5 3.5 0 100 7h2a.75.75 0 010 1.5H6a5 5 0 110-10h6.44L10.22 4.78a.75.75 0 011.06-1.06l3.5 3.5z"/></svg>
+      Redo
+    </button>
+    <button class="tb-btn danger" onclick="App.deleteSelected()" title="Delete selected (Del)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 1.75a.25.25 0 01.25-.25h2.5a.25.25 0 01.25.25V3h-3V1.75zm4.5 0V3h2.25a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75zM4.496 6.675a.75.75 0 10-1.492.15l.66 6.6A1.75 1.75 0 005.405 15h5.19c.9 0 1.652-.681 1.741-1.576l.66-6.6a.75.75 0 00-1.492-.149l-.66 6.6a.25.25 0 01-.249.225h-5.19a.25.25 0 01-.249-.225l-.66-6.6z"/></svg>
+      Delete
+    </button>
+    <div class="tb-spacer"></div>
+    <!-- Right side -->
+    <button class="tb-btn" onclick="App.autoLayout()" title="Auto-layout">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 012.5 1h3A1.5 1.5 0 017 2.5v3A1.5 1.5 0 015.5 7h-3A1.5 1.5 0 011 5.5v-3zm8.5 0A1.5 1.5 0 0111 1h3a1.5 1.5 0 011.5 1.5v3A1.5 1.5 0 0114 7h-3a1.5 1.5 0 01-1.5-1.5v-3zm-8.5 8A1.5 1.5 0 012.5 9h3A1.5 1.5 0 017 10.5v3A1.5 1.5 0 015.5 15h-3A1.5 1.5 0 011 13.5v-3zm8.5 0A1.5 1.5 0 0111 9h3a1.5 1.5 0 011.5 1.5v3A1.5 1.5 0 0114 15h-3a1.5 1.5 0 01-1.5-1.5v-3z"/></svg>
+      Layout
+    </button>
+    <button class="tb-btn" onclick="App.fitView()" title="Fit view (F)">⊡ Fit</button>
+    <span id="zoom-display">100%</span>
+  </div>
+
+  <!-- ── SVG CANVAS ── -->
+  <div id="canvas-wrap">
+    <svg id="svg-canvas" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" class="edge-arrow"/>
+        </marker>
+        <marker id="arrow-sel" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" style="fill:var(--edge-sel)"/>
+        </marker>
+        <pattern id="grid-dots" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.07)"/>
+        </pattern>
+      </defs>
+      <rect id="grid-bg" width="100%" height="100%" fill="url(#grid-dots)" pointer-events="none"/>
+      <g id="graph-root">
+        <g id="edges-layer"></g>
+        <g id="nodes-layer"></g>
+      </g>
+      <rect id="sel-rect" x="0" y="0" width="0" height="0" display="none"/>
+    </svg>
+  </div>
+
+  <!-- ── INSPECTOR ── -->
+  <div id="inspector">
+    <div id="inspector-header">
+      <span id="inspector-title">Inspector</span>
+    </div>
+    <div id="inspector-body">
+      <div class="insp-empty">Select a node or edge<br>to view properties</div>
+    </div>
+    <div id="stats-bar">
+      <div class="stat-item">N: <span id="stat-nodes">0</span></div>
+      <div class="stat-item">E: <span id="stat-edges">0</span></div>
+      <div class="stat-item" id="stat-orphan-wrap">⚠ <span id="stat-orphans">0</span></div>
+    </div>
+  </div>
+
+  <!-- ── DRAWER (GraphML + Object Table) ── -->
+  <div id="drawer">
+    <div id="drawer-header" onclick="App.toggleDrawer()">
+      <span id="drawer-header-title">▸ GRAPHML / OBJECT TABLE</span>
+      <span id="drawer-toggle">▲</span>
+    </div>
+    <div id="drawer-content">
+      <!-- Left: GraphML -->
+      <textarea id="graphml-output" readonly spellcheck="false" placeholder="GraphML output appears here…"></textarea>
+      <div id="drawer-actions">
+        <button class="drawer-btn" onclick="App.copyGraphML()">Copy XML</button>
+        <button class="drawer-btn" onclick="App.downloadGraphML()">↓ .graphml</button>
+        <button class="drawer-btn" onclick="App.importGraphML()">↑ Import XML</button>
+        <button class="drawer-btn" onclick="App.downloadJson()">↓ .json</button>
+        <button class="drawer-btn" onclick="App.saveToStorage()">💾 Save</button>
+      </div>
+      <!-- Right: Object Table -->
+      <div id="obj-table-wrap" style="border-left:1px solid var(--border);flex:0 0 340px">
+        <input id="obj-search" type="search" placeholder="Search nodes / edges…" oninput="App.filterTable(this.value)">
+        <table id="obj-table">
+          <thead>
+            <tr>
+              <th onclick="App.sortTable('type')">Type</th>
+              <th onclick="App.sortTable('id')">ID</th>
+              <th onclick="App.sortTable('label')">Label</th>
+              <th onclick="App.sortTable('extra')">Extra</th>
+            </tr>
+          </thead>
+          <tbody id="obj-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end #app -->
+
+<!-- ── MODAL OVERLAY ── -->
+<div id="modal-overlay">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Dialog</span>
+      <button class="modal-close" onclick="App.closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<!-- ── CONTEXT MENU ── -->
+<div id="ctx-menu"></div>
+
+<!-- ── NOTIFICATION ── -->
+<div id="notif"></div>
+
+<script>
+'use strict';
+// ═══════════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════════
+const State = {
+  nodes: [],          // [{id,label,x,y,color,r,props:{}}]
+  edges: [],          // [{id,source,target,label,directed}]
+  selected: new Set(),// set of ids
+  tool: 'select',
+  view: {x:0, y:0, k:1},
+  dragging: null,     // {id, ox, oy}
+  edgeGhost: null,    // {sourceId, x1,y1,x2,y2}
+  selRect: null,      // {x0,y0,x1,y1}
+  history: [],        // undo stack (serialized snapshots)
+  future: [],         // redo stack
+  tableSort: {col:'type', asc:true},
+  drawerOpen: true,
+  idCounter: 1,
+  graphId: 'graph1',
+  graphMeta: {edgedefault:'undirected'},
+};
+
+// ═══════════════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+const svgNS = 'http://www.w3.org/2000/svg';
+
+function uid(prefix='n'){
+  return prefix + (State.idCounter++);
+}
+function serialize(){
+  return JSON.stringify({
+    nodes: State.nodes.map(n=>({...n, props:{...n.props}})),
+    edges: State.edges.map(e=>({...e})),
+    idCounter: State.idCounter,
+    graphId: State.graphId,
+    graphMeta: {...State.graphMeta},
+    view: {...State.view}
+  });
+}
+function deserialize(str){
+  const d = JSON.parse(str);
+  State.nodes = d.nodes || [];
+  State.edges = d.edges || [];
+  State.idCounter = d.idCounter || 1;
+  State.graphId = d.graphId || 'graph1';
+  State.graphMeta = d.graphMeta || {edgedefault:'undirected'};
+  State.view = d.view || {x:0,y:0,k:1};
+  State.selected.clear();
+}
+function snapshot(){
+  const s = serialize();
+  State.history.push(s);
+  if(State.history.length > 60) State.history.shift();
+  State.future = [];
+}
+function notify(msg, ms=1800){
+  const el = $('notif');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>el.classList.remove('show'), ms);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  SVG RENDER
+// ═══════════════════════════════════════════════════════════════
+function svgEl(tag, attrs={}){
+  const el = document.createElementNS(svgNS, tag);
+  for(const [k,v] of Object.entries(attrs)) el.setAttribute(k,v);
+  return el;
+}
+
+const NODE_COLORS = [
+  '#1f6feb','#1a7f37','#9e6a03','#8250df','#cf222e','#0969da',
+  '#2da44e','#d4a72c','#6e40c9','#e34c26','#0550ae','#33a06f'
+];
+
+function nodeColor(n){ return n.color || '#1f6feb'; }
+function nodeRadius(n){ return n.r || 26; }
+
+function renderAll(){
+  renderEdges();
+  renderNodes();
+  renderGraphML();
+  renderTable();
+  updateStats();
+  applyTransform();
+}
+
+function renderNodes(){
+  const layer = $('nodes-layer');
+  // diff: remove gone, add new
+  const existing = new Map();
+  for(const g of layer.querySelectorAll('.node-group')) existing.set(g.dataset.id, g);
+
+  const alive = new Set(State.nodes.map(n=>n.id));
+  for(const [id,g] of existing) if(!alive.has(id)) g.remove();
+
+  for(const n of State.nodes){
+    let g = existing.get(n.id);
+    if(!g){
+      g = svgEl('g',{class:'node-group','data-id':n.id});
+      const c = svgEl('circle',{class:'node-circle',cx:0,cy:0});
+      const txt = svgEl('text',{class:'node-label',x:0,y:0});
+      const port = svgEl('circle',{class:'node-port',cx:0,cy:0,r:8});
+      g.append(c, txt, port);
+      attachNodeEvents(g, n.id);
+      layer.appendChild(g);
+    }
+    const r = nodeRadius(n);
+    g.querySelector('.node-circle').setAttribute('r', r);
+    g.querySelector('.node-circle').setAttribute('fill', nodeColor(n));
+    g.querySelector('.node-circle').setAttribute('stroke', lightenColor(nodeColor(n), 40));
+    const lbl = n.label || n.id;
+    g.querySelector('.node-label').textContent = truncLabel(lbl, r);
+    g.querySelector('.node-port').setAttribute('r', r+4);
+    g.setAttribute('transform',`translate(${n.x},${n.y})`);
+    g.dataset.id = n.id;
+    // selected
+    g.classList.toggle('selected', State.selected.has(n.id));
+    // orphan
+    const connected = State.edges.some(e=>e.source===n.id||e.target===n.id);
+    g.classList.toggle('orphan', !connected);
+  }
+}
+
+function truncLabel(lbl, r){
+  const maxChars = Math.max(4, Math.floor(r/4.5));
+  return lbl.length > maxChars ? lbl.slice(0, maxChars)+'…' : lbl;
+}
+
+function lightenColor(hex, pct){
+  if(!hex||hex[0]!=='#') return hex;
+  const num = parseInt(hex.slice(1),16);
+  const r = Math.min(255,(num>>16)+pct), g=Math.min(255,((num>>8)&0xff)+pct), b=Math.min(255,(num&0xff)+pct);
+  return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+function renderEdges(){
+  const layer = $('edges-layer');
+  const existing = new Map();
+  for(const g of layer.querySelectorAll('.edge-group')) existing.set(g.dataset.id, g);
+
+  const alive = new Set(State.edges.map(e=>e.id));
+  for(const [id,g] of existing) if(!alive.has(id)) g.remove();
+
+  for(const e of State.edges){
+    const src = State.nodes.find(n=>n.id===e.source);
+    const tgt = State.nodes.find(n=>n.id===e.target);
+    if(!src||!tgt) continue;
+
+    const {x1,y1,x2,y2} = edgeEndpoints(src,tgt);
+
+    let g = existing.get(e.id);
+    if(!g){
+      g = svgEl('g',{class:'edge-group','data-id':e.id});
+      const line = svgEl('path',{class:'edge-line','data-id':e.id});
+      const hitLine = svgEl('path',{stroke:'transparent','stroke-width':'12',fill:'none',cursor:'pointer','data-id':e.id});
+      const lbl = svgEl('text',{class:'edge-label-text'});
+      g.append(line, hitLine, lbl);
+      attachEdgeEvents(g, e.id);
+      layer.appendChild(g);
+    }
+
+    const mx = (x1+x2)/2, my = (y1+y2)/2;
+    const d = `M${x1},${y1} L${x2},${y2}`;
+    const marker = e.directed!==false ? 'url(#'+(State.selected.has(e.id)?'arrow-sel':'arrow')+')' : '';
+    g.querySelector('.edge-line').setAttribute('d',d);
+    g.querySelector('.edge-line').setAttribute('marker-end', marker);
+    g.querySelector('.edge-line').classList.toggle('selected', State.selected.has(e.id));
+    g.querySelectorAll('path')[1].setAttribute('d',d);
+    const lel = g.querySelector('text');
+    lel.setAttribute('x', mx); lel.setAttribute('y', my-7);
+    lel.textContent = e.label||'';
+    g.dataset.id = e.id;
+  }
+}
+
+function edgeEndpoints(src, tgt){
+  const dx = tgt.x - src.x, dy = tgt.y - src.y;
+  const dist = Math.sqrt(dx*dx+dy*dy)||1;
+  const ux = dx/dist, uy = dy/dist;
+  const rs = nodeRadius(src), rt = nodeRadius(tgt);
+  return {
+    x1: src.x + ux*rs, y1: src.y + uy*rs,
+    x2: tgt.x - ux*(rt+8), y2: tgt.y - uy*(rt+8)
+  };
+}
+
+function applyTransform(){
+  $('graph-root').setAttribute('transform',`translate(${State.view.x},${State.view.y}) scale(${State.view.k})`);
+  $('zoom-display').textContent = Math.round(State.view.k*100)+'%';
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  NODE/EDGE EVENTS
+// ═══════════════════════════════════════════════════════════════
+function attachNodeEvents(g, id){
+  g.addEventListener('pointerdown', e=>{ e.stopPropagation(); onNodePointerDown(e,id); });
+  g.addEventListener('contextmenu', e=>{ e.preventDefault(); e.stopPropagation(); showNodeCtxMenu(e, id); });
+}
+function attachEdgeEvents(g, id){
+  g.addEventListener('pointerdown', e=>{ e.stopPropagation(); onEdgePointerDown(e,id); });
+  g.addEventListener('contextmenu', e=>{ e.preventDefault(); e.stopPropagation(); showEdgeCtxMenu(e, id); });
+}
+
+function onNodePointerDown(e, id){
+  closeCtxMenu();
+  if(State.tool==='edge'){
+    const n = State.nodes.find(n=>n.id===id);
+    if(n){
+      const pt = svgPoint(e);
+      State.edgeGhost = {sourceId:id, x1:n.x, y1:n.y, x2:pt.x, y2:pt.y};
+      $('svg-canvas').setPointerCapture(e.pointerId);
+    }
+    return;
+  }
+  if(State.tool==='select'){
+    if(!e.shiftKey && !State.selected.has(id)){
+      State.selected.clear();
+    }
+    State.selected.add(id);
+    const n = State.nodes.find(n=>n.id===id);
+    State.dragging = {ids:[...State.selected].filter(sid=>State.nodes.find(nn=>nn.id===sid)), startPtrs: {}};
+    const pt = svgPoint(e);
+    for(const sid of State.dragging.ids){
+      const nn = State.nodes.find(nn=>nn.id===sid);
+      State.dragging.startPtrs[sid] = {ox: pt.x - nn.x, oy: pt.y - nn.y};
+    }
+    $('svg-canvas').setPointerCapture(e.pointerId);
+    renderAll(); renderInspector();
+  }
+}
+function onEdgePointerDown(e, id){
+  closeCtxMenu();
+  if(State.tool==='select'){
+    if(!e.shiftKey) State.selected.clear();
+    State.selected.add(id);
+    renderAll(); renderInspector();
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  CANVAS POINTER EVENTS
+// ═══════════════════════════════════════════════════════════════
+let _panStart = null;
+
+$('svg-canvas').addEventListener('pointerdown', e=>{
+  closeCtxMenu();
+  if(e.button===1 || State.tool==='pan'){
+    _panStart = {px:e.clientX, py:e.clientY, vx:State.view.x, vy:State.view.y};
+    document.body.classList.add('panning');
+    $('svg-canvas').setPointerCapture(e.pointerId);
+    return;
+  }
+  if(State.tool==='select'){
+    const pt = svgPoint(e);
+    State.selRect = {x0:pt.x, y0:pt.y, x1:pt.x, y1:pt.y};
+    if(!e.shiftKey) State.selected.clear();
+    $('svg-canvas').setPointerCapture(e.pointerId);
+    renderAll(); renderInspector();
+  }
+  if(State.tool==='node'){
+    snapshot();
+    const pt = svgPoint(e);
+    const n = {id:uid('n'), label:'Node', x:pt.x, y:pt.y, color:'#1f6feb', r:26, props:{}};
+    State.nodes.push(n);
+    State.selected.clear(); State.selected.add(n.id);
+    renderAll(); renderInspector();
+  }
+});
+
+$('svg-canvas').addEventListener('pointermove', e=>{
+  if(_panStart){
+    State.view.x = _panStart.vx + (e.clientX - _panStart.px);
+    State.view.y = _panStart.vy + (e.clientY - _panStart.py);
+    applyTransform(); return;
+  }
+  if(State.edgeGhost){
+    const pt = svgPoint(e);
+    State.edgeGhost.x2 = pt.x; State.edgeGhost.y2 = pt.y;
+    renderEdgeGhost(); return;
+  }
+  if(State.dragging){
+    const pt = svgPoint(e);
+    for(const sid of State.dragging.ids){
+      const nn = State.nodes.find(nn=>nn.id===sid);
+      if(nn){
+        nn.x = pt.x - State.dragging.startPtrs[sid].ox;
+        nn.y = pt.y - State.dragging.startPtrs[sid].oy;
+      }
+    }
+    renderEdges(); renderNodes(); return;
+  }
+  if(State.selRect){
+    const pt = svgPoint(e);
+    State.selRect.x1 = pt.x; State.selRect.y1 = pt.y;
+    updateSelRect(); return;
+  }
+});
+
+$('svg-canvas').addEventListener('pointerup', e=>{
+  if(_panStart){ _panStart=null; document.body.classList.remove('panning'); return; }
+  if(State.edgeGhost){
+    // check if released on a node
+    const pt = svgPoint(e);
+    const tgt = State.nodes.find(n=>{
+      const dx=n.x-pt.x, dy=n.y-pt.y;
+      return Math.sqrt(dx*dx+dy*dy) <= nodeRadius(n)+10;
+    });
+    if(tgt && tgt.id !== State.edgeGhost.sourceId){
+      snapshot();
+      State.edges.push({id:uid('e'), source:State.edgeGhost.sourceId, target:tgt.id, label:'', directed:true});
+      renderAll();
+    }
+    removeEdgeGhost();
+    State.edgeGhost = null; return;
+  }
+  if(State.dragging){ snapshot(); State.dragging=null; return; }
+  if(State.selRect){
+    finalizeSelRect();
+    State.selRect=null;
+    const sr = $('sel-rect');
+    sr.setAttribute('display','none');
+    renderAll(); renderInspector(); return;
+  }
+});
+
+$('svg-canvas').addEventListener('wheel', e=>{
+  e.preventDefault();
+  const rect = $('svg-canvas').getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const delta = e.deltaY < 0 ? 1.1 : 0.9;
+  const newK = Math.max(0.1, Math.min(5, State.view.k * delta));
+  State.view.x = mx - (mx - State.view.x) * (newK / State.view.k);
+  State.view.y = my - (my - State.view.y) * (newK / State.view.k);
+  State.view.k = newK;
+  applyTransform();
+}, {passive:false});
+
+$('svg-canvas').addEventListener('dblclick', e=>{
+  const tgt = e.target.closest('.node-group');
+  if(tgt) startInlineRename(tgt.dataset.id);
+});
+
+function svgPoint(e){
+  const svg = $('svg-canvas');
+  const rect = svg.getBoundingClientRect();
+  const px = e.clientX - rect.left, py = e.clientY - rect.top;
+  return { x: (px - State.view.x) / State.view.k, y: (py - State.view.y) / State.view.k };
+}
+
+function updateSelRect(){
+  const sr = $('sel-rect');
+  const r = State.selRect;
+  sr.setAttribute('x', Math.min(r.x0,r.x1));
+  sr.setAttribute('y', Math.min(r.y0,r.y1));
+  sr.setAttribute('width', Math.abs(r.x1-r.x0));
+  sr.setAttribute('height', Math.abs(r.y1-r.y0));
+  sr.setAttribute('display','');
+}
+
+function finalizeSelRect(){
+  const r = State.selRect;
+  const x1=Math.min(r.x0,r.x1), y1=Math.min(r.y0,r.y1),
+        x2=Math.max(r.x0,r.x1), y2=Math.max(r.y0,r.y1);
+  for(const n of State.nodes){
+    if(n.x>=x1&&n.x<=x2&&n.y>=y1&&n.y<=y2) State.selected.add(n.id);
+  }
+}
+
+function renderEdgeGhost(){
+  let ghost = $('svg-canvas').querySelector('.edge-ghost');
+  if(!ghost){ ghost = svgEl('line',{class:'edge-ghost'}); $('graph-root').appendChild(ghost); }
+  const g = State.edgeGhost;
+  ghost.setAttribute('x1',g.x1); ghost.setAttribute('y1',g.y1);
+  ghost.setAttribute('x2',g.x2); ghost.setAttribute('y2',g.y2);
+}
+function removeEdgeGhost(){
+  const ghost = $('svg-canvas').querySelector('.edge-ghost');
+  if(ghost) ghost.remove();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  INLINE RENAME
+// ═══════════════════════════════════════════════════════════════
+function startInlineRename(id){
+  const n = State.nodes.find(n=>n.id===id);
+  if(!n) return;
+  const g = $('nodes-layer').querySelector(`[data-id="${id}"]`);
+  const txt = g.querySelector('.node-label');
+  // Create a foreign object input
+  const fo = svgEl('foreignObject',{x:-50, y:-14, width:100, height:24});
+  const inp = document.createElement('input');
+  inp.value = n.label;
+  inp.style.cssText='width:100%;background:#161b22;border:1px solid var(--accent);color:var(--text);border-radius:4px;padding:2px 4px;font-size:11px;text-align:center;outline:none';
+  fo.appendChild(inp);
+  g.appendChild(fo);
+  inp.focus(); inp.select();
+  const done = ()=>{
+    snapshot();
+    n.label = inp.value || n.id;
+    fo.remove();
+    renderAll(); renderInspector();
+  };
+  inp.addEventListener('blur', done);
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter') done(); if(e.key==='Escape'){ fo.remove(); }});
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  INSPECTOR
+// ═══════════════════════════════════════════════════════════════
+function renderInspector(){
+  const body = $('inspector-body');
+  const ids = [...State.selected];
+
+  if(ids.length===0){
+    $('inspector-title').textContent='Inspector';
+    body.innerHTML=`
+      <div class="insp-empty">Select a node or edge<br>to view properties</div>
+      <div class="insp-section">
+        <div class="insp-section-label">Orphans</div>
+        <div id="orphan-list">${buildOrphanList()}</div>
+      </div>
+      <div class="insp-section">
+        <div class="insp-section-label">Graph Settings</div>
+        <div class="insp-row"><label>Graph ID</label>
+          <input id="gi-id" value="${escHtml(State.graphId)}" onchange="State.graphId=this.value;renderGraphML()"></div>
+        <div class="insp-row"><label>Edge Default</label>
+          <select id="gi-edge" onchange="State.graphMeta.edgedefault=this.value;renderGraphML()">
+            <option value="undirected" ${State.graphMeta.edgedefault==='undirected'?'selected':''}>undirected</option>
+            <option value="directed" ${State.graphMeta.edgedefault==='directed'?'selected':''}>directed</option>
+          </select></div>
+      </div>`;
+    return;
+  }
+
+  if(ids.length>1){
+    $('inspector-title').textContent=`${ids.length} selected`;
+    body.innerHTML=`
+      <div class="insp-section">
+        <div class="insp-section-label">Multi-select</div>
+        <div class="insp-row"><label>Node Color</label>
+          <div class="color-row">${NODE_COLORS.map(c=>`<div class="color-swatch" style="background:${c}" onclick="App.setMultiColor('${c}')"></div>`).join('')}</div>
+        </div>
+        <button class="insp-btn danger" onclick="App.deleteSelected()">Delete All Selected</button>
+      </div>`;
+    return;
+  }
+
+  const id = ids[0];
+  const node = State.nodes.find(n=>n.id===id);
+  const edge = State.edges.find(e=>e.id===id);
+
+  if(node){
+    $('inspector-title').textContent='Node: '+id;
+    body.innerHTML=`
+      <div class="insp-section">
+        <div class="insp-section-label">Identity</div>
+        <div class="insp-row"><label>ID</label>
+          <input value="${escHtml(node.id)}" onchange="App.renameNodeId('${node.id}', this.value)"></div>
+        <div class="insp-row"><label>Label</label>
+          <input id="ni-label" value="${escHtml(node.label||'')}" onchange="App.setProp('node','${node.id}','label',this.value)"></div>
+      </div>
+      <div class="insp-section">
+        <div class="insp-section-label">Appearance</div>
+        <div class="insp-row"><label>Color</label>
+          <div class="color-row">${NODE_COLORS.map(c=>`<div class="color-swatch ${node.color===c?'active':''}" style="background:${c}" onclick="App.setProp('node','${node.id}','color','${c}')"></div>`).join('')}
+          <input type="color" value="${node.color||'#1f6feb'}" oninput="App.setProp('node','${node.id}','color',this.value)" style="width:28px;height:22px;padding:1px;border-radius:4px;border:1px solid var(--border);background:var(--bg2);cursor:pointer">
+          </div>
+        </div>
+        <div class="insp-row"><label>Radius</label>
+          <input type="range" min="14" max="60" value="${node.r||26}" oninput="App.setProp('node','${node.id}','r',+this.value)"></div>
+      </div>
+      <div class="insp-section">
+        <div class="insp-section-label">Position</div>
+        <div style="display:flex;gap:8px">
+          <div class="insp-row" style="flex:1"><label>X</label>
+            <input type="number" value="${Math.round(node.x)}" onchange="App.setProp('node','${node.id}','x',+this.value)"></div>
+          <div class="insp-row" style="flex:1"><label>Y</label>
+            <input type="number" value="${Math.round(node.y)}" onchange="App.setProp('node','${node.id}','y',+this.value)"></div>
+        </div>
+      </div>
+      <div class="insp-section">
+        <div class="insp-section-label">Custom Properties
+          <button onclick="App.addProp('node','${node.id}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:11px;float:right">+ Add</button>
+        </div>
+        <div class="prop-list" id="prop-list">${buildPropList('node',node)}</div>
+      </div>
+      <button class="insp-btn danger" onclick="App.deleteSelected()">Delete Node</button>`;
+  } else if(edge){
+    $('inspector-title').textContent='Edge: '+id;
+    body.innerHTML=`
+      <div class="insp-section">
+        <div class="insp-section-label">Identity</div>
+        <div class="insp-row"><label>ID</label>
+          <input value="${escHtml(edge.id)}" onchange="App.renameEdgeId('${edge.id}', this.value)"></div>
+        <div class="insp-row"><label>Label</label>
+          <input value="${escHtml(edge.label||'')}" onchange="App.setProp('edge','${edge.id}','label',this.value)"></div>
+        <div class="insp-row"><label>Source</label>
+          <input value="${escHtml(edge.source)}" onchange="App.setProp('edge','${edge.id}','source',this.value)"></div>
+        <div class="insp-row"><label>Target</label>
+          <input value="${escHtml(edge.target)}" onchange="App.setProp('edge','${edge.id}','target',this.value)"></div>
+        <div class="insp-row"><label>Directed</label>
+          <select onchange="App.setProp('edge','${edge.id}','directed',this.value==='true')">
+            <option value="true" ${edge.directed!==false?'selected':''}>directed</option>
+            <option value="false" ${edge.directed===false?'selected':''}>undirected</option>
+          </select></div>
+      </div>
+      <button class="insp-btn danger" onclick="App.deleteSelected()">Delete Edge</button>`;
+  }
+}
+
+function buildPropList(type, obj){
+  const props = obj.props || {};
+  return Object.entries(props).map(([k,v],i)=>`
+    <div class="prop-item">
+      <input value="${escHtml(k)}" placeholder="key" onchange="App.renamePropKey('${type}','${obj.id}','${k}',this.value)">
+      <input value="${escHtml(v)}" placeholder="value" onchange="App.setPropKV('${type}','${obj.id}','${k}',this.value)">
+      <button class="prop-rm" onclick="App.removeProp('${type}','${obj.id}','${k}')">✕</button>
+    </div>`).join('');
+}
+
+function buildOrphanList(){
+  const orphans = State.nodes.filter(n=>!State.edges.some(e=>e.source===n.id||e.target===n.id));
+  if(!orphans.length) return '<div style="color:var(--green);font-size:11px">No orphan nodes ✓</div>';
+  return orphans.map(n=>`
+    <div class="orphan-item">
+      <span>${escHtml(n.id)}</span>
+      <button onclick="App.selectNode('${n.id}')" title="Select">→</button>
+    </div>`).join('');
+}
+
+function updateStats(){
+  $('stat-nodes').textContent = State.nodes.length;
+  $('stat-edges').textContent = State.edges.length;
+  const orphans = State.nodes.filter(n=>!State.edges.some(e=>e.source===n.id||e.target===n.id)).length;
+  $('stat-orphans').textContent = orphans;
+  $('stat-orphan-wrap').style.color = orphans>0 ? 'var(--orange)' : 'var(--text3)';
+}
+
+function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ═══════════════════════════════════════════════════════════════
+//  OBJECT TABLE
+// ═══════════════════════════════════════════════════════════════
+let _tableFilter = '';
+
+function renderTable(){
+  const tbody = $('obj-tbody');
+  const s = State.tableSort;
+  let rows = [
+    ...State.nodes.map(n=>({type:'node', id:n.id, label:n.label||'', extra:Object.keys(n.props||{}).join(', ')})),
+    ...State.edges.map(e=>({type:'edge', id:e.id, label:e.label||'', extra:`${e.source}→${e.target}`}))
+  ];
+  if(_tableFilter){
+    const f = _tableFilter.toLowerCase();
+    rows = rows.filter(r=>r.id.toLowerCase().includes(f)||r.label.toLowerCase().includes(f)||r.extra.toLowerCase().includes(f));
+  }
+  rows.sort((a,b)=>{
+    const av=a[s.col]||'', bv=b[s.col]||'';
+    return s.asc ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+  tbody.innerHTML = rows.map(r=>`
+    <tr class="${State.selected.has(r.id)?'selected-row':''}" onclick="App.selectFromTable('${r.id}')">
+      <td><span class="type-badge type-${r.type}">${r.type}</span></td>
+      <td title="${escHtml(r.id)}">${escHtml(r.id)}</td>
+      <td title="${escHtml(r.label)}">${escHtml(r.label)}</td>
+      <td title="${escHtml(r.extra)}">${escHtml(r.extra)}</td>
+    </tr>`).join('');
+
+  // update sort indicators
+  for(const th of document.querySelectorAll('#obj-table th')){
+    th.classList.remove('sort-asc','sort-desc');
+    const col = th.getAttribute('onclick').match(/sortTable\('(\w+)'\)/)?.[1];
+    if(col===s.col) th.classList.add(s.asc?'sort-asc':'sort-desc');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  GRAPHML GENERATION
+// ═══════════════════════════════════════════════════════════════
+function renderGraphML(){
+  $('graphml-output').value = generateGraphML();
+}
+
+function generateGraphML(){
+  // Collect all keys
+  const nodeKeys = new Set(['label']);
+  const edgeKeys = new Set(['label']);
+  for(const n of State.nodes){
+    if(n.props) for(const k of Object.keys(n.props)) nodeKeys.add(k);
+    if(n['GPS-String']) nodeKeys.add('GPS-String');
+  }
+  // Build key defs
+  const keyDefs = [];
+  for(const k of nodeKeys){
+    keyDefs.push(`    <key attr.name="KEY_NODE_ID_${k}" attr.type="string" for="node" id="${k}"/>`);
+  }
+  for(const k of edgeKeys){
+    keyDefs.push(`    <key attr.name="KEY_EDGE_ID_${k}" attr.type="string" for="edge" id="${k}"/>`);
+  }
+
+  const indent = s => s.split('\n').map(l=>'        '+l).join('\n');
+
+  const nodeDefs = State.nodes.map(n=>{
+    const dataLines = [];
+    if(n.label) dataLines.push(`<data key="label">${escXml(n.label)}</data>`);
+    if(n.props) for(const [k,v] of Object.entries(n.props)){
+      if(v!=='' && v!==undefined) dataLines.push(`<data key="${escXml(k)}">${escXml(String(v))}</data>`);
+    }
+    return `        <node id="${escXml(n.id)}">\n${dataLines.map(d=>'            '+d).join('\n')}\n        </node>`;
+  }).join('\n');
+
+  const edgeDefs = State.edges.map(e=>{
+    const dirAttr = e.directed===false ? ' directed="false"' : '';
+    const lbl = e.label ? `\n            <data key="label">${escXml(e.label)}</data>` : '';
+    return `        <edge id="${escXml(e.id)}" source="${escXml(e.source)}" target="${escXml(e.target)}"${dirAttr}>${lbl}\n        </edge>`;
+  }).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+    <!-- Attribute Keys -->
+${keyDefs.join('\n')}
+    <graph id="${escXml(State.graphId)}" edgedefault="${State.graphMeta.edgedefault||'undirected'}">
+        <!-- Node Entries -->
+${nodeDefs}
+        <!-- Edge Entries -->
+${edgeDefs}
+    </graph>
+</graphml>`;
+}
+
+function escXml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'); }
+
+// ═══════════════════════════════════════════════════════════════
+//  CONTEXT MENUS
+// ═══════════════════════════════════════════════════════════════
+function showNodeCtxMenu(e, id){
+  const n = State.nodes.find(n=>n.id===id);
+  if(!n) return;
+  State.selected.clear(); State.selected.add(id);
+  renderAll(); renderInspector();
+  showCtxMenu(e.clientX, e.clientY, [
+    {label:'✏️ Rename', action:()=>startInlineRename(id)},
+    {label:'🔗 Start Edge', action:()=>{ App.setTool('edge'); }},
+    {sep:true},
+    ...NODE_COLORS.slice(0,6).map(c=>({label:`● ${c}`, color:c, action:()=>App.setProp('node',id,'color',c)})),
+    {sep:true},
+    {label:'🗑 Delete', danger:true, action:()=>App.deleteSelected()},
+  ]);
+}
+
+function showEdgeCtxMenu(e, id){
+  State.selected.clear(); State.selected.add(id);
+  renderAll(); renderInspector();
+  showCtxMenu(e.clientX, e.clientY, [
+    {label:'🔄 Toggle Direction', action:()=>{
+      snapshot();
+      const ed = State.edges.find(e=>e.id===id);
+      if(ed) ed.directed = !ed.directed;
+      renderAll();
+    }},
+    {sep:true},
+    {label:'🗑 Delete', danger:true, action:()=>App.deleteSelected()},
+  ]);
+}
+
+$('svg-canvas').addEventListener('contextmenu', e=>{
+  e.preventDefault();
+  if(State.tool==='node'){
+    showCtxMenu(e.clientX, e.clientY, [
+      {label:'Switch to Select', action:()=>App.setTool('select')},
+    ]);
+  }
+});
+
+function showCtxMenu(x, y, items){
+  const menu = $('ctx-menu');
+  menu.innerHTML = items.map(item=>
+    item.sep ? '<div class="ctx-sep"></div>' :
+    `<div class="ctx-item ${item.danger?'danger':''}" data-action="${item.label}" style="${item.color?`color:${item.color}`:''}">${escHtml(item.label)}</div>`
+  ).join('');
+
+  items.filter(i=>!i.sep).forEach((item,i)=>{
+    const el = menu.querySelectorAll('.ctx-item')[i];
+    if(el) el.addEventListener('click',()=>{ closeCtxMenu(); item.action(); });
+  });
+
+  menu.style.left = x+'px'; menu.style.top = y+'px';
+  menu.classList.add('open');
+}
+
+function closeCtxMenu(){ $('ctx-menu').classList.remove('open'); }
+document.addEventListener('pointerdown', e=>{ if(!e.target.closest('#ctx-menu')) closeCtxMenu(); });
+
+// ═══════════════════════════════════════════════════════════════
+//  MODALS
+// ═══════════════════════════════════════════════════════════════
+function openModal(title, bodyHtml, buttons){
+  $('modal-title').textContent = title;
+  $('modal-body').innerHTML = bodyHtml;
+  $('modal-footer').innerHTML = buttons.map(b=>
+    `<button class="modal-btn ${b.primary?'primary':''}" id="mb-${b.id||b.label}">${escHtml(b.label)}</button>`
+  ).join('');
+  buttons.forEach(b=>{
+    const el = $('mb-'+(b.id||b.label));
+    if(el) el.addEventListener('click',()=>{ App.closeModal(); b.action&&b.action(); });
+  });
+  $('modal-overlay').classList.add('open');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  GRAPHML IMPORT
+// ═══════════════════════════════════════════════════════════════
+function parseGraphML(xmlStr){
+  let doc;
+  try{ doc = (new DOMParser()).parseFromString(xmlStr,'application/xml'); }
+  catch(e){ return null; }
+  const err = doc.querySelector('parsererror');
+  if(err) return null;
+
+  const ns = 'http://graphml.graphdrawing.org/xmlns';
+  const graph = doc.querySelector('graph');
+  if(!graph) return null;
+
+  const graphId = graph.getAttribute('id') || 'graph1';
+  const edgedefault = graph.getAttribute('edgedefault') || 'undirected';
+
+  const nodes = [], edges = [];
+  let maxId = 0;
+
+  const getNum = s => { const m=s.match(/\d+$/); return m?parseInt(m[0]):0; };
+
+  // Nodes
+  for(const nodeEl of graph.querySelectorAll('node')){
+    const id = nodeEl.getAttribute('id');
+    if(!id) continue;
+    maxId = Math.max(maxId, getNum(id));
+    const props = {};
+    let label = id;
+    for(const d of nodeEl.querySelectorAll('data')){
+      const key = d.getAttribute('key');
+      const val = d.textContent;
+      if(key==='label') label = val;
+      else props[key] = val;
+    }
+    // grid layout placeholder, will auto-layout
+    nodes.push({id, label, x:0, y:0, color:'#1f6feb', r:26, props});
+  }
+
+  // Edges
+  for(const edgeEl of graph.querySelectorAll('edge')){
+    const id = edgeEl.getAttribute('id') || uid('e');
+    maxId = Math.max(maxId, getNum(id));
+    const source = edgeEl.getAttribute('source');
+    const target = edgeEl.getAttribute('target');
+    let label = '';
+    for(const d of edgeEl.querySelectorAll('data')){
+      if(d.getAttribute('key')==='label') label = d.textContent;
+    }
+    const directed = edgeEl.getAttribute('directed')==='false' ? false : true;
+    if(source&&target) edges.push({id, source, target, label, directed});
+  }
+
+  return {graphId, graphMeta:{edgedefault}, nodes, edges, idCounter: maxId+1};
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  JSON IMPORT
+// ═══════════════════════════════════════════════════════════════
+function importFromJSON(jsonStr){
+  let d;
+  try { d = JSON.parse(jsonStr); } catch(e){ return false; }
+
+  // Support our own format
+  if(d.nodes && d.edges){
+    snapshot();
+    State.nodes = d.nodes.map(n=>({id:n.id||uid('n'), label:n.label||'', x:n.x||0, y:n.y||0, color:n.color||'#1f6feb', r:n.r||26, props:n.props||{}}));
+    State.edges = d.edges.map(e=>({id:e.id||uid('e'), source:e.source, target:e.target, label:e.label||'', directed:e.directed!==false}));
+    State.graphId = d.graphId || 'graph1';
+    State.graphMeta = d.graphMeta || {edgedefault:'undirected'};
+    State.idCounter = d.idCounter || (Math.max(0,...State.nodes.map(n=>parseInt(n.id.replace(/\D/g,''))||0),...State.edges.map(e=>parseInt(e.id.replace(/\D/g,''))||0))+1);
+    State.selected.clear();
+    autoLayoutIfNoPositions();
+    renderAll(); renderInspector();
+    notify('JSON imported');
+    return true;
+  }
+
+  // Support graphObjects array format (legacy)
+  if(Array.isArray(d)){
+    snapshot();
+    const nodes = d.filter(o=>o.type==='node'||!o.source);
+    const edges = d.filter(o=>o.type==='edge'||o.source);
+    State.nodes = nodes.map(n=>({id:n.id||uid('n'), label:n.label||n.id||'', x:n.x||0, y:n.y||0, color:n.color||'#1f6feb', r:26, props:{}}));
+    State.edges = edges.map(e=>({id:e.id||uid('e'), source:e.source, target:e.target, label:e.label||'', directed:true}));
+    State.selected.clear();
+    autoLayoutIfNoPositions();
+    renderAll(); renderInspector();
+    notify('Legacy JSON imported');
+    return true;
+  }
+  return false;
+}
+
+function autoLayoutIfNoPositions(){
+  const needsLayout = State.nodes.every(n=>n.x===0&&n.y===0);
+  if(needsLayout) doAutoLayout();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  AUTO LAYOUT (force-directed, native JS)
+// ═══════════════════════════════════════════════════════════════
+function doAutoLayout(){
+  if(State.nodes.length===0) return;
+  // Initialize random positions
+  const W=800, H=600;
+  for(const n of State.nodes){
+    if(n.x===0&&n.y===0){
+      n.x = 80 + Math.random()*(W-160);
+      n.y = 80 + Math.random()*(H-160);
+    }
+  }
+  // Simple force-directed
+  const K = 80; // spring length
+  const REPULSE = 6000;
+  const ITERS = 120;
+  for(let iter=0; iter<ITERS; iter++){
+    const temp = 1 - iter/ITERS;
+    const forces = {};
+    for(const n of State.nodes) forces[n.id]={fx:0,fy:0};
+    // Repulsion
+    for(let i=0;i<State.nodes.length;i++){
+      for(let j=i+1;j<State.nodes.length;j++){
+        const a=State.nodes[i], b=State.nodes[j];
+        let dx=b.x-a.x, dy=b.y-a.y;
+        const d=Math.sqrt(dx*dx+dy*dy)||1;
+        const f=REPULSE/(d*d);
+        forces[a.id].fx-=f*dx/d; forces[a.id].fy-=f*dy/d;
+        forces[b.id].fx+=f*dx/d; forces[b.id].fy+=f*dy/d;
+      }
+    }
+    // Attraction
+    for(const e of State.edges){
+      const a=State.nodes.find(n=>n.id===e.source), b=State.nodes.find(n=>n.id===e.target);
+      if(!a||!b) continue;
+      let dx=b.x-a.x, dy=b.y-a.y;
+      const d=Math.sqrt(dx*dx+dy*dy)||1;
+      const f=(d-K)/K;
+      forces[a.id].fx+=f*dx/d; forces[a.id].fy+=f*dy/d;
+      forces[b.id].fx-=f*dx/d; forces[b.id].fy-=f*dy/d;
+    }
+    const step = 20*temp+1;
+    for(const n of State.nodes){
+      const f=forces[n.id];
+      const mag=Math.sqrt(f.fx*f.fx+f.fy*f.fy)||1;
+      const s=Math.min(step, mag)/mag;
+      n.x+=f.fx*s; n.y+=f.fy*s;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  LOCALSTORAGE
+// ═══════════════════════════════════════════════════════════════
+const LS_KEY = 'lpg_editor_v1';
+
+function loadFromStorage(){
+  try{
+    const s = localStorage.getItem(LS_KEY);
+    if(s){ deserialize(s); autoLayoutIfNoPositions(); renderAll(); renderInspector(); notify('Auto-loaded from storage'); }
+  } catch(e){}
+}
+
+function saveToStorage(){
+  try{ localStorage.setItem(LS_KEY, serialize()); notify('Saved to browser storage'); }
+  catch(e){ notify('Save failed'); }
+}
+
+// autosave every 30s
+setInterval(()=>{ if(State.nodes.length>0) saveToStorage(); }, 30000);
+
+// ═══════════════════════════════════════════════════════════════
+//  APP PUBLIC API
+// ═══════════════════════════════════════════════════════════════
+const App = {
+  setTool(t){
+    State.tool = t;
+    document.body.setAttribute('data-tool', t);
+    for(const btn of document.querySelectorAll('[id^="tool-"]')) btn.classList.remove('active');
+    const btn = $('tool-'+t);
+    if(btn) btn.classList.add('active');
+  },
+
+  newGraph(){
+    openModal('New Graph','<p style="color:var(--text2)">Create a new empty graph? Unsaved changes will be lost.</p>',
+      [{label:'Cancel'},{label:'New Graph', primary:true, action:()=>{
+        snapshot();
+        State.nodes=[]; State.edges=[]; State.selected.clear();
+        State.graphId='graph1'; State.graphMeta={edgedefault:'undirected'};
+        State.view={x:0,y:0,k:1};
+        renderAll(); renderInspector(); notify('New graph created');
+      }}]);
+  },
+
+  undo(){
+    if(!State.history.length){ notify('Nothing to undo'); return; }
+    State.future.push(serialize());
+    deserialize(State.history.pop());
+    renderAll(); renderInspector(); notify('Undo');
+  },
+  redo(){
+    if(!State.future.length){ notify('Nothing to redo'); return; }
+    State.history.push(serialize());
+    deserialize(State.future.pop());
+    renderAll(); renderInspector(); notify('Redo');
+  },
+
+  deleteSelected(){
+    if(!State.selected.size) return;
+    snapshot();
+    const ids = new Set(State.selected);
+    State.nodes = State.nodes.filter(n=>!ids.has(n.id));
+    State.edges = State.edges.filter(e=>!ids.has(e.id) && !ids.has(e.source) && !ids.has(e.target));
+    State.selected.clear();
+    renderAll(); renderInspector(); notify('Deleted');
+  },
+
+  setProp(type, id, key, val){
+    snapshot();
+    if(type==='node'){
+      const n=State.nodes.find(n=>n.id===id);
+      if(n){ n[key]=val; renderAll(); renderInspector(); }
+    } else {
+      const e=State.edges.find(e=>e.id===id);
+      if(e){ e[key]=val; renderAll(); renderInspector(); }
+    }
+  },
+
+  setPropKV(type, id, key, val){
+    snapshot();
+    if(type==='node'){
+      const n=State.nodes.find(n=>n.id===id);
+      if(n){ if(!n.props)n.props={}; n.props[key]=val; renderGraphML(); renderTable(); }
+    }
+  },
+  renamePropKey(type, id, oldKey, newKey){
+    if(oldKey===newKey) return;
+    snapshot();
+    if(type==='node'){
+      const n=State.nodes.find(n=>n.id===id);
+      if(n&&n.props){
+        n.props[newKey]=n.props[oldKey]; delete n.props[oldKey];
+        renderGraphML(); renderTable();
+      }
+    }
+  },
+  addProp(type, id){
+    snapshot();
+    if(type==='node'){
+      const n=State.nodes.find(n=>n.id===id);
+      if(n){ if(!n.props)n.props={}; n.props['key'+Date.now().toString(36)]=''; renderInspector(); }
+    }
+  },
+  removeProp(type, id, key){
+    snapshot();
+    if(type==='node'){
+      const n=State.nodes.find(n=>n.id===id);
+      if(n&&n.props){ delete n.props[key]; renderInspector(); renderGraphML(); }
+    }
+  },
+
+  renameNodeId(oldId, newId){
+    if(!newId||newId===oldId) return;
+    if(State.nodes.find(n=>n.id===newId)){ notify('ID already exists'); return; }
+    snapshot();
+    const n=State.nodes.find(n=>n.id===oldId);
+    if(n) n.id=newId;
+    for(const e of State.edges){
+      if(e.source===oldId) e.source=newId;
+      if(e.target===oldId) e.target=newId;
+    }
+    State.selected.delete(oldId); State.selected.add(newId);
+    renderAll(); renderInspector(); notify('ID renamed');
+  },
+  renameEdgeId(oldId, newId){
+    if(!newId||newId===oldId) return;
+    snapshot();
+    const e=State.edges.find(e=>e.id===oldId);
+    if(e) e.id=newId;
+    State.selected.delete(oldId); State.selected.add(newId);
+    renderAll(); renderInspector();
+  },
+
+  setMultiColor(c){
+    snapshot();
+    for(const id of State.selected){
+      const n=State.nodes.find(n=>n.id===id);
+      if(n) n.color=c;
+    }
+    renderAll();
+  },
+
+  selectNode(id){
+    State.selected.clear(); State.selected.add(id);
+    // scroll node into view
+    const n=State.nodes.find(n=>n.id===id);
+    if(n){
+      const rect=$('canvas-wrap').getBoundingClientRect();
+      State.view.x = rect.width/2 - n.x*State.view.k;
+      State.view.y = rect.height/2 - n.y*State.view.k;
+      applyTransform();
+    }
+    renderAll(); renderInspector();
+  },
+
+  selectFromTable(id){
+    State.selected.clear(); State.selected.add(id);
+    renderAll(); renderInspector();
+    renderTable();
+  },
+
+  filterTable(v){ _tableFilter=v; renderTable(); },
+
+  sortTable(col){
+    if(State.tableSort.col===col) State.tableSort.asc=!State.tableSort.asc;
+    else { State.tableSort.col=col; State.tableSort.asc=true; }
+    renderTable();
+  },
+
+  fitView(){
+    if(!State.nodes.length) return;
+    const xs=State.nodes.map(n=>n.x), ys=State.nodes.map(n=>n.y);
+    const x1=Math.min(...xs)-60, y1=Math.min(...ys)-60,
+          x2=Math.max(...xs)+60, y2=Math.max(...ys)+60;
+    const rect=$('canvas-wrap').getBoundingClientRect();
+    const kx=rect.width/(x2-x1), ky=rect.height/(y2-y1);
+    const k=Math.min(kx,ky,2)*0.92;
+    State.view.k=k;
+    State.view.x=rect.width/2-(x1+x2)/2*k;
+    State.view.y=rect.height/2-(y1+y2)/2*k;
+    applyTransform();
+  },
+
+  autoLayout(){
+    snapshot();
+    doAutoLayout();
+    renderAll(); notify('Auto-layout applied');
+    App.fitView();
+  },
+
+  toggleDrawer(){
+    State.drawerOpen=!State.drawerOpen;
+    $('drawer').classList.toggle('collapsed',!State.drawerOpen);
+  },
+
+  copyGraphML(){
+    navigator.clipboard.writeText(generateGraphML()).then(()=>notify('Copied to clipboard'));
+  },
+  downloadGraphML(){
+    download(generateGraphML(), (State.graphId||'graph')+'.graphml', 'application/xml');
+    notify('Downloaded .graphml');
+  },
+  downloadJson(){
+    download(serialize(), (State.graphId||'graph')+'.json', 'application/json');
+    notify('Downloaded .json');
+  },
+  saveToStorage,
+
+  importGraphML(){
+    openModal('Import GraphML',
+      `<textarea id="import-xml" placeholder="Paste GraphML XML here…"></textarea>
+       <p class="modal-note">Paste a valid GraphML XML document. The graph will replace the current one.</p>`,
+      [{label:'Cancel'},{label:'Import', primary:true, action:()=>{
+        const xml=$('import-xml').value.trim();
+        if(!xml){ notify('Nothing to import'); return; }
+        const result = parseGraphML(xml);
+        if(!result){ notify('Invalid GraphML'); return; }
+        snapshot();
+        State.nodes=result.nodes; State.edges=result.edges;
+        State.graphId=result.graphId; State.graphMeta=result.graphMeta;
+        State.idCounter=result.idCounter||1;
+        State.selected.clear();
+        doAutoLayout();
+        renderAll(); renderInspector(); App.fitView();
+        notify('GraphML imported: '+State.nodes.length+' nodes, '+State.edges.length+' edges');
+      }}]);
+  },
+
+  importJson(){
+    openModal('Import JSON',
+      `<textarea id="import-json" placeholder="Paste JSON here…"></textarea>
+       <p class="modal-note">Accepts LPG Editor JSON format or GraphML XML.</p>`,
+      [{label:'Cancel'},{label:'Import', primary:true, action:()=>{
+        const text=$('import-json').value.trim();
+        if(!text){ notify('Nothing to import'); return; }
+        // Try GraphML first
+        if(text.startsWith('<?xml')||text.startsWith('<graphml')){
+          const result=parseGraphML(text);
+          if(result){
+            snapshot();
+            State.nodes=result.nodes; State.edges=result.edges;
+            State.graphId=result.graphId; State.graphMeta=result.graphMeta;
+            State.idCounter=result.idCounter||1;
+            State.selected.clear();
+            doAutoLayout();
+            renderAll(); renderInspector(); App.fitView();
+            notify('GraphML imported');
+            return;
+          }
+        }
+        if(!importFromJSON(text)) notify('Invalid format');
+      }}]);
+  },
+
+  exportJson(){
+    openModal('Export JSON',
+      `<textarea readonly>${escHtml(serialize())}</textarea>
+       <p class="modal-note">Copy the above JSON to save or transfer your graph.</p>`,
+      [{label:'Close'},{label:'Download', primary:true, action:()=>App.downloadJson()}]);
+  },
+
+  closeModal(){ $('modal-overlay').classList.remove('open'); },
+};
+
+// ═══════════════════════════════════════════════════════════════
+//  DOWNLOAD UTILITY
+// ═══════════════════════════════════════════════════════════════
+function download(content, filename, mime){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([content],{type:mime}));
+  a.download=filename; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  KEYBOARD SHORTCUTS
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('keydown', e=>{
+  const tag=document.activeElement.tagName.toLowerCase();
+  if(['input','textarea','select'].includes(tag)) return;
+  if(e.ctrlKey||e.metaKey){
+    if(e.key==='z'&&!e.shiftKey){ e.preventDefault(); App.undo(); }
+    if(e.key==='z'&&e.shiftKey||e.key==='y'){ e.preventDefault(); App.redo(); }
+    if(e.key==='s'){ e.preventDefault(); saveToStorage(); }
+    if(e.key==='a'){ e.preventDefault(); State.selected=new Set(State.nodes.map(n=>n.id)); renderAll(); renderInspector(); }
+    return;
+  }
+  switch(e.key){
+    case 'Delete': case 'Backspace': App.deleteSelected(); break;
+    case 's': App.setTool('select'); break;
+    case 'n': App.setTool('node'); break;
+    case 'e': App.setTool('edge'); break;
+    case 'p': App.setTool('pan'); break;
+    case 'f': App.fitView(); break;
+    case 'Escape': State.selected.clear(); State.edgeGhost=null; removeEdgeGhost(); renderAll(); renderInspector(); break;
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════
+(function init(){
+  App.setTool('select');
+  loadFromStorage();
+  if(State.nodes.length===0){
+    // Starter demo
+    State.nodes=[
+      {id:'nodeA',label:'Node A',x:200,y:200,color:'#1f6feb',r:28,props:{status:'active'}},
+      {id:'nodeB',label:'Node B',x:420,y:150,color:'#1a7f37',r:26,props:{}},
+      {id:'nodeC',label:'Node C',x:380,y:320,color:'#9e6a03',r:26,props:{}},
+    ];
+    State.edges=[
+      {id:'e1',source:'nodeA',target:'nodeB',label:'connects',directed:true},
+      {id:'e2',source:'nodeB',target:'nodeC',label:'flows',directed:true},
+    ];
+    renderAll(); renderInspector();
+    App.fitView();
+  }
+  // make graphml drawer open
+  State.drawerOpen=true;
+  $('drawer').classList.remove('collapsed');
+  renderGraphML();
+})();
+
+// Close modal on overlay click
+$('modal-overlay').addEventListener('pointerdown', e=>{ if(e.target===$('modal-overlay')) App.closeModal(); });
+</script>
+</body>
+</html>
