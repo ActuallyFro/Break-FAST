@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LPG Graph Editor v0.1</title>
+<title>LPG Graph Editor</title>
 <style>
 /* ── RESET & BASE ─────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -21,7 +21,20 @@
   --radius:6px;--radius2:10px;
   --toolbar-h:42px;--inspector-w:300px;--drawer-h:220px;
   --transition:.15s ease;
+  --grid-dot-color: rgba(255,255,255,0.07);
 }
+
+body.light-mode {
+  --bg0:#f6f8fa;--bg1:#ffffff;--bg2:#f3f4f6;--bg3:#e5e7eb;
+  --border:#d1d5db;--border2:#9ca3af;
+  --text:#1f2937;--text2:#4b5563;--text3:#9ca3af;
+  --accent:#2563eb;--accent2:#1d4ed8;--accent-glow:rgba(37,99,235,0.15);
+  --node-default:#2563eb;--node-ring:#3b82f6;
+  --edge:#3b82f6;--edge-sel:#f97316;
+  --sel-fill:rgba(59,130,246,0.08);--sel-stroke:#2563eb;
+  --grid-dot-color: rgba(0,0,0,0.08);
+}
+
 html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--text);font-family:var(--font-ui);font-size:13px}
 
 /* ── LAYOUT ───────────────────────────────────────────────────── */
@@ -141,7 +154,7 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
 .modal-body textarea:focus{border-color:var(--accent)}
 .modal-note{font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5}
 
-/* ── CONTEXT MENU ─────────────────────────────────────────────── */
+/* ── CONTEXT MENU ── --> */
 #ctx-menu{position:fixed;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:200;display:none;min-width:160px;padding:4px 0}
 #ctx-menu.open{display:block}
 .ctx-item{padding:6px 14px;cursor:pointer;color:var(--text2);font-size:12px;display:flex;align-items:center;gap:8px;transition:background var(--transition)}
@@ -164,7 +177,7 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
 ::-webkit-scrollbar-track{background:var(--bg0)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
-/* ── ORPHAN TABLE in Inspector ─────────────────────────────────── */
+/* ── ORPHAN TABLE ── */
 #orphan-list{display:flex;flex-direction:column;gap:3px}
 .orphan-item{display:flex;align-items:center;justify-content:space-between;padding:4px 8px;background:var(--bg2);border-radius:var(--radius);font-size:11px;font-family:var(--font-mono);color:var(--orange);border:1px solid rgba(210,153,34,.2)}
 .orphan-item button{background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px}
@@ -175,31 +188,37 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
 
 <div id="app">
 
-  <!-- ── TOOLBAR ── -->
   <div id="toolbar">
     <span id="toolbar-title">⬡ LPG</span>
     <div class="tb-sep"></div>
-    <!-- File ops -->
     <button class="tb-btn" onclick="App.newGraph()" title="New graph">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75A.75.75 0 012.75 1h6.586a.75.75 0 01.53.22l3.914 3.914a.75.75 0 01.22.53V14.25a.75.75 0 01-.75.75H2.75a.75.75 0 01-.75-.75V1.75zm1.5.75v11h9V6.5H9.25A.75.75 0 018.5 5.75V2.5H3.5zm6.5.56l2.19 2.19H10V3.06z"/></svg>
       New
     </button>
-    <button class="tb-btn" onclick="App.importJson()" title="Import JSON">
+    <button class="tb-btn" onclick="App.importJson()" title="Import Clipboard Text">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M7.47 10.78a.75.75 0 001.06 0l3.5-3.5a.75.75 0 00-1.06-1.06L8.75 8.44V1.75a.75.75 0 00-1.5 0v6.69L5.03 6.22a.75.75 0 00-1.06 1.06l3.5 3.5zM3.75 13a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5z"/></svg>
-      Import
+      Import Text
     </button>
-    <button class="tb-btn" onclick="App.exportJson()" title="Export JSON">
+    <button class="tb-btn" onclick="$('json-file-input').click()" title="Select and Upload a JSON file">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/></svg>
+      Upload File
+    </button>
+    <input type="file" id="json-file-input" accept=".json" onchange="App.handleJsonFile(this)" style="display:none;">
+    <button class="tb-btn" onclick="App.exportJson()" title="Export Human Readable JSON">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M7.47 5.22a.75.75 0 011.06 0l3.5 3.5a.75.75 0 01-1.06 1.06L8.75 7.56v6.69a.75.75 0 01-1.5 0V7.56L5.03 9.78a.75.75 0 01-1.06-1.06l3.5-3.5zM3.75 1a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5z"/></svg>
       JSON
     </button>
+    <button class="tb-btn" onclick="App.exportPng()" title="Export current canvas to PNG image">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9 2.5-3.5L5 10l3.05-4.435L14.002 12V3a1 1 0 0 0-1-1h-12a1 1 0 0 0-1 1v10zM11 5.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+      Export PNG
+    </button>
     <div class="tb-sep"></div>
-    <!-- Tools -->
     <span class="tb-label">Tool:</span>
-    <button class="tb-btn" id="tool-select" onclick="App.setTool('select')" title="Select (S)">
+    <button class="tb-btn" id="tool-select" onclick="App.setTool('select')" title="Select Box / Drag (S)">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3.5 1.5l9 6-5 1.5-1.5 5-2.5-12.5z"/></svg>
       Select
     </button>
-    <button class="tb-btn" id="tool-pan" onclick="App.setTool('pan')" title="Pan (P)">
+    <button class="tb-btn" id="tool-pan" onclick="App.setTool('pan')" title="Pan view (P)">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M7.25 2a.75.75 0 011.5 0v2.25H11a.75.75 0 010 1.5H8.75v1.5H11a.75.75 0 010 1.5H8.75V11a.75.75 0 01-1.5 0V8.75H5a.75.75 0 010-1.5h2.25v-1.5H5a.75.75 0 010-1.5h2.25V2z"/></svg>
       Pan
     </button>
@@ -207,12 +226,11 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
       <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="2"/></svg>
       Node
     </button>
-    <button class="tb-btn" id="tool-edge" onclick="App.setTool('edge')" title="Add Edge (E)">
+    <button class="tb-btn" id="tool-edge" onclick="App.setTool('edge')" title="Add Edge Connection (E)">
       <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="3" cy="8" r="2" fill="currentColor"/><circle cx="13" cy="8" r="2" fill="currentColor"/><line x1="5" y1="8" x2="11" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
       Edge
     </button>
     <div class="tb-sep"></div>
-    <!-- Edit -->
     <button class="tb-btn" onclick="App.undo()" title="Undo (Ctrl+Z)">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.22 7.22a.75.75 0 000 1.06l3.5 3.5a.75.75 0 001.06-1.06L3.56 8.5H10a3.5 3.5 0 110 7h-2a.75.75 0 000 1.5h2a5 5 0 100-10H3.56l2.22-2.22a.75.75 0 10-1.06-1.06l-3.5 3.5z"/></svg>
       Undo
@@ -221,13 +239,15 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M14.78 7.22a.75.75 0 010 1.06l-3.5 3.5a.75.75 0 01-1.06-1.06l2.22-2.22H6a3.5 3.5 0 100 7h2a.75.75 0 010 1.5H6a5 5 0 110-10h6.44L10.22 4.78a.75.75 0 011.06-1.06l3.5 3.5z"/></svg>
       Redo
     </button>
-    <button class="tb-btn danger" onclick="App.deleteSelected()" title="Delete selected (Del)">
+    <button class="tb-btn danger" onclick="App.deleteSelected()" title="Delete item (Del)">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 1.75a.25.25 0 01.25-.25h2.5a.25.25 0 01.25.25V3h-3V1.75zm4.5 0V3h2.25a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75zM4.496 6.675a.75.75 0 10-1.492.15l.66 6.6A1.75 1.75 0 005.405 15h5.19c.9 0 1.652-.681 1.741-1.576l.66-6.6a.75.75 0 00-1.492-.149l-.66 6.6a.25.25 0 01-.249.225h-5.19a.25.25 0 01-.249-.225l-.66-6.6z"/></svg>
       Delete
     </button>
     <div class="tb-spacer"></div>
-    <!-- Right side -->
-    <button class="tb-btn" onclick="App.autoLayout()" title="Auto-layout">
+    <button class="tb-btn" onclick="App.toggleTheme()" title="Switch layout colors">
+      <span id="theme-icon">☀️</span> Light/Dark
+    </button>
+    <button class="tb-btn" onclick="App.autoLayout()" title="Auto force layout">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 012.5 1h3A1.5 1.5 0 017 2.5v3A1.5 1.5 0 015.5 7h-3A1.5 1.5 0 011 5.5v-3zm8.5 0A1.5 1.5 0 0111 1h3a1.5 1.5 0 011.5 1.5v3A1.5 1.5 0 0114 7h-3a1.5 1.5 0 01-1.5-1.5v-3zm-8.5 8A1.5 1.5 0 012.5 9h3A1.5 1.5 0 017 10.5v3A1.5 1.5 0 015.5 15h-3A1.5 1.5 0 011 13.5v-3zm8.5 0A1.5 1.5 0 0111 9h3a1.5 1.5 0 011.5 1.5v3A1.5 1.5 0 0114 15h-3a1.5 1.5 0 01-1.5-1.5v-3z"/></svg>
       Layout
     </button>
@@ -235,30 +255,40 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
     <span id="zoom-display">100%</span>
   </div>
 
-  <!-- ── SVG CANVAS ── -->
   <div id="canvas-wrap">
     <svg id="svg-canvas" xmlns="http://www.w3.org/2000/svg">
       <defs>
+        <marker id="arrow-small" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+          <path d="M0,0 L6,2 L0,4 Z" class="edge-arrow"/>
+        </marker>
+        <marker id="arrow-small-sel" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+          <path d="M0,0 L6,2 L0,4 Z" style="fill:var(--edge-sel)"/>
+        </marker>
         <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <path d="M0,0 L8,3 L0,6 Z" class="edge-arrow"/>
         </marker>
         <marker id="arrow-sel" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <path d="M0,0 L8,3 L0,6 Z" style="fill:var(--edge-sel)"/>
         </marker>
+        <marker id="arrow-large" markerWidth="12" markerHeight="9" refX="10" refY="4.5" orient="auto">
+          <path d="M0,0 L12,4.5 L0,9 Z" class="edge-arrow"/>
+        </marker>
+        <marker id="arrow-large-sel" markerWidth="12" markerHeight="9" refX="10" refY="4.5" orient="auto">
+          <path d="M0,0 L12,4.5 L0,9 Z" style="fill:var(--edge-sel)"/>
+        </marker>
         <pattern id="grid-dots" width="24" height="24" patternUnits="userSpaceOnUse">
-          <circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.07)"/>
+          <circle cx="12" cy="12" r="0.8" fill="var(--grid-dot-color)"/>
         </pattern>
       </defs>
       <rect id="grid-bg" width="100%" height="100%" fill="url(#grid-dots)" pointer-events="none"/>
       <g id="graph-root">
         <g id="edges-layer"></g>
         <g id="nodes-layer"></g>
+        <rect id="sel-rect" x="0" y="0" width="0" height="0" display="none"/>
       </g>
-      <rect id="sel-rect" x="0" y="0" width="0" height="0" display="none"/>
     </svg>
   </div>
 
-  <!-- ── INSPECTOR ── -->
   <div id="inspector">
     <div id="inspector-header">
       <span id="inspector-title">Inspector</span>
@@ -273,14 +303,12 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
     </div>
   </div>
 
-  <!-- ── DRAWER (GraphML + Object Table) ── -->
   <div id="drawer">
     <div id="drawer-header" onclick="App.toggleDrawer()">
       <span id="drawer-header-title">▸ GRAPHML / OBJECT TABLE</span>
       <span id="drawer-toggle">▲</span>
     </div>
     <div id="drawer-content">
-      <!-- Left: GraphML -->
       <textarea id="graphml-output" readonly spellcheck="false" placeholder="GraphML output appears here…"></textarea>
       <div id="drawer-actions">
         <button class="drawer-btn" onclick="App.copyGraphML()">Copy XML</button>
@@ -289,7 +317,6 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
         <button class="drawer-btn" onclick="App.downloadJson()">↓ .json</button>
         <button class="drawer-btn" onclick="App.saveToStorage()">💾 Save</button>
       </div>
-      <!-- Right: Object Table -->
       <div id="obj-table-wrap" style="border-left:1px solid var(--border);flex:0 0 340px">
         <input id="obj-search" type="search" placeholder="Search nodes / edges…" oninput="App.filterTable(this.value)">
         <table id="obj-table">
@@ -307,9 +334,8 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
     </div>
   </div>
 
-</div><!-- end #app -->
+</div>
 
-<!-- ── MODAL OVERLAY ── -->
 <div id="modal-overlay">
   <div class="modal" id="modal-box">
     <div class="modal-header">
@@ -321,10 +347,8 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
   </div>
 </div>
 
-<!-- ── CONTEXT MENU ── -->
 <div id="ctx-menu"></div>
 
-<!-- ── NOTIFICATION ── -->
 <div id="notif"></div>
 
 <script>
@@ -333,16 +357,16 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
 //  STATE
 // ═══════════════════════════════════════════════════════════════
 const State = {
-  nodes: [],          // [{id,label,x,y,color,r,props:{}}]
-  edges: [],          // [{id,source,target,label,directed}]
-  selected: new Set(),// set of ids
+  nodes: [],          
+  edges: [],          
+  selected: new Set(),
   tool: 'select',
   view: {x:0, y:0, k:1},
-  dragging: null,     // {id, ox, oy}
-  edgeGhost: null,    // {sourceId, x1,y1,x2,y2}
-  selRect: null,      // {x0,y0,x1,y1}
-  history: [],        // undo stack (serialized snapshots)
-  future: [],         // redo stack
+  dragging: null,     
+  edgeGhost: null,    
+  selRect: null,      
+  history: [],        
+  future: [],         
   tableSort: {col:'type', asc:true},
   drawerOpen: true,
   idCounter: 1,
@@ -359,15 +383,16 @@ const svgNS = 'http://www.w3.org/2000/svg';
 function uid(prefix='n'){
   return prefix + (State.idCounter++);
 }
-function serialize(){
-  return JSON.stringify({
+function serialize(formatted = false){
+  const obj = {
     nodes: State.nodes.map(n=>({...n, props:{...n.props}})),
     edges: State.edges.map(e=>({...e})),
     idCounter: State.idCounter,
     graphId: State.graphId,
     graphMeta: {...State.graphMeta},
     view: {...State.view}
-  });
+  };
+  return formatted ? JSON.stringify(obj, null, 2) : JSON.stringify(obj);
 }
 function deserialize(str){
   const d = JSON.parse(str);
@@ -421,7 +446,6 @@ function renderAll(){
 
 function renderNodes(){
   const layer = $('nodes-layer');
-  // diff: remove gone, add new
   const existing = new Map();
   for(const g of layer.querySelectorAll('.node-group')) existing.set(g.dataset.id, g);
 
@@ -448,9 +472,8 @@ function renderNodes(){
     g.querySelector('.node-port').setAttribute('r', r+4);
     g.setAttribute('transform',`translate(${n.x},${n.y})`);
     g.dataset.id = n.id;
-    // selected
     g.classList.toggle('selected', State.selected.has(n.id));
-    // orphan
+
     const connected = State.edges.some(e=>e.source===n.id||e.target===n.id);
     g.classList.toggle('orphan', !connected);
   }
@@ -480,7 +503,6 @@ function renderEdges(){
     const src = State.nodes.find(n=>n.id===e.source);
     const tgt = State.nodes.find(n=>n.id===e.target);
     if(!src||!tgt) continue;
-
     const {x1,y1,x2,y2} = edgeEndpoints(src,tgt);
 
     let g = existing.get(e.id);
@@ -494,92 +516,150 @@ function renderEdges(){
       layer.appendChild(g);
     }
 
-    const mx = (x1+x2)/2, my = (y1+y2)/2;
-    const d = `M${x1},${y1} L${x2},${y2}`;
-    const marker = e.directed!==false ? 'url(#'+(State.selected.has(e.id)?'arrow-sel':'arrow')+')' : '';
-    g.querySelector('.edge-line').setAttribute('d',d);
-    g.querySelector('.edge-line').setAttribute('marker-end', marker);
-    g.querySelector('.edge-line').classList.toggle('selected', State.selected.has(e.id));
+    let d = '';
+    const style = e.style || 'straight';
+    if(style === 'straight') {
+      d = `M${x1},${y1} L${x2},${y2}`;
+    } else if (style === 'curved') {
+      const mx = (x1+x2)/2, my = (y1+y2)/2;
+      const dx = x2 - x1, dy = y2 - y1;
+      const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+      const nx = -dy / dist * 30;
+      const ny = dx / dist * 30;
+      d = `M${x1},${y1} Q${mx + nx},${my + ny} ${x2},${y2}`;
+    } else if (style === 'orthogonal') {
+      const mx = (x1+x2)/2;
+      d = `M${x1},${y1} L${mx},${y1} L${mx},${y2} L${x2},${y2}`;
+    }
+
+    const aSize = e.arrowSize || 'medium';
+    let markerId = 'arrow';
+    if(aSize === 'small') markerId = 'arrow-small';
+    if(aSize === 'large') markerId = 'arrow-large';
+    if(State.selected.has(e.id)) markerId += '-sel';
+    
+    const marker = e.directed!==false ? `url(#${markerId})` : '';
+    const lineEl = g.querySelector('.edge-line');
+    lineEl.setAttribute('d', d);
+    lineEl.setAttribute('marker-end', marker);
+    lineEl.classList.toggle('selected', State.selected.has(e.id));
+    
+    let edgeColor = e.color || 'var(--edge)';
+    if(edgeColor === 'inherit') edgeColor = nodeColor(src);
+    lineEl.setAttribute('stroke', edgeColor);
+
+    if(e.dash === 'dashed') lineEl.setAttribute('stroke-dasharray', '6 4');
+    else if(e.dash === 'dotted') lineEl.setAttribute('stroke-dasharray', '2 3');
+    else lineEl.removeAttribute('stroke-dasharray');
+
     g.querySelectorAll('path')[1].setAttribute('d',d);
+
+    const mx = (x1+x2)/2, my = (y1+y2)/2;
     const lel = g.querySelector('text');
-    lel.setAttribute('x', mx); lel.setAttribute('y', my-7);
-    lel.textContent = e.label||'';
-    g.dataset.id = e.id;
+    lel.setAttribute('x', mx);
+    lel.setAttribute('y', my - 8);
+    lel.textContent = e.label || '';
   }
 }
 
 function edgeEndpoints(src, tgt){
   const dx = tgt.x - src.x, dy = tgt.y - src.y;
-  const dist = Math.sqrt(dx*dx+dy*dy)||1;
-  const ux = dx/dist, uy = dy/dist;
-  const rs = nodeRadius(src), rt = nodeRadius(tgt);
+  const d = Math.sqrt(dx*dx + dy*dy) || 1;
+  const r1 = nodeRadius(src), r2 = nodeRadius(tgt);
   return {
-    x1: src.x + ux*rs, y1: src.y + uy*rs,
-    x2: tgt.x - ux*(rt+8), y2: tgt.y - uy*(rt+8)
+    x1: src.x + (dx/d)*r1,
+    y1: src.y + (dy/d)*r1,
+    x2: tgt.x - (dx/d)*(r2 + 4),
+    y2: tgt.y - (dy/d)*(r2 + 4)
   };
 }
 
 function applyTransform(){
   $('graph-root').setAttribute('transform',`translate(${State.view.x},${State.view.y}) scale(${State.view.k})`);
-  $('zoom-display').textContent = Math.round(State.view.k*100)+'%';
+  $('zoom-display').textContent = Math.round(State.view.k * 100) + '%';
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  NODE/EDGE EVENTS
+//  CANVAS INTERACTIONS
 // ═══════════════════════════════════════════════════════════════
-function attachNodeEvents(g, id){
-  g.addEventListener('pointerdown', e=>{ e.stopPropagation(); onNodePointerDown(e,id); });
-  g.addEventListener('contextmenu', e=>{ e.preventDefault(); e.stopPropagation(); showNodeCtxMenu(e, id); });
-}
-function attachEdgeEvents(g, id){
-  g.addEventListener('pointerdown', e=>{ e.stopPropagation(); onEdgePointerDown(e,id); });
-  g.addEventListener('contextmenu', e=>{ e.preventDefault(); e.stopPropagation(); showEdgeCtxMenu(e, id); });
+function svgPoint(e){
+  const svg = $('svg-canvas');
+  const pt = svg.createSVGPoint();
+  pt.x = e.clientX; pt.y = e.clientY;
+  const root = $('graph-root');
+  return pt.matrixTransform(root.getCTM().inverse());
 }
 
-function onNodePointerDown(e, id){
-  closeCtxMenu();
-  if(State.tool==='edge'){
-    const n = State.nodes.find(n=>n.id===id);
-    if(n){
-      const pt = svgPoint(e);
-      State.edgeGhost = {sourceId:id, x1:n.x, y1:n.y, x2:pt.x, y2:pt.y};
-      $('svg-canvas').setPointerCapture(e.pointerId);
-    }
-    return;
-  }
-  if(State.tool==='select'){
-    if(!e.shiftKey && !State.selected.has(id)){
-      State.selected.clear();
-    }
-    State.selected.add(id);
-    const n = State.nodes.find(n=>n.id===id);
-    State.dragging = {ids:[...State.selected].filter(sid=>State.nodes.find(nn=>nn.id===sid)), startPtrs: {}};
-    const pt = svgPoint(e);
-    for(const sid of State.dragging.ids){
-      const nn = State.nodes.find(nn=>nn.id===sid);
-      State.dragging.startPtrs[sid] = {ox: pt.x - nn.x, oy: pt.y - nn.y};
-    }
-    $('svg-canvas').setPointerCapture(e.pointerId);
-    renderAll(); renderInspector();
-  }
-}
-function onEdgePointerDown(e, id){
-  closeCtxMenu();
-  if(State.tool==='select'){
-    if(!e.shiftKey) State.selected.clear();
-    State.selected.add(id);
-    renderAll(); renderInspector();
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  CANVAS POINTER EVENTS
-// ═══════════════════════════════════════════════════════════════
 let _panStart = null;
 
+function attachNodeEvents(g, id){
+  g.addEventListener('pointerdown', e=>{
+    e.stopPropagation();
+    if(State.tool==='edge'){
+      const n = State.nodes.find(nn=>nn.id===id);
+      State.edgeGhost = {sourceId:id, x1:n.x, y1:n.y, x2:n.x, y2:n.y};
+      return;
+    }
+    if(State.tool==='select'){
+      if(!State.selected.has(id)){
+        if(!e.shiftKey) State.selected.clear();
+        State.selected.add(id);
+      } else if(e.shiftKey){
+        State.selected.delete(id);
+      }
+      const pt = svgPoint(e);
+      const startPtrs = {};
+      const ids = [...State.selected].filter(sid=>State.nodes.some(n=>n.id===sid));
+      for(const sid of ids){
+        const n = State.nodes.find(nn=>nn.id===sid);
+        startPtrs[sid] = {ox: pt.x - n.x, oy: pt.y - n.y};
+      }
+      State.dragging = { ids, startPtrs };
+      renderAll();
+      renderInspector();
+    }
+  });
+  g.addEventListener('dblclick', e=>{
+    e.stopPropagation();
+    startInlineRename(id);
+  });
+}
+
+function attachEdgeEvents(g, id){
+  g.addEventListener('pointerdown', e=>{
+    e.stopPropagation();
+    if(State.tool==='select'){
+      if(!e.shiftKey) State.selected.clear();
+      State.selected.add(id);
+      renderAll();
+      renderInspector();
+    }
+  });
+  g.addEventListener('contextmenu', e=>{
+    e.preventDefault(); e.stopPropagation();
+    State.selected.clear();
+    State.selected.add(id);
+    renderAll();
+    renderInspector();
+    showCtxMenu(e.clientX, e.clientY, [
+      {label:'🔄 Toggle Direction', action:()=>{
+        snapshot();
+        const ed = State.edges.find(e=>e.id===id);
+        if(ed) ed.directed = !ed.directed;
+        renderAll();
+      }},
+      {sep:true},
+      {label:'🗑 Delete Edge', danger:true, action:()=>App.deleteSelected()},
+    ]);
+  });
+}
+
 $('svg-canvas').addEventListener('pointerdown', e=>{
-  closeCtxMenu();
-  if(e.button===1 || State.tool==='pan'){
+  if(e.button !== 0) return;
+  const targetGroup = e.target.closest('.node-group, .edge-group');
+  if(targetGroup) return;
+
+  if(e.shiftKey || State.tool==='pan'){
     _panStart = {px:e.clientX, py:e.clientY, vx:State.view.x, vy:State.view.y};
     document.body.classList.add('panning');
     $('svg-canvas').setPointerCapture(e.pointerId);
@@ -590,15 +670,18 @@ $('svg-canvas').addEventListener('pointerdown', e=>{
     State.selRect = {x0:pt.x, y0:pt.y, x1:pt.x, y1:pt.y};
     if(!e.shiftKey) State.selected.clear();
     $('svg-canvas').setPointerCapture(e.pointerId);
-    renderAll(); renderInspector();
+    renderAll();
+    renderInspector();
   }
   if(State.tool==='node'){
     snapshot();
     const pt = svgPoint(e);
     const n = {id:uid('n'), label:'Node', x:pt.x, y:pt.y, color:'#1f6feb', r:26, props:{}};
     State.nodes.push(n);
-    State.selected.clear(); State.selected.add(n.id);
-    renderAll(); renderInspector();
+    State.selected.clear();
+    State.selected.add(n.id);
+    renderAll();
+    renderInspector();
   }
 });
 
@@ -606,12 +689,15 @@ $('svg-canvas').addEventListener('pointermove', e=>{
   if(_panStart){
     State.view.x = _panStart.vx + (e.clientX - _panStart.px);
     State.view.y = _panStart.vy + (e.clientY - _panStart.py);
-    applyTransform(); return;
+    applyTransform();
+    return;
   }
   if(State.edgeGhost){
     const pt = svgPoint(e);
-    State.edgeGhost.x2 = pt.x; State.edgeGhost.y2 = pt.y;
-    renderEdgeGhost(); return;
+    State.edgeGhost.x2 = pt.x;
+    State.edgeGhost.y2 = pt.y;
+    renderEdgeGhost();
+    return;
   }
   if(State.dragging){
     const pt = svgPoint(e);
@@ -622,19 +708,26 @@ $('svg-canvas').addEventListener('pointermove', e=>{
         nn.y = pt.y - State.dragging.startPtrs[sid].oy;
       }
     }
-    renderEdges(); renderNodes(); return;
+    renderEdges();
+    renderNodes();
+    return;
   }
   if(State.selRect){
     const pt = svgPoint(e);
-    State.selRect.x1 = pt.x; State.selRect.y1 = pt.y;
-    updateSelRect(); return;
+    State.selRect.x1 = pt.x;
+    State.selRect.y1 = pt.y;
+    updateSelRect();
+    return;
   }
 });
 
 $('svg-canvas').addEventListener('pointerup', e=>{
-  if(_panStart){ _panStart=null; document.body.classList.remove('panning'); return; }
+  if(_panStart){
+    _panStart=null;
+    document.body.classList.remove('panning');
+    return;
+  }
   if(State.edgeGhost){
-    // check if released on a node
     const pt = svgPoint(e);
     const tgt = State.nodes.find(n=>{
       const dx=n.x-pt.x, dy=n.y-pt.y;
@@ -642,19 +735,26 @@ $('svg-canvas').addEventListener('pointerup', e=>{
     });
     if(tgt && tgt.id !== State.edgeGhost.sourceId){
       snapshot();
-      State.edges.push({id:uid('e'), source:State.edgeGhost.sourceId, target:tgt.id, label:'', directed:true});
+      State.edges.push({id:uid('e'), source:State.edgeGhost.sourceId, target:tgt.id, label:'', directed:true, style:'straight', dash:'solid', arrowSize:'medium'});
       renderAll();
     }
     removeEdgeGhost();
-    State.edgeGhost = null; return;
+    State.edgeGhost = null;
+    return;
   }
-  if(State.dragging){ snapshot(); State.dragging=null; return; }
+  if(State.dragging){
+    snapshot();
+    State.dragging=null;
+    return;
+  }
   if(State.selRect){
     finalizeSelRect();
     State.selRect=null;
     const sr = $('sel-rect');
     sr.setAttribute('display','none');
-    renderAll(); renderInspector(); return;
+    renderAll();
+    renderInspector();
+    return;
   }
 });
 
@@ -668,42 +768,46 @@ $('svg-canvas').addEventListener('wheel', e=>{
   State.view.y = my - (my - State.view.y) * (newK / State.view.k);
   State.view.k = newK;
   applyTransform();
-}, {passive:false});
-
-$('svg-canvas').addEventListener('dblclick', e=>{
-  const tgt = e.target.closest('.node-group');
-  if(tgt) startInlineRename(tgt.dataset.id);
 });
 
-function svgPoint(e){
-  const svg = $('svg-canvas');
-  const rect = svg.getBoundingClientRect();
-  const px = e.clientX - rect.left, py = e.clientY - rect.top;
-  return { x: (px - State.view.x) / State.view.k, y: (py - State.view.y) / State.view.k };
-}
-
 function updateSelRect(){
+  if(!State.selRect) return;
+  const x = Math.min(State.selRect.x0, State.selRect.x1);
+  const y = Math.min(State.selRect.y0, State.selRect.y1);
+  const w = Math.abs(State.selRect.x1 - State.selRect.x0);
+  const h = Math.abs(State.selRect.y1 - State.selRect.y0);
   const sr = $('sel-rect');
-  const r = State.selRect;
-  sr.setAttribute('x', Math.min(r.x0,r.x1));
-  sr.setAttribute('y', Math.min(r.y0,r.y1));
-  sr.setAttribute('width', Math.abs(r.x1-r.x0));
-  sr.setAttribute('height', Math.abs(r.y1-r.y0));
-  sr.setAttribute('display','');
+  sr.setAttribute('x',x); sr.setAttribute('y',y);
+  sr.setAttribute('width',w); sr.setAttribute('height',h);
+  sr.setAttribute('display','block');
+
+  const xMin = x, xMax = x+w, yMin = y, yMax = y+h;
+  for(const n of State.nodes){
+    const inside = n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax;
+    const g = $('nodes-layer').querySelector(`[data-id="${n.id}"]`);
+    if(g) g.classList.toggle('selected', inside || State.selected.has(n.id));
+  }
 }
 
 function finalizeSelRect(){
-  const r = State.selRect;
-  const x1=Math.min(r.x0,r.x1), y1=Math.min(r.y0,r.y1),
-        x2=Math.max(r.x0,r.x1), y2=Math.max(r.y0,r.y1);
+  if(!State.selRect) return;
+  const xMin = Math.min(State.selRect.x0, State.selRect.x1);
+  const xMax = Math.max(State.selRect.x0, State.selRect.x1);
+  const yMin = Math.min(State.selRect.y0, State.selRect.y1);
+  const yMax = Math.max(State.selRect.y0, State.selRect.y1);
   for(const n of State.nodes){
-    if(n.x>=x1&&n.x<=x2&&n.y>=y1&&n.y<=y2) State.selected.add(n.id);
+    if(n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax){
+      State.selected.add(n.id);
+    }
   }
 }
 
 function renderEdgeGhost(){
   let ghost = $('svg-canvas').querySelector('.edge-ghost');
-  if(!ghost){ ghost = svgEl('line',{class:'edge-ghost'}); $('graph-root').appendChild(ghost); }
+  if(!ghost){
+    ghost = svgEl('line',{class:'edge-ghost'});
+    $('svg-canvas').appendChild(ghost);
+  }
   const g = State.edgeGhost;
   ghost.setAttribute('x1',g.x1); ghost.setAttribute('y1',g.y1);
   ghost.setAttribute('x2',g.x2); ghost.setAttribute('y2',g.y2);
@@ -721,7 +825,6 @@ function startInlineRename(id){
   if(!n) return;
   const g = $('nodes-layer').querySelector(`[data-id="${id}"]`);
   const txt = g.querySelector('.node-label');
-  // Create a foreign object input
   const fo = svgEl('foreignObject',{x:-50, y:-14, width:100, height:24});
   const inp = document.createElement('input');
   inp.value = n.label;
@@ -733,19 +836,22 @@ function startInlineRename(id){
     snapshot();
     n.label = inp.value || n.id;
     fo.remove();
-    renderAll(); renderInspector();
+    renderAll();
+    renderInspector();
   };
   inp.addEventListener('blur', done);
-  inp.addEventListener('keydown', e=>{ if(e.key==='Enter') done(); if(e.key==='Escape'){ fo.remove(); }});
+  inp.addEventListener('keydown', e=>{
+    if(e.key==='Enter') done();
+    if(e.key==='Escape') fo.remove();
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  INSPECTOR
+//  INSPECTOR PANEL
 // ═══════════════════════════════════════════════════════════════
 function renderInspector(){
   const body = $('inspector-body');
   const ids = [...State.selected];
-
   if(ids.length===0){
     $('inspector-title').textContent='Inspector';
     body.innerHTML=`
@@ -756,17 +862,14 @@ function renderInspector(){
       </div>
       <div class="insp-section">
         <div class="insp-section-label">Graph Settings</div>
-        <div class="insp-row"><label>Graph ID</label>
-          <input id="gi-id" value="${escHtml(State.graphId)}" onchange="State.graphId=this.value;renderGraphML()"></div>
-        <div class="insp-row"><label>Edge Default</label>
-          <select id="gi-edge" onchange="State.graphMeta.edgedefault=this.value;renderGraphML()">
-            <option value="undirected" ${State.graphMeta.edgedefault==='undirected'?'selected':''}>undirected</option>
-            <option value="directed" ${State.graphMeta.edgedefault==='directed'?'selected':''}>directed</option>
-          </select></div>
+        <div class="insp-row"><label>Graph ID</label> <input id="gi-id" value="${escHtml(State.graphId)}" onchange="State.graphId=this.value;renderGraphML()"></div>
+        <div class="insp-row"><label>Edge Default</label> <select id="gi-edge" onchange="State.graphMeta.edgedefault=this.value;renderGraphML()">
+          <option value="undirected" ${State.graphMeta.edgedefault==='undirected'?'selected':''}>undirected</option>
+          <option value="directed" ${State.graphMeta.edgedefault==='directed'?'selected':''}>directed</option>
+        </select></div>
       </div>`;
     return;
   }
-
   if(ids.length>1){
     $('inspector-title').textContent=`${ids.length} selected`;
     body.innerHTML=`
@@ -779,78 +882,83 @@ function renderInspector(){
       </div>`;
     return;
   }
-
   const id = ids[0];
   const node = State.nodes.find(n=>n.id===id);
   const edge = State.edges.find(e=>e.id===id);
-
   if(node){
     $('inspector-title').textContent='Node: '+id;
     body.innerHTML=`
       <div class="insp-section">
         <div class="insp-section-label">Identity</div>
-        <div class="insp-row"><label>ID</label>
-          <input value="${escHtml(node.id)}" onchange="App.renameNodeId('${node.id}', this.value)"></div>
-        <div class="insp-row"><label>Label</label>
-          <input id="ni-label" value="${escHtml(node.label||'')}" onchange="App.setProp('node','${node.id}','label',this.value)"></div>
+        <div class="insp-row"><label>ID</label> <input value="${escHtml(node.id)}" onchange="App.renameNodeId('${node.id}', this.value)"></div>
+        <div class="insp-row"><label>Label</label> <input value="${escHtml(node.label)}" oninput="App.setLiveProp('node', '${node.id}', 'label', this.value)"></div>
       </div>
       <div class="insp-section">
-        <div class="insp-section-label">Appearance</div>
-        <div class="insp-row"><label>Color</label>
-          <div class="color-row">${NODE_COLORS.map(c=>`<div class="color-swatch ${node.color===c?'active':''}" style="background:${c}" onclick="App.setProp('node','${node.id}','color','${c}')"></div>`).join('')}
-          <input type="color" value="${node.color||'#1f6feb'}" oninput="App.setProp('node','${node.id}','color',this.value)" style="width:28px;height:22px;padding:1px;border-radius:4px;border:1px solid var(--border);background:var(--bg2);cursor:pointer">
+        <div class="insp-section-label">Geometry</div>
+        <div class="insp-row"><label>Radius</label> <input type="range" min="15" max="60" value="${nodeRadius(node)}" oninput="App.setLiveProp('node', '${node.id}', 'r', parseInt(this.value))"></div>
+      </div>
+      <div class="insp-section">
+        <div class="insp-section-label">Styling</div>
+        <div class="insp-row"><label>Color Picker</label>
+          <input type="color" value="${nodeColor(node)}" oninput="App.setLiveProp('node', '${node.id}', 'color', this.value)">
+          <div class="color-row" style="margin-top:8px;">
+            ${NODE_COLORS.map(c=>`<div class="color-swatch ${nodeColor(node)===c?'active':''}" style="background:${c}" onclick="App.setProp('node', '${node.id}', 'color', '${c}')"></div>`).join('')}
           </div>
         </div>
-        <div class="insp-row"><label>Radius</label>
-          <input type="range" min="14" max="60" value="${node.r||26}" oninput="App.setProp('node','${node.id}','r',+this.value)"></div>
       </div>
       <div class="insp-section">
-        <div class="insp-section-label">Position</div>
-        <div style="display:flex;gap:8px">
-          <div class="insp-row" style="flex:1"><label>X</label>
-            <input type="number" value="${Math.round(node.x)}" onchange="App.setProp('node','${node.id}','x',+this.value)"></div>
-          <div class="insp-row" style="flex:1"><label>Y</label>
-            <input type="number" value="${Math.round(node.y)}" onchange="App.setProp('node','${node.id}','y',+this.value)"></div>
+        <div class="insp-section-label">Custom Properties</div>
+        <div class="prop-list">
+          ${Object.entries(node.props||{}).map(([k,v])=>`
+            <div class="prop-item">
+              <input value="${escHtml(k)}" onchange="App.renamePropKey('node','${node.id}','${k}',this.value)" style="width:40%">
+              <input value="${escHtml(v)}" oninput="App.setLivePropKV('node','${node.id}','${k}',this.value)" style="width:55%">
+              <button class="prop-rm" onclick="App.removeProp('node','${node.id}','${k}')">✕</button>
+            </div>`).join('')}
         </div>
+        <button class="insp-btn" onclick="App.addProp('node','${node.id}')">+ Add Property</button>
       </div>
       <div class="insp-section">
-        <div class="insp-section-label">Custom Properties
-          <button onclick="App.addProp('node','${node.id}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:11px;float:right">+ Add</button>
-        </div>
-        <div class="prop-list" id="prop-list">${buildPropList('node',node)}</div>
-      </div>
-      <button class="insp-btn danger" onclick="App.deleteSelected()">Delete Node</button>`;
-  } else if(edge){
+        <button class="insp-btn danger" onclick="App.deleteSelected()">Delete Node</button>
+      </div>`;
+    return;
+  }
+  if(edge){
     $('inspector-title').textContent='Edge: '+id;
     body.innerHTML=`
       <div class="insp-section">
         <div class="insp-section-label">Identity</div>
-        <div class="insp-row"><label>ID</label>
-          <input value="${escHtml(edge.id)}" onchange="App.renameEdgeId('${edge.id}', this.value)"></div>
-        <div class="insp-row"><label>Label</label>
-          <input value="${escHtml(edge.label||'')}" onchange="App.setProp('edge','${edge.id}','label',this.value)"></div>
-        <div class="insp-row"><label>Source</label>
-          <input value="${escHtml(edge.source)}" onchange="App.setProp('edge','${edge.id}','source',this.value)"></div>
-        <div class="insp-row"><label>Target</label>
-          <input value="${escHtml(edge.target)}" onchange="App.setProp('edge','${edge.id}','target',this.value)"></div>
-        <div class="insp-row"><label>Directed</label>
-          <select onchange="App.setProp('edge','${edge.id}','directed',this.value==='true')">
-            <option value="true" ${edge.directed!==false?'selected':''}>directed</option>
-            <option value="false" ${edge.directed===false?'selected':''}>undirected</option>
-          </select></div>
+        <div class="insp-row"><label>ID</label> <input value="${escHtml(edge.id)}" readonly></div>
+        <div class="insp-row"><label>Source</label> <input value="${escHtml(edge.source)}" readonly></div>
+        <div class="insp-row"><label>Target</label> <input value="${escHtml(edge.target)}" readonly></div>
       </div>
-      <button class="insp-btn danger" onclick="App.deleteSelected()">Delete Edge</button>`;
+      <div class="insp-section">
+        <div class="insp-section-label">Properties</div>
+        <div class="insp-row"><label>Label</label> <input value="${escHtml(edge.label)}" oninput="App.setLiveProp('edge', '${edge.id}', 'label', this.value)"></div>
+        <div class="insp-row"><label>Line Layout</label> <select onchange="App.setProp('edge', '${edge.id}', 'style', this.value)">
+          <option value="straight" ${edge.style==='straight'?'selected':''}>Straight Line</option>
+          <option value="curved" ${edge.style==='curved'?'selected':''}>Curved Arc</option>
+          <option value="orthogonal" ${edge.style==='orthogonal'?'selected':''}>Orthogonal</option>
+        </select></div>
+        <div class="insp-row"><label>Line Border</label> <select onchange="App.setProp('edge', '${edge.id}', 'dash', this.value)">
+          <option value="solid" ${edge.dash==='solid' || !edge.dash ?'selected':''}>Solid</option>
+          <option value="dashed" ${edge.dash==='dashed'?'selected':''}>Dashed</option>
+          <option value="dotted" ${edge.dash==='dotted'?'selected':''}>Dotted</option>
+        </select></div>
+        <div class="insp-row"><label>Arrow Size</label> <select onchange="App.setProp('edge', '${edge.id}', 'arrowSize', this.value)">
+          <option value="small" ${edge.arrowSize==='small'?'selected':''}>Small</option>
+          <option value="medium" ${edge.arrowSize==='medium' || !edge.arrowSize ?'selected':''}>Medium</option>
+          <option value="large" ${edge.arrowSize==='large'?'selected':''}>Large</option>
+        </select></div>
+        <div class="insp-row"><label>Edge Color</label>
+          <input type="color" value="${edge.color && edge.color !== 'inherit' ? edge.color : '#58a6ff'}" oninput="App.setLiveProp('edge', '${edge.id}', 'color', this.value)">
+          <label style="margin-top:4px; display:flex; align-items:center; gap:4px;"><input type="checkbox" ${edge.color==='inherit'?'checked':''} onchange="App.setProp('edge', '${edge.id}', 'color', this.checked ? 'inherit' : '#58a6ff')"> Match Source Node</label>
+        </div>
+      </div>
+      <div class="insp-section">
+        <button class="insp-btn danger" onclick="App.deleteSelected()">Delete Edge</button>
+      </div>`;
   }
-}
-
-function buildPropList(type, obj){
-  const props = obj.props || {};
-  return Object.entries(props).map(([k,v],i)=>`
-    <div class="prop-item">
-      <input value="${escHtml(k)}" placeholder="key" onchange="App.renamePropKey('${type}','${obj.id}','${k}',this.value)">
-      <input value="${escHtml(v)}" placeholder="value" onchange="App.setPropKV('${type}','${obj.id}','${k}',this.value)">
-      <button class="prop-rm" onclick="App.removeProp('${type}','${obj.id}','${k}')">✕</button>
-    </div>`).join('');
 }
 
 function buildOrphanList(){
@@ -870,14 +978,14 @@ function updateStats(){
   $('stat-orphans').textContent = orphans;
   $('stat-orphan-wrap').style.color = orphans>0 ? 'var(--orange)' : 'var(--text3)';
 }
-
-function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
 // ═══════════════════════════════════════════════════════════════
 //  OBJECT TABLE
 // ═══════════════════════════════════════════════════════════════
 let _tableFilter = '';
-
 function renderTable(){
   const tbody = $('obj-tbody');
   const s = State.tableSort;
@@ -901,7 +1009,6 @@ function renderTable(){
       <td title="${escHtml(r.extra)}">${escHtml(r.extra)}</td>
     </tr>`).join('');
 
-  // update sort indicators
   for(const th of document.querySelectorAll('#obj-table th')){
     th.classList.remove('sort-asc','sort-desc');
     const col = th.getAttribute('onclick').match(/sortTable\('(\w+)'\)/)?.[1];
@@ -913,128 +1020,60 @@ function renderTable(){
 //  GRAPHML GENERATION
 // ═══════════════════════════════════════════════════════════════
 function renderGraphML(){
-  $('graphml-output').value = generateGraphML();
-}
-
-function generateGraphML(){
-  // Collect all keys
-  const nodeKeys = new Set(['label']);
-  const edgeKeys = new Set(['label']);
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<graphml xmlns="http://graphml.graphdrawing.org/xmlns">\n`;
+  xml += `  <graph id="${escHtml(State.graphId)}" edgedefault="${escHtml(State.graphMeta.edgedefault)}">\n`;
   for(const n of State.nodes){
-    if(n.props) for(const k of Object.keys(n.props)) nodeKeys.add(k);
-    if(n['GPS-String']) nodeKeys.add('GPS-String');
-  }
-  // Build key defs
-  const keyDefs = [];
-  for(const k of nodeKeys){
-    keyDefs.push(`    <key attr.name="KEY_NODE_ID_${k}" attr.type="string" for="node" id="${k}"/>`);
-  }
-  for(const k of edgeKeys){
-    keyDefs.push(`    <key attr.name="KEY_EDGE_ID_${k}" attr.type="string" for="edge" id="${k}"/>`);
-  }
-
-  const indent = s => s.split('\n').map(l=>'        '+l).join('\n');
-
-  const nodeDefs = State.nodes.map(n=>{
-    const dataLines = [];
-    if(n.label) dataLines.push(`<data key="label">${escXml(n.label)}</data>`);
-    if(n.props) for(const [k,v] of Object.entries(n.props)){
-      if(v!=='' && v!==undefined) dataLines.push(`<data key="${escXml(k)}">${escXml(String(v))}</data>`);
+    xml += `    <node id="${escHtml(n.id)}">\n`;
+    xml += `      <data key="label">${escHtml(n.label)}</data>\n`;
+    xml += `      <data key="x">${n.x}</data>\n`;
+    xml += `      <data key="y">${n.y}</data>\n`;
+    xml += `      <data key="color">${nodeColor(n)}</data>\n`;
+    xml += `      <data key="r">${nodeRadius(n)}</data>\n`;
+    if(n.props){
+      for(const [k,v] of Object.entries(n.props)){
+        xml += `      <data key="${escHtml(k)}">${escHtml(v)}</data>\n`;
+      }
     }
-    return `        <node id="${escXml(n.id)}">\n${dataLines.map(d=>'            '+d).join('\n')}\n        </node>`;
-  }).join('\n');
-
-  const edgeDefs = State.edges.map(e=>{
-    const dirAttr = e.directed===false ? ' directed="false"' : '';
-    const lbl = e.label ? `\n            <data key="label">${escXml(e.label)}</data>` : '';
-    return `        <edge id="${escXml(e.id)}" source="${escXml(e.source)}" target="${escXml(e.target)}"${dirAttr}>${lbl}\n        </edge>`;
-  }).join('\n');
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
-    <!-- Attribute Keys -->
-${keyDefs.join('\n')}
-    <graph id="${escXml(State.graphId)}" edgedefault="${State.graphMeta.edgedefault||'undirected'}">
-        <!-- Node Entries -->
-${nodeDefs}
-        <!-- Edge Entries -->
-${edgeDefs}
-    </graph>
-</graphml>`;
-}
-
-function escXml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'); }
-
-// ═══════════════════════════════════════════════════════════════
-//  CONTEXT MENUS
-// ═══════════════════════════════════════════════════════════════
-function showNodeCtxMenu(e, id){
-  const n = State.nodes.find(n=>n.id===id);
-  if(!n) return;
-  State.selected.clear(); State.selected.add(id);
-  renderAll(); renderInspector();
-  showCtxMenu(e.clientX, e.clientY, [
-    {label:'✏️ Rename', action:()=>startInlineRename(id)},
-    {label:'🔗 Start Edge', action:()=>{ App.setTool('edge'); }},
-    {sep:true},
-    ...NODE_COLORS.slice(0,6).map(c=>({label:`● ${c}`, color:c, action:()=>App.setProp('node',id,'color',c)})),
-    {sep:true},
-    {label:'🗑 Delete', danger:true, action:()=>App.deleteSelected()},
-  ]);
-}
-
-function showEdgeCtxMenu(e, id){
-  State.selected.clear(); State.selected.add(id);
-  renderAll(); renderInspector();
-  showCtxMenu(e.clientX, e.clientY, [
-    {label:'🔄 Toggle Direction', action:()=>{
-      snapshot();
-      const ed = State.edges.find(e=>e.id===id);
-      if(ed) ed.directed = !ed.directed;
-      renderAll();
-    }},
-    {sep:true},
-    {label:'🗑 Delete', danger:true, action:()=>App.deleteSelected()},
-  ]);
-}
-
-$('svg-canvas').addEventListener('contextmenu', e=>{
-  e.preventDefault();
-  if(State.tool==='node'){
-    showCtxMenu(e.clientX, e.clientY, [
-      {label:'Switch to Select', action:()=>App.setTool('select')},
-    ]);
+    xml += `    </node>\n`;
   }
-});
+  for(const e of State.edges){
+    const dir = e.directed!==false?'true':'false';
+    xml += `    <edge id="${escHtml(e.id)}" source="${escHtml(e.source)}" target="${escHtml(e.target)}" directed="${dir}">\n`;
+    if(e.label) xml += `      <data key="label">${escHtml(e.label)}</data>\n`;
+    if(e.style) xml += `      <data key="style">${escHtml(e.style)}</data>\n`;
+    if(e.dash) xml += `      <data key="dash">${escHtml(e.dash)}</data>\n`;
+    if(e.color) xml += `      <data key="color">${escHtml(e.color)}</data>\n`;
+    xml += `    </edge>\n`;
+  }
+  xml += `  </graph>\n</graphml>`;
+  $('graphml-output').value = xml;
+}
 
+// ═══════════════════════════════════════════════════════════════
+//  CONTEXT MENU INTERFACE
+// ═══════════════════════════════════════════════════════════════
 function showCtxMenu(x, y, items){
   const menu = $('ctx-menu');
   menu.innerHTML = items.map(item=>
-    item.sep ? '<div class="ctx-sep"></div>' :
-    `<div class="ctx-item ${item.danger?'danger':''}" data-action="${item.label}" style="${item.color?`color:${item.color}`:''}">${escHtml(item.label)}</div>`
+    item.sep ? '<div class="ctx-sep"></div>' : `<div class="ctx-item ${item.danger?'danger':''}" data-action="${item.label}" style="${item.color?`color:${item.color}`:''}">${escHtml(item.label)}</div>`
   ).join('');
-
   items.filter(i=>!i.sep).forEach((item,i)=>{
     const el = menu.querySelectorAll('.ctx-item')[i];
     if(el) el.addEventListener('click',()=>{ closeCtxMenu(); item.action(); });
   });
-
   menu.style.left = x+'px'; menu.style.top = y+'px';
   menu.classList.add('open');
 }
-
 function closeCtxMenu(){ $('ctx-menu').classList.remove('open'); }
 document.addEventListener('pointerdown', e=>{ if(!e.target.closest('#ctx-menu')) closeCtxMenu(); });
 
 // ═══════════════════════════════════════════════════════════════
-//  MODALS
+//  MODALS OVERLAY DIALOGS
 // ═══════════════════════════════════════════════════════════════
 function openModal(title, bodyHtml, buttons){
   $('modal-title').textContent = title;
   $('modal-body').innerHTML = bodyHtml;
-  $('modal-footer').innerHTML = buttons.map(b=>
-    `<button class="modal-btn ${b.primary?'primary':''}" id="mb-${b.id||b.label}">${escHtml(b.label)}</button>`
-  ).join('');
+  $('modal-footer').innerHTML = buttons.map(b=> `<button class="modal-btn ${b.primary?'primary':''}" id="mb-${b.id||b.label}">${escHtml(b.label)}</button>` ).join('');
   buttons.forEach(b=>{
     const el = $('mb-'+(b.id||b.label));
     if(el) el.addEventListener('click',()=>{ App.closeModal(); b.action&&b.action(); });
@@ -1043,249 +1082,250 @@ function openModal(title, bodyHtml, buttons){
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  GRAPHML IMPORT
+//  GRAPHML XML PARSER ENGINE
 // ═══════════════════════════════════════════════════════════════
 function parseGraphML(xmlStr){
   let doc;
-  try{ doc = (new DOMParser()).parseFromString(xmlStr,'application/xml'); }
-  catch(e){ return null; }
-  const err = doc.querySelector('parsererror');
-  if(err) return null;
-
-  const ns = 'http://graphml.graphdrawing.org/xmlns';
-  const graph = doc.querySelector('graph');
-  if(!graph) return null;
-
+  try{ doc = (new DOMParser()).parseFromString(xmlStr,'application/xml'); } catch(e){ return null; }
+  const err = doc.querySelector('parsererror'); if(err) return null;
+  const graph = doc.querySelector('graph'); if(!graph) return null;
   const graphId = graph.getAttribute('id') || 'graph1';
   const edgedefault = graph.getAttribute('edgedefault') || 'undirected';
-
   const nodes = [], edges = [];
   let maxId = 0;
-
   const getNum = s => { const m=s.match(/\d+$/); return m?parseInt(m[0]):0; };
 
-  // Nodes
-  for(const nodeEl of graph.querySelectorAll('node')){
-    const id = nodeEl.getAttribute('id');
-    if(!id) continue;
+  for(const el of graph.querySelectorAll('node')){
+    const id = el.getAttribute('id');
     maxId = Math.max(maxId, getNum(id));
-    const props = {};
-    let label = id;
-    for(const d of nodeEl.querySelectorAll('data')){
-      const key = d.getAttribute('key');
-      const val = d.textContent;
-      if(key==='label') label = val;
-      else props[key] = val;
+    const n = {id, label:id, x:0, y:0, color:'#1f6feb', r:26, props:{}};
+    for(const d of el.querySelectorAll('data')){
+      const k = d.getAttribute('key'), val = d.textContent.trim();
+      if(k==='label') n.label = val;
+      else if(k==='x') n.x = parseFloat(val)||0;
+      else if(k==='y') n.y = parseFloat(val)||0;
+      else if(k==='color') n.color = val;
+      else if(k==='r') n.r = parseInt(val)||26;
+      else n.props[k] = val;
     }
-    // grid layout placeholder, will auto-layout
-    nodes.push({id, label, x:0, y:0, color:'#1f6feb', r:26, props});
+    nodes.push(n);
   }
-
-  // Edges
-  for(const edgeEl of graph.querySelectorAll('edge')){
-    const id = edgeEl.getAttribute('id') || uid('e');
+  for(const el of graph.querySelectorAll('edge')){
+    const id = el.getAttribute('id') || ('e'+uid('e'));
     maxId = Math.max(maxId, getNum(id));
-    const source = edgeEl.getAttribute('source');
-    const target = edgeEl.getAttribute('target');
-    let label = '';
-    for(const d of edgeEl.querySelectorAll('data')){
-      if(d.getAttribute('key')==='label') label = d.textContent;
+    const e = {id, source:el.getAttribute('source'), target:el.getAttribute('target'), label:'', directed:edgedefault==='directed', style:'straight', dash:'solid', arrowSize:'medium'};
+    const dDir = el.getAttribute('directed');
+    if(dDir) e.directed = dDir==='true';
+    for(const d of el.querySelectorAll('data')){
+      const k = d.getAttribute('key'), val = d.textContent.trim();
+      if(k==='label') e.label = val;
+      else if(k==='style') e.style = val;
+      else if(k==='dash') e.dash = val;
+      else if(k==='color') e.color = val;
     }
-    const directed = edgeEl.getAttribute('directed')==='false' ? false : true;
-    if(source&&target) edges.push({id, source, target, label, directed});
+    edges.push(e);
   }
-
-  return {graphId, graphMeta:{edgedefault}, nodes, edges, idCounter: maxId+1};
+  return { nodes, edges, graphId, graphMeta:{edgedefault}, idCounter:maxId+1 };
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  JSON IMPORT
-// ═══════════════════════════════════════════════════════════════
-function importFromJSON(jsonStr){
-  let d;
-  try { d = JSON.parse(jsonStr); } catch(e){ return false; }
-
-  // Support our own format
-  if(d.nodes && d.edges){
+function importFromJSON(text){
+  let d; try{ d = JSON.parse(text); } catch(e){ return false; }
+  if(d && Array.isArray(d.nodes) && Array.isArray(d.edges)){
     snapshot();
-    State.nodes = d.nodes.map(n=>({id:n.id||uid('n'), label:n.label||'', x:n.x||0, y:n.y||0, color:n.color||'#1f6feb', r:n.r||26, props:n.props||{}}));
-    State.edges = d.edges.map(e=>({id:e.id||uid('e'), source:e.source, target:e.target, label:e.label||'', directed:e.directed!==false}));
+    State.nodes = d.nodes.map(n=>({id:n.id, label:n.label||n.id, x:n.x||0, y:n.y||0, color:n.color||'#1f6feb', r:n.r||26, props:n.props||{}}));
+    State.edges = d.edges.map(e=>({id:e.id||uid('e'), source:e.source, target:e.target, label:e.label||'', directed:e.directed!==false, style:e.style||'straight', dash:e.dash||'solid', arrowSize:e.arrowSize||'medium', color:e.color}));
     State.graphId = d.graphId || 'graph1';
     State.graphMeta = d.graphMeta || {edgedefault:'undirected'};
-    State.idCounter = d.idCounter || (Math.max(0,...State.nodes.map(n=>parseInt(n.id.replace(/\D/g,''))||0),...State.edges.map(e=>parseInt(e.id.replace(/\D/g,''))||0))+1);
+    State.idCounter = d.idCounter || (Math.max(0,...State.nodes.map(n=>parseInt(n.id.replace(/\D/g,''))||0))+1);
     State.selected.clear();
     autoLayoutIfNoPositions();
-    renderAll(); renderInspector();
-    notify('JSON imported');
-    return true;
-  }
-
-  // Support graphObjects array format (legacy)
-  if(Array.isArray(d)){
-    snapshot();
-    const nodes = d.filter(o=>o.type==='node'||!o.source);
-    const edges = d.filter(o=>o.type==='edge'||o.source);
-    State.nodes = nodes.map(n=>({id:n.id||uid('n'), label:n.label||n.id||'', x:n.x||0, y:n.y||0, color:n.color||'#1f6feb', r:26, props:{}}));
-    State.edges = edges.map(e=>({id:e.id||uid('e'), source:e.source, target:e.target, label:e.label||'', directed:true}));
-    State.selected.clear();
-    autoLayoutIfNoPositions();
-    renderAll(); renderInspector();
-    notify('Legacy JSON imported');
+    renderAll();
+    renderInspector();
     return true;
   }
   return false;
 }
 
 function autoLayoutIfNoPositions(){
-  const needsLayout = State.nodes.every(n=>n.x===0&&n.y===0);
-  if(needsLayout) doAutoLayout();
+  if(State.nodes.every(n=>n.x===0&&n.y===0)) doAutoLayout();
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  AUTO LAYOUT (force-directed, native JS)
+//  FORCE DIRECTED AUTO LAYOUT
 // ═══════════════════════════════════════════════════════════════
 function doAutoLayout(){
   if(State.nodes.length===0) return;
-  // Initialize random positions
   const W=800, H=600;
   for(const n of State.nodes){
-    if(n.x===0&&n.y===0){
-      n.x = 80 + Math.random()*(W-160);
-      n.y = 80 + Math.random()*(H-160);
-    }
+    if(n.x===0&&n.y===0){ n.x = 80 + Math.random()*(W-160); n.y = 80 + Math.random()*(H-160); }
   }
-  // Simple force-directed
-  const K = 80; // spring length
-  const REPULSE = 6000;
-  const ITERS = 120;
+  const K = 80, REPULSE = 6000, ITERS = 120;
   for(let iter=0; iter<ITERS; iter++){
-    const temp = 1 - iter/ITERS;
     const forces = {};
     for(const n of State.nodes) forces[n.id]={fx:0,fy:0};
-    // Repulsion
     for(let i=0;i<State.nodes.length;i++){
       for(let j=i+1;j<State.nodes.length;j++){
         const a=State.nodes[i], b=State.nodes[j];
-        let dx=b.x-a.x, dy=b.y-a.y;
-        const d=Math.sqrt(dx*dx+dy*dy)||1;
-        const f=REPULSE/(d*d);
-        forces[a.id].fx-=f*dx/d; forces[a.id].fy-=f*dy/d;
-        forces[b.id].fx+=f*dx/d; forces[b.id].fy+=f*dy/d;
+        let dx=b.x-a.x, dy=b.y-a.y; const d=Math.sqrt(dx*dx+dy*dy)||1;
+        const f=REPULSE/(d*d); forces[a.id].fx-=f*dx/d; forces[a.id].fy-=f*dy/d; forces[b.id].fx+=f*dx/d; forces[b.id].fy+=f*dy/d;
       }
     }
-    // Attraction
     for(const e of State.edges){
       const a=State.nodes.find(n=>n.id===e.source), b=State.nodes.find(n=>n.id===e.target);
       if(!a||!b) continue;
-      let dx=b.x-a.x, dy=b.y-a.y;
-      const d=Math.sqrt(dx*dx+dy*dy)||1;
-      const f=(d-K)/K;
-      forces[a.id].fx+=f*dx/d; forces[a.id].fy+=f*dy/d;
-      forces[b.id].fx-=f*dx/d; forces[b.id].fy-=f*dy/d;
+      let dx=b.x-a.x, dy=b.y-a.y; const d=Math.sqrt(dx*dx+dy*dy)||1;
+      const f=0.06*(d-K); forces[a.id].fx+=f*dx/d; forces[a.id].fy+=f*dy/d; forces[b.id].fx-=f*dx/d; forces[b.id].fy-=f*dy/d;
     }
-    const step = 20*temp+1;
     for(const n of State.nodes){
-      const f=forces[n.id];
-      const mag=Math.sqrt(f.fx*f.fx+f.fy*f.fy)||1;
-      const s=Math.min(step, mag)/mag;
-      n.x+=f.fx*s; n.y+=f.fy*s;
+      n.x += Math.max(-30, Math.min(30, forces[n.id].fx));
+      n.y += Math.max(-30, Math.min(30, forces[n.id].fy));
     }
   }
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  LOCALSTORAGE
+//  APPLICATION API INTERFACE
 // ═══════════════════════════════════════════════════════════════
-const LS_KEY = 'lpg_editor_v1';
-
-function loadFromStorage(){
-  try{
-    const s = localStorage.getItem(LS_KEY);
-    if(s){ deserialize(s); autoLayoutIfNoPositions(); renderAll(); renderInspector(); notify('Auto-loaded from storage'); }
-  } catch(e){}
-}
-
-function saveToStorage(){
-  try{ localStorage.setItem(LS_KEY, serialize()); notify('Saved to browser storage'); }
-  catch(e){ notify('Save failed'); }
-}
-
-// autosave every 30s
-setInterval(()=>{ if(State.nodes.length>0) saveToStorage(); }, 30000);
-
-// ═══════════════════════════════════════════════════════════════
-//  APP PUBLIC API
-// ═══════════════════════════════════════════════════════════════
-const App = {
+window.App = {
   setTool(t){
-    State.tool = t;
-    document.body.setAttribute('data-tool', t);
-    for(const btn of document.querySelectorAll('[id^="tool-"]')) btn.classList.remove('active');
-    const btn = $('tool-'+t);
-    if(btn) btn.classList.add('active');
+    State.tool = t; document.body.setAttribute('data-tool',t);
+    for(const btn of document.querySelectorAll('#toolbar .tb-btn')) if(btn.id) btn.classList.remove('active');
+    const target = $('tool-'+t); if(target) target.classList.add('active');
+    if(t==='select'){ State.selected.clear(); renderAll(); renderInspector(); }
   },
+  toggleTheme(){
+    const isLight = document.body.classList.toggle('light-mode');
+    $('theme-icon').textContent = isLight ? '🌙' : '☀️';
+    renderAll();
+    notify(isLight ? "Light theme enabled" : "Dark theme enabled");
+  },
+  exportPng() {
+    const svg = $('svg-canvas').cloneNode(true);
+    const sRect = svg.querySelector('#sel-rect'); if(sRect) sRect.remove();
+    
+    let cssText = '';
+    try {
+      for (const rule of document.styleSheets[0].cssRules) {
+        if (rule.selectorText && (rule.selectorText.includes('node') || rule.selectorText.includes('edge') || rule.selectorText.includes('svg'))) {
+          cssText += rule.cssText + '\n';
+        }
+      }
+    } catch(e){}
 
+    const isLight = document.body.classList.contains('light-mode');
+    const styleEl = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+    styleEl.textContent = `
+      ${cssText}
+      :root {
+        --bg0: ${isLight ? '#f6f8fa' : '#0d1117'};
+        --text: ${isLight ? '#1f2937' : '#e6edf3'};
+        --text2: ${isLight ? '#4b5563' : '#8b949e'};
+        --text3: ${isLight ? '#9ca3af' : '#6e7681'};
+        --accent: ${isLight ? '#2563eb' : '#58a6ff'};
+        --edge: ${isLight ? '#3b82f6' : '#58a6ff'};
+        --edge-sel: #f0883e;
+        --node-default: ${isLight ? '#2563eb' : '#1f6feb'};
+        --font-ui: 'Segoe UI', sans-serif;
+      }
+      #grid-bg { fill: ${isLight ? '#f6f8fa' : '#0d1117'}; }
+    `;
+    svg.insertBefore(styleEl, svg.firstChild);
+
+    const bbox = $('graph-root').getBBox();
+    const padding = 50;
+    const width = Math.max(800, bbox.width + padding * 2);
+    const height = Math.max(600, bbox.height + padding * 2);
+    
+    svg.setAttribute('width', width);
+    svg.setAttribute('height', height);
+    svg.setAttribute('viewBox', `${bbox.x - padding} ${bbox.y - padding} ${width} ${height}`);
+
+    const svgString = (new XMLSerializer()).serializeToString(svg);
+    const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+    const url = URL.createObjectURL(svgBlob);
+    
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = width * 2; canvas.height = height * 2;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(2, 2);
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      const a = document.createElement('a');
+      a.download = (State.graphId || 'graph') + '.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+      URL.revokeObjectURL(url);
+      notify('PNG exported successfully');
+    };
+    img.src = url;
+  },
+  handleJsonFile(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (importFromJSON(e.target.result)) {
+        notify('JSON File uploaded successfully');
+      } else {
+        notify('Invalid JSON graph format file', 3000);
+      }
+      input.value = '';
+    };
+    reader.readAsText(file);
+  },
   newGraph(){
-    openModal('New Graph','<p style="color:var(--text2)">Create a new empty graph? Unsaved changes will be lost.</p>',
-      [{label:'Cancel'},{label:'New Graph', primary:true, action:()=>{
-        snapshot();
-        State.nodes=[]; State.edges=[]; State.selected.clear();
-        State.graphId='graph1'; State.graphMeta={edgedefault:'undirected'};
-        State.view={x:0,y:0,k:1};
-        renderAll(); renderInspector(); notify('New graph created');
-      }}]);
+    if(confirm('Clear graph canvas?')){
+      snapshot(); State.nodes=[]; State.edges=[]; State.selected.clear(); State.idCounter=1; renderAll(); renderInspector();
+    }
   },
-
   undo(){
-    if(!State.history.length){ notify('Nothing to undo'); return; }
+    if(!State.history.length) return;
     State.future.push(serialize());
     deserialize(State.history.pop());
     renderAll(); renderInspector(); notify('Undo');
   },
   redo(){
-    if(!State.future.length){ notify('Nothing to redo'); return; }
+    if(!State.future.length) return;
     State.history.push(serialize());
     deserialize(State.future.pop());
     renderAll(); renderInspector(); notify('Redo');
   },
-
   deleteSelected(){
     if(!State.selected.size) return;
-    snapshot();
-    const ids = new Set(State.selected);
+    snapshot(); const ids = new Set(State.selected);
     State.nodes = State.nodes.filter(n=>!ids.has(n.id));
     State.edges = State.edges.filter(e=>!ids.has(e.id) && !ids.has(e.source) && !ids.has(e.target));
-    State.selected.clear();
-    renderAll(); renderInspector(); notify('Deleted');
+    State.selected.clear(); renderAll(); renderInspector(); notify('Deleted');
   },
-
   setProp(type, id, key, val){
     snapshot();
     if(type==='node'){
-      const n=State.nodes.find(n=>n.id===id);
-      if(n){ n[key]=val; renderAll(); renderInspector(); }
+      const n=State.nodes.find(n=>n.id===id); if(n){ n[key]=val; renderAll(); renderInspector(); }
     } else {
-      const e=State.edges.find(e=>e.id===id);
-      if(e){ e[key]=val; renderAll(); renderInspector(); }
+      const e=State.edges.find(e=>e.id===id); if(e){ e[key]=val; renderAll(); renderInspector(); }
     }
   },
-
-  setPropKV(type, id, key, val){
-    snapshot();
+  setLiveProp(type, id, key, val){
     if(type==='node'){
-      const n=State.nodes.find(n=>n.id===id);
-      if(n){ if(!n.props)n.props={}; n.props[key]=val; renderGraphML(); renderTable(); }
+      const n=State.nodes.find(n=>n.id===id); if(n) n[key]=val;
+    } else {
+      const e=State.edges.find(e=>e.id===id); if(e) e[key]=val;
     }
+    renderAll();
+  },
+  setLivePropKV(type, id, key, val){
+    if(type==='node'){
+      const n=State.nodes.find(n=>n.id===id); if(n&&n.props) n.props[key]=val;
+    }
+    renderGraphML(); renderTable();
   },
   renamePropKey(type, id, oldKey, newKey){
-    if(oldKey===newKey) return;
-    snapshot();
+    if(oldKey===newKey) return; snapshot();
     if(type==='node'){
       const n=State.nodes.find(n=>n.id===id);
-      if(n&&n.props){
-        n.props[newKey]=n.props[oldKey]; delete n.props[oldKey];
-        renderGraphML(); renderTable();
-      }
+      if(n&&n.props){ n.props[newKey]=n.props[oldKey]; delete n.props[oldKey]; renderGraphML(); renderTable(); }
     }
   },
   addProp(type, id){
@@ -1298,226 +1338,158 @@ const App = {
   removeProp(type, id, key){
     snapshot();
     if(type==='node'){
-      const n=State.nodes.find(n=>n.id===id);
-      if(n&&n.props){ delete n.props[key]; renderInspector(); renderGraphML(); }
+      const n=State.nodes.find(n=>n.id===id); if(n&&n.props){ delete n.props[key]; renderInspector(); renderGraphML(); }
     }
   },
-
   renameNodeId(oldId, newId){
     if(!newId||newId===oldId) return;
     if(State.nodes.find(n=>n.id===newId)){ notify('ID already exists'); return; }
     snapshot();
-    const n=State.nodes.find(n=>n.id===oldId);
-    if(n) n.id=newId;
+    const n=State.nodes.find(n=>n.id===oldId); if(n) n.id=newId;
     for(const e of State.edges){
-      if(e.source===oldId) e.source=newId;
-      if(e.target===oldId) e.target=newId;
+      if(e.source===oldId) e.source=newId; if(e.target===oldId) e.target=newId;
     }
     State.selected.delete(oldId); State.selected.add(newId);
-    renderAll(); renderInspector(); notify('ID renamed');
+    renderAll(); renderInspector(); notify('ID Renamed');
   },
-  renameEdgeId(oldId, newId){
-    if(!newId||newId===oldId) return;
-    snapshot();
-    const e=State.edges.find(e=>e.id===oldId);
-    if(e) e.id=newId;
-    State.selected.delete(oldId); State.selected.add(newId);
-    renderAll(); renderInspector();
-  },
-
   setMultiColor(c){
     snapshot();
     for(const id of State.selected){
-      const n=State.nodes.find(n=>n.id===id);
-      if(n) n.color=c;
-    }
-    renderAll();
-  },
-
-  selectNode(id){
-    State.selected.clear(); State.selected.add(id);
-    // scroll node into view
-    const n=State.nodes.find(n=>n.id===id);
-    if(n){
-      const rect=$('canvas-wrap').getBoundingClientRect();
-      State.view.x = rect.width/2 - n.x*State.view.k;
-      State.view.y = rect.height/2 - n.y*State.view.k;
-      applyTransform();
+      const n = State.nodes.find(nn=>nn.id===id); if(n) n.color = c;
+      const e = State.edges.find(ee=>ee.id===id); if(e) e.color = c;
     }
     renderAll(); renderInspector();
   },
-
-  selectFromTable(id){
-    State.selected.clear(); State.selected.add(id);
-    renderAll(); renderInspector();
-    renderTable();
-  },
-
-  filterTable(v){ _tableFilter=v; renderTable(); },
-
-  sortTable(col){
-    if(State.tableSort.col===col) State.tableSort.asc=!State.tableSort.asc;
-    else { State.tableSort.col=col; State.tableSort.asc=true; }
-    renderTable();
-  },
-
+  autoLayout(){ snapshot(); doAutoLayout(); renderAll(); notify('Force layout applied'); },
   fitView(){
-    if(!State.nodes.length) return;
-    const xs=State.nodes.map(n=>n.x), ys=State.nodes.map(n=>n.y);
-    const x1=Math.min(...xs)-60, y1=Math.min(...ys)-60,
-          x2=Math.max(...xs)+60, y2=Math.max(...ys)+60;
-    const rect=$('canvas-wrap').getBoundingClientRect();
-    const kx=rect.width/(x2-x1), ky=rect.height/(y2-y1);
-    const k=Math.min(kx,ky,2)*0.92;
-    State.view.k=k;
-    State.view.x=rect.width/2-(x1+x2)/2*k;
-    State.view.y=rect.height/2-(y1+y2)/2*k;
+    if(State.nodes.length===0){ State.view={x:0,y:0,k:1}; applyTransform(); return; }
+    const rect = $('svg-canvas').getBoundingClientRect();
+    const W = rect.width||800, H = rect.height||600;
+    let minX=Infinity, maxX=-Infinity, minY=Infinity, maxY=-Infinity;
+    for(const n of State.nodes){
+      const r = nodeRadius(n);
+      if(n.x-r < minX) minX=n.x-r; if(n.x+r > maxX) maxX=n.x+r;
+      if(n.y-r < minY) minY=n.y-r; if(n.y+r > maxY) maxY=n.y+r;
+    }
+    const gW = maxX-minX, gH = maxY-minY, padding=60;
+    const k = Math.max(0.1, Math.min(2, Math.min((W-padding*2)/gW, (H-padding*2)/gH)));
+    State.view.k = k;
+    State.view.x = W/2 - ((minX+maxX)/2)*k; State.view.y = H/2 - ((minY+maxY)/2)*k;
     applyTransform();
   },
-
-  autoLayout(){
-    snapshot();
-    doAutoLayout();
-    renderAll(); notify('Auto-layout applied');
-    App.fitView();
-  },
-
   toggleDrawer(){
-    State.drawerOpen=!State.drawerOpen;
-    $('drawer').classList.toggle('collapsed',!State.drawerOpen);
+    const dr = $('drawer'); dr.classList.toggle('collapsed');
+    State.drawerOpen = !dr.classList.contains('collapsed');
+    $('drawer-toggle').textContent = State.drawerOpen ? '▼' : '▲';
   },
-
   copyGraphML(){
-    navigator.clipboard.writeText(generateGraphML()).then(()=>notify('Copied to clipboard'));
+    $('graphml-output').select(); document.execCommand('copy'); notify('XML copied to clipboard');
   },
   downloadGraphML(){
-    download(generateGraphML(), (State.graphId||'graph')+'.graphml', 'application/xml');
-    notify('Downloaded .graphml');
+    downloadFile($('graphml-output').value, (State.graphId||'graph')+'.graphml', 'application/xml');
   },
   downloadJson(){
-    download(serialize(), (State.graphId||'graph')+'.json', 'application/json');
-    notify('Downloaded .json');
+    downloadFile(serialize(true), (State.graphId||'graph')+'.json', 'application/json');
   },
-  saveToStorage,
-
   importGraphML(){
-    openModal('Import GraphML',
-      `<textarea id="import-xml" placeholder="Paste GraphML XML here…"></textarea>
-       <p class="modal-note">Paste a valid GraphML XML document. The graph will replace the current one.</p>`,
-      [{label:'Cancel'},{label:'Import', primary:true, action:()=>{
-        const xml=$('import-xml').value.trim();
-        if(!xml){ notify('Nothing to import'); return; }
-        const result = parseGraphML(xml);
-        if(!result){ notify('Invalid GraphML'); return; }
-        snapshot();
-        State.nodes=result.nodes; State.edges=result.edges;
-        State.graphId=result.graphId; State.graphMeta=result.graphMeta;
-        State.idCounter=result.idCounter||1;
-        State.selected.clear();
-        doAutoLayout();
-        renderAll(); renderInspector(); App.fitView();
-        notify('GraphML imported: '+State.nodes.length+' nodes, '+State.edges.length+' edges');
-      }}]);
+    const input = document.createElement('input'); input.type='file'; input.accept='.graphml,.xml';
+    input.onchange = e=>{
+      const file = e.target.files[0]; if(!file) return;
+      const reader = new FileReader();
+      reader.onload = res=>{
+        const result = parseGraphML(res.target.result);
+        if(result){
+          snapshot(); State.nodes=result.nodes; State.edges=result.edges; State.graphId=result.graphId; State.graphMeta=result.graphMeta; State.idCounter=result.idCounter||1; State.selected.clear(); doAutoLayout(); renderAll(); renderInspector(); App.fitView(); notify('GraphML Imported');
+        } else { notify('Invalid XML/GraphML schema', 3000); }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
   },
-
+  saveToStorage(){ localStorage.setItem('lpg_graph_state', serialize()); notify('Saved to local browser cache'); },
+  selectNode(id){ State.selected.clear(); State.selected.add(id); renderAll(); renderInspector(); },
+  selectFromTable(id){ if(!State.selected.has(id)){ State.selected.clear(); State.selected.add(id); renderAll(); renderInspector(); } },
+  sortTable(col){
+    if(State.tableSort.col === col) State.tableSort.asc = !State.tableSort.asc;
+    else { State.tableSort.col = col; State.tableSort.asc = true; }
+    renderTable();
+  },
+  filterTable(val){ _tableFilter = val; renderTable(); },
   importJson(){
-    openModal('Import JSON',
-      `<textarea id="import-json" placeholder="Paste JSON here…"></textarea>
-       <p class="modal-note">Accepts LPG Editor JSON format or GraphML XML.</p>`,
-      [{label:'Cancel'},{label:'Import', primary:true, action:()=>{
-        const text=$('import-json').value.trim();
-        if(!text){ notify('Nothing to import'); return; }
-        // Try GraphML first
+    openModal('Import JSON Layout String', `<textarea id="import-json" placeholder="Paste your text layout structure here…"></textarea>`, [
+      {label:'Cancel'},
+      {label:'Load Layout', primary:true, action:()=>{
+        const text=$('import-json').value.trim(); if(!text){ notify('Nothing to import'); return; }
         if(text.startsWith('<?xml')||text.startsWith('<graphml')){
-          const result=parseGraphML(text);
-          if(result){
-            snapshot();
-            State.nodes=result.nodes; State.edges=result.edges;
-            State.graphId=result.graphId; State.graphMeta=result.graphMeta;
-            State.idCounter=result.idCounter||1;
-            State.selected.clear();
-            doAutoLayout();
-            renderAll(); renderInspector(); App.fitView();
-            notify('GraphML imported');
-            return;
-          }
+          const res = parseGraphML(text);
+          if(res){ snapshot(); State.nodes=res.nodes; State.edges=res.edges; State.graphId=res.graphId; State.graphMeta=res.graphMeta; State.idCounter=res.idCounter||1; State.selected.clear(); doAutoLayout(); renderAll(); renderInspector(); App.fitView(); notify('GraphML string loaded'); return; }
         }
-        if(!importFromJSON(text)) notify('Invalid format');
-      }}]);
+        if(!importFromJSON(text)) notify('Unrecognized format structure', 3000);
+      }}
+    ]);
   },
-
   exportJson(){
-    openModal('Export JSON',
-      `<textarea readonly>${escHtml(serialize())}</textarea>
-       <p class="modal-note">Copy the above JSON to save or transfer your graph.</p>`,
-      [{label:'Close'},{label:'Download', primary:true, action:()=>App.downloadJson()}]);
+    openModal('Export Graph JSON Layout', `<textarea readonly>${escHtml(serialize(true))}</textarea><p class="modal-note">Copy layout parameters data explicitly below.</p>`, [{label:'Close'},{label:'Download', primary:true, action:()=>App.downloadJson()}]);
   },
-
-  closeModal(){ $('modal-overlay').classList.remove('open'); },
+  closeModal(){ $('modal-overlay').classList.remove('open'); }
 };
 
 // ═══════════════════════════════════════════════════════════════
-//  DOWNLOAD UTILITY
+//  DOWNLOAD UTILITIES
 // ═══════════════════════════════════════════════════════════════
-function download(content, filename, mime){
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([content],{type:mime}));
-  a.download=filename; a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+function downloadFile(content, filename, contentType) {
+  const a = document.createElement("a");
+  const file = new Blob([content], {type: contentType});
+  a.href = URL.createObjectURL(file); a.download = filename; a.click();
+  URL.revokeObjectURL(a.href);
+}
+function loadFromStorage(){
+  const s = localStorage.getItem('lpg_graph_state');
+  if(s){ try{ deserialize(s); } catch(e){} }
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  KEYBOARD SHORTCUTS
+//  GLOBAL KEYBOARD LISTENERS
 // ═══════════════════════════════════════════════════════════════
 document.addEventListener('keydown', e=>{
-  const tag=document.activeElement.tagName.toLowerCase();
-  if(['input','textarea','select'].includes(tag)) return;
-  if(e.ctrlKey||e.metaKey){
-    if(e.key==='z'&&!e.shiftKey){ e.preventDefault(); App.undo(); }
-    if(e.key==='z'&&e.shiftKey||e.key==='y'){ e.preventDefault(); App.redo(); }
-    if(e.key==='s'){ e.preventDefault(); saveToStorage(); }
-    if(e.key==='a'){ e.preventDefault(); State.selected=new Set(State.nodes.map(n=>n.id)); renderAll(); renderInspector(); }
+  if(e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+  if(e.ctrlKey || e.metaKey){
+    if(e.key==='z' || e.key==='Z'){ e.preventDefault(); App.undo(); }
+    if(e.key==='y' || e.key==='Y'){ e.preventDefault(); App.redo(); }
     return;
   }
   switch(e.key){
     case 'Delete': case 'Backspace': App.deleteSelected(); break;
-    case 's': App.setTool('select'); break;
-    case 'n': App.setTool('node'); break;
-    case 'e': App.setTool('edge'); break;
-    case 'p': App.setTool('pan'); break;
-    case 'f': App.fitView(); break;
+    case 's': case 'S': App.setTool('select'); break;
+    case 'n': case 'N': App.setTool('node'); break;
+    case 'e': case 'E': App.setTool('edge'); break;
+    case 'p': case 'P': App.setTool('pan'); break;
+    case 'f': case 'F': App.fitView(); break;
     case 'Escape': State.selected.clear(); State.edgeGhost=null; removeEdgeGhost(); renderAll(); renderInspector(); break;
   }
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  INIT
+//  INITIALIZATION ENTRY
 // ═══════════════════════════════════════════════════════════════
 (function init(){
   App.setTool('select');
   loadFromStorage();
   if(State.nodes.length===0){
-    // Starter demo
     State.nodes=[
       {id:'nodeA',label:'Node A',x:200,y:200,color:'#1f6feb',r:28,props:{status:'active'}},
       {id:'nodeB',label:'Node B',x:420,y:150,color:'#1a7f37',r:26,props:{}},
       {id:'nodeC',label:'Node C',x:380,y:320,color:'#9e6a03',r:26,props:{}},
     ];
     State.edges=[
-      {id:'e1',source:'nodeA',target:'nodeB',label:'connects',directed:true},
-      {id:'e2',source:'nodeB',target:'nodeC',label:'flows',directed:true},
+      {id:'e1',source:'nodeA',target:'nodeB',label:'link1',directed:true,style:'straight',dash:'solid',arrowSize:'medium'},
+      {id:'e2',source:'nodeB',target:'nodeC',label:'link2',directed:true,style:'curved',dash:'solid',arrowSize:'medium'},
     ];
-    renderAll(); renderInspector();
-    App.fitView();
+    State.idCounter=4;
   }
-  // make graphml drawer open
-  State.drawerOpen=true;
-  $('drawer').classList.remove('collapsed');
-  renderGraphML();
+  renderAll();
+  renderInspector();
 })();
-
-// Close modal on overlay click
-$('modal-overlay').addEventListener('pointerdown', e=>{ if(e.target===$('modal-overlay')) App.closeModal(); });
 </script>
 </body>
 </html>
