@@ -399,8 +399,10 @@ body[data-paint="active"] .edge-group{cursor:copy}
         <div class="set-section-label">Interface Font Size</div>
         <div class="set-row">
           <label>Text size</label>
-          <input type="range" min="10" max="20" step="1" value="14" id="font-size-slider" oninput="App.setGuiFontSize(this.value)">
-          <span class="set-val" id="font-size-val">14px</span>
+          <input type="range" min="10" max="20" step="1" value="14" id="font-size-slider"
+            oninput="App.setGuiFontSize(this.value); this.nextElementSibling.value=this.value">
+          <input type="number" min="10" max="72" step="1" value="14" id="font-size-val" style="width:52px"
+            oninput="App.setGuiFontSize(this.value); this.previousElementSibling.value=Math.min(20,parseInt(this.value)||14)">
         </div>
       </div>
       <div class="set-section">
@@ -1438,8 +1440,8 @@ window.App = {
   openSettings(){
     $('settings-overlay').classList.add('open');
     const fs = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--gui-font-size'))||14;
-    $('font-size-slider').value = fs;
-    $('font-size-val').textContent = fs+'px';
+    const slider = $('font-size-slider'); if(slider) slider.value = Math.min(20, fs);
+    const numInput = $('font-size-val'); if(numInput) numInput.value = fs;
     const ck = $('clamp-labels-chk'); if(ck) ck.checked = State.clampNodeLabels;
   },
   closeSettings(event){
@@ -1447,9 +1449,10 @@ window.App = {
       $('settings-overlay').classList.remove('open');
   },
   setGuiFontSize(val){
-    const px = parseInt(val)||14;
+    const px = Math.max(10, parseInt(val)||14);
     document.documentElement.style.setProperty('--gui-font-size', px+'px');
-    $('font-size-val').textContent = px+'px';
+    const numInput = $('font-size-val'); if(numInput) numInput.value = px;
+    const slider = $('font-size-slider'); if(slider) slider.value = Math.min(20, px);
     localStorage.setItem('lpg_font_size', px);
   },
   exportPng() {
@@ -1850,8 +1853,8 @@ document.addEventListener('keydown', e=>{
   }
   // Restore font size
   const savedFs = parseInt(localStorage.getItem('lpg_font_size'));
-  if(savedFs && savedFs>=10 && savedFs<=20){
-    document.documentElement.style.setProperty('--gui-font-size', savedFs+'px');
+  if(savedFs && savedFs>=10){
+    App.setGuiFontSize(savedFs);
   }
   App.setTool('select');
   App.setSelMode('nodes');
