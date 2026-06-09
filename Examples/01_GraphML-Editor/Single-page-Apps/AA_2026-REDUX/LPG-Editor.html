@@ -22,6 +22,7 @@
   --toolbar-h:42px;--inspector-w:300px;--drawer-h:220px;
   --transition:.15s ease;
   --grid-dot-color: rgba(255,255,255,0.07);
+  --gui-font-size: 14px;
 }
 
 body.light-mode {
@@ -35,7 +36,8 @@ body.light-mode {
   --grid-dot-color: rgba(0,0,0,0.08);
 }
 
-html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--text);font-family:var(--font-ui);font-size:13px}
+html{height:100%;font-size:var(--gui-font-size)}
+body{height:100%;overflow:hidden;background:var(--bg0);color:var(--text);font-family:var(--font-ui);font-size:1rem}
 
 /* ── LAYOUT ───────────────────────────────────────────────────── */
 #app{display:grid;grid-template-rows:var(--toolbar-h) 1fr auto;grid-template-columns:1fr var(--inspector-w);height:100vh}
@@ -48,15 +50,15 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--text);fo
 
 /* ── TOOLBAR ──────────────────────────────────────────────────── */
 .tb-sep{width:1px;height:22px;background:var(--border);margin:0 4px;flex-shrink:0}
-.tb-btn{display:flex;align-items:center;gap:5px;padding:4px 9px;border:1px solid transparent;border-radius:var(--radius);background:transparent;color:var(--text2);cursor:pointer;font-size:12px;font-family:var(--font-ui);white-space:nowrap;transition:all var(--transition)}
+.tb-btn{display:flex;align-items:center;gap:5px;padding:4px 9px;border:1px solid transparent;border-radius:var(--radius);background:transparent;color:var(--text2);cursor:pointer;font-size:.86em;font-family:var(--font-ui);white-space:nowrap;transition:all var(--transition)}
 .tb-btn:hover{background:var(--bg2);border-color:var(--border);color:var(--text)}
 .tb-btn.active{background:var(--accent2);border-color:var(--accent);color:#fff}
 .tb-btn.danger:hover{background:rgba(248,81,73,.15);border-color:var(--red);color:var(--red)}
-.tb-btn svg{width:14px;height:14px;flex-shrink:0}
-.tb-label{color:var(--text3);font-size:11px;font-family:var(--font-mono);padding:0 4px}
-#toolbar-title{font-family:var(--font-mono);font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.05em;margin-right:6px}
+.tb-btn svg{width:1em;height:1em;flex-shrink:0}
+.tb-label{color:var(--text3);font-size:.79em;font-family:var(--font-mono);padding:0 4px}
+#toolbar-title{font-family:var(--font-mono);font-size:.86em;color:var(--accent);font-weight:600;letter-spacing:.05em;margin-right:6px}
 .tb-spacer{flex:1}
-#zoom-display{font-family:var(--font-mono);font-size:11px;color:var(--text3);padding:0 6px;min-width:50px;text-align:right}
+#zoom-display{font-family:var(--font-mono);font-size:.79em;color:var(--text3);padding:0 6px;min-width:50px;text-align:right}
 
 /* ── TOOL MODES ───────────────────────────────────────────────── */
 body[data-tool="node"] #svg-canvas{cursor:crosshair}
@@ -64,19 +66,18 @@ body[data-tool="edge"] #svg-canvas{cursor:cell}
 body[data-tool="select"] #svg-canvas{cursor:default}
 body[data-tool="pan"] #svg-canvas{cursor:grab}
 body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
+body.mid-panning #svg-canvas{cursor:grabbing!important}
 
 /* ── SVG GRAPH ELEMENTS ───────────────────────────────────────── */
 .node-group{cursor:pointer}
-.node-group .node-circle{fill:var(--node-default);stroke:var(--node-ring);stroke-width:1.5;transition:filter .1s}
+.node-group .node-circle{stroke-width:1.5;transition:filter .1s}
 .node-group.selected .node-circle{stroke:#fff;stroke-width:2.5;filter:drop-shadow(0 0 8px var(--accent-glow))}
-.node-group.orphan .node-circle{stroke:var(--orange);stroke-dasharray:4 2}
+.node-group.orphan .node-circle{stroke-dasharray:4 2}
 .node-group .node-label{fill:var(--text);font-family:var(--font-ui);font-size:11px;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
-.edge-line{stroke:var(--edge);stroke-width:1.5;fill:none;cursor:pointer;transition:stroke .1s}
-.edge-line.selected{stroke:var(--edge-sel);stroke-width:2.5}
-.edge-line:hover{stroke:var(--accent);stroke-width:2}
+.edge-line{stroke-width:1.5;fill:none;cursor:pointer;transition:stroke .1s}
+.edge-line.selected{stroke-width:2.5}
+.edge-line:hover{stroke-width:2}
 .edge-label-text{fill:var(--text2);font-family:var(--font-ui);font-size:10px;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
-.edge-arrow{fill:var(--edge)}
-.edge-arrow.selected{fill:var(--edge-sel)}
 #sel-rect{fill:var(--sel-fill);stroke:var(--sel-stroke);stroke-width:1;stroke-dasharray:4 2;pointer-events:none}
 .edge-ghost{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:6 3;fill:none;pointer-events:none}
 .node-port{fill:var(--accent);opacity:0;cursor:crosshair;transition:opacity .1s}
@@ -84,35 +85,35 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
 
 /* ── INSPECTOR ────────────────────────────────────────────────── */
 #inspector-header{padding:10px 12px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-#inspector-title{font-family:var(--font-mono);font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+#inspector-title{font-family:var(--font-mono);font-size:.79em;color:var(--accent);font-weight:600;letter-spacing:.05em;text-transform:uppercase}
 #inspector-body{flex:1;padding:10px 12px;overflow-y:auto}
 .insp-section{margin-bottom:14px}
-.insp-section-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:var(--font-mono)}
+.insp-section-label{font-size:.71em;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:var(--font-mono)}
 .insp-row{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
-.insp-row label{font-size:11px;color:var(--text2)}
-.insp-row input,.insp-row select,.insp-row textarea{background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:5px 8px;font-size:12px;font-family:var(--font-ui);width:100%;outline:none;transition:border-color var(--transition)}
+.insp-row label{font-size:.79em;color:var(--text2)}
+.insp-row input,.insp-row select,.insp-row textarea{background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:5px 8px;font-size:.86em;font-family:var(--font-ui);width:100%;outline:none;transition:border-color var(--transition)}
 .insp-row input:focus,.insp-row select:focus,.insp-row textarea:focus{border-color:var(--accent)}
-.insp-row textarea{resize:vertical;min-height:60px;font-family:var(--font-mono);font-size:11px}
+.insp-row textarea{resize:vertical;min-height:60px;font-family:var(--font-mono);font-size:.79em}
 .insp-row input[type=color]{padding:2px;height:28px;cursor:pointer}
-.insp-btn{width:100%;padding:6px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-size:12px;font-family:var(--font-ui);transition:all var(--transition);margin-top:3px}
+.insp-btn{width:100%;padding:6px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-size:.86em;font-family:var(--font-ui);transition:all var(--transition);margin-top:3px}
 .insp-btn:hover{background:var(--bg3);border-color:var(--border2)}
 .insp-btn.danger{border-color:rgba(248,81,73,.4);color:var(--red)}
 .insp-btn.danger:hover{background:rgba(248,81,73,.1)}
-.insp-empty{color:var(--text3);font-size:12px;padding:20px 0;text-align:center;line-height:1.6}
+.insp-empty{color:var(--text3);font-size:.86em;padding:20px 0;text-align:center;line-height:1.6}
 .prop-list{display:flex;flex-direction:column;gap:4px}
 .prop-item{display:flex;gap:4px;align-items:center}
-.prop-item input{flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:4px 6px;font-size:11px;font-family:var(--font-mono);outline:none}
+.prop-item input{flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:4px 6px;font-size:.79em;font-family:var(--font-mono);outline:none}
 .prop-item input:focus{border-color:var(--accent)}
-.prop-rm{background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;line-height:1;padding:2px 4px;opacity:.6}
+.prop-rm{background:none;border:none;color:var(--red);cursor:pointer;font-size:1em;line-height:1;padding:2px 4px;opacity:.6}
 .prop-rm:hover{opacity:1}
-#stats-bar{padding:6px 12px;border-top:1px solid var(--border);display:flex;gap:12px;font-size:10px;color:var(--text3);font-family:var(--font-mono)}
+#stats-bar{padding:6px 12px;border-top:1px solid var(--border);display:flex;gap:12px;font-size:.71em;color:var(--text3);font-family:var(--font-mono)}
 .stat-item span{color:var(--text2)}
 
 /* ── OBJECT TABLE ─────────────────────────────────────────────── */
 #obj-table-wrap{flex:1;overflow:auto}
-#obj-search{width:100%;background:var(--bg2);border:none;border-bottom:1px solid var(--border);color:var(--text);padding:6px 12px;font-size:12px;font-family:var(--font-ui);outline:none}
+#obj-search{width:100%;background:var(--bg2);border:none;border-bottom:1px solid var(--border);color:var(--text);padding:6px 12px;font-size:.86em;font-family:var(--font-ui);outline:none}
 #obj-search::placeholder{color:var(--text3)}
-#obj-table{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--font-mono)}
+#obj-table{width:100%;border-collapse:collapse;font-size:.79em;font-family:var(--font-mono)}
 #obj-table th{background:var(--bg2);color:var(--text3);padding:5px 8px;text-align:left;position:sticky;top:0;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
 #obj-table th:hover{color:var(--text)}
 #obj-table th.sort-asc::after{content:" ↑"}
@@ -120,20 +121,20 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
 #obj-table td{padding:4px 8px;border-bottom:1px solid rgba(48,54,61,.5);color:var(--text2);vertical-align:top;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #obj-table tr:hover td{background:var(--bg2);color:var(--text);cursor:pointer}
 #obj-table tr.selected-row td{background:rgba(88,166,255,.08);color:var(--text)}
-.type-badge{display:inline-block;padding:1px 5px;border-radius:3px;font-size:9px;text-transform:uppercase;letter-spacing:.05em}
+.type-badge{display:inline-block;padding:1px 5px;border-radius:3px;font-size:.64em;text-transform:uppercase;letter-spacing:.05em}
 .type-node{background:rgba(31,111,235,.3);color:#58a6ff}
 .type-edge{background:rgba(163,113,247,.3);color:#a371f7}
 
 /* ── GRAPHML DRAWER ───────────────────────────────────────────── */
 #drawer-header{display:flex;align-items:center;gap:8px;padding:0 10px;height:28px;cursor:pointer;border-bottom:1px solid var(--border);user-select:none;flex-shrink:0}
-#drawer-header-title{font-family:var(--font-mono);font-size:11px;color:var(--text3);letter-spacing:.05em}
-#drawer-toggle{margin-left:auto;color:var(--text3);font-size:14px;transition:transform var(--transition)}
+#drawer-header-title{font-family:var(--font-mono);font-size:.79em;color:var(--text3);letter-spacing:.05em}
+#drawer-toggle{margin-left:auto;color:var(--text3);font-size:1em;transition:transform var(--transition)}
 #drawer.collapsed #drawer-toggle{transform:rotate(180deg)}
 #drawer-content{display:flex;flex:1;overflow:hidden;min-height:0}
 #drawer.collapsed #drawer-content{display:none}
-#graphml-output{flex:1;background:transparent;border:none;color:var(--green);font-family:var(--font-mono);font-size:11px;padding:8px 12px;resize:none;outline:none;overflow:auto;line-height:1.5}
+#graphml-output{flex:1;background:transparent;border:none;color:var(--green);font-family:var(--font-mono);font-size:.79em;padding:8px 12px;resize:none;outline:none;overflow:auto;line-height:1.5}
 #drawer-actions{display:flex;flex-direction:column;gap:4px;padding:8px;border-left:1px solid var(--border);flex-shrink:0;width:110px}
-.drawer-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text2);border-radius:var(--radius);padding:5px 8px;font-size:11px;font-family:var(--font-ui);cursor:pointer;text-align:center;transition:all var(--transition)}
+.drawer-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text2);border-radius:var(--radius);padding:5px 8px;font-size:.79em;font-family:var(--font-ui);cursor:pointer;text-align:center;transition:all var(--transition)}
 .drawer-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
 
 /* ── MODALS ───────────────────────────────────────────────────── */
@@ -141,30 +142,30 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
 #modal-overlay.open{display:flex}
 .modal{background:var(--bg1);border:1px solid var(--border);border-radius:var(--radius2);min-width:380px;max-width:560px;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.5)}
 .modal-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.modal-title{font-family:var(--font-mono);font-size:13px;color:var(--text);font-weight:600}
-.modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;line-height:1;padding:2px 6px}
+.modal-title{font-family:var(--font-mono);font-size:.93em;color:var(--text);font-weight:600}
+.modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.29em;line-height:1;padding:2px 6px}
 .modal-close:hover{color:var(--text)}
 .modal-body{padding:16px 18px;overflow-y:auto;flex:1}
 .modal-footer{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
-.modal-btn{padding:6px 16px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-size:12px;font-family:var(--font-ui);transition:all var(--transition)}
+.modal-btn{padding:6px 16px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-size:.86em;font-family:var(--font-ui);transition:all var(--transition)}
 .modal-btn:hover{background:var(--bg3)}
 .modal-btn.primary{background:var(--accent2);border-color:var(--accent);color:#fff}
 .modal-btn.primary:hover{background:var(--accent)}
-.modal-body textarea{width:100%;height:220px;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:8px;font-family:var(--font-mono);font-size:11px;resize:vertical;outline:none}
+.modal-body textarea{width:100%;height:220px;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:8px;font-family:var(--font-mono);font-size:.79em;resize:vertical;outline:none}
 .modal-body textarea:focus{border-color:var(--accent)}
-.modal-note{font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5}
+.modal-note{font-size:.79em;color:var(--text3);margin-top:8px;line-height:1.5}
 
 /* ── CONTEXT MENU ── --> */
 #ctx-menu{position:fixed;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:200;display:none;min-width:160px;padding:4px 0}
 #ctx-menu.open{display:block}
-.ctx-item{padding:6px 14px;cursor:pointer;color:var(--text2);font-size:12px;display:flex;align-items:center;gap:8px;transition:background var(--transition)}
+.ctx-item{padding:6px 14px;cursor:pointer;color:var(--text2);font-size:.86em;display:flex;align-items:center;gap:8px;transition:background var(--transition)}
 .ctx-item:hover{background:var(--bg3);color:var(--text)}
 .ctx-item.danger{color:var(--red)}
 .ctx-item.danger:hover{background:rgba(248,81,73,.1)}
 .ctx-sep{height:1px;background:var(--border);margin:3px 0}
 
 /* ── NOTIFICATIONS ────────────────────────────────────────────── */
-#notif{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 16px;font-size:12px;color:var(--text);pointer-events:none;opacity:0;transition:opacity .2s;z-index:300;white-space:nowrap}
+#notif{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 16px;font-size:.86em;color:var(--text);pointer-events:none;opacity:0;transition:opacity .2s;z-index:300;white-space:nowrap}
 #notif.show{opacity:1}
 
 /* ── NODE COLOR PALETTE ──────────────────────────────────────── */
@@ -179,9 +180,28 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
 
 /* ── ORPHAN TABLE ── */
 #orphan-list{display:flex;flex-direction:column;gap:3px}
-.orphan-item{display:flex;align-items:center;justify-content:space-between;padding:4px 8px;background:var(--bg2);border-radius:var(--radius);font-size:11px;font-family:var(--font-mono);color:var(--orange);border:1px solid rgba(210,153,34,.2)}
-.orphan-item button{background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px}
+.orphan-item{display:flex;align-items:center;justify-content:space-between;padding:4px 8px;background:var(--bg2);border-radius:var(--radius);font-size:.79em;font-family:var(--font-mono);color:var(--orange);border:1px solid rgba(210,153,34,.2)}
+.orphan-item button{background:none;border:none;color:var(--text3);cursor:pointer;font-size:.79em}
 .orphan-item button:hover{color:var(--accent)}
+
+/* ── SETTINGS DRAWER ──────────────────────────────────────────── */
+#settings-overlay{position:fixed;inset:0;z-index:150;display:none}
+#settings-overlay.open{display:block}
+#settings-panel{position:fixed;top:var(--toolbar-h);right:0;width:280px;background:var(--bg1);border-left:1px solid var(--border);border-bottom:1px solid var(--border);border-bottom-left-radius:var(--radius2);box-shadow:-8px 8px 32px rgba(0,0,0,.4);z-index:151;padding:0;overflow:hidden;transform:translateX(100%);transition:transform .2s ease}
+#settings-overlay.open #settings-panel{transform:translateX(0)}
+#settings-header{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+#settings-title{font-family:var(--font-mono);font-size:.86em;color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+#settings-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.14em;padding:2px 6px}
+#settings-close:hover{color:var(--text)}
+#settings-body{padding:14px}
+.set-section{margin-bottom:16px}
+.set-section-label{font-size:.71em;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:var(--font-mono)}
+.set-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
+.set-row label{font-size:.86em;color:var(--text2);flex:1}
+.set-row input[type=range]{flex:1;accent-color:var(--accent)}
+.set-row .set-val{font-family:var(--font-mono);font-size:.79em;color:var(--text3);min-width:32px;text-align:right}
+.set-toggle-btn{display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:.86em;font-family:var(--font-ui);width:100%;transition:all var(--transition)}
+.set-toggle-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
 </style>
 </head>
 <body data-tool="select">
@@ -244,8 +264,9 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
       Delete
     </button>
     <div class="tb-spacer"></div>
-    <button class="tb-btn" onclick="App.toggleTheme()" title="Switch layout colors">
-      <span id="theme-icon">☀️</span> Light/Dark
+    <button class="tb-btn" onclick="App.openSettings()" title="Settings">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 4.754a3.246 3.246 0 100 6.492 3.246 3.246 0 000-6.492zM5.754 8a2.246 2.246 0 114.492 0 2.246 2.246 0 01-4.492 0z"/><path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 01-1.255.52l-.292-.16c-1.64-.892-3.434.902-2.54 2.541l.159.292a.873.873 0 01-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 01.52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 011.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 011.255-.52l.292.16c1.64.892 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 01.52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 01-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 01-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 002.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 001.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 00-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 00-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 00-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 001.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 003.06 4.47l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 002.692-1.115l.094-.319z"/></svg>
+      Settings
     </button>
     <button class="tb-btn" onclick="App.autoLayout()" title="Auto force layout">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 012.5 1h3A1.5 1.5 0 017 2.5v3A1.5 1.5 0 015.5 7h-3A1.5 1.5 0 011 5.5v-3zm8.5 0A1.5 1.5 0 0111 1h3a1.5 1.5 0 011.5 1.5v3A1.5 1.5 0 0114 7h-3a1.5 1.5 0 01-1.5-1.5v-3zm-8.5 8A1.5 1.5 0 012.5 9h3A1.5 1.5 0 017 10.5v3A1.5 1.5 0 015.5 15h-3A1.5 1.5 0 011 13.5v-3zm8.5 0A1.5 1.5 0 0111 9h3a1.5 1.5 0 011.5 1.5v3A1.5 1.5 0 0114 15h-3a1.5 1.5 0 01-1.5-1.5v-3z"/></svg>
@@ -344,6 +365,33 @@ body[data-tool="pan"].panning #svg-canvas{cursor:grabbing}
     </div>
     <div class="modal-body" id="modal-body"></div>
     <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div id="settings-overlay" onclick="App.closeSettings(event)">
+  <div id="settings-panel" onclick="event.stopPropagation()">
+    <div id="settings-header">
+      <span id="settings-title">⚙ Settings</span>
+      <button id="settings-close" onclick="App.closeSettings()">✕</button>
+    </div>
+    <div id="settings-body">
+      <div class="set-section">
+        <div class="set-section-label">Appearance</div>
+        <button class="set-toggle-btn" onclick="App.toggleTheme()" id="theme-toggle-btn">
+          <span id="theme-icon">☀️</span>
+          <span id="theme-label">Switch to Light Mode</span>
+        </button>
+      </div>
+      <div class="set-section">
+        <div class="set-section-label">Interface Font Size</div>
+        <div class="set-row">
+          <label>Text size</label>
+          <input type="range" min="10" max="20" step="1" value="14" id="font-size-slider" oninput="App.setGuiFontSize(this.value)">
+          <span class="set-val" id="font-size-val">14px</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -469,6 +517,8 @@ function renderNodes(){
     g.querySelector('.node-circle').setAttribute('stroke', lightenColor(nodeColor(n), 40));
     const lbl = n.label || n.id;
     g.querySelector('.node-label').textContent = truncLabel(lbl, r);
+    g.querySelector('.node-label').setAttribute('font-size', (n.fontSize || 11) + 'px');
+    g.querySelector('.node-label').style.fontSize = (n.fontSize || 11) + 'px';
     g.querySelector('.node-port').setAttribute('r', r+4);
     g.setAttribute('transform',`translate(${n.x},${n.y})`);
     g.dataset.id = n.id;
@@ -476,6 +526,10 @@ function renderNodes(){
 
     const connected = State.edges.some(e=>e.source===n.id||e.target===n.id);
     g.classList.toggle('orphan', !connected);
+    // Orphan gets orange stroke override
+    if(!connected){
+      g.querySelector('.node-circle').setAttribute('stroke', 'var(--orange)');
+    }
   }
 }
 
@@ -532,21 +586,44 @@ function renderEdges(){
       d = `M${x1},${y1} L${mx},${y1} L${mx},${y2} L${x2},${y2}`;
     }
 
-    const aSize = e.arrowSize || 'medium';
-    let markerId = 'arrow';
-    if(aSize === 'small') markerId = 'arrow-small';
-    if(aSize === 'large') markerId = 'arrow-large';
-    if(State.selected.has(e.id)) markerId += '-sel';
-    
-    const marker = e.directed!==false ? `url(#${markerId})` : '';
-    const lineEl = g.querySelector('.edge-line');
-    lineEl.setAttribute('d', d);
-    lineEl.setAttribute('marker-end', marker);
-    lineEl.classList.toggle('selected', State.selected.has(e.id));
-    
     let edgeColor = e.color || 'var(--edge)';
     if(edgeColor === 'inherit') edgeColor = nodeColor(src);
-    lineEl.setAttribute('stroke', edgeColor);
+
+    const lineEl = g.querySelector('.edge-line');
+    lineEl.setAttribute('d', d);
+    lineEl.classList.toggle('selected', State.selected.has(e.id));
+    // Use edge-sel color when selected, else the custom color
+    const displayColor = State.selected.has(e.id) ? 'var(--edge-sel)' : edgeColor;
+    lineEl.setAttribute('stroke', displayColor);
+
+    // Dynamic per-edge arrow marker with correct color
+    if(e.directed !== false){
+      const markDefs = $('svg-canvas').querySelector('defs');
+      const dynId = 'arrow-dyn-'+e.id;
+      let dynMark = markDefs.querySelector('#'+dynId);
+      if(!dynMark){
+        dynMark = document.createElementNS(svgNS,'marker');
+        dynMark.setAttribute('id', dynId);
+        dynMark.setAttribute('orient','auto');
+        const p = document.createElementNS(svgNS,'path');
+        dynMark.appendChild(p);
+        markDefs.appendChild(dynMark);
+      }
+      const aSize2 = e.arrowSize || 'medium';
+      if(aSize2==='small'){ dynMark.setAttribute('markerWidth','6'); dynMark.setAttribute('markerHeight','4'); dynMark.setAttribute('refX','5'); dynMark.setAttribute('refY','2'); dynMark.firstElementChild.setAttribute('d','M0,0 L6,2 L0,4 Z'); }
+      else if(aSize2==='large'){ dynMark.setAttribute('markerWidth','12'); dynMark.setAttribute('markerHeight','9'); dynMark.setAttribute('refX','10'); dynMark.setAttribute('refY','4.5'); dynMark.firstElementChild.setAttribute('d','M0,0 L12,4.5 L0,9 Z'); }
+      else { dynMark.setAttribute('markerWidth','8'); dynMark.setAttribute('markerHeight','6'); dynMark.setAttribute('refX','7'); dynMark.setAttribute('refY','3'); dynMark.firstElementChild.setAttribute('d','M0,0 L8,3 L0,6 Z'); }
+      const arrowFill = State.selected.has(e.id) ? 'var(--edge-sel)' : edgeColor;
+      dynMark.firstElementChild.setAttribute('fill', arrowFill);
+      lineEl.setAttribute('marker-end', `url(#${dynId})`);
+    } else {
+      lineEl.removeAttribute('marker-end');
+      // Clean up dynamic marker if it exists
+      const markDefs = $('svg-canvas').querySelector('defs');
+      const dynId = 'arrow-dyn-'+e.id;
+      const old = markDefs.querySelector('#'+dynId);
+      if(old) old.remove();
+    }
 
     if(e.dash === 'dashed') lineEl.setAttribute('stroke-dasharray', '6 4');
     else if(e.dash === 'dotted') lineEl.setAttribute('stroke-dasharray', '2 3');
@@ -589,6 +666,9 @@ function svgPoint(e){
   const root = $('graph-root');
   return pt.matrixTransform(root.getCTM().inverse());
 }
+
+// Prevent browser middle-click autoscroll on canvas
+$('canvas-wrap').addEventListener('mousedown', e=>{ if(e.button===1) e.preventDefault(); });
 
 let _panStart = null;
 
@@ -655,6 +735,14 @@ function attachEdgeEvents(g, id){
 }
 
 $('svg-canvas').addEventListener('pointerdown', e=>{
+  // Middle mouse button → pan regardless of tool
+  if(e.button === 1){
+    e.preventDefault();
+    _panStart = {px:e.clientX, py:e.clientY, vx:State.view.x, vy:State.view.y};
+    document.body.classList.add('mid-panning');
+    $('svg-canvas').setPointerCapture(e.pointerId);
+    return;
+  }
   if(e.button !== 0) return;
   const targetGroup = e.target.closest('.node-group, .edge-group');
   if(targetGroup) return;
@@ -725,6 +813,7 @@ $('svg-canvas').addEventListener('pointerup', e=>{
   if(_panStart){
     _panStart=null;
     document.body.classList.remove('panning');
+    document.body.classList.remove('mid-panning');
     return;
   }
   if(State.edgeGhost){
@@ -895,12 +984,23 @@ function renderInspector(){
       </div>
       <div class="insp-section">
         <div class="insp-section-label">Geometry</div>
-        <div class="insp-row"><label>Radius</label> <input type="range" min="15" max="60" value="${nodeRadius(node)}" oninput="App.setLiveProp('node', '${node.id}', 'r', parseInt(this.value))"></div>
+        <div class="insp-row"><label>Radius</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="range" min="15" max="120" value="${nodeRadius(node)}" style="flex:1" oninput="App.setLiveProp('node', '${node.id}', 'r', parseInt(this.value)); this.nextElementSibling.value=this.value" onchange="App.setProp('node', '${node.id}', 'r', parseInt(this.value))">
+            <input type="number" min="15" max="300" value="${nodeRadius(node)}" style="width:52px" oninput="App.setLiveProp('node', '${node.id}', 'r', parseInt(this.value)||15); this.previousElementSibling.value=Math.min(120,parseInt(this.value)||15)" onchange="App.setProp('node', '${node.id}', 'r', parseInt(this.value)||15)">
+          </div>
+        </div>
+        <div class="insp-row"><label>Label Font Size</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="range" min="8" max="36" value="${node.fontSize||11}" style="flex:1" oninput="App.setLiveProp('node', '${node.id}', 'fontSize', parseInt(this.value)); this.nextElementSibling.value=this.value" onchange="App.setProp('node', '${node.id}', 'fontSize', parseInt(this.value))">
+            <input type="number" min="6" max="72" value="${node.fontSize||11}" style="width:52px" oninput="App.setLiveProp('node', '${node.id}', 'fontSize', parseInt(this.value)||11); this.previousElementSibling.value=Math.min(36,parseInt(this.value)||11)" onchange="App.setProp('node', '${node.id}', 'fontSize', parseInt(this.value)||11)">
+          </div>
+        </div>
       </div>
       <div class="insp-section">
         <div class="insp-section-label">Styling</div>
         <div class="insp-row"><label>Color Picker</label>
-          <input type="color" value="${nodeColor(node)}" oninput="App.setLiveProp('node', '${node.id}', 'color', this.value)">
+          <input type="color" value="${nodeColor(node)}" oninput="App.setLiveProp('node', '${node.id}', 'color', this.value)" onchange="App.setProp('node', '${node.id}', 'color', this.value)">
           <div class="color-row" style="margin-top:8px;">
             ${NODE_COLORS.map(c=>`<div class="color-swatch ${nodeColor(node)===c?'active':''}" style="background:${c}" onclick="App.setProp('node', '${node.id}', 'color', '${c}')"></div>`).join('')}
           </div>
@@ -951,7 +1051,7 @@ function renderInspector(){
           <option value="large" ${edge.arrowSize==='large'?'selected':''}>Large</option>
         </select></div>
         <div class="insp-row"><label>Edge Color</label>
-          <input type="color" value="${edge.color && edge.color !== 'inherit' ? edge.color : '#58a6ff'}" oninput="App.setLiveProp('edge', '${edge.id}', 'color', this.value)">
+          <input type="color" value="${edge.color && edge.color !== 'inherit' ? edge.color : '#58a6ff'}" oninput="App.setLiveProp('edge', '${edge.id}', 'color', this.value)" onchange="App.setProp('edge', '${edge.id}', 'color', this.value)">
           <label style="margin-top:4px; display:flex; align-items:center; gap:4px;"><input type="checkbox" ${edge.color==='inherit'?'checked':''} onchange="App.setProp('edge', '${edge.id}', 'color', this.checked ? 'inherit' : '#58a6ff')"> Match Source Node</label>
         </div>
       </div>
@@ -1195,9 +1295,28 @@ window.App = {
   },
   toggleTheme(){
     const isLight = document.body.classList.toggle('light-mode');
-    $('theme-icon').textContent = isLight ? '🌙' : '☀️';
+    const icon = $('theme-icon'); if(icon) icon.textContent = isLight ? '🌙' : '☀️';
+    const lbl = $('theme-label'); if(lbl) lbl.textContent = isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+    localStorage.setItem('lpg_theme', isLight ? 'light' : 'dark');
     renderAll();
     notify(isLight ? "Light theme enabled" : "Dark theme enabled");
+  },
+  openSettings(){
+    $('settings-overlay').classList.add('open');
+    // Sync current font size
+    const fs = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--gui-font-size'))||14;
+    $('font-size-slider').value = fs;
+    $('font-size-val').textContent = fs+'px';
+  },
+  closeSettings(event){
+    if(!event || event.target === $('settings-overlay') || event.currentTarget === $('settings-close'))
+      $('settings-overlay').classList.remove('open');
+  },
+  setGuiFontSize(val){
+    const px = parseInt(val)||14;
+    document.documentElement.style.setProperty('--gui-font-size', px+'px');
+    $('font-size-val').textContent = px+'px';
+    localStorage.setItem('lpg_font_size', px);
   },
   exportPng() {
     const svg = $('svg-canvas').cloneNode(true);
@@ -1306,6 +1425,7 @@ window.App = {
     } else {
       const e=State.edges.find(e=>e.id===id); if(e){ e[key]=val; renderAll(); renderInspector(); }
     }
+    localStorage.setItem('lpg_graph_state', serialize());
   },
   setLiveProp(type, id, key, val){
     if(type==='node'){
@@ -1473,6 +1593,17 @@ document.addEventListener('keydown', e=>{
 //  INITIALIZATION ENTRY
 // ═══════════════════════════════════════════════════════════════
 (function init(){
+  // Restore theme
+  if(localStorage.getItem('lpg_theme')==='light'){
+    document.body.classList.add('light-mode');
+    const icon=$('theme-icon'); if(icon) icon.textContent='🌙';
+    const lbl=$('theme-label'); if(lbl) lbl.textContent='Switch to Dark Mode';
+  }
+  // Restore font size
+  const savedFs = parseInt(localStorage.getItem('lpg_font_size'));
+  if(savedFs && savedFs>=10 && savedFs<=20){
+    document.documentElement.style.setProperty('--gui-font-size', savedFs+'px');
+  }
   App.setTool('select');
   loadFromStorage();
   if(State.nodes.length===0){
