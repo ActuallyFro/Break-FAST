@@ -82,6 +82,12 @@ body.mid-panning #svg-canvas{cursor:grabbing!important}
 .edge-ghost{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:6 3;fill:none;pointer-events:none}
 .node-port{fill:var(--accent);opacity:0;cursor:crosshair;transition:opacity .1s}
 .node-group:hover .node-port{opacity:1}
+body[data-paint="active"] #svg-canvas{cursor:crosshair}
+body[data-paint="active"] .node-group{cursor:copy}
+body[data-paint="active"] .edge-group{cursor:copy}
+.tb-btn.paint-active{background:var(--purple)!important;border-color:#c084fc!important;color:#fff!important}
+.sel-mode-btn{min-width:28px;text-align:center}
+.node-label-overflow{overflow:visible;clip-path:none}
 
 /* ── INSPECTOR ────────────────────────────────────────────────── */
 #inspector-header{padding:10px 12px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
@@ -215,22 +221,18 @@ body.mid-panning #svg-canvas{cursor:grabbing!important}
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75A.75.75 0 012.75 1h6.586a.75.75 0 01.53.22l3.914 3.914a.75.75 0 01.22.53V14.25a.75.75 0 01-.75.75H2.75a.75.75 0 01-.75-.75V1.75zm1.5.75v11h9V6.5H9.25A.75.75 0 018.5 5.75V2.5H3.5zm6.5.56l2.19 2.19H10V3.06z"/></svg>
       New
     </button>
-    <button class="tb-btn" onclick="App.importJson()" title="Import Clipboard Text">
-      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M7.47 10.78a.75.75 0 001.06 0l3.5-3.5a.75.75 0 00-1.06-1.06L8.75 8.44V1.75a.75.75 0 00-1.5 0v6.69L5.03 6.22a.75.75 0 00-1.06 1.06l3.5 3.5zM3.75 13a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5z"/></svg>
-      Import Text
-    </button>
-    <button class="tb-btn" onclick="$('json-file-input').click()" title="Select and Upload a JSON file">
-      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/></svg>
-      Upload File
-    </button>
     <input type="file" id="json-file-input" accept=".json" onchange="App.handleJsonFile(this)" style="display:none;">
     <button class="tb-btn" onclick="App.exportJson()" title="Export Human Readable JSON">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M7.47 5.22a.75.75 0 011.06 0l3.5 3.5a.75.75 0 01-1.06 1.06L8.75 7.56v6.69a.75.75 0 01-1.5 0V7.56L5.03 9.78a.75.75 0 01-1.06-1.06l3.5-3.5zM3.75 1a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5z"/></svg>
       JSON
     </button>
+    <button class="tb-btn" onclick="App.exportSvg()" title="Export current canvas to SVG file">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/></svg>
+      SVG
+    </button>
     <button class="tb-btn" onclick="App.exportPng()" title="Export current canvas to PNG image">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9 2.5-3.5L5 10l3.05-4.435L14.002 12V3a1 1 0 0 0-1-1h-12a1 1 0 0 0-1 1v10zM11 5.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
-      Export PNG
+      PNG
     </button>
     <div class="tb-sep"></div>
     <span class="tb-label">Tool:</span>
@@ -262,6 +264,16 @@ body.mid-panning #svg-canvas{cursor:grabbing!important}
     <button class="tb-btn danger" onclick="App.deleteSelected()" title="Delete item (Del)">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 1.75a.25.25 0 01.25-.25h2.5a.25.25 0 01.25.25V3h-3V1.75zm4.5 0V3h2.25a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75zM4.496 6.675a.75.75 0 10-1.492.15l.66 6.6A1.75 1.75 0 005.405 15h5.19c.9 0 1.652-.681 1.741-1.576l.66-6.6a.75.75 0 00-1.492-.149l-.66 6.6a.25.25 0 01-.249.225h-5.19a.25.25 0 01-.249-.225l-.66-6.6z"/></svg>
       Delete
+    </button>
+    <div class="tb-sep"></div>
+    <span class="tb-label">Sel:</span>
+    <button class="tb-btn sel-mode-btn active" id="selmode-nodes" onclick="App.setSelMode('nodes')" title="Select Nodes only (S key)">N</button>
+    <button class="tb-btn sel-mode-btn" id="selmode-edges" onclick="App.setSelMode('edges')" title="Select Edges only (D key)">E</button>
+    <button class="tb-btn sel-mode-btn" id="selmode-all" onclick="App.setSelMode('all')" title="Select All (A key)">All</button>
+    <div class="tb-sep"></div>
+    <button class="tb-btn" id="tool-paint" onclick="App.togglePaintTool()" title="Format Painter - copy style from selected node/edge (Alt+P)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.354.646a1.207 1.207 0 0 0-1.708 0L8.5 3.793l-.646-.647a.5.5 0 1 0-.708.708L8.293 5l-7.647 7.646a.5.5 0 0 0-.146.354v3h3a.5.5 0 0 0 .354-.146L11.5 8.707l1.146 1.147a.5.5 0 0 0 .708-.708l-.647-.646 3.147-3.146a1.207 1.207 0 0 0 0-1.708l-2-2zM1.5 15h-1v-1l7.646-7.646.961.961L1.5 15zm8-8.5L8.293 5.293l4.5-4.5 1.414 1.414-4.5 4.5-.207-.207z"/></svg>
+      Paint
     </button>
     <div class="tb-spacer"></div>
     <button class="tb-btn" onclick="App.openSettings()" title="Settings">
@@ -391,6 +403,26 @@ body.mid-panning #svg-canvas{cursor:grabbing!important}
           <span class="set-val" id="font-size-val">14px</span>
         </div>
       </div>
+      <div class="set-section">
+        <div class="set-section-label">Canvas</div>
+        <div class="set-row" style="flex-direction:column;align-items:flex-start;gap:4px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="clamp-labels-chk" checked onchange="App.setClampLabels(this.checked)">
+            Clamp long node labels (…)
+          </label>
+        </div>
+      </div>
+      <div class="set-section">
+        <div class="set-section-label">Import</div>
+        <button class="set-toggle-btn" onclick="App.importJson();App.closeSettings()">
+          <svg viewBox="0 0 16 16" fill="currentColor" style="width:14px;height:14px"><path d="M7.47 10.78a.75.75 0 001.06 0l3.5-3.5a.75.75 0 00-1.06-1.06L8.75 8.44V1.75a.75.75 0 00-1.5 0v6.69L5.03 6.22a.75.75 0 00-1.06 1.06l3.5 3.5zM3.75 13a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5z"/></svg>
+          Import JSON / GraphML Text
+        </button>
+        <button class="set-toggle-btn" style="margin-top:6px" onclick="$('json-file-input').click();App.closeSettings()">
+          <svg viewBox="0 0 16 16" fill="currentColor" style="width:14px;height:14px"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/></svg>
+          Upload JSON File
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -409,6 +441,7 @@ const State = {
   edges: [],          
   selected: new Set(),
   tool: 'select',
+  selMode: 'nodes',   // nodes | edges | all
   view: {x:0, y:0, k:1},
   dragging: null,     
   edgeGhost: null,    
@@ -420,6 +453,9 @@ const State = {
   idCounter: 1,
   graphId: 'graph1',
   graphMeta: {edgedefault:'undirected'},
+  clampNodeLabels: true,
+  paintFormat: null,
+  paintActive: false,
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -534,6 +570,7 @@ function renderNodes(){
 }
 
 function truncLabel(lbl, r){
+  if(!State.clampNodeLabels) return lbl;
   const maxChars = Math.max(4, Math.floor(r/4.5));
   return lbl.length > maxChars ? lbl.slice(0, maxChars)+'…' : lbl;
 }
@@ -675,12 +712,24 @@ let _panStart = null;
 function attachNodeEvents(g, id){
   g.addEventListener('pointerdown', e=>{
     e.stopPropagation();
+    if(e.button !== 0) return;
+    // Ctrl+click: capture format from this node
+    if(e.ctrlKey && !State.paintActive){
+      App.captureFormatFrom(id);
+      return;
+    }
+    // Paint format tool
+    if(State.paintActive && State.paintFormat){
+      applyPaintFormat('node', id);
+      return;
+    }
     if(State.tool==='edge'){
       const n = State.nodes.find(nn=>nn.id===id);
       State.edgeGhost = {sourceId:id, x1:n.x, y1:n.y, x2:n.x, y2:n.y};
       return;
     }
     if(State.tool==='select'){
+      if(State.selMode==='edges') return; // ignore node clicks in edge-only mode
       if(!State.selected.has(id)){
         if(!e.shiftKey) State.selected.clear();
         State.selected.add(id);
@@ -708,7 +757,19 @@ function attachNodeEvents(g, id){
 function attachEdgeEvents(g, id){
   g.addEventListener('pointerdown', e=>{
     e.stopPropagation();
+    if(e.button !== 0) return;
+    // Ctrl+click: capture format from this edge
+    if(e.ctrlKey && !State.paintActive){
+      App.captureFormatFrom(id);
+      return;
+    }
+    // Paint format tool
+    if(State.paintActive && State.paintFormat){
+      applyPaintFormat('edge', id);
+      return;
+    }
     if(State.tool==='select'){
+      if(State.selMode==='nodes') return; // ignore edge clicks in node-only mode
       if(!e.shiftKey) State.selected.clear();
       State.selected.add(id);
       renderAll();
@@ -871,10 +932,23 @@ function updateSelRect(){
   sr.setAttribute('display','block');
 
   const xMin = x, xMax = x+w, yMin = y, yMax = y+h;
-  for(const n of State.nodes){
-    const inside = n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax;
-    const g = $('nodes-layer').querySelector(`[data-id="${n.id}"]`);
-    if(g) g.classList.toggle('selected', inside || State.selected.has(n.id));
+  if(State.selMode !== 'edges'){
+    for(const n of State.nodes){
+      const inside = n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax;
+      const g = $('nodes-layer').querySelector(`[data-id="${n.id}"]`);
+      if(g) g.classList.toggle('selected', inside || State.selected.has(n.id));
+    }
+  }
+  if(State.selMode !== 'nodes'){
+    for(const e of State.edges){
+      const src = State.nodes.find(n=>n.id===e.source);
+      const tgt = State.nodes.find(n=>n.id===e.target);
+      if(!src||!tgt) continue;
+      const mx = (src.x+tgt.x)/2, my = (src.y+tgt.y)/2;
+      const inside = mx >= xMin && mx <= xMax && my >= yMin && my <= yMax;
+      const g = $('edges-layer').querySelector(`[data-id="${e.id}"]`);
+      if(g) g.classList.toggle('selected', inside || State.selected.has(e.id));
+    }
   }
 }
 
@@ -884,9 +958,22 @@ function finalizeSelRect(){
   const xMax = Math.max(State.selRect.x0, State.selRect.x1);
   const yMin = Math.min(State.selRect.y0, State.selRect.y1);
   const yMax = Math.max(State.selRect.y0, State.selRect.y1);
-  for(const n of State.nodes){
-    if(n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax){
-      State.selected.add(n.id);
+  if(State.selMode !== 'edges'){
+    for(const n of State.nodes){
+      if(n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax){
+        State.selected.add(n.id);
+      }
+    }
+  }
+  if(State.selMode !== 'nodes'){
+    for(const e of State.edges){
+      const src = State.nodes.find(n=>n.id===e.source);
+      const tgt = State.nodes.find(n=>n.id===e.target);
+      if(!src||!tgt) continue;
+      const mx = (src.x+tgt.x)/2, my = (src.y+tgt.y)/2;
+      if(mx >= xMin && mx <= xMax && my >= yMin && my <= yMax){
+        State.selected.add(e.id);
+      }
     }
   }
 }
@@ -960,15 +1047,27 @@ function renderInspector(){
     return;
   }
   if(ids.length>1){
-    $('inspector-title').textContent=`${ids.length} selected`;
-    body.innerHTML=`
-      <div class="insp-section">
-        <div class="insp-section-label">Multi-select</div>
-        <div class="insp-row"><label>Node Color</label>
-          <div class="color-row">${NODE_COLORS.map(c=>`<div class="color-swatch" style="background:${c}" onclick="App.setMultiColor('${c}')"></div>`).join('')}</div>
-        </div>
-        <button class="insp-btn danger" onclick="App.deleteSelected()">Delete All Selected</button>
-      </div>`;
+    const nodeCount = ids.filter(id=>State.nodes.find(n=>n.id===id)).length;
+    const edgeCount = ids.filter(id=>State.edges.find(e=>e.id===id)).length;
+    $('inspector-title').textContent=`${ids.length} selected (${nodeCount}N ${edgeCount}E)`;
+    let html = '<div class="insp-section"><div class="insp-section-label">Multi-select</div>';
+    if(nodeCount>0){
+      html += '<div class="insp-row"><label>Node Color</label><div class="color-row">';
+      html += NODE_COLORS.map(c=>`<div class="color-swatch" style="background:${c}" onclick="App.setMultiColor('node','${c}')"></div>`).join('');
+      html += '</div></div>';
+    }
+    if(edgeCount>0){
+      html += '<div class="insp-row"><label>Edge Color</label><div class="color-row">';
+      html += NODE_COLORS.map(c=>`<div class="color-swatch" style="background:${c}" onclick="App.setMultiColor('edge','${c}')"></div>`).join('');
+      html += '</div></div>';
+    }
+    if(nodeCount>0&&edgeCount===0){
+      html += '<div class="insp-row"><label>Node Size</label><div style="display:flex;gap:6px;align-items:center"><input type="range" min="15" max="120" value="26" style="flex:1" oninput="App.setMultiSize(parseInt(this.value))"></div></div>';
+    }
+    html += '<button class="insp-btn" onclick="App.paintSelected()">🖌 Paint Format from First</button>';
+    html += '<button class="insp-btn danger" onclick="App.deleteSelected()">Delete All Selected</button>';
+    html += '</div>';
+    body.innerHTML = html;
     return;
   }
   const id = ids[0];
@@ -1284,11 +1383,46 @@ function doAutoLayout(){
 }
 
 // ═══════════════════════════════════════════════════════════════
+//  PAINT FORMAT TOOL
+// ═══════════════════════════════════════════════════════════════
+function applyPaintFormat(type, id){
+  snapshot();
+  const fmt = State.paintFormat;
+  if(!fmt) return;
+  if(type === 'node'){
+    const n = State.nodes.find(n=>n.id===id);
+    if(n){
+      if(fmt.color !== undefined) n.color = fmt.color;
+      // Only copy r and fontSize if source was a node
+      if(fmt.type === 'node'){
+        if(fmt.r !== undefined) n.r = fmt.r;
+        if(fmt.fontSize !== undefined) n.fontSize = fmt.fontSize;
+      }
+    }
+  } else {
+    const e = State.edges.find(e=>e.id===id);
+    if(e){
+      if(fmt.color !== undefined) e.color = fmt.color;
+      if(fmt.type === 'edge'){
+        if(fmt.dash !== undefined) e.dash = fmt.dash;
+        if(fmt.style !== undefined) e.style = fmt.style;
+        if(fmt.arrowSize !== undefined) e.arrowSize = fmt.arrowSize;
+      }
+    }
+  }
+  localStorage.setItem('lpg_graph_state', serialize());
+  renderAll();
+  renderInspector();
+  notify('Format applied');
+}
+
+// ═══════════════════════════════════════════════════════════════
 //  APPLICATION API INTERFACE
 // ═══════════════════════════════════════════════════════════════
 window.App = {
   setTool(t){
     State.tool = t; document.body.setAttribute('data-tool',t);
+    if(State.paintActive){ State.paintActive=false; State.paintFormat=null; document.body.removeAttribute('data-paint'); const pb=$('tool-paint'); if(pb) pb.classList.remove('paint-active'); }
     for(const btn of document.querySelectorAll('#toolbar .tb-btn')) if(btn.id) btn.classList.remove('active');
     const target = $('tool-'+t); if(target) target.classList.add('active');
     if(t==='select'){ State.selected.clear(); renderAll(); renderInspector(); }
@@ -1303,10 +1437,10 @@ window.App = {
   },
   openSettings(){
     $('settings-overlay').classList.add('open');
-    // Sync current font size
     const fs = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--gui-font-size'))||14;
     $('font-size-slider').value = fs;
     $('font-size-val').textContent = fs+'px';
+    const ck = $('clamp-labels-chk'); if(ck) ck.checked = State.clampNodeLabels;
   },
   closeSettings(event){
     if(!event || event.target === $('settings-overlay') || event.currentTarget === $('settings-close'))
@@ -1472,13 +1606,41 @@ window.App = {
     State.selected.delete(oldId); State.selected.add(newId);
     renderAll(); renderInspector(); notify('ID Renamed');
   },
-  setMultiColor(c){
+  setMultiColor(type, c){
     snapshot();
     for(const id of State.selected){
-      const n = State.nodes.find(nn=>nn.id===id); if(n) n.color = c;
-      const e = State.edges.find(ee=>ee.id===id); if(e) e.color = c;
+      if(type==='node'||!type){ const n = State.nodes.find(nn=>nn.id===id); if(n) n.color = c; }
+      if(type==='edge'||!type){ const e = State.edges.find(ee=>ee.id===id); if(e) e.color = c; }
     }
+    localStorage.setItem('lpg_graph_state', serialize());
     renderAll(); renderInspector();
+  },
+  setMultiSize(r){
+    for(const id of State.selected){
+      const n = State.nodes.find(nn=>nn.id===id); if(n) n.r = r;
+    }
+    renderAll();
+  },
+  paintSelected(){
+    const ids = [...State.selected];
+    if(ids.length < 2){ notify('Select 2+ objects to batch paint'); return; }
+    const srcId = ids[0];
+    const srcNode = State.nodes.find(n=>n.id===srcId);
+    const srcEdge = State.edges.find(e=>e.id===srcId);
+    if(!srcNode && !srcEdge){ return; }
+    snapshot();
+    const fmt = srcNode ? {type:'node', color:srcNode.color, r:srcNode.r, fontSize:srcNode.fontSize}
+                        : {type:'edge', color:srcEdge.color, dash:srcEdge.dash, style:srcEdge.style, arrowSize:srcEdge.arrowSize};
+    State.paintFormat = fmt;
+    for(const id of ids.slice(1)){
+      const tn = State.nodes.find(n=>n.id===id) ? 'node' : 'edge';
+      // Apply inline without extra snapshot
+      if(tn==='node'){ const n=State.nodes.find(n=>n.id===id); if(n){ if(fmt.color!==undefined) n.color=fmt.color; if(fmt.type==='node'){ if(fmt.r!==undefined) n.r=fmt.r; if(fmt.fontSize!==undefined) n.fontSize=fmt.fontSize; } } }
+      else { const e=State.edges.find(e=>e.id===id); if(e){ if(fmt.color!==undefined) e.color=fmt.color; if(fmt.type==='edge'){ if(fmt.dash!==undefined) e.dash=fmt.dash; if(fmt.style!==undefined) e.style=fmt.style; if(fmt.arrowSize!==undefined) e.arrowSize=fmt.arrowSize; } } }
+    }
+    localStorage.setItem('lpg_graph_state', serialize());
+    renderAll(); renderInspector();
+    notify('Format painted to '+(ids.length-1)+' objects');
   },
   autoLayout(){ snapshot(); doAutoLayout(); renderAll(); notify('Force layout applied'); },
   fitView(){
@@ -1551,7 +1713,79 @@ window.App = {
   exportJson(){
     openModal('Export Graph JSON Layout', `<textarea readonly>${escHtml(serialize(true))}</textarea><p class="modal-note">Copy layout parameters data explicitly below.</p>`, [{label:'Close'},{label:'Download', primary:true, action:()=>App.downloadJson()}]);
   },
-  closeModal(){ $('modal-overlay').classList.remove('open'); }
+  closeModal(){ $('modal-overlay').classList.remove('open'); },
+
+  exportSvg(){
+    const svg = $('svg-canvas').cloneNode(true);
+    const sRect = svg.querySelector('#sel-rect'); if(sRect) sRect.remove();
+    const isLight = document.body.classList.contains('light-mode');
+    const vars = isLight
+      ? '--bg0:#f6f8fa;--text:#1f2937;--text2:#4b5563;--accent:#2563eb;--edge:#3b82f6;--edge-sel:#f97316;--node-default:#2563eb;'
+      : '--bg0:#0d1117;--text:#e6edf3;--text2:#8b949e;--accent:#58a6ff;--edge:#58a6ff;--edge-sel:#f0883e;--node-default:#1f6feb;';
+    const styleEl = document.createElementNS('http://www.w3.org/2000/svg','style');
+    styleEl.textContent = `:root{${vars}--font-ui:sans-serif} #grid-bg{fill:${isLight?'#f6f8fa':'#0d1117'}}`;
+    svg.insertBefore(styleEl, svg.firstChild);
+    const bbox = $('graph-root').getBBox();
+    const pad = 50;
+    const w = Math.max(800, bbox.width+pad*2), h = Math.max(600, bbox.height+pad*2);
+    svg.setAttribute('width',w); svg.setAttribute('height',h);
+    svg.setAttribute('viewBox',`${bbox.x-pad} ${bbox.y-pad} ${w} ${h}`);
+    const str = (new XMLSerializer()).serializeToString(svg);
+    downloadFile(str, (State.graphId||'graph')+'.svg', 'image/svg+xml');
+    notify('SVG exported');
+  },
+
+  setSelMode(mode){
+    State.selMode = mode;
+    State.selected.clear();
+    for(const btn of document.querySelectorAll('.sel-mode-btn')) btn.classList.remove('active');
+    const t = $('selmode-'+mode); if(t) t.classList.add('active');
+    renderAll(); renderInspector();
+    notify('Selection: '+mode);
+  },
+
+  setClampLabels(val){
+    State.clampNodeLabels = val;
+    renderNodes();
+  },
+
+  togglePaintTool(){
+    // If nothing selected, pick up format from selection first
+    const selIds = [...State.selected];
+    if(!State.paintActive){
+      // Try to capture format from currently selected node or edge
+      let fmt = null;
+      for(const id of selIds){
+        const n = State.nodes.find(n=>n.id===id);
+        if(n){ fmt = {type:'node', color:n.color, r:n.r, fontSize:n.fontSize}; break; }
+        const e = State.edges.find(e=>e.id===id);
+        if(e){ fmt = {type:'edge', color:e.color, dash:e.dash, style:e.style, arrowSize:e.arrowSize}; break; }
+      }
+      if(!fmt){ notify('Select a node or edge first, then click Paint'); return; }
+      State.paintFormat = fmt;
+      State.paintActive = true;
+      document.body.setAttribute('data-paint','active');
+      const btn = $('tool-paint'); if(btn) btn.classList.add('paint-active');
+      notify('Paint active — click nodes/edges to apply format');
+    } else {
+      State.paintActive = false;
+      State.paintFormat = null;
+      document.body.removeAttribute('data-paint');
+      const btn = $('tool-paint'); if(btn) btn.classList.remove('paint-active');
+      notify('Paint tool deactivated');
+    }
+  },
+
+  captureFormatFrom(id){
+    const n = State.nodes.find(n=>n.id===id);
+    if(n){ State.paintFormat = {type:'node', color:n.color, r:n.r, fontSize:n.fontSize}; }
+    const e = State.edges.find(e=>e.id===id);
+    if(e){ State.paintFormat = {type:'edge', color:e.color, dash:e.dash, style:e.style, arrowSize:e.arrowSize}; }
+    State.paintActive = true;
+    document.body.setAttribute('data-paint','active');
+    const btn = $('tool-paint'); if(btn) btn.classList.add('paint-active');
+    notify('Format captured — click targets to apply');
+  }
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -1576,16 +1810,31 @@ document.addEventListener('keydown', e=>{
   if(e.ctrlKey || e.metaKey){
     if(e.key==='z' || e.key==='Z'){ e.preventDefault(); App.undo(); }
     if(e.key==='y' || e.key==='Y'){ e.preventDefault(); App.redo(); }
+    // Ctrl+click-equivalent: cycle selection mode
+    if(e.key==='s' || e.key==='S'){ e.preventDefault();
+      const modes = ['nodes','edges','all']; const i = modes.indexOf(State.selMode);
+      App.setSelMode(modes[(i+1)%modes.length]); return;
+    }
+    return;
+  }
+  if(e.altKey){
+    if(e.key==='p' || e.key==='P'){ e.preventDefault(); App.togglePaintTool(); return; }
     return;
   }
   switch(e.key){
     case 'Delete': case 'Backspace': App.deleteSelected(); break;
-    case 's': case 'S': App.setTool('select'); break;
+    case 's': App.setTool('select'); break;
+    case 'S': App.setSelMode('nodes'); break;
     case 'n': case 'N': App.setTool('node'); break;
-    case 'e': case 'E': App.setTool('edge'); break;
+    case 'e': App.setTool('edge'); break;
+    case 'E': App.setSelMode('edges'); break;  // E = toggle edge select mode (D was taken by edge tool historically but not here)
+    case 'd': case 'D': App.setSelMode('edges'); break;
+    case 'a': case 'A': App.setSelMode('all'); break;
     case 'p': case 'P': App.setTool('pan'); break;
     case 'f': case 'F': App.fitView(); break;
-    case 'Escape': State.selected.clear(); State.edgeGhost=null; removeEdgeGhost(); renderAll(); renderInspector(); break;
+    case 'Escape':
+      if(State.paintActive){ App.togglePaintTool(); break; }
+      State.selected.clear(); State.edgeGhost=null; removeEdgeGhost(); renderAll(); renderInspector(); break;
   }
 });
 
@@ -1605,6 +1854,7 @@ document.addEventListener('keydown', e=>{
     document.documentElement.style.setProperty('--gui-font-size', savedFs+'px');
   }
   App.setTool('select');
+  App.setSelMode('nodes');
   loadFromStorage();
   if(State.nodes.length===0){
     State.nodes=[
