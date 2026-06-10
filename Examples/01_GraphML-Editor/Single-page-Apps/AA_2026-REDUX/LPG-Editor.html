@@ -59,6 +59,14 @@ body{height:100%;overflow:hidden;background:var(--bg0);color:var(--text);font-fa
 #toolbar-title{font-family:var(--font-mono);font-size:.86em;color:var(--accent);font-weight:600;letter-spacing:.05em;margin-right:6px}
 .tb-spacer{flex:1}
 #zoom-display{font-family:var(--font-mono);font-size:.79em;color:var(--text3);padding:0 6px;min-width:50px;text-align:right}
+#zoom-group{display:flex;align-items:center;gap:3px;padding:0 2px}
+#zoom-slider{width:70px;height:4px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+#zoom-input{width:44px;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:2px 4px;font-size:.79em;font-family:var(--font-mono);text-align:right;outline:none;-moz-appearance:textfield}
+#zoom-input::-webkit-outer-spin-button,#zoom-input::-webkit-inner-spin-button{-webkit-appearance:none}
+#zoom-input:focus{border-color:var(--accent)}
+.zoom-pct-label{font-size:.79em;color:var(--text3);font-family:var(--font-mono)}
+.zoom-step-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1em;line-height:1;padding:1px 4px;border-radius:3px}
+.zoom-step-btn:hover{background:var(--bg3);color:var(--text)}
 
 /* ── TOOL MODES ───────────────────────────────────────────────── */
 body[data-tool="node"] #svg-canvas{cursor:crosshair}
@@ -276,16 +284,27 @@ body[data-paint="active"] .edge-group{cursor:copy}
       Paint
     </button>
     <div class="tb-spacer"></div>
-    <button class="tb-btn" onclick="App.openSettings()" title="Settings">
-      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 4.754a3.246 3.246 0 100 6.492 3.246 3.246 0 000-6.492zM5.754 8a2.246 2.246 0 114.492 0 2.246 2.246 0 01-4.492 0z"/><path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 01-1.255.52l-.292-.16c-1.64-.892-3.434.902-2.54 2.541l.159.292a.873.873 0 01-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 01.52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 011.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 011.255-.52l.292.16c1.64.892 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 01.52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 01-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 01-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 002.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 001.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 00-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 00-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 00-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 001.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 003.06 4.47l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 002.692-1.115l.094-.319z"/></svg>
-      Settings
-    </button>
     <button class="tb-btn" onclick="App.autoLayout()" title="Auto force layout">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 012.5 1h3A1.5 1.5 0 017 2.5v3A1.5 1.5 0 015.5 7h-3A1.5 1.5 0 011 5.5v-3zm8.5 0A1.5 1.5 0 0111 1h3a1.5 1.5 0 011.5 1.5v3A1.5 1.5 0 0114 7h-3a1.5 1.5 0 01-1.5-1.5v-3zm-8.5 8A1.5 1.5 0 012.5 9h3A1.5 1.5 0 017 10.5v3A1.5 1.5 0 015.5 15h-3A1.5 1.5 0 011 13.5v-3zm8.5 0A1.5 1.5 0 0111 9h3a1.5 1.5 0 011.5 1.5v3A1.5 1.5 0 0114 15h-3a1.5 1.5 0 01-1.5-1.5v-3z"/></svg>
       Layout
     </button>
-    <button class="tb-btn" onclick="App.fitView()" title="Fit view (F)">⊡ Fit</button>
-    <span id="zoom-display">100%</span>
+    <button class="tb-btn" onclick="App.fitView()" title="Fit view (F)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1h4a.5.5 0 010 1H2v3.5a.5.5 0 01-1 0V1.5A.5.5 0 011.5 1zm9 0h4a.5.5 0 01.5.5v4a.5.5 0 01-1 0V2h-3.5a.5.5 0 010-1zM1 10.5a.5.5 0 011 0V14h3.5a.5.5 0 010 1H1.5a.5.5 0 01-.5-.5v-4zm13 0a.5.5 0 011 0v4a.5.5 0 01-.5.5h-4a.5.5 0 010-1H14v-3.5z"/></svg>
+      Fit
+    </button>
+    <div class="tb-sep"></div>
+    <div id="zoom-group" title="Zoom level — drag slider or click % to type">
+      <button class="zoom-step-btn" onclick="App.zoomStep(-0.1)" title="Zoom out">−</button>
+      <input type="range" id="zoom-slider" min="10" max="300" step="5" value="100" oninput="App.setZoomFromSlider(this.value)" title="Zoom">
+      <input type="number" id="zoom-input" min="10" max="500" value="100" onchange="App.setZoomFromInput(this.value)" title="Click to set zoom %">
+      <span class="zoom-pct-label">%</span>
+      <button class="zoom-step-btn" onclick="App.zoomStep(0.1)" title="Zoom in">+</button>
+    </div>
+    <div class="tb-sep"></div>
+    <button class="tb-btn" onclick="App.openSettings()" title="Settings">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 4.754a3.246 3.246 0 100 6.492 3.246 3.246 0 000-6.492zM5.754 8a2.246 2.246 0 114.492 0 2.246 2.246 0 01-4.492 0z"/><path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 01-1.255.52l-.292-.16c-1.64-.892-3.434.902-2.54 2.541l.159.292a.873.873 0 01-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 01.52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 011.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 011.255-.52l.292.16c1.64.892 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 01.52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 01-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 01-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 002.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 001.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 00-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 00-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 00-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 001.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 003.06 4.47l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 002.692-1.115l.094-.319z"/></svg>
+      Settings
+    </button>
   </div>
 
   <div id="canvas-wrap">
@@ -409,7 +428,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
         <div class="set-section-label">Canvas</div>
         <div class="set-row" style="flex-direction:column;align-items:flex-start;gap:4px">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
-            <input type="checkbox" id="clamp-labels-chk" checked onchange="App.setClampLabels(this.checked)">
+            <input type="checkbox" id="clamp-labels-chk" onchange="App.setClampLabels(this.checked)">
             Clamp long node labels (…)
           </label>
         </div>
@@ -455,7 +474,7 @@ const State = {
   idCounter: 1,
   graphId: 'graph1',
   graphMeta: {edgedefault:'undirected'},
-  clampNodeLabels: true,
+  clampNodeLabels: false,
   paintFormat: null,
   paintActive: false,
 };
@@ -476,7 +495,8 @@ function serialize(formatted = false){
     idCounter: State.idCounter,
     graphId: State.graphId,
     graphMeta: {...State.graphMeta},
-    view: {...State.view}
+    view: {...State.view},
+    clampNodeLabels: State.clampNodeLabels
   };
   return formatted ? JSON.stringify(obj, null, 2) : JSON.stringify(obj);
 }
@@ -488,6 +508,7 @@ function deserialize(str){
   State.graphId = d.graphId || 'graph1';
   State.graphMeta = d.graphMeta || {edgedefault:'undirected'};
   State.view = d.view || {x:0,y:0,k:1};
+  if(d.clampNodeLabels !== undefined) State.clampNodeLabels = d.clampNodeLabels;
   State.selected.clear();
 }
 function snapshot(){
@@ -692,7 +713,9 @@ function edgeEndpoints(src, tgt){
 
 function applyTransform(){
   $('graph-root').setAttribute('transform',`translate(${State.view.x},${State.view.y}) scale(${State.view.k})`);
-  $('zoom-display').textContent = Math.round(State.view.k * 100) + '%';
+  const pct = Math.round(State.view.k * 100);
+  const sl = $('zoom-slider'); if(sl) sl.value = Math.min(300, pct);
+  const inp = $('zoom-input'); if(inp) inp.value = pct;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -877,6 +900,7 @@ $('svg-canvas').addEventListener('pointerup', e=>{
     _panStart=null;
     document.body.classList.remove('panning');
     document.body.classList.remove('mid-panning');
+    localStorage.setItem('lpg_graph_state', serialize());
     return;
   }
   if(State.edgeGhost){
@@ -897,6 +921,7 @@ $('svg-canvas').addEventListener('pointerup', e=>{
   if(State.dragging){
     snapshot();
     State.dragging=null;
+    localStorage.setItem('lpg_graph_state', serialize());
     return;
   }
   if(State.selRect){
@@ -1645,7 +1670,7 @@ window.App = {
     renderAll(); renderInspector();
     notify('Format painted to '+(ids.length-1)+' objects');
   },
-  autoLayout(){ snapshot(); doAutoLayout(); renderAll(); notify('Force layout applied'); },
+  autoLayout(){ snapshot(); doAutoLayout(); renderAll(); localStorage.setItem('lpg_graph_state', serialize()); notify('Force layout applied'); },
   fitView(){
     if(State.nodes.length===0){ State.view={x:0,y:0,k:1}; applyTransform(); return; }
     const rect = $('svg-canvas').getBoundingClientRect();
@@ -1660,6 +1685,36 @@ window.App = {
     const k = Math.max(0.1, Math.min(2, Math.min((W-padding*2)/gW, (H-padding*2)/gH)));
     State.view.k = k;
     State.view.x = W/2 - ((minX+maxX)/2)*k; State.view.y = H/2 - ((minY+maxY)/2)*k;
+    applyTransform();
+  },
+  zoomStep(delta){
+    const rect = $('svg-canvas').getBoundingClientRect();
+    const cx = rect.width/2, cy = rect.height/2;
+    const newK = Math.max(0.1, Math.min(5, State.view.k + delta));
+    State.view.x = cx - (cx - State.view.x) * (newK / State.view.k);
+    State.view.y = cy - (cy - State.view.y) * (newK / State.view.k);
+    State.view.k = newK;
+    applyTransform();
+  },
+  setZoomFromSlider(val){
+    const newK = Math.max(0.1, parseInt(val)/100);
+    const rect = $('svg-canvas').getBoundingClientRect();
+    const cx = rect.width/2, cy = rect.height/2;
+    State.view.x = cx - (cx - State.view.x) * (newK / State.view.k);
+    State.view.y = cy - (cy - State.view.y) * (newK / State.view.k);
+    State.view.k = newK;
+    applyTransform();
+  },
+  setZoomFromInput(val){
+    const pct = Math.max(10, Math.min(500, parseInt(val)||100));
+    const newK = pct/100;
+    const rect = $('svg-canvas').getBoundingClientRect();
+    const cx = rect.width/2, cy = rect.height/2;
+    State.view.x = cx - (cx - State.view.x) * (newK / State.view.k);
+    State.view.y = cy - (cy - State.view.y) * (newK / State.view.k);
+    State.view.k = newK;
+    const sl = $('zoom-slider'); if(sl) sl.value = Math.min(300, pct);
+    const inp = $('zoom-input'); if(inp) inp.value = pct;
     applyTransform();
   },
   toggleDrawer(){
@@ -1749,6 +1804,7 @@ window.App = {
 
   setClampLabels(val){
     State.clampNodeLabels = val;
+    localStorage.setItem('lpg_graph_state', serialize());
     renderNodes();
   },
 
