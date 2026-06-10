@@ -1,0 +1,5877 @@
+{
+  "graphSettingsTitle": "Space Engineers Interface, Systems, and Mapping Information Companion",
+  "graphObjects": [
+    {
+      "id": "game-space-engineers",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "26",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "100",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#00b4f0"
+        }
+      ],
+      "label": "Space Engineers",
+      "properties": [],
+      "index": 0,
+      "x": -277.0200809210567,
+      "y": -224.06921263647914,
+      "vy": 0,
+      "vx": 0,
+      "fx": -277.0200809210567,
+      "fy": -224.06921263647914
+    },
+    {
+      "id": "Game-SE-Category-01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "7",
+          "fillColor": "#f00000",
+          "labelFontSize": "20",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "35",
+          "nodeColor": "#f00000",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#f00000"
+        }
+      ],
+      "label": "Settings",
+      "properties": [],
+      "index": 1,
+      "x": -451.6914444000088,
+      "y": -220.80126949758926,
+      "vy": 0,
+      "vx": 0,
+      "fx": -451.6914444000088,
+      "fy": -220.80126949758926
+    },
+    {
+      "id": "Game-SE-Category-02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#70db43",
+          "labelFontSize": "20",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "35",
+          "nodeColor": "#70db43",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#70db43"
+        }
+      ],
+      "label": "Survival Strategies",
+      "properties": [],
+      "index": 2,
+      "x": -274.8379387505332,
+      "y": -19.274625109474584,
+      "vy": 0,
+      "vx": 0,
+      "fx": -274.8379387505332,
+      "fy": -19.274625109474584
+    },
+    {
+      "id": "Game-SE-Category-01-to-game-space-engineers",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Settings",
+      "sourceId": "Game-SE-Category-01",
+      "target": "Space Engineers",
+      "targetId": "game-space-engineers"
+    },
+    {
+      "id": "Game-SE-Category-02-to-game-space-engineers",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Survival Strategies",
+      "sourceId": "Game-SE-Category-02",
+      "target": "Space Engineers",
+      "targetId": "game-space-engineers"
+    },
+    {
+      "id": "Game-SE-Category-03",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#c8f000",
+          "labelFontSize": "25",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "50",
+          "nodeColor": "#c8f000",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#c8f000"
+        }
+      ],
+      "label": "Survival Progression",
+      "properties": [],
+      "index": 3,
+      "x": 58.72335135902149,
+      "y": -354.1147460878059,
+      "vy": 0,
+      "vx": 0,
+      "fx": 58.72335135902149,
+      "fy": -354.1147460878059
+    },
+    {
+      "id": "Game-SE-Category-03-to-game-space-engineers",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Survival Progression",
+      "sourceId": "Game-SE-Category-03",
+      "target": "Space Engineers",
+      "targetId": "game-space-engineers"
+    },
+    {
+      "id": "Game-SE-Cat1-01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "24",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "40",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#00b4f0"
+        }
+      ],
+      "label": "Official Keen Server Settings",
+      "properties": [],
+      "index": 4,
+      "x": -690.7314062285161,
+      "y": -219.81417973526268,
+      "vy": 0,
+      "vx": 0,
+      "fx": -690.7314062285161,
+      "fy": -219.81417973526268
+    },
+    {
+      "id": "Game-SE-Cat1-01-to-Game-SE-Category-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Official Keen Server Settings",
+      "sourceId": "Game-SE-Cat1-01",
+      "target": "Settings",
+      "targetId": "Game-SE-Category-01"
+    },
+    {
+      "id": "Game-SE-Cat3-01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "10",
+          "nodeColor": "#a000f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#00b4f0"
+        }
+      ],
+      "label": "Landing Gear (Small Grid)",
+      "properties": [],
+      "index": 5,
+      "x": 49.99192012721505,
+      "y": -256.8056158861516,
+      "vy": 0,
+      "vx": 0,
+      "fx": 49.99192012721505,
+      "fy": -256.8056158861516
+    },
+    {
+      "id": "Game-SE-Cat3-02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "10",
+          "nodeColor": "#a000f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Remote Control (Small Grid)(+Group)",
+      "properties": [
+        {
+          "key": "SourceMaterials",
+          "value": "Timer Block and a thruster on Drop Ship."
+        }
+      ],
+      "index": 6,
+      "x": 53.75571010008062,
+      "y": -204.63859348755133,
+      "vy": 0,
+      "vx": 0,
+      "fx": 53.75571010008062,
+      "fy": -204.63859348755133
+    },
+    {
+      "id": "Game-SE-Cat3-03",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "10",
+          "nodeColor": "#a000f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#000000"
+        }
+      ],
+      "label": "H2/O2 Generator (Small Grid)",
+      "properties": [
+        {
+          "key": "Note",
+          "value": "IS NOT dependent on Remote Control Block!"
+        }
+      ],
+      "index": 7,
+      "x": 159.87407339492717,
+      "y": -230.82055766393762,
+      "vy": 0,
+      "vx": 0,
+      "fx": 159.87407339492717,
+      "fy": -230.82055766393762
+    },
+    {
+      "id": "Game-SE-Cat3-04",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "10",
+          "nodeColor": "#a000f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#00b4f0"
+        }
+      ],
+      "label": "Small Cargo (Small Grid)",
+      "properties": [],
+      "index": 8,
+      "x": 236.004654650791,
+      "y": -255.78341865438273,
+      "vy": 0,
+      "vx": 0,
+      "fx": 236.004654650791,
+      "fy": -255.78341865438273
+    },
+    {
+      "id": "Game-SE-Cat3-05",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "10",
+          "nodeColor": "#a000f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#00b4f0"
+        }
+      ],
+      "label": "Small Conveyor Tube (Small Grid)",
+      "properties": [],
+      "index": 9,
+      "x": 291.4257543461742,
+      "y": -182.15597725087767,
+      "vy": 0,
+      "vx": 0,
+      "fx": 291.4257543461742,
+      "fy": -182.15597725087767
+    },
+    {
+      "id": "Game-SE-Cat3-06",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#a000f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Wind Turbine",
+      "properties": [],
+      "index": 10,
+      "x": 376.0805609160929,
+      "y": -231.2031083077418,
+      "vy": 0,
+      "vx": 0,
+      "fx": 376.0805609160929,
+      "fy": -231.2031083077418
+    },
+    {
+      "id": "Game-SE-Cat3-07",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "10",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#00b4f0"
+        }
+      ],
+      "label": "Beacon (Small Grid)",
+      "properties": [],
+      "index": 11,
+      "x": 374.98149145363857,
+      "y": -162.21206703705332,
+      "vy": 0,
+      "vx": 0,
+      "fx": 374.98149145363857,
+      "fy": -162.21206703705332
+    },
+    {
+      "id": "Game-SE-Cat3-08",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "10",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#00b4f0"
+        }
+      ],
+      "label": "Antenna (Small Grid)",
+      "properties": [],
+      "index": 12,
+      "x": 375.68554674933614,
+      "y": -113.19134848951208,
+      "vy": 0,
+      "vx": 0,
+      "fx": 375.68554674933614,
+      "fy": -113.19134848951208
+    },
+    {
+      "id": "Game-SE-Cat3-09",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#a000f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Basic Assembler",
+      "properties": [],
+      "index": 13,
+      "x": 497.0430911157732,
+      "y": -267.6385656077657,
+      "vy": 0,
+      "vx": 0,
+      "fx": 497.0430911157732,
+      "fy": -267.6385656077657
+    },
+    {
+      "id": "Game-SE-Cat3-10",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Interior Light",
+      "properties": [],
+      "index": 14,
+      "x": 565.1353174770172,
+      "y": -151.69105398242743,
+      "vy": 0,
+      "vx": 0,
+      "fx": 565.1353174770172,
+      "fy": -151.69105398242743
+    },
+    {
+      "id": "Game-SE-Cat3-11",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#a000f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Basic Refinery",
+      "properties": [],
+      "index": 15,
+      "x": 496.546353295029,
+      "y": -336.95700284870134,
+      "vy": 0,
+      "vx": 0,
+      "fx": 496.546353295029,
+      "fy": -336.95700284870134
+    },
+    {
+      "id": "Game-SE-Cat3-12",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Ore Detector",
+      "properties": [],
+      "index": 16,
+      "x": 493.2529428071156,
+      "y": -397.06257608082643,
+      "vy": 0,
+      "vx": 0,
+      "fx": 493.2529428071156,
+      "fy": -397.06257608082643
+    },
+    {
+      "id": "Game-SE-Cat3-13",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Battery",
+      "properties": [],
+      "index": 17,
+      "x": 695.7965731445238,
+      "y": -222.893382203034,
+      "vy": 0,
+      "vx": 0,
+      "fx": 695.7965731445238,
+      "fy": -222.893382203034
+    },
+    {
+      "id": "Game-SE-Cat3-01-to-Game-SE-Category-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Landing Gear (Small Grid)",
+      "sourceId": "Game-SE-Cat3-01",
+      "target": "Survival Progression",
+      "targetId": "Game-SE-Category-03"
+    },
+    {
+      "id": "Game-SE-Cat3-02-to-Game-SE-Cat3-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Remote Control (Small Grid)",
+      "sourceId": "Game-SE-Cat3-02",
+      "target": "Landing Gear (Small Grid)",
+      "targetId": "Game-SE-Cat3-01"
+    },
+    {
+      "id": "Game-SE-Cat3-03-to-Game-SE-Cat3-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "H2/O2 Generator (Small Grid)",
+      "sourceId": "Game-SE-Cat3-03",
+      "target": "Remote Control (Small Grid)",
+      "targetId": "Game-SE-Cat3-02"
+    },
+    {
+      "id": "Game-SE-Cat3-04-to-Game-SE-Cat3-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Small Cargo (Small Grid)",
+      "sourceId": "Game-SE-Cat3-04",
+      "target": "H2/O2 Generator (Small Grid)",
+      "targetId": "Game-SE-Cat3-03"
+    },
+    {
+      "id": "Game-SE-Cat3-05-to-Game-SE-Cat3-04",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Small Conveyor Tube (Small Grid)",
+      "sourceId": "Game-SE-Cat3-05",
+      "target": "Small Cargo (Small Grid)",
+      "targetId": "Game-SE-Cat3-04"
+    },
+    {
+      "id": "Game-SE-Cat3-07-to-Game-SE-Cat3-06",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Beacon (Small Grid)",
+      "sourceId": "Game-SE-Cat3-07",
+      "target": "Wind Turbine",
+      "targetId": "Game-SE-Cat3-06"
+    },
+    {
+      "id": "Game-SE-Cat3-08-to-Game-SE-Cat3-07",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Antenna (Small Grid)",
+      "sourceId": "Game-SE-Cat3-08",
+      "target": "Beacon (Small Grid)",
+      "targetId": "Game-SE-Cat3-07"
+    },
+    {
+      "id": "Game-SE-Cat1-01_01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "PCU",
+      "properties": [
+        {
+          "key": "Total",
+          "value": "20000"
+        }
+      ],
+      "index": 18,
+      "x": -741.6900505946712,
+      "y": -106.75373075062998,
+      "vy": 0,
+      "vx": 0,
+      "fx": -741.6900505946712,
+      "fy": -106.75373075062998
+    },
+    {
+      "id": "Game-SE-Cat1-01_02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#00b4f0"
+        }
+      ],
+      "label": "Assembler Efficiency Multiplier",
+      "properties": [
+        {
+          "key": "Value",
+          "value": "3"
+        }
+      ],
+      "index": 19,
+      "x": -738.7488273453841,
+      "y": -322.10829109077054,
+      "vy": 0,
+      "vx": 0,
+      "fx": -738.7488273453841,
+      "fy": -322.10829109077054
+    },
+    {
+      "id": "Game-SE-Cat1-01_03",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Assembler Speed Multiplier",
+      "properties": [
+        {
+          "key": "Value",
+          "value": "3"
+        }
+      ],
+      "index": 20,
+      "x": -602.227577949408,
+      "y": -267.84808371462793,
+      "vy": 0,
+      "vx": 0,
+      "fx": -602.227577949408,
+      "fy": -267.84808371462793
+    },
+    {
+      "id": "Game-SE-Cat1-01_04",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Block Type Limits",
+      "properties": [
+        {
+          "key": "ShipGrinder",
+          "value": "5"
+        },
+        {
+          "key": "ShipWelder",
+          "value": "5"
+        },
+        {
+          "key": "Drill",
+          "value": "5"
+        }
+      ],
+      "index": 21,
+      "x": -822.8413443462873,
+      "y": -263.76135063311057,
+      "vy": 0,
+      "vx": 0,
+      "fx": -822.8413443462873,
+      "fy": -263.76135063311057
+    },
+    {
+      "id": "Game-SE-Cat1-01_05",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Cargo Ships",
+      "properties": [
+        {
+          "key": "Value",
+          "value": "Off"
+        }
+      ],
+      "index": 22,
+      "x": -815.3048656996507,
+      "y": -177.54039796987382,
+      "vy": 0,
+      "vx": 0,
+      "fx": -815.3048656996507,
+      "fy": -177.54039796987382
+    },
+    {
+      "id": "Game-SE-Cat1-01_06",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Grinder Speed Multiplier",
+      "properties": [
+        {
+          "key": "Value",
+          "value": "2"
+        }
+      ],
+      "index": 23,
+      "x": -632.1562337813741,
+      "y": -120.86514673073282,
+      "vy": 0,
+      "vx": 0,
+      "fx": -632.1562337813741,
+      "fy": -120.86514673073282
+    },
+    {
+      "id": "Game-SE-Cat1-01_07",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Hack Speed Multiplier",
+      "properties": [
+        {
+          "key": "Value",
+          "value": "0.33"
+        }
+      ],
+      "index": 24,
+      "x": -753.6096233468645,
+      "y": -281.36916406896233,
+      "vy": 0,
+      "vx": 0,
+      "fx": -753.6096233468645,
+      "fy": -281.36916406896233
+    },
+    {
+      "id": "Game-SE-Cat1-01_08",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Inventory Size Multiplier",
+      "properties": [
+        {
+          "key": "Value",
+          "value": "1 (Realistic)"
+        }
+      ],
+      "index": 25,
+      "x": -646.9465238259703,
+      "y": -302.97713066630297,
+      "vy": 0,
+      "vx": 0,
+      "fx": -646.9465238259703,
+      "fy": -302.97713066630297
+    },
+    {
+      "id": "Game-SE-Cat1-01_09",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Refinery Speed Multiplier",
+      "properties": [
+        {
+          "key": "Value",
+          "value": "3"
+        }
+      ],
+      "index": 26,
+      "x": -564.7407223382214,
+      "y": -193.00113788474553,
+      "vy": 0,
+      "vx": 0,
+      "fx": -564.7407223382214,
+      "fy": -193.00113788474553
+    },
+    {
+      "id": "Game-SE-Cat1-01_10",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#00b4f0"
+        }
+      ],
+      "label": "Sun Rotation Interval",
+      "properties": [
+        {
+          "key": "Value",
+          "value": "120"
+        }
+      ],
+      "index": 27,
+      "x": -696.8852578307321,
+      "y": -142.50965927486897,
+      "vy": 0,
+      "vx": 0,
+      "fx": -696.8852578307321,
+      "fy": -142.50965927486897
+    },
+    {
+      "id": "Game-SE-Cat1-01_11",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Total PCU",
+      "properties": [
+        {
+          "key": "Value",
+          "value": "320000"
+        }
+      ],
+      "index": 28,
+      "x": -751.0636144490454,
+      "y": -172.42584530796114,
+      "vy": 0,
+      "vx": 0,
+      "fx": -751.0636144490454,
+      "fy": -172.42584530796114
+    },
+    {
+      "id": "Game-SE-Cat1-01_12",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Welder Speed Multiplier",
+      "properties": [
+        {
+          "key": "Value",
+          "value": "2"
+        }
+      ],
+      "index": 29,
+      "x": -622.152952554916,
+      "y": -166.03974965488652,
+      "vy": 0,
+      "vx": 0,
+      "fx": -622.152952554916,
+      "fy": -166.03974965488652
+    },
+    {
+      "id": "Game-SE-Cat1-01_01-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "PCU",
+      "sourceId": "Game-SE-Cat1-01_01",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_05-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Cargo Ships",
+      "sourceId": "Game-SE-Cat1-01_05",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_04-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Block Type Limits",
+      "sourceId": "Game-SE-Cat1-01_04",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_10-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Sun Rotation Interval",
+      "sourceId": "Game-SE-Cat1-01_10",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_02-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Assembler Efficiency Multiplier",
+      "sourceId": "Game-SE-Cat1-01_02",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_11-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Total PCU",
+      "sourceId": "Game-SE-Cat1-01_11",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_12-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Welder Speed Multiplier",
+      "sourceId": "Game-SE-Cat1-01_12",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_03-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Assembler Speed Multiplier",
+      "sourceId": "Game-SE-Cat1-01_03",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_09-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Refinery Speed Multiplier",
+      "sourceId": "Game-SE-Cat1-01_09",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_07-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Hack Speed Multiplier",
+      "sourceId": "Game-SE-Cat1-01_07",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_06-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Grinder Speed Multiplier",
+      "sourceId": "Game-SE-Cat1-01_06",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat1-01_08-to-Game-SE-Cat1-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Inventory Size Multiplier",
+      "sourceId": "Game-SE-Cat1-01_08",
+      "target": "Official Keen Server Settings",
+      "targetId": "Game-SE-Cat1-01"
+    },
+    {
+      "id": "Game-SE-Cat2-01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Sunken Ship",
+      "properties": [
+        {
+          "key": "Description",
+          "value": "When you land with a drop ship: dig a hole that the ship CAREFULLY falls into. Getting the survival kit below rock line allows stone to fall towards the survival kit for faster collection/continual gravel production."
+        }
+      ],
+      "index": 30,
+      "x": -367.08634513811506,
+      "y": 38.31742410862181,
+      "vy": 0,
+      "vx": 0,
+      "fx": -367.08634513811506,
+      "fy": 38.31742410862181
+    },
+    {
+      "id": "Game-SE-Cat2-01-to-Game-SE-Category-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Sunken Ship",
+      "sourceId": "Game-SE-Cat2-01",
+      "target": "Survival Strategies",
+      "targetId": "Game-SE-Category-02"
+    },
+    {
+      "id": "Game-SE-Cat3-03-to-Game-SE-Category-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "H2/O2 Generator (Small Grid)",
+      "sourceId": "Game-SE-Cat3-03",
+      "target": "Survival Progression",
+      "targetId": "Game-SE-Category-03"
+    },
+    {
+      "id": "Game-SE-Cat3-14",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Cryo Chamber (+Group)",
+      "properties": [],
+      "index": 31,
+      "x": 176.2020886061818,
+      "y": -103.92362401600488,
+      "vy": 0,
+      "vx": 0,
+      "fx": 176.2020886061818,
+      "fy": -103.92362401600488
+    },
+    {
+      "id": "Game-SE-Cat3-14-to-Game-SE-Cat3-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Cryo Chamber",
+      "sourceId": "Game-SE-Cat3-14",
+      "target": "H2/O2 Generator (Small Grid)",
+      "targetId": "Game-SE-Cat3-03"
+    },
+    {
+      "id": "Game-SE-Cat3-15",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "H2 & O2 Tanks (+Group)",
+      "properties": [],
+      "index": 32,
+      "x": 116.63868655880947,
+      "y": -142.39744692073896,
+      "vy": 0,
+      "vx": 0,
+      "fx": 116.63868655880947,
+      "fy": -142.39744692073896
+    },
+    {
+      "id": "Game-SE-Cat3-16",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "H2 Engine",
+      "properties": [],
+      "index": 33,
+      "x": 219.3756806977986,
+      "y": -143.10624030169237,
+      "vy": 0,
+      "vx": 0,
+      "fx": 219.3756806977986,
+      "fy": -143.10624030169237
+    },
+    {
+      "id": "Game-SE-Cat3-16-to-Game-SE-Cat3-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "H2 Engine",
+      "sourceId": "Game-SE-Cat3-16",
+      "target": "H2/O2 Generator (Small Grid)",
+      "targetId": "Game-SE-Cat3-03"
+    },
+    {
+      "id": "Game-SE-Cat3-15-to-Game-SE-Cat3-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "H2 & O2 Tanks",
+      "sourceId": "Game-SE-Cat3-15",
+      "target": "H2/O2 Generator (Small Grid)",
+      "targetId": "Game-SE-Cat3-03"
+    },
+    {
+      "id": "Game-SE-Cat3-17",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Interior Wall",
+      "properties": [],
+      "index": 34,
+      "x": 214.90000034427973,
+      "y": -391.41264137104093,
+      "vy": 0,
+      "vx": 0,
+      "fx": 214.90000034427973,
+      "fy": -391.41264137104093
+    },
+    {
+      "id": "Game-SE-Cat3-18",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Ladder (+Group)",
+      "properties": [],
+      "index": 35,
+      "x": 323.3475582649271,
+      "y": -409.4263479348203,
+      "vy": 0,
+      "vx": 0,
+      "fx": 323.3475582649271,
+      "fy": -409.4263479348203
+    },
+    {
+      "id": "Game-SE-Cat3-19",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Scaffolding & Catwalks",
+      "properties": [],
+      "index": 36,
+      "x": 373.44832774625615,
+      "y": -375.7187171624359,
+      "vy": 0,
+      "vx": 0,
+      "fx": 373.44832774625615,
+      "fy": -375.7187171624359
+    },
+    {
+      "id": "Game-SE-Cat3-18-to-Game-SE-Cat3-17",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Ladder (+Group)",
+      "sourceId": "Game-SE-Cat3-18",
+      "target": "Interior Wall",
+      "targetId": "Game-SE-Cat3-17"
+    },
+    {
+      "id": "Game-SE-Cat3-19-to-Game-SE-Cat3-17",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Scaffolding & Catwalks",
+      "sourceId": "Game-SE-Cat3-19",
+      "target": "Interior Wall",
+      "targetId": "Game-SE-Cat3-17"
+    },
+    {
+      "id": "Game-SE-Cat3-17-to-Game-SE-Category-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Interior Wall",
+      "sourceId": "Game-SE-Cat3-17",
+      "target": "Survival Progression",
+      "targetId": "Game-SE-Category-03"
+    },
+    {
+      "id": "Game-SE-Cat3-20",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#bebebe",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#f05656"
+        }
+      ],
+      "label": "Wheels (+Group)",
+      "properties": [],
+      "index": 37,
+      "x": -35.53198070953067,
+      "y": -287.7647566145977,
+      "vy": 0,
+      "vx": 0,
+      "fx": -35.53198070953067,
+      "fy": -287.7647566145977
+    },
+    {
+      "id": "Game-SE-Cat3-21",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#bebebe",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Passenger Seat",
+      "properties": [],
+      "index": 38,
+      "x": -63.53344098771551,
+      "y": -240.80773658823261,
+      "vy": 0,
+      "vx": 0,
+      "fx": -63.53344098771551,
+      "fy": -240.80773658823261
+    },
+    {
+      "id": "Game-SE-Cat3-22",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#bebebe",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Cockpit (+Group)",
+      "properties": [],
+      "index": 39,
+      "x": -80.74795640726143,
+      "y": -196.92085690027207,
+      "vy": 0,
+      "vx": 0,
+      "fx": -80.74795640726143,
+      "fy": -196.92085690027207
+    },
+    {
+      "id": "Game-SE-Cat3-23",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#f00000",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Gatling Gun ",
+      "properties": [],
+      "index": 40,
+      "x": -15.570937016474645,
+      "y": -102.56232836823204,
+      "vy": 0,
+      "vx": 0,
+      "fx": -15.570937016474645,
+      "fy": -102.56232836823204
+    },
+    {
+      "id": "Game-SE-Cat3-24",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#efea8d",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Thrusters (Atmo and Ion) (+Group)",
+      "properties": [],
+      "index": 41,
+      "x": -14.430058684457833,
+      "y": -160.86401155054375,
+      "vy": 0,
+      "vx": 0,
+      "fx": -14.430058684457833,
+      "fy": -160.86401155054375
+    },
+    {
+      "id": "Game-SE-Cat3-25",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#bebebe",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Gyroscope",
+      "properties": [],
+      "index": 42,
+      "x": -108.2783478586644,
+      "y": -134.89412506655208,
+      "vy": 0,
+      "vx": 0,
+      "fx": -108.2783478586644,
+      "fy": -134.89412506655208
+    },
+    {
+      "id": "Game-SE-Cat3-26",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Grinder (+Group)",
+      "properties": [],
+      "index": 43,
+      "x": 51.35814356069842,
+      "y": -115.49323662109751,
+      "vy": 0,
+      "vx": 0,
+      "fx": 51.35814356069842,
+      "fy": -115.49323662109751
+    },
+    {
+      "id": "Game-SE-Cat3-27",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#f00000",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Rocket Launcher (+Group)",
+      "properties": [],
+      "index": 44,
+      "x": -16.43038135435279,
+      "y": -51.8691300767411,
+      "vy": 0,
+      "vx": 0,
+      "fx": -16.43038135435279,
+      "fy": -51.8691300767411
+    },
+    {
+      "id": "Game-SE-Cat3-28",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#bebebe",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Thrusters (H2) (+Group)",
+      "properties": [],
+      "index": 45,
+      "x": 114.847894428897,
+      "y": -62.343074739366244,
+      "vy": 0,
+      "vx": 0,
+      "fx": 114.847894428897,
+      "fy": -62.343074739366244
+    },
+    {
+      "id": "Game-SE-Cat3-09-to-Game-SE-Category-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Basic Assembler",
+      "sourceId": "Game-SE-Cat3-09",
+      "target": "Survival Progression",
+      "targetId": "Game-SE-Category-03"
+    },
+    {
+      "id": "Node#Game-SE-Cat3-29",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Spotlight (+Group)",
+      "properties": [],
+      "index": 46,
+      "x": 616.1905427800208,
+      "y": -195.26301604206685,
+      "vy": 0,
+      "vx": 0,
+      "fx": 616.1905427800208,
+      "fy": -195.26301604206685
+    },
+    {
+      "id": "Game-SE-Cat3-13-to-Game-SE-Cat3-09",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Battery",
+      "sourceId": "Game-SE-Cat3-13",
+      "target": "Basic Assembler",
+      "targetId": "Game-SE-Cat3-09"
+    },
+    {
+      "id": "Node#Game-SE-Cat3-29-to-Game-SE-Cat3-09",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Spotlight (+Group)",
+      "sourceId": "Node#Game-SE-Cat3-29",
+      "target": "Basic Assembler",
+      "targetId": "Game-SE-Cat3-09"
+    },
+    {
+      "id": "Game-SE-Cat3-30",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Assembler",
+      "properties": [],
+      "index": 47,
+      "x": 497.1010450264613,
+      "y": -167.06851505358543,
+      "vy": 0,
+      "vx": 0,
+      "fx": 497.1010450264613,
+      "fy": -167.06851505358543
+    },
+    {
+      "id": "Game-SE-Cat3-30-to-Game-SE-Cat3-09",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Assembler",
+      "sourceId": "Game-SE-Cat3-30",
+      "target": "Basic Assembler",
+      "targetId": "Game-SE-Cat3-09"
+    },
+    {
+      "id": "Game-SE-Cat3-09-to-Game-SE-Cat3-06",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Basic Assembler",
+      "sourceId": "Game-SE-Cat3-09",
+      "target": "Wind Turbine",
+      "targetId": "Game-SE-Cat3-06"
+    },
+    {
+      "id": "Game-SE-Cat3-12-to-Game-SE-Cat3-11",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Ore Detector",
+      "sourceId": "Game-SE-Cat3-12",
+      "target": "Basic Refinery",
+      "targetId": "Game-SE-Cat3-11"
+    },
+    {
+      "id": "Game-SE-Cat3-11-to-Game-SE-Category-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Basic Refinery",
+      "sourceId": "Game-SE-Cat3-11",
+      "target": "Survival Progression",
+      "targetId": "Game-SE-Category-03"
+    },
+    {
+      "id": "Game-SE-Cat3-31",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Refinery",
+      "properties": [],
+      "index": 48,
+      "x": 576.7234702698545,
+      "y": -333.90052403483605,
+      "vy": 0,
+      "vx": 0,
+      "fx": 576.7234702698545,
+      "fy": -333.90052403483605
+    },
+    {
+      "id": "Game-SE-Cat3-31-to-Game-SE-Cat3-11",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Refinery",
+      "sourceId": "Game-SE-Cat3-31",
+      "target": "Basic Refinery",
+      "targetId": "Game-SE-Cat3-11"
+    },
+    {
+      "id": "Game-SE-Cat3-06-to-Game-SE-Category-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Wind Turbine",
+      "sourceId": "Game-SE-Cat3-06",
+      "target": "Survival Progression",
+      "targetId": "Game-SE-Category-03"
+    },
+    {
+      "id": "Game-SE-Cat3-24-to-Game-SE-Cat3-22",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Thrusters (Atmo and Ion) (+Group)",
+      "sourceId": "Game-SE-Cat3-24",
+      "target": "Cockpit (+Group)",
+      "targetId": "Game-SE-Cat3-22"
+    },
+    {
+      "id": "Game-SE-Cat3-22-to-Game-SE-Cat3-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Cockpit (+Group)",
+      "sourceId": "Game-SE-Cat3-22",
+      "target": "Landing Gear (Small Grid)",
+      "targetId": "Game-SE-Cat3-01"
+    },
+    {
+      "id": "Game-SE-Cat3-20-to-Game-SE-Cat3-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Wheels (+Group)",
+      "sourceId": "Game-SE-Cat3-20",
+      "target": "Landing Gear (Small Grid)",
+      "targetId": "Game-SE-Cat3-01"
+    },
+    {
+      "id": "Game-SE-Cat3-21-to-Game-SE-Cat3-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Passenger Seat",
+      "sourceId": "Game-SE-Cat3-21",
+      "target": "Landing Gear (Small Grid)",
+      "targetId": "Game-SE-Cat3-01"
+    },
+    {
+      "id": "Game-SE-Cat3-23-to-Game-SE-Cat3-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Gatling Gun ",
+      "sourceId": "Game-SE-Cat3-23",
+      "target": "Remote Control (Small Grid)(+Group)",
+      "targetId": "Game-SE-Cat3-02"
+    },
+    {
+      "id": "Game-SE-Cat3-23-to-Game-SE-Cat3-22",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Gatling Gun ",
+      "sourceId": "Game-SE-Cat3-23",
+      "target": "Cockpit (+Group)",
+      "targetId": "Game-SE-Cat3-22"
+    },
+    {
+      "id": "Game-SE-Cat3-24-to-Game-SE-Cat3-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Thrusters (Atmo and Ion) (+Group)",
+      "sourceId": "Game-SE-Cat3-24",
+      "target": "Remote Control (Small Grid)(+Group)",
+      "targetId": "Game-SE-Cat3-02"
+    },
+    {
+      "id": "Game-SE-Cat3-32",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#000000"
+        }
+      ],
+      "label": "Control Panel",
+      "properties": [],
+      "index": 49,
+      "x": 442.66450973950805,
+      "y": -195.86401850956463,
+      "vy": 0,
+      "vx": 0,
+      "fx": 442.66450973950805,
+      "fy": -195.86401850956463
+    },
+    {
+      "id": "Game-SE-Cat3-32-to-Game-SE-Cat3-06",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Control Panel",
+      "sourceId": "Game-SE-Cat3-32",
+      "target": "Wind Turbine",
+      "targetId": "Game-SE-Cat3-06"
+    },
+    {
+      "id": "Game-SE-Cat3-33",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle",
+          "nodeColorDefault": "#000000"
+        }
+      ],
+      "label": "Piston (+Group)",
+      "properties": [],
+      "index": 50,
+      "x": 331.54703262412625,
+      "y": -142.19335500968222,
+      "vy": 0,
+      "vx": 0,
+      "fx": 331.54703262412625,
+      "fy": -142.19335500968222
+    },
+    {
+      "id": "Game-SE-Cat3-34",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Rotor (+Group)",
+      "properties": [],
+      "index": 51,
+      "x": 424.6516244861842,
+      "y": -84.17761903373733,
+      "vy": 0,
+      "vx": 0,
+      "fx": 424.6516244861842,
+      "fy": -84.17761903373733
+    },
+    {
+      "id": "Game-SE-Cat3-35",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Hinge (+Group)",
+      "properties": [],
+      "index": 52,
+      "x": 441.3804417981815,
+      "y": -137.2244033043742,
+      "vy": 0,
+      "vx": 0,
+      "fx": 441.3804417981815,
+      "fy": -137.2244033043742
+    },
+    {
+      "id": "Game-SE-Cat3-33-to-Game-SE-Cat3-06",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Piston (+Group)",
+      "sourceId": "Game-SE-Cat3-33",
+      "target": "Wind Turbine",
+      "targetId": "Game-SE-Cat3-06"
+    },
+    {
+      "id": "Game-SE-Cat3-36",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "12",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "20",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Collector (+Group)",
+      "properties": [],
+      "index": 53,
+      "x": 286.9087014621591,
+      "y": -90.44541695471935,
+      "vy": 0,
+      "vx": 0,
+      "fx": 286.9087014621591,
+      "fy": -90.44541695471935
+    },
+    {
+      "id": "Game-SE-Cat3-36-to-Game-SE-Cat3-05",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Collector (+Group)",
+      "sourceId": "Game-SE-Cat3-36",
+      "target": "Small Conveyor Tube (Small Grid)",
+      "targetId": "Game-SE-Cat3-05"
+    },
+    {
+      "id": "Game-SE-Cat3-37",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Connector",
+      "properties": [],
+      "index": 54,
+      "x": 286.2718750026714,
+      "y": -25.21441759737465,
+      "vy": 0,
+      "vx": 0,
+      "fx": 286.2718750026714,
+      "fy": -25.21441759737465
+    },
+    {
+      "id": "Game-SE-Cat3-38",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Conveyor Sorter",
+      "properties": [],
+      "index": 55,
+      "x": 230.97268190870489,
+      "y": -51.03450214900036,
+      "vy": 0,
+      "vx": 0,
+      "fx": 230.97268190870489,
+      "fy": -51.03450214900036
+    },
+    {
+      "id": "Game-SE-Cat3-38-to-Game-SE-Cat3-36",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Conveyor Sorter",
+      "sourceId": "Game-SE-Cat3-38",
+      "target": "Collector (+Group)",
+      "targetId": "Game-SE-Cat3-36"
+    },
+    {
+      "id": "Game-SE-Cat3-37-to-Game-SE-Cat3-36",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Connector",
+      "sourceId": "Game-SE-Cat3-37",
+      "target": "Collector (+Group)",
+      "targetId": "Game-SE-Cat3-36"
+    },
+    {
+      "id": "Game-SE-Cat3-26-to-Game-SE-Cat3-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Grinder (+Group)",
+      "sourceId": "Game-SE-Cat3-26",
+      "target": "Remote Control (Small Grid)(+Group)",
+      "targetId": "Game-SE-Cat3-02"
+    },
+    {
+      "id": "Game-SE-Cat3-35-to-Game-SE-Cat3-06",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Hinge (+Group)",
+      "sourceId": "Game-SE-Cat3-35",
+      "target": "Wind Turbine",
+      "targetId": "Game-SE-Cat3-06"
+    },
+    {
+      "id": "Game-SE-Cat3-25-to-Game-SE-Cat3-22",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Gyroscope",
+      "sourceId": "Game-SE-Cat3-25",
+      "target": "Cockpit (+Group)",
+      "targetId": "Game-SE-Cat3-22"
+    },
+    {
+      "id": "Game-SE-Cat3-10-to-Game-SE-Cat3-09",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Interior Light",
+      "sourceId": "Game-SE-Cat3-10",
+      "target": "Basic Assembler",
+      "targetId": "Game-SE-Cat3-09"
+    },
+    {
+      "id": "Game-SE-Cat3-28-to-Game-SE-Cat3-15",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Thrusters (H2) (+Group)",
+      "sourceId": "Game-SE-Cat3-28",
+      "target": "H2 & O2 Tanks (+Group)",
+      "targetId": "Game-SE-Cat3-15"
+    },
+    {
+      "id": "Game-SE-Cat3-34-to-Game-SE-Cat3-06",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Rotor (+Group)",
+      "sourceId": "Game-SE-Cat3-34",
+      "target": "Wind Turbine",
+      "targetId": "Game-SE-Cat3-06"
+    },
+    {
+      "id": "Game-SE-Cat3-27-to-Game-SE-Cat3-23",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Rocket Launcher (+Group)",
+      "sourceId": "Game-SE-Cat3-27",
+      "target": "Gatling Gun ",
+      "targetId": "Game-SE-Cat3-23"
+    },
+    {
+      "id": "Game-SE-Cat3-39",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Projector",
+      "properties": [],
+      "index": 56,
+      "x": 622.3949159378161,
+      "y": -102.79152049117593,
+      "vy": 0,
+      "vx": 0,
+      "fx": 622.3949159378161,
+      "fy": -102.79152049117593
+    },
+    {
+      "id": "Game-SE-Cat3-40",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "AI Flight (Move) (+Group)",
+      "properties": [],
+      "index": 57,
+      "x": 567.322962370791,
+      "y": -65.89510765913116,
+      "vy": 0,
+      "vx": 0,
+      "fx": 567.322962370791,
+      "fy": -65.89510765913116
+    },
+    {
+      "id": "Game-SE-Cat3-39-to-Game-SE-Cat3-10",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Projector",
+      "sourceId": "Game-SE-Cat3-39",
+      "target": "Interior Light",
+      "targetId": "Game-SE-Cat3-10"
+    },
+    {
+      "id": "Game-SE-Cat3-40-to-Game-SE-Cat3-10",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "AI Flight (Move) (+Group)",
+      "sourceId": "Game-SE-Cat3-40",
+      "target": "Interior Light",
+      "targetId": "Game-SE-Cat3-10"
+    },
+    {
+      "id": "Game-SE-Cat3-11-to-Game-SE-Cat3-09",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Basic Refinery",
+      "sourceId": "Game-SE-Cat3-11",
+      "target": "Basic Assembler",
+      "targetId": "Game-SE-Cat3-09"
+    },
+    {
+      "id": "Game-SE-Cat3-41",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Gravity Generator",
+      "properties": [],
+      "index": 58,
+      "x": 495.08661768291154,
+      "y": -106.7194014642248,
+      "vy": 0,
+      "vx": 0,
+      "fx": 495.08661768291154,
+      "fy": -106.7194014642248
+    },
+    {
+      "id": "Game-SE-Cat3-42",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Jump Drive",
+      "properties": [],
+      "index": 59,
+      "x": 492.4942698685235,
+      "y": -35.25468728512808,
+      "vy": 0,
+      "vx": 0,
+      "fx": 492.4942698685235,
+      "fy": -35.25468728512808
+    },
+    {
+      "id": "Game-SE-Cat3-41-to-Game-SE-Cat3-30",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Gravity Generator",
+      "sourceId": "Game-SE-Cat3-41",
+      "target": "Assembler",
+      "targetId": "Game-SE-Cat3-30"
+    },
+    {
+      "id": "Game-SE-Cat3-42-to-Game-SE-Cat3-41",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Jump Drive",
+      "sourceId": "Game-SE-Cat3-42",
+      "target": "Gravity Generator",
+      "targetId": "Game-SE-Cat3-41"
+    },
+    {
+      "id": "Game-SE-Cat3-43",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Button Pannel (+Group)",
+      "properties": [],
+      "index": 60,
+      "x": 698.2076582772413,
+      "y": -140.59164193402773,
+      "vy": 0,
+      "vx": 0,
+      "fx": 698.2076582772413,
+      "fy": -140.59164193402773
+    },
+    {
+      "id": "Game-SE-Cat3-43-to-Game-SE-Cat3-13",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Button Pannel (+Group)",
+      "sourceId": "Game-SE-Cat3-43",
+      "target": "Battery",
+      "targetId": "Game-SE-Cat3-13"
+    },
+    {
+      "id": "Game-SE-Cat3-44",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Laser Antenna",
+      "properties": [],
+      "index": 61,
+      "x": 374.610007312709,
+      "y": -35.62952104465816,
+      "vy": 0,
+      "vx": 0,
+      "fx": 374.610007312709,
+      "fy": -35.62952104465816
+    },
+    {
+      "id": "Game-SE-Cat3-44-to-Game-SE-Cat3-08",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Laser Antenna",
+      "sourceId": "Game-SE-Cat3-44",
+      "target": "Antenna (Small Grid)",
+      "targetId": "Game-SE-Cat3-08"
+    },
+    {
+      "id": "Game-SE-Cat3-06-to-Game-SE-Cat3-05",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Wind Turbine",
+      "sourceId": "Game-SE-Cat3-06",
+      "target": "Small Conveyor Tube (Small Grid)",
+      "targetId": "Game-SE-Cat3-05"
+    },
+    {
+      "id": "Game-SE-Cat3-45",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Speed Module (+Group)",
+      "properties": [],
+      "index": 62,
+      "x": 586.5239476923135,
+      "y": -381.2136419105834,
+      "vy": 0,
+      "vx": 0,
+      "fx": 586.5239476923135,
+      "fy": -381.2136419105834
+    },
+    {
+      "id": "Game-SE-Cat3-45-to-Game-SE-Cat3-31",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Speed Module (+Group)",
+      "sourceId": "Game-SE-Cat3-45",
+      "target": "Refinery",
+      "targetId": "Game-SE-Cat3-31"
+    },
+    {
+      "id": "Game-SE-Cat2-02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Static Hinge Drill Base ",
+      "properties": [
+        {
+          "key": "Description",
+          "value": "Focus on building a base that will vertically mount a drill. Use small grid head to build up to large grid. Pistons to move further down (7 wide sweep), then when deep enough move to horizontal Hing drilling (move conveyors like rails)"
+        }
+      ],
+      "index": 63,
+      "x": -283.1061931920806,
+      "y": 89.71931373658343,
+      "vy": 0,
+      "vx": 0,
+      "fx": -283.1061931920806,
+      "fy": 89.71931373658343
+    },
+    {
+      "id": "Game-SE-Cat2-02-to-Game-SE-Category-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Static Hinge Drill Base ",
+      "sourceId": "Game-SE-Cat2-02",
+      "target": "Survival Strategies",
+      "targetId": "Game-SE-Category-02"
+    },
+    {
+      "id": "Game-SE-Cat2-03",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Static Rotor Drill Base ",
+      "properties": [
+        {
+          "key": "Description",
+          "value": "Focus on building a base that will vertically mount piston drills on a rotor. drill. Use small grid head to build up to large grid. Pistons to move further down (7 wide rotation), then when deep enough move to horizontal rotor drilling (move conveyors like rails)"
+        }
+      ],
+      "index": 64,
+      "x": -184.01250055586465,
+      "y": 49.97027204356198,
+      "vy": 0,
+      "vx": 0,
+      "fx": -184.01250055586465,
+      "fy": 49.97027204356198
+    },
+    {
+      "id": "Game-SE-Cat2-03-to-Game-SE-Category-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Static Rotor Drill Base ",
+      "sourceId": "Game-SE-Cat2-03",
+      "target": "Survival Strategies",
+      "targetId": "Game-SE-Category-02"
+    },
+    {
+      "id": "Game-SE-Cat3-ST2_01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Produce Gravel in Survival Kit (From Stone)",
+      "properties": [],
+      "index": 65,
+      "x": -207.1312980830582,
+      "y": 187.96990213934123,
+      "vy": 0,
+      "vx": 0,
+      "fx": -207.1312980830582,
+      "fy": 187.96990213934123
+    },
+    {
+      "id": "Game-SE-Cat3-ST2_02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Build Wind Turbine and Basic Assembler Components in Survival Kit",
+      "properties": [],
+      "index": 66,
+      "x": -207.76885091828103,
+      "y": 135.0593724598216,
+      "vy": 0,
+      "vx": 0,
+      "fx": -207.76885091828103,
+      "fy": 135.0593724598216
+    },
+    {
+      "id": "Game-SE-Cat3-ST2_02-to-Game-SE-Cat2-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Build Wind Turbine and Basic Assembler Components in Survival Kit",
+      "sourceId": "Game-SE-Cat3-ST2_02",
+      "target": "Static Hinge Drill Base ",
+      "targetId": "Game-SE-Cat2-02"
+    },
+    {
+      "id": "Game-SE-Cat3-ST2_01-to-Game-SE-Cat3-ST2_02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Produce Gravel in Survival Kit (From Stone)",
+      "sourceId": "Game-SE-Cat3-ST2_01",
+      "target": "Build Wind Turbine and Basic Assembler Components in Survival Kit",
+      "targetId": "Game-SE-Cat3-ST2_02"
+    },
+    {
+      "id": "Game-SE-Cat3-ST2_02-to-Game-SE-Cat2-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Build Wind Turbine and Basic Assembler Components in Survival Kit",
+      "sourceId": "Game-SE-Cat3-ST2_02",
+      "target": "Static Rotor Drill Base ",
+      "targetId": "Game-SE-Cat2-03"
+    },
+    {
+      "id": "Scenarios",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "25",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "60",
+          "nodeColor": "#d89e18",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Scenarios",
+      "properties": [],
+      "index": 67,
+      "x": 46.953112213560246,
+      "y": 106.15468621869505,
+      "vy": 0,
+      "vx": 0,
+      "fx": 46.953112213560246,
+      "fy": 106.15468621869505
+    },
+    {
+      "id": "Scenarios-to-game-space-engineers",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Scenarios",
+      "sourceId": "Scenarios",
+      "target": "Space Engineers",
+      "targetId": "game-space-engineers"
+    },
+    {
+      "id": "Scenario-01-LTS",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "25",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "45",
+          "nodeColor": "#d29dea",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Learning To Survive",
+      "properties": [
+        {
+          "key": "Info",
+          "value": "https://www.reddit.com/r/spaceengineers/comments/b7dbhr/learning_to_survive_full_guide_spoilers/"
+        }
+      ],
+      "index": 68,
+      "x": 127.62161327015983,
+      "y": 254.0536960681959,
+      "vy": 0,
+      "vx": 0,
+      "fx": 127.62161327015983,
+      "fy": 254.0536960681959
+    },
+    {
+      "id": "Scenario-01-LTS-to-Scenarios",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Learning To Survive",
+      "sourceId": "Scenario-01-LTS",
+      "target": "Scenarios",
+      "targetId": "Scenarios"
+    },
+    {
+      "id": "Scn01-Base-01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base 1",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-01_Start:119.9:-125.14:5.84:#FF85F175:"
+        },
+        {
+          "key": "Ores",
+          "value": "Au, Ag, Fe, Ice"
+        },
+        {
+          "key": "Blocks",
+          "value": "Batteries (x2), Survival Kit, Solar Pannel (x3), Beacon, H2/O2 Generator, Gravity Generator"
+        }
+      ],
+      "index": 69,
+      "x": -132.1322674156508,
+      "y": 338.9188809781147,
+      "vy": 0,
+      "vx": 0,
+      "fx": -132.1322674156508,
+      "fy": 338.9188809781147
+    },
+    {
+      "id": "Scn01-B1-Task-01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 1 - Survival Kit",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 70,
+      "x": -220.51312140731318,
+      "y": 315.0512850466663,
+      "vy": 0,
+      "vx": 0,
+      "fx": -220.51312140731318,
+      "fy": 315.0512850466663
+    },
+    {
+      "id": "Scn01-B1-Task-02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 2 - O2 and H2",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 71,
+      "x": -254.14619233633863,
+      "y": 350.9614297437897,
+      "vy": 0,
+      "vx": 0,
+      "fx": -254.14619233633863,
+      "fy": 350.9614297437897
+    },
+    {
+      "id": "Scn01-B1-Task-03",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 3 - Mining",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 72,
+      "x": -206.7570238979818,
+      "y": 379.0046199685496,
+      "vy": 0,
+      "vx": 0,
+      "fx": -206.7570238979818,
+      "fy": 379.0046199685496
+    },
+    {
+      "id": "Scn01-B1-Task-04",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 4 - Mining",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 73,
+      "x": -200.03325096729003,
+      "y": 424.9266180574951,
+      "vy": 0,
+      "vx": 0,
+      "fx": -200.03325096729003,
+      "fy": 424.9266180574951
+    },
+    {
+      "id": "Scn01-B1-Task-01-to-Scn01-Base-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 1 - Survival Kit",
+      "sourceId": "Scn01-B1-Task-01",
+      "target": "Base 1",
+      "targetId": "Scn01-Base-01"
+    },
+    {
+      "id": "Scn01-B1-Task-02-to-Scn01-Base-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 2 - O2 and H2",
+      "sourceId": "Scn01-B1-Task-02",
+      "target": "Base 1",
+      "targetId": "Scn01-Base-01"
+    },
+    {
+      "id": "Scn01-B1-Task-03-to-Scn01-Base-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 3 - Mining",
+      "sourceId": "Scn01-B1-Task-03",
+      "target": "Base 1",
+      "targetId": "Scn01-Base-01"
+    },
+    {
+      "id": "Scn01-B1-Task-04-to-Scn01-Base-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 4 - Mining",
+      "sourceId": "Scn01-B1-Task-04",
+      "target": "Base 1",
+      "targetId": "Scn01-Base-01"
+    },
+    {
+      "id": "Scn01-B1-Task-05",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 5 - Ship",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 74,
+      "x": -119.07587572125479,
+      "y": 404.8748041141466,
+      "vy": 0,
+      "vx": 0,
+      "fx": -119.07587572125479,
+      "fy": 404.8748041141466
+    },
+    {
+      "id": "Scn01-B1-Task-05-to-Scn01-Base-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 5 - Ship",
+      "sourceId": "Scn01-B1-Task-05",
+      "target": "Base 1",
+      "targetId": "Scn01-Base-01"
+    },
+    {
+      "id": "Scn01-Base-02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base 2 - Construction Facility",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-02_Ship-Tools:-44.01:-16.92:-354.09:#FFF1C375:"
+        },
+        {
+          "key": "Blocks",
+          "value": "Batteries (x1), Survival Kit, Small Cargo (x2), O2/H2 Generator, H2 Engine, Gravity Generator, Assembler"
+        }
+      ],
+      "index": 75,
+      "x": -30.5439023223729,
+      "y": 377.79038265053885,
+      "vy": 0,
+      "vx": 0,
+      "fx": -30.5439023223729,
+      "fy": 377.79038265053885
+    },
+    {
+      "id": "Scn01-B2-Task-06",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 6 - Ship Tools",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        },
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 76,
+      "x": -32.09548987662413,
+      "y": 430.9776913453574,
+      "vy": 0,
+      "vx": 0,
+      "fx": -32.09548987662413,
+      "fy": 430.9776913453574
+    },
+    {
+      "id": "Scn01-B2-Task-06-to-Scn01-Base-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 6 - Ship Tools",
+      "sourceId": "Scn01-B2-Task-06",
+      "target": "Base 2",
+      "targetId": "Scn01-Base-02"
+    },
+    {
+      "id": "Scn01-Base-03",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base 3",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-03_Ship-Mining:427.97:-402.79:152.11:#FF75C9F1:"
+        },
+        {
+          "key": "Blocks",
+          "value": "Batteries (x1), Small Cargo (x2), O2/H2 Generator, Gravity Generator, Basic Assembler, Beacon"
+        }
+      ],
+      "index": 77,
+      "x": 31.958955826582006,
+      "y": 404.74371533706636,
+      "vy": 0,
+      "vx": 0,
+      "fx": 31.958955826582006,
+      "fy": 404.74371533706636
+    },
+    {
+      "id": "Scn01-B3-Task-07",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 7 - Ship Mining",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        },
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 78,
+      "x": 30.255684577172673,
+      "y": 486.4089911173694,
+      "vy": 0,
+      "vx": 0,
+      "fx": 30.255684577172673,
+      "fy": 486.4089911173694
+    },
+    {
+      "id": "Scn01-B3-Task-07-to-Scn01-Base-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 7 - Ship Tools",
+      "sourceId": "Scn01-B3-Task-07",
+      "target": "Base 3",
+      "targetId": "Scn01-Base-03"
+    },
+    {
+      "id": "Scn01-Base-04",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base 4",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-04_Adv-Production:-1060.26:120.69:-5036.3:#FFF1BB75:"
+        },
+        {
+          "key": "Blocks",
+          "value": "Batteries (x1), Large Cargo, O2/H2 Generator, Gravity Generator, Assembler, Refinery, Beacon"
+        }
+      ],
+      "index": 79,
+      "x": 114.4658480896538,
+      "y": 391.27635184354256,
+      "vy": 0,
+      "vx": 0,
+      "fx": 114.4658480896538,
+      "fy": 391.27635184354256
+    },
+    {
+      "id": "Scn01-Cluster-01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Starting-Cluster",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        },
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 80,
+      "x": 16.185768069562215,
+      "y": 324.8237872584978,
+      "vy": 0,
+      "vx": 0,
+      "fx": 16.185768069562215,
+      "fy": 324.8237872584978
+    },
+    {
+      "id": "Scn01-Base-01-to-Scn01-Cluster-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base 1",
+      "sourceId": "Scn01-Base-01",
+      "target": "Starting-Cluster",
+      "targetId": "Scn01-Cluster-01"
+    },
+    {
+      "id": "Scn01-Base-02-to-Scn01-Cluster-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base 2",
+      "sourceId": "Scn01-Base-02",
+      "target": "Starting-Cluster",
+      "targetId": "Scn01-Cluster-01"
+    },
+    {
+      "id": "Scn01-Base-03-to-Scn01-Cluster-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base 3",
+      "sourceId": "Scn01-Base-03",
+      "target": "Starting-Cluster",
+      "targetId": "Scn01-Cluster-01"
+    },
+    {
+      "id": "Scn01-Cluster-01-to-Scenario-01-LTS",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Starting-Cluster",
+      "sourceId": "Scn01-Cluster-01",
+      "target": "Learning To Survive",
+      "targetId": "Scenario-01-LTS"
+    },
+    {
+      "id": "Scn01-B4-Task-08",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 8 - Refine and Assemble",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        },
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 81,
+      "x": 113.95780325842708,
+      "y": 454.4945395653562,
+      "vy": 0,
+      "vx": 0,
+      "fx": 113.95780325842708,
+      "fy": 454.4945395653562
+    },
+    {
+      "id": "Scn01-B5-Task-09",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 9 - Pressuerization",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        },
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 82,
+      "x": 174.36994488892128,
+      "y": 489.3321759039093,
+      "vy": 0,
+      "vx": 0,
+      "fx": 174.36994488892128,
+      "fy": 489.3321759039093
+    },
+    {
+      "id": "Scn01-Base-05",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base 5 - Observation Post",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-05_Pressurization:-2029.56:3658.87:-2717.73:#FFE9F175:"
+        },
+        {
+          "key": "Blocks",
+          "value": "Batteries (x1), Large Cargo, O2/H2 Generator, Gravity Generator, Assembler, Refinery, Beacon"
+        }
+      ],
+      "index": 83,
+      "x": 175.8186797023211,
+      "y": 422.8174285119629,
+      "vy": 0,
+      "vx": 0,
+      "fx": 175.8186797023211,
+      "fy": 422.8174285119629
+    },
+    {
+      "id": "Scn01-Cluster-02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Stage-2-Cluster",
+      "properties": [
+        {
+          "key": "",
+          "value": ""
+        },
+        {
+          "key": "",
+          "value": ""
+        }
+      ],
+      "index": 84,
+      "x": 177.10685424408476,
+      "y": 346.580994084486,
+      "vy": 0,
+      "vx": 0,
+      "fx": 177.10685424408476,
+      "fy": 346.580994084486
+    },
+    {
+      "id": "Scn01-Base-04-to-Scn01-Cluster-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base 4",
+      "sourceId": "Scn01-Base-04",
+      "target": "Stage-2-Cluster",
+      "targetId": "Scn01-Cluster-02"
+    },
+    {
+      "id": "Scn01-Base-05-to-Scn01-Cluster-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base 5",
+      "sourceId": "Scn01-Base-05",
+      "target": "Stage-2-Cluster",
+      "targetId": "Scn01-Cluster-02"
+    },
+    {
+      "id": "Scn01-Cluster-02-to-Scn01-Cluster-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Stage-2-Cluster",
+      "sourceId": "Scn01-Cluster-02",
+      "target": "Starting-Cluster",
+      "targetId": "Scn01-Cluster-01"
+    },
+    {
+      "id": "Scn01-B4-Task-08-to-Scn01-Base-04",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 8 - Refine and Assemble",
+      "sourceId": "Scn01-B4-Task-08",
+      "target": "Base 4",
+      "targetId": "Scn01-Base-04"
+    },
+    {
+      "id": "Scn01-B5-Task-09-to-Scn01-Base-05",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 9 - Pressuerization",
+      "sourceId": "Scn01-B5-Task-09",
+      "target": "Base 5",
+      "targetId": "Scn01-Base-05"
+    },
+    {
+      "id": "Scn01-Cluster-03",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Next Cluster (3rd)",
+      "properties": [],
+      "index": 85,
+      "x": 451.6004932099553,
+      "y": 354.60865294458654,
+      "vy": 0,
+      "vx": 0,
+      "fx": 451.6004932099553,
+      "fy": 354.60865294458654
+    },
+    {
+      "id": "Scn01-Cluster-03-to-Scn01-Cluster-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Next Cluster (3rd)",
+      "sourceId": "Scn01-Cluster-03",
+      "target": "Stage-2-Cluster",
+      "targetId": "Scn01-Cluster-02"
+    },
+    {
+      "id": "Scn01-Base-06",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base - 6 - Damaged H2 miner",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-06_H2-Miner:-4500.84:-3484.93:-7724.15:#FFF16300:"
+        },
+        {
+          "key": "Ores",
+          "value": "Ice"
+        }
+      ],
+      "index": 86,
+      "x": 234.9432144588904,
+      "y": 399.5250106467952,
+      "vy": 0,
+      "vx": 0,
+      "fx": 234.9432144588904,
+      "fy": 399.5250106467952
+    },
+    {
+      "id": "Scn01-Base-07",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base - 7 - Drone Repair Platform",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:BASE-07_Drone-Repair:-4670.62:2508.36:-12979.27:#FFAB9AFF:"
+        },
+        {
+          "key": "Ores",
+          "value": "TBD"
+        }
+      ],
+      "index": 87,
+      "x": 330.25699400199096,
+      "y": 418.5139801690592,
+      "vy": 0,
+      "vx": 0,
+      "fx": 330.25699400199096,
+      "fy": 418.5139801690592
+    },
+    {
+      "id": "Scn01-Base-06-to-Scn01-Cluster-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base - 6 - Damaged H2 miner",
+      "sourceId": "Scn01-Base-06",
+      "target": "Stage-2-Cluster",
+      "targetId": "Scn01-Cluster-02"
+    },
+    {
+      "id": "Scn01-Base-07-to-Scn01-Cluster-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base - 7 - Drone Repair Platform",
+      "sourceId": "Scn01-Base-07",
+      "target": "Stage-2-Cluster",
+      "targetId": "Scn01-Cluster-02"
+    },
+    {
+      "id": "Scn01-B6-Task-10",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 10 - Fix H2 Miner",
+      "properties": [],
+      "index": 88,
+      "x": 236.8575908989339,
+      "y": 465.81556445965134,
+      "vy": 0,
+      "vx": 0,
+      "fx": 236.8575908989339,
+      "fy": 465.81556445965134
+    },
+    {
+      "id": "Scn01-B6-Task-10-to-Scn01-Base-06",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 10 - Finx H2 Miner",
+      "sourceId": "Scn01-B6-Task-10",
+      "target": "Base - 6 - Damaged H2 miner",
+      "targetId": "Scn01-Base-06"
+    },
+    {
+      "id": "Scn01-Random",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Random Items",
+      "properties": [],
+      "index": 89,
+      "x": 171.66706395573715,
+      "y": 176.65569388423626,
+      "vy": 0,
+      "vx": 0,
+      "fx": 171.66706395573715,
+      "fy": 176.65569388423626
+    },
+    {
+      "id": "Scn01-R1-Pt",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Random 01 - Platinum",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Random - Platinum:-12036.58:-7170.57:-4468.24:#FFF1F1F1:"
+        }
+      ],
+      "index": 90,
+      "x": 187.23793937824814,
+      "y": 108.48981778531623,
+      "vy": 0,
+      "vx": 0,
+      "fx": 187.23793937824814,
+      "fy": 108.48981778531623
+    },
+    {
+      "id": "Scn01-Random-to-Scenario-01-LTS",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Random Items",
+      "sourceId": "Scn01-Random",
+      "target": "Learning To Survive",
+      "targetId": "Scenario-01-LTS"
+    },
+    {
+      "id": "Scn01-R1-Pt-to-Scn01-Random",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Random 01 - Platinum",
+      "sourceId": "Scn01-R1-Pt",
+      "target": "Random Items",
+      "targetId": "Scn01-Random"
+    },
+    {
+      "id": "Scn01-R1-Co_Mg",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Random 02 - Cobalt and Magnesium",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Cobalt & Magnesium:-12721.72:-6853.38:-4122.11:#FF2D59D0:"
+        }
+      ],
+      "index": 91,
+      "x": 247.469855504637,
+      "y": 144.76773420841312,
+      "vy": 0,
+      "vx": 0,
+      "fx": 247.469855504637,
+      "fy": 144.76773420841312
+    },
+    {
+      "id": "Scn01-R1-Co_Mg-to-Scn01-Random",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Random 02 - Cobalt and Magnesium",
+      "sourceId": "Scn01-R1-Co_Mg",
+      "target": "Random Items",
+      "targetId": "Scn01-Random"
+    },
+    {
+      "id": "Scn01-B7-Task-11",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Task 11 - Repair Drone",
+      "properties": [],
+      "index": 92,
+      "x": 329.6755401028211,
+      "y": 487.2653078314699,
+      "vy": 0,
+      "vx": 0,
+      "fx": 329.6755401028211,
+      "fy": 487.2653078314699
+    },
+    {
+      "id": "Scn01-B7-Task-11-to-Scn01-Base-07",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Task 11 - Repair Drone",
+      "sourceId": "Scn01-B7-Task-11",
+      "target": "Base - 7 - Drone Repair Platform",
+      "targetId": "Scn01-Base-07"
+    },
+    {
+      "id": "Scn01-Cluster-Nil",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Empty (Nil) Clusters",
+      "properties": [],
+      "index": 93,
+      "x": 353.5785117055666,
+      "y": 250.39675612698363,
+      "vy": 0,
+      "vx": 0,
+      "fx": 353.5785117055666,
+      "fy": 250.39675612698363
+    },
+    {
+      "id": "Scn01-Nil-01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Nil Cluster 1",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Nil-Cluster-01:-10882.88:9366.4:-17161.44:#FF8F8F8F:"
+        },
+        {
+          "key": "Ore",
+          "value": "TBD"
+        }
+      ],
+      "index": 94,
+      "x": 368.2015141635994,
+      "y": 189.80447619733445,
+      "vy": 0,
+      "vx": 0,
+      "fx": 368.2015141635994,
+      "fy": 189.80447619733445
+    },
+    {
+      "id": "Scn01-Cluster-Nil-to-Scenario-01-LTS",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Empty (Nil) Clusters",
+      "sourceId": "Scn01-Cluster-Nil",
+      "target": "Learning To Survive",
+      "targetId": "Scenario-01-LTS"
+    },
+    {
+      "id": "Scn01-Nil-01-to-Scn01-Cluster-Nil",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Nil Cluster 1",
+      "sourceId": "Scn01-Nil-01",
+      "target": "Empty (Nil) Clusters",
+      "targetId": "Scn01-Cluster-Nil"
+    },
+    {
+      "id": "Game-SE-Cat1-02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": "0",
+          "labelOffsetY": "0",
+          "fillColor": "#00b4f0",
+          "labelFontSize": "24",
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": "40",
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Control Pro Tips",
+      "properties": [],
+      "index": 95,
+      "x": -452.53115583781965,
+      "y": -112.9550989719927,
+      "vy": 0,
+      "vx": 0,
+      "fx": -452.53115583781965,
+      "fy": -112.9550989719927
+    },
+    {
+      "id": "Game-SE-Cat1-02-to-Game-SE-Category-01",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Control Pro Tips",
+      "sourceId": "Game-SE-Cat1-02",
+      "target": "Settings",
+      "targetId": "Game-SE-Category-01"
+    },
+    {
+      "id": "Game-SE-Cat1-02_01",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Drills - All-vs-One",
+      "properties": [
+        {
+          "key": "Note",
+          "value": "Click MMB to swap \"weapon mode\"; no KNOWN method on Controller"
+        }
+      ],
+      "index": 96,
+      "x": -519.9614025001715,
+      "y": -50.609482709254024,
+      "vy": 0,
+      "vx": 0,
+      "fx": -519.9614025001715,
+      "fy": -50.609482709254024
+    },
+    {
+      "id": "Game-SE-Cat1-02_01-to-Game-SE-Cat1-02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Drills - All-vs-One",
+      "sourceId": "Game-SE-Cat1-02_01",
+      "target": "Control Pro Tips",
+      "targetId": "Game-SE-Cat1-02"
+    },
+    {
+      "id": "Scn01-Base-08",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base - 8 - Ship Building",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-08_Ship-Building:1565.77:-5226.9:337.99:#FF75F18B:"
+        },
+        {
+          "key": "Ores",
+          "value": "TBD"
+        }
+      ],
+      "index": 97,
+      "x": 453.2008169684635,
+      "y": 450.6746212628093,
+      "vy": 0,
+      "vx": 0,
+      "fx": 453.2008169684635,
+      "fy": 450.6746212628093
+    },
+    {
+      "id": "Scn01-Base-09",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base - 9 - Projectors",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-09_Projectors:2848.49:-12903.68:5583.32:#FFE17C6D:"
+        },
+        {
+          "key": "Ores",
+          "value": "TBD"
+        }
+      ],
+      "index": 98,
+      "x": 551.2151224820311,
+      "y": 431.404937883256,
+      "vy": 0,
+      "vx": 0,
+      "fx": 551.2151224820311,
+      "fy": 431.404937883256
+    },
+    {
+      "id": "Scn01-Base-10",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base - 10 - Combat (Drone, Station)",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-10_Combat-Drone-Station:-2275.7:-7150.16:11126.22:#FFF10808:"
+        },
+        {
+          "key": "Ores",
+          "value": "None"
+        },
+        {
+          "key": "Blocks",
+          "value": "Modified starter ship, with jump drive"
+        }
+      ],
+      "index": 99,
+      "x": 680.5376723506712,
+      "y": 400.64490994237957,
+      "vy": 0,
+      "vx": 0,
+      "fx": 680.5376723506712,
+      "fy": 400.64490994237957
+    },
+    {
+      "id": "Scn01-R1-Au",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Random 03 - Gold",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Gold:1350.84:-12335.7:-7730.36:#FF75C9F1:"
+        }
+      ],
+      "index": 100,
+      "x": 251.96770677279335,
+      "y": 198.67945653504754,
+      "vy": 0,
+      "vx": 0,
+      "fx": 251.96770677279335,
+      "fy": 198.67945653504754
+    },
+    {
+      "id": "Scn01-Base-11",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base - 11 - Jump Drive",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-11_Jump-Drive:-760.95:-13704.6:-2184.54:#FFE52FF1:"
+        },
+        {
+          "key": "Ores",
+          "value": "None"
+        },
+        {
+          "key": "Blocks",
+          "value": "Modified starter ship, with jump drive"
+        }
+      ],
+      "index": 101,
+      "x": 740.2660834485744,
+      "y": 357.75270666723986,
+      "vy": 0,
+      "vx": 0,
+      "fx": 740.2660834485744,
+      "fy": 357.75270666723986
+    },
+    {
+      "id": "Scn01-Cluster-04",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Final Cluster (4th)",
+      "properties": [],
+      "index": 102,
+      "x": 586.273743015825,
+      "y": 319.43510371571153,
+      "vy": 0,
+      "vx": 0,
+      "fx": 586.273743015825,
+      "fy": 319.43510371571153
+    },
+    {
+      "id": "Scn01-Cluster-04-to-Scn01-Cluster-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Final Cluster (4th)",
+      "sourceId": "Scn01-Cluster-04",
+      "target": "Next Cluster (3rd)",
+      "targetId": "Scn01-Cluster-03"
+    },
+    {
+      "id": "Scn01-Base-11-to-Scn01-Cluster-04",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base - 11 - Jump Drive",
+      "sourceId": "Scn01-Base-11",
+      "target": "Final Cluster (4th)",
+      "targetId": "Scn01-Cluster-04"
+    },
+    {
+      "id": "Scn01-Base-10-to-Scn01-Cluster-04",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base - 10 - Combat (Drone, Station)",
+      "sourceId": "Scn01-Base-10",
+      "target": "Final Cluster (4th)",
+      "targetId": "Scn01-Cluster-04"
+    },
+    {
+      "id": "Scn01-Base-08-to-Scn01-Cluster-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base - 8 - Ship Building",
+      "sourceId": "Scn01-Base-08",
+      "target": "Next Cluster (3rd)",
+      "targetId": "Scn01-Cluster-03"
+    },
+    {
+      "id": "Scn01-Base-09-to-Scn01-Cluster-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base - 9 - Projectors",
+      "sourceId": "Scn01-Base-09",
+      "target": "Next Cluster (3rd)",
+      "targetId": "Scn01-Cluster-03"
+    },
+    {
+      "id": "Scn01-Base-12",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base - 12 - Hidden Base",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-12_Hidden-base location:-9353:-11490:-14000:"
+        },
+        {
+          "key": "Ores",
+          "value": "TBD"
+        },
+        {
+          "key": "Blocks",
+          "value": "TBD"
+        }
+      ],
+      "index": 103,
+      "x": 682.3725836649728,
+      "y": 277.1427471118083,
+      "vy": 0,
+      "vx": 0,
+      "fx": 682.3725836649728,
+      "fy": 277.1427471118083
+    },
+    {
+      "id": "Scn01-R1-Au-to-Scn01-Random",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Random 03 - Gold",
+      "sourceId": "Scn01-R1-Au",
+      "target": "Random Items",
+      "targetId": "Scn01-Random"
+    },
+    {
+      "id": "Scn01-Nil-02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Nil Cluster 2",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "TBD"
+        },
+        {
+          "key": "Ore",
+          "value": "TBD"
+        }
+      ],
+      "index": 104,
+      "x": 421.68084580151657,
+      "y": 214.35206685073058,
+      "vy": 0,
+      "vx": 0,
+      "fx": 421.68084580151657,
+      "fy": 214.35206685073058
+    },
+    {
+      "id": "Scn01-Nil-03",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Nil Cluster 3",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "TBD"
+        },
+        {
+          "key": "Ore",
+          "value": "TBD"
+        }
+      ],
+      "index": 105,
+      "x": 429.66344740291925,
+      "y": 267.1723577038638,
+      "vy": 0,
+      "vx": 0,
+      "fx": 429.66344740291925,
+      "fy": 267.1723577038638
+    },
+    {
+      "id": "Scn01-Nil-04",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Nil Cluster 4",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "TBD"
+        },
+        {
+          "key": "Ore",
+          "value": "TBD"
+        }
+      ],
+      "index": 106,
+      "x": 399.97081428298793,
+      "y": 304.2190000302678,
+      "vy": 0,
+      "vx": 0,
+      "fx": 399.97081428298793,
+      "fy": 304.2190000302678
+    },
+    {
+      "id": "Scn01-Nil-05",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Nil Cluster 5",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "TBD"
+        },
+        {
+          "key": "Ore",
+          "value": "TBD"
+        }
+      ],
+      "index": 107,
+      "x": 327.40066764010464,
+      "y": 314.5593475157994,
+      "vy": 0,
+      "vx": 0,
+      "fx": 327.40066764010464,
+      "fy": 314.5593475157994
+    },
+    {
+      "id": "Scn01-Nil-03-to-Scn01-Cluster-Nil",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Nil Cluster 3",
+      "sourceId": "Scn01-Nil-03",
+      "target": "Empty (Nil) Clusters",
+      "targetId": "Scn01-Cluster-Nil"
+    },
+    {
+      "id": "Scn01-Nil-05-to-Scn01-Cluster-Nil",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Nil Cluster 5",
+      "sourceId": "Scn01-Nil-05",
+      "target": "Empty (Nil) Clusters",
+      "targetId": "Scn01-Cluster-Nil"
+    },
+    {
+      "id": "Scn01-Base-12-to-Scn01-Cluster-04",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base - 12 - Hidden Base",
+      "sourceId": "Scn01-Base-12",
+      "target": "Final Cluster (4th)",
+      "targetId": "Scn01-Cluster-04"
+    },
+    {
+      "id": "Scn01-Nil-04-to-Scn01-Cluster-Nil",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Nil Cluster 4",
+      "sourceId": "Scn01-Nil-04",
+      "target": "Empty (Nil) Clusters",
+      "targetId": "Scn01-Cluster-Nil"
+    },
+    {
+      "id": "Scn01-Nil-02-to-Scn01-Cluster-Nil",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Nil Cluster 2",
+      "sourceId": "Scn01-Nil-02",
+      "target": "Empty (Nil) Clusters",
+      "targetId": "Scn01-Cluster-Nil"
+    },
+    {
+      "id": "Scn01-Base-13",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base - 13 - Orbital Bombardment",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "GPS:Base-13_Orbital-Bombardment:-9353:-11490:-14000:"
+        },
+        {
+          "key": "Ores",
+          "value": "TBD"
+        },
+        {
+          "key": "Blocks",
+          "value": "TBD"
+        }
+      ],
+      "index": 108,
+      "x": 739.9411046834621,
+      "y": 214.8570752211503,
+      "vy": 0,
+      "vx": 0,
+      "fx": 739.9411046834621,
+      "fy": 214.8570752211503
+    },
+    {
+      "id": "Scn01-Base-13-to-Scn01-Base-12",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base - 13 - Orbital Bombardment",
+      "sourceId": "Scn01-Base-13",
+      "target": "Base - 12 - Hidden Base",
+      "targetId": "Scn01-Base-12"
+    },
+    {
+      "id": "Scn01-Base-14",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Base - 14 - Commander Ship Fight",
+      "properties": [
+        {
+          "key": "GPS",
+          "value": "NONE"
+        },
+        {
+          "key": "Ores",
+          "value": "TBD"
+        },
+        {
+          "key": "Blocks",
+          "value": "TBD"
+        },
+        {
+          "key": "Note",
+          "value": "Random Spawn location based on player position"
+        }
+      ],
+      "index": 109,
+      "x": 748.5690997520045,
+      "y": 135.55664749820434,
+      "vy": 0,
+      "vx": 0,
+      "fx": 748.5690997520045,
+      "fy": 135.55664749820434
+    },
+    {
+      "id": "Scn01-Base-14-to-Scn01-Base-13",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Base - 14 - Commander Ship Fight",
+      "sourceId": "Scn01-Base-14",
+      "target": "Base - 13 - Orbital Bombardment",
+      "targetId": "Scn01-Base-13"
+    },
+    {
+      "id": "Game-SE-Cat3-46",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Windows (+Group)",
+      "properties": [],
+      "index": 110,
+      "x": 300.355021591236,
+      "y": -465.50150806861103,
+      "vy": 0,
+      "vx": 0,
+      "fx": 300.355021591236,
+      "fy": -465.50150806861103
+    },
+    {
+      "id": "Game-SE-Cat3-17-to-Game-SE-Cat3-46",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Interior Wall",
+      "sourceId": "Game-SE-Cat3-17",
+      "target": "Windows (+Group)",
+      "targetId": "Game-SE-Cat3-46"
+    },
+    {
+      "id": "Game-SE-Cat3-47",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "Nuclear Reactor",
+      "properties": [],
+      "index": 111,
+      "x": 657.0971013278194,
+      "y": -339.4413406590108,
+      "vy": 0,
+      "vx": 0,
+      "fx": 657.0971013278194,
+      "fy": -339.4413406590108
+    },
+    {
+      "id": "Game-SE-Cat3-31-to-Game-SE-Cat3-47",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Refinery",
+      "sourceId": "Game-SE-Cat3-31",
+      "target": "Nuclear Reactor",
+      "targetId": "Game-SE-Cat3-47"
+    },
+    {
+      "id": "Game-SE-Cat1-02_02",
+      "type": "node",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "#00b4f0",
+          "labelFontSize": 12,
+          "labelColor": "black",
+          "outlineColor": "black",
+          "radiusSize": 20,
+          "nodeColor": "#00b4f0",
+          "nodeColorOutline": "black",
+          "labelAnchor": "middle"
+        }
+      ],
+      "label": "KBM - Copy Paint",
+      "properties": [
+        {
+          "key": "Note",
+          "value": "Hold SHIFT, the press P, while looking at target block."
+        }
+      ],
+      "index": 112,
+      "x": -456.41383383557366,
+      "y": -18.8863023164582,
+      "vy": 0,
+      "vx": 0,
+      "fx": -456.41383383557366,
+      "fy": -18.8863023164582
+    },
+    {
+      "id": "Game-SE-Cat1-02-to-Game-SE-Cat1-02_02",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Control Pro Tips",
+      "sourceId": "Game-SE-Cat1-02",
+      "target": "KBM - Copy Paint",
+      "targetId": "Game-SE-Cat1-02_02"
+    },
+    {
+      "id": "Game-SE-Cat3-04-to-Game-SE-Category-03",
+      "type": "edge",
+      "renderSettings": [
+        {
+          "labelOffsetX": 0,
+          "labelOffsetY": 0,
+          "fillColor": "black",
+          "labelFontSize": 12,
+          "labelColor": "#aaa"
+        }
+      ],
+      "label": "",
+      "key": "",
+      "value": "",
+      "source": "Small Cargo (Small Grid)",
+      "sourceId": "Game-SE-Cat3-04",
+      "target": "Survival Progression",
+      "targetId": "Game-SE-Category-03"
+    }
+  ],
+  "graphSettingsDirectionality": "undirected",
+  "labelColor": "black",
+  "renderDisplayLabelsEdges": "block",
+  "renderDisplayLabelsNodes": "block"
+}
