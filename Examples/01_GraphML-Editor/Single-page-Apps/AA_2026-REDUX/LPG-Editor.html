@@ -386,22 +386,22 @@ body[data-paint="active"] .edge-group{cursor:copy}
     <div id="inspector-tab" onclick="App.toggleInspector()" title="Open inspector">INSPECTOR</div>
     <svg id="svg-canvas" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <marker id="arrow-small" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+        <marker id="arrow-small" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
           <path d="M0,0 L6,2 L0,4 Z" class="edge-arrow"/>
         </marker>
-        <marker id="arrow-small-sel" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+        <marker id="arrow-small-sel" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
           <path d="M0,0 L6,2 L0,4 Z" style="fill:var(--edge-sel)"/>
         </marker>
-        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
           <path d="M0,0 L8,3 L0,6 Z" class="edge-arrow"/>
         </marker>
-        <marker id="arrow-sel" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <marker id="arrow-sel" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
           <path d="M0,0 L8,3 L0,6 Z" style="fill:var(--edge-sel)"/>
         </marker>
-        <marker id="arrow-large" markerWidth="12" markerHeight="9" refX="10" refY="4.5" orient="auto">
+        <marker id="arrow-large" markerWidth="12" markerHeight="9" refX="12" refY="4.5" orient="auto">
           <path d="M0,0 L12,4.5 L0,9 Z" class="edge-arrow"/>
         </marker>
-        <marker id="arrow-large-sel" markerWidth="12" markerHeight="9" refX="10" refY="4.5" orient="auto">
+        <marker id="arrow-large-sel" markerWidth="12" markerHeight="9" refX="12" refY="4.5" orient="auto">
           <path d="M0,0 L12,4.5 L0,9 Z" style="fill:var(--edge-sel)"/>
         </marker>
         <pattern id="grid-dots" width="24" height="24" patternUnits="userSpaceOnUse">
@@ -868,9 +868,9 @@ function renderEdges(){
         markDefs.appendChild(dynMark);
       }
       const aSize2 = e.arrowSize || 'medium';
-      if(aSize2==='small'){ dynMark.setAttribute('markerWidth','6'); dynMark.setAttribute('markerHeight','4'); dynMark.setAttribute('refX','5'); dynMark.setAttribute('refY','2'); dynMark.firstElementChild.setAttribute('d','M0,0 L6,2 L0,4 Z'); }
-      else if(aSize2==='large'){ dynMark.setAttribute('markerWidth','12'); dynMark.setAttribute('markerHeight','9'); dynMark.setAttribute('refX','10'); dynMark.setAttribute('refY','4.5'); dynMark.firstElementChild.setAttribute('d','M0,0 L12,4.5 L0,9 Z'); }
-      else { dynMark.setAttribute('markerWidth','8'); dynMark.setAttribute('markerHeight','6'); dynMark.setAttribute('refX','7'); dynMark.setAttribute('refY','3'); dynMark.firstElementChild.setAttribute('d','M0,0 L8,3 L0,6 Z'); }
+      if(aSize2==='small'){ dynMark.setAttribute('markerWidth','6'); dynMark.setAttribute('markerHeight','4'); dynMark.setAttribute('refX','6'); dynMark.setAttribute('refY','2'); dynMark.firstElementChild.setAttribute('d','M0,0 L6,2 L0,4 Z'); }
+      else if(aSize2==='large'){ dynMark.setAttribute('markerWidth','12'); dynMark.setAttribute('markerHeight','9'); dynMark.setAttribute('refX','12'); dynMark.setAttribute('refY','4.5'); dynMark.firstElementChild.setAttribute('d','M0,0 L12,4.5 L0,9 Z'); }
+      else { dynMark.setAttribute('markerWidth','8'); dynMark.setAttribute('markerHeight','6'); dynMark.setAttribute('refX','8'); dynMark.setAttribute('refY','3'); dynMark.firstElementChild.setAttribute('d','M0,0 L8,3 L0,6 Z'); }
       const arrowFill = State.selected.has(e.id) ? 'var(--edge-sel)' : edgeColor;
       dynMark.firstElementChild.setAttribute('fill', arrowFill);
       lineEl.setAttribute('marker-end', `url(#${dynId})`);
@@ -1004,7 +1004,7 @@ function attachNodeEvents(g, id){
       return;
     }
     if(State.tool==='select'){
-      if(State.selMode==='edges') return; // ignore node clicks in edge-only mode
+      // selMode only governs rubber-band; single click always works
       if(!State.selected.has(id)){
         if(!e.shiftKey) State.selected.clear();
         State.selected.add(id);
@@ -1044,7 +1044,7 @@ function attachEdgeEvents(g, id){
       return;
     }
     if(State.tool==='select'){
-      if(State.selMode==='nodes') return; // ignore edge clicks in node-only mode
+      // selMode only governs rubber-band; single click always selects the clicked edge
       if(!e.shiftKey) State.selected.clear();
       State.selected.add(id);
       renderAll();
@@ -1420,6 +1420,10 @@ function renderInspector(){
           <option value="solid" ${edge.dash==='solid' || !edge.dash ?'selected':''}>Solid</option>
           <option value="dashed" ${edge.dash==='dashed'?'selected':''}>Dashed</option>
           <option value="dotted" ${edge.dash==='dotted'?'selected':''}>Dotted</option>
+        </select></div>
+        <div class="insp-row"><label>Direction</label> <select onchange="App.setProp('edge', '${edge.id}', 'directed', this.value==='true')">
+          <option value="false" ${edge.directed===false?'selected':''}>Undirected (no arrow)</option>
+          <option value="true" ${edge.directed!==false?'selected':''}>Directed →</option>
         </select></div>
         <div class="insp-row"><label>Arrow Size</label> <select onchange="App.setProp('edge', '${edge.id}', 'arrowSize', this.value)">
           <option value="small" ${edge.arrowSize==='small'?'selected':''}>Small</option>
