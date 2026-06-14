@@ -876,11 +876,12 @@ function renderEdges(){
       lineEl.setAttribute('marker-end', `url(#${dynId})`);
     } else {
       lineEl.removeAttribute('marker-end');
-      // Clean up dynamic marker if it exists
-      const markDefs = $('svg-canvas').querySelector('defs');
-      const dynId = 'arrow-dyn-'+e.id;
-      const old = markDefs.querySelector('#'+dynId);
-      if(old) old.remove();
+      lineEl.removeAttribute('marker-start');
+      // Hide dynamic marker by zeroing its size (don't remove — avoids stale ref ghosts)
+      const markDefs2 = $('svg-canvas').querySelector('defs');
+      const dynId2 = 'arrow-dyn-'+e.id;
+      const oldMark = markDefs2.querySelector('#'+dynId2);
+      if(oldMark){ oldMark.setAttribute('markerWidth','0'); oldMark.setAttribute('markerHeight','0'); }
     }
 
     if(e.dash === 'dashed') lineEl.setAttribute('stroke-dasharray', '6 4');
@@ -1401,39 +1402,66 @@ function renderInspector(){
   }
   if(edge){
     $('inspector-title').textContent='Edge: '+id;
+    const nodeIds = State.nodes.map(n=>n.id);
+    const nodeOpts = nodeIds.map(nid=>`<option value="${escHtml(nid)}">`).join('');
+    const isDir = edge.directed !== false;
     body.innerHTML=`
+      <datalist id="node-id-list">${nodeOpts}</datalist>
       <div class="insp-section">
         <div class="insp-section-label">Identity</div>
-        <div class="insp-row"><label>ID</label> <input value="${escHtml(edge.id)}" readonly></div>
-        <div class="insp-row"><label>Source</label> <input value="${escHtml(edge.source)}" readonly></div>
-        <div class="insp-row"><label>Target</label> <input value="${escHtml(edge.target)}" readonly></div>
+        <div class="insp-row"><label>ID</label> <input value="${escHtml(edge.id)}" onchange="App.renameEdgeId('${edge.id}', this.value)"></div>
+        <div class="insp-row"><label>Label</label> <input value="${escHtml(edge.label)}" oninput="App.setLiveProp('edge', '${edge.id}', 'label', this.value)"></div>
       </div>
       <div class="insp-section">
-        <div class="insp-section-label">Properties</div>
-        <div class="insp-row"><label>Label</label> <input value="${escHtml(edge.label)}" oninput="App.setLiveProp('edge', '${edge.id}', 'label', this.value)"></div>
-        <div class="insp-row"><label>Line Layout</label> <select onchange="App.setProp('edge', '${edge.id}', 'style', this.value)">
-          <option value="straight" ${edge.style==='straight'?'selected':''}>Straight Line</option>
+        <div class="insp-section-label">Connection</div>
+        <div class="insp-row"><label>Source Node</label>
+          <input value="${escHtml(edge.source)}" list="node-id-list" onchange="App.setEdgeEndpoint('${edge.id}','source',this.value)">
+        </div>
+        <div class="insp-row"><label>Target Node</label>
+          <input value="${escHtml(edge.target)}" list="node-id-list" onchange="App.setEdgeEndpoint('${edge.id}','target',this.value)">
+        </div>
+        <button class="insp-btn" onclick="App.swapEdgeDirection('${edge.id}')">⇄ Swap Source ↔ Target</button>
+      </div>
+      <div class="insp-section">
+        <div class="insp-section-label">Arrow Direction</div>
+        <div class="insp-row"><label>Type</label> <select onchange="App.setProp('edge', '${edge.id}', 'directed', this.value==='true')">
+          <option value="false" ${!isDir?'selected':''}>Undirected (no arrow)</option>
+          <option value="true" ${isDir?'selected':''}>Directed (arrow at target)</option>
+        </select></div>
+        ${isDir ? `<div class="insp-row"><label>Arrow Size</label> <select onchange="App.setProp('edge', '${edge.id}', 'arrowSize', this.value)">
+          <option value="small" ${edge.arrowSize==='small'?'selected':''}>Small</option>
+          <option value="medium" ${edge.arrowSize==='medium'||!edge.arrowSize?'selected':''}>Medium</option>
+          <option value="large" ${edge.arrowSize==='large'?'selected':''}>Large</option>
+        </select></div>` : ''}
+      </div>
+      <div class="insp-section">
+        <div class="insp-section-label">Style</div>
+        <div class="insp-row"><label>Line Style</label> <select onchange="App.setProp('edge', '${edge.id}', 'style', this.value)">
+          <option value="straight" ${edge.style==='straight'?'selected':''}>Straight</option>
           <option value="curved" ${edge.style==='curved'?'selected':''}>Curved Arc</option>
           <option value="orthogonal" ${edge.style==='orthogonal'?'selected':''}>Orthogonal</option>
         </select></div>
-        <div class="insp-row"><label>Line Border</label> <select onchange="App.setProp('edge', '${edge.id}', 'dash', this.value)">
-          <option value="solid" ${edge.dash==='solid' || !edge.dash ?'selected':''}>Solid</option>
+        <div class="insp-row"><label>Dash</label> <select onchange="App.setProp('edge', '${edge.id}', 'dash', this.value)">
+          <option value="solid" ${edge.dash==='solid'||!edge.dash?'selected':''}>Solid</option>
           <option value="dashed" ${edge.dash==='dashed'?'selected':''}>Dashed</option>
           <option value="dotted" ${edge.dash==='dotted'?'selected':''}>Dotted</option>
         </select></div>
-        <div class="insp-row"><label>Direction</label> <select onchange="App.setProp('edge', '${edge.id}', 'directed', this.value==='true')">
-          <option value="false" ${edge.directed===false?'selected':''}>Undirected (no arrow)</option>
-          <option value="true" ${edge.directed!==false?'selected':''}>Directed →</option>
-        </select></div>
-        <div class="insp-row"><label>Arrow Size</label> <select onchange="App.setProp('edge', '${edge.id}', 'arrowSize', this.value)">
-          <option value="small" ${edge.arrowSize==='small'?'selected':''}>Small</option>
-          <option value="medium" ${edge.arrowSize==='medium' || !edge.arrowSize ?'selected':''}>Medium</option>
-          <option value="large" ${edge.arrowSize==='large'?'selected':''}>Large</option>
-        </select></div>
-        <div class="insp-row"><label>Edge Color</label>
+        <div class="insp-row"><label>Color</label>
           <input type="color" value="${edge.color && edge.color !== 'inherit' ? edge.color : '#58a6ff'}" oninput="App.setLiveProp('edge', '${edge.id}', 'color', this.value)" onchange="App.setProp('edge', '${edge.id}', 'color', this.value)">
-          <label style="margin-top:4px; display:flex; align-items:center; gap:4px;"><input type="checkbox" ${edge.color==='inherit'?'checked':''} onchange="App.setProp('edge', '${edge.id}', 'color', this.checked ? 'inherit' : '#58a6ff')"> Match Source Node</label>
+          <label style="margin-top:4px;display:flex;align-items:center;gap:4px;"><input type="checkbox" ${edge.color==='inherit'?'checked':''} onchange="App.setProp('edge', '${edge.id}', 'color', this.checked?'inherit':'#58a6ff')"> Match Source Node</label>
         </div>
+      </div>
+      <div class="insp-section">
+        <div class="insp-section-label">Custom Properties</div>
+        <div class="prop-list">
+          ${Object.entries(edge.props||{}).map(([k,v])=>`
+            <div class="prop-item">
+              <input value="${escHtml(k)}" onchange="App.renamePropKey('edge','${edge.id}','${k}',this.value)" style="width:40%">
+              <input value="${escHtml(v)}" oninput="App.setLivePropKV('edge','${edge.id}','${k}',this.value)" style="width:55%">
+              <button class="prop-rm" onclick="App.removeProp('edge','${edge.id}','${k}')">✕</button>
+            </div>`).join('')}
+        </div>
+        <button class="insp-btn" onclick="App.addProp('edge','${edge.id}')">+ Add Property</button>
       </div>
       <div class="insp-section">
         <button class="insp-btn danger" onclick="App.deleteSelected()">Delete Edge</button>
@@ -1854,29 +1882,43 @@ window.App = {
   },
   setLivePropKV(type, id, key, val){
     if(type==='node'){
-      const n=State.nodes.find(n=>n.id===id); if(n&&n.props) n.props[key]=val;
+      const n=State.nodes.find(n=>n.id===id); if(n){ if(!n.props)n.props={}; n.props[key]=val; }
+    } else {
+      const e=State.edges.find(e=>e.id===id); if(e){ if(!e.props)e.props={}; e.props[key]=val; }
     }
     renderGraphML(); renderTable();
   },
   renamePropKey(type, id, oldKey, newKey){
-    if(oldKey===newKey) return; snapshot();
+    if(!newKey||oldKey===newKey) return; snapshot();
     if(type==='node'){
       const n=State.nodes.find(n=>n.id===id);
-      if(n&&n.props){ n.props[newKey]=n.props[oldKey]; delete n.props[oldKey]; renderGraphML(); renderTable(); }
+      if(n&&n.props){ n.props[newKey]=n.props[oldKey]; delete n.props[oldKey]; renderInspector(); renderGraphML(); renderTable(); }
+    } else {
+      const e=State.edges.find(e=>e.id===id);
+      if(e){ if(!e.props)e.props={}; e.props[newKey]=e.props[oldKey]; delete e.props[oldKey]; renderInspector(); renderGraphML(); renderTable(); }
     }
+    localStorage.setItem('lpg_graph_state', serialize());
   },
   addProp(type, id){
     snapshot();
+    const newKey = 'key'+Date.now().toString(36);
     if(type==='node'){
       const n=State.nodes.find(n=>n.id===id);
-      if(n){ if(!n.props)n.props={}; n.props['key'+Date.now().toString(36)]=''; renderInspector(); }
+      if(n){ if(!n.props)n.props={}; n.props[newKey]=''; renderInspector(); }
+    } else {
+      const e=State.edges.find(e=>e.id===id);
+      if(e){ if(!e.props)e.props={}; e.props[newKey]=''; renderInspector(); }
     }
+    localStorage.setItem('lpg_graph_state', serialize());
   },
   removeProp(type, id, key){
     snapshot();
     if(type==='node'){
       const n=State.nodes.find(n=>n.id===id); if(n&&n.props){ delete n.props[key]; renderInspector(); renderGraphML(); }
+    } else {
+      const e=State.edges.find(e=>e.id===id); if(e&&e.props){ delete e.props[key]; renderInspector(); renderGraphML(); }
     }
+    localStorage.setItem('lpg_graph_state', serialize());
   },
   renameNodeId(oldId, newId){
     if(!newId||newId===oldId) return;
@@ -1887,7 +1929,34 @@ window.App = {
       if(e.source===oldId) e.source=newId; if(e.target===oldId) e.target=newId;
     }
     State.selected.delete(oldId); State.selected.add(newId);
-    renderAll(); renderInspector(); notify('ID Renamed');
+    localStorage.setItem('lpg_graph_state', serialize());
+    renderAll(); renderInspector(); notify('Node ID renamed');
+  },
+  renameEdgeId(oldId, newId){
+    if(!newId||newId===oldId) return;
+    if(State.edges.find(e=>e.id===newId)){ notify('Edge ID already exists'); return; }
+    snapshot();
+    const e=State.edges.find(e=>e.id===oldId); if(e) e.id=newId;
+    State.selected.delete(oldId); State.selected.add(newId);
+    localStorage.setItem('lpg_graph_state', serialize());
+    renderAll(); renderInspector(); notify('Edge ID renamed');
+  },
+  setEdgeEndpoint(edgeId, which, nodeId){
+    if(!nodeId) return;
+    const exists = State.nodes.find(n=>n.id===nodeId);
+    if(!exists){ notify('Node "'+nodeId+'" not found'); return; }
+    snapshot();
+    const e=State.edges.find(e=>e.id===edgeId);
+    if(e){ e[which]=nodeId; }
+    localStorage.setItem('lpg_graph_state', serialize());
+    renderAll(); renderInspector(); notify(which+' updated');
+  },
+  swapEdgeDirection(edgeId){
+    snapshot();
+    const e=State.edges.find(e=>e.id===edgeId);
+    if(e){ const tmp=e.source; e.source=e.target; e.target=tmp; }
+    localStorage.setItem('lpg_graph_state', serialize());
+    renderAll(); renderInspector(); notify('Source ↔ Target swapped');
   },
   setMultiColor(type, c){
     snapshot();
