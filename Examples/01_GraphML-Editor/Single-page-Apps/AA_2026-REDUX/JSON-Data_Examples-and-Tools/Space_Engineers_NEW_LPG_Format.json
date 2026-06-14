@@ -8,703 +8,7 @@
       "color": "#00b4f0",
       "r": 100,
       "props": {},
-      "fontSize": 26
-    },
-    {
-      "id": "Game-SE-Category-01",
-      "label": "Settings",
-      "x": -451.6914444000088,
-      "y": -220.80126949758926,
-      "color": "#f00000",
-      "r": 35,
-      "props": {},
-      "fontSize": 20
-    },
-    {
-      "id": "Game-SE-Category-02",
-      "label": "Survival Strategies",
-      "x": -274.8379387505332,
-      "y": -19.274625109474584,
-      "color": "#70db43",
-      "r": 35,
-      "props": {},
-      "fontSize": 20
-    },
-    {
-      "id": "Game-SE-Category-03",
-      "label": "Survival Progression",
-      "x": 58.72335135902149,
-      "y": -354.1147460878059,
-      "color": "#c8f000",
-      "r": 50,
-      "props": {},
-      "fontSize": 25
-    },
-    {
-      "id": "Game-SE-Cat1-01",
-      "label": "Official Keen Server Settings",
-      "x": -690.7314062285161,
-      "y": -219.81417973526268,
-      "color": "#00b4f0",
-      "r": 40,
-      "props": {},
-      "fontSize": 24
-    },
-    {
-      "id": "Game-SE-Cat3-01",
-      "label": "Landing Gear (Small Grid)",
-      "x": 49.99192012721505,
-      "y": -256.8056158861516,
-      "color": "#a000f0",
-      "r": 10,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-02",
-      "label": "Remote Control (Small Grid)(+Group)",
-      "x": 53.75571010008062,
-      "y": -204.63859348755133,
-      "color": "#a000f0",
-      "r": 10,
-      "props": {
-        "SourceMaterials": "Timer Block and a thruster on Drop Ship."
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-03",
-      "label": "H2/O2 Generator (Small Grid)",
-      "x": 159.87407339492717,
-      "y": -230.82055766393762,
-      "color": "#a000f0",
-      "r": 10,
-      "props": {
-        "Note": "IS NOT dependent on Remote Control Block!"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-04",
-      "label": "Small Cargo (Small Grid)",
-      "x": 236.004654650791,
-      "y": -255.78341865438273,
-      "color": "#a000f0",
-      "r": 10,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-05",
-      "label": "Small Conveyor Tube (Small Grid)",
-      "x": 291.4257543461742,
-      "y": -182.15597725087767,
-      "color": "#a000f0",
-      "r": 10,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-06",
-      "label": "Wind Turbine",
-      "x": 376.0805609160929,
-      "y": -231.2031083077418,
-      "color": "#a000f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-07",
-      "label": "Beacon (Small Grid)",
-      "x": 374.98149145363857,
-      "y": -162.21206703705332,
-      "color": "#00b4f0",
-      "r": 10,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-08",
-      "label": "Antenna (Small Grid)",
-      "x": 375.68554674933614,
-      "y": -113.19134848951208,
-      "color": "#00b4f0",
-      "r": 10,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-09",
-      "label": "Basic Assembler",
-      "x": 497.0430911157732,
-      "y": -267.6385656077657,
-      "color": "#a000f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-10",
-      "label": "Interior Light",
-      "x": 565.1353174770172,
-      "y": -151.69105398242743,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-11",
-      "label": "Basic Refinery",
-      "x": 496.546353295029,
-      "y": -336.95700284870134,
-      "color": "#a000f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-12",
-      "label": "Ore Detector",
-      "x": 493.2529428071156,
-      "y": -397.06257608082643,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-13",
-      "label": "Battery",
-      "x": 695.7965731445238,
-      "y": -222.893382203034,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_01",
-      "label": "PCU",
-      "x": -741.6900505946712,
-      "y": -106.75373075062998,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Total": "20000"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_02",
-      "label": "Assembler Efficiency Multiplier",
-      "x": -738.7488273453841,
-      "y": -322.10829109077054,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Value": "3"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_03",
-      "label": "Assembler Speed Multiplier",
-      "x": -602.227577949408,
-      "y": -267.84808371462793,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Value": "3"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_04",
-      "label": "Block Type Limits",
-      "x": -822.8413443462873,
-      "y": -263.76135063311057,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "ShipGrinder": "5",
-        "ShipWelder": "5",
-        "Drill": "5"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_05",
-      "label": "Cargo Ships",
-      "x": -815.3048656996507,
-      "y": -177.54039796987382,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Value": "Off"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_06",
-      "label": "Grinder Speed Multiplier",
-      "x": -632.1562337813741,
-      "y": -120.86514673073282,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Value": "2"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_07",
-      "label": "Hack Speed Multiplier",
-      "x": -753.6096233468645,
-      "y": -281.36916406896233,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Value": "0.33"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_08",
-      "label": "Inventory Size Multiplier",
-      "x": -646.9465238259703,
-      "y": -302.97713066630297,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Value": "1 (Realistic)"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_09",
-      "label": "Refinery Speed Multiplier",
-      "x": -564.7407223382214,
-      "y": -193.00113788474553,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Value": "3"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_10",
-      "label": "Sun Rotation Interval",
-      "x": -696.8852578307321,
-      "y": -142.50965927486897,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Value": "120"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_11",
-      "label": "Total PCU",
-      "x": -751.0636144490454,
-      "y": -172.42584530796114,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Value": "320000"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-01_12",
-      "label": "Welder Speed Multiplier",
-      "x": -622.152952554916,
-      "y": -166.03974965488652,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Value": "2"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat2-01",
-      "label": "Sunken Ship",
-      "x": -367.08634513811506,
-      "y": 38.31742410862181,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Description": "When you land with a drop ship: dig a hole that the ship CAREFULLY falls into. Getting the survival kit below rock line allows stone to fall towards the survival kit for faster collection/continual gravel production."
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-14",
-      "label": "Cryo Chamber (+Group)",
-      "x": 176.2020886061818,
-      "y": -103.92362401600488,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-15",
-      "label": "H2 & O2 Tanks (+Group)",
-      "x": 116.63868655880947,
-      "y": -142.39744692073896,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-16",
-      "label": "H2 Engine",
-      "x": 219.3756806977986,
-      "y": -143.10624030169237,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-17",
-      "label": "Interior Wall",
-      "x": 214.90000034427973,
-      "y": -391.41264137104093,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-18",
-      "label": "Ladder (+Group)",
-      "x": 323.3475582649271,
-      "y": -409.4263479348203,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-19",
-      "label": "Scaffolding & Catwalks",
-      "x": 373.44832774625615,
-      "y": -375.7187171624359,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-20",
-      "label": "Wheels (+Group)",
-      "x": -35.53198070953067,
-      "y": -287.7647566145977,
-      "color": "#bebebe",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-21",
-      "label": "Passenger Seat",
-      "x": -63.53344098771551,
-      "y": -240.80773658823261,
-      "color": "#bebebe",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-22",
-      "label": "Cockpit (+Group)",
-      "x": -80.74795640726143,
-      "y": -196.92085690027207,
-      "color": "#bebebe",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-23",
-      "label": "Gatling Gun ",
-      "x": -15.570937016474645,
-      "y": -102.56232836823204,
-      "color": "#f00000",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-24",
-      "label": "Thrusters (Atmo and Ion) (+Group)",
-      "x": -14.430058684457833,
-      "y": -160.86401155054375,
-      "color": "#efea8d",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-25",
-      "label": "Gyroscope",
-      "x": -108.2783478586644,
-      "y": -134.89412506655208,
-      "color": "#bebebe",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-26",
-      "label": "Grinder (+Group)",
-      "x": 51.35814356069842,
-      "y": -115.49323662109751,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-27",
-      "label": "Rocket Launcher (+Group)",
-      "x": -16.43038135435279,
-      "y": -51.8691300767411,
-      "color": "#f00000",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-28",
-      "label": "Thrusters (H2) (+Group)",
-      "x": 114.847894428897,
-      "y": -62.343074739366244,
-      "color": "#bebebe",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Node#Game-SE-Cat3-29",
-      "label": "Spotlight (+Group)",
-      "x": 616.1905427800208,
-      "y": -195.26301604206685,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-30",
-      "label": "Assembler",
-      "x": 497.1010450264613,
-      "y": -167.06851505358543,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-31",
-      "label": "Refinery",
-      "x": 576.7234702698545,
-      "y": -333.90052403483605,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-32",
-      "label": "Control Panel",
-      "x": 442.66450973950805,
-      "y": -195.86401850956463,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-33",
-      "label": "Piston (+Group)",
-      "x": 331.54703262412625,
-      "y": -142.19335500968222,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-34",
-      "label": "Rotor (+Group)",
-      "x": 424.6516244861842,
-      "y": -84.17761903373733,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-35",
-      "label": "Hinge (+Group)",
-      "x": 441.3804417981815,
-      "y": -137.2244033043742,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-36",
-      "label": "Collector (+Group)",
-      "x": 286.9087014621591,
-      "y": -90.44541695471935,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-37",
-      "label": "Connector",
-      "x": 286.2718750026714,
-      "y": -25.21441759737465,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-38",
-      "label": "Conveyor Sorter",
-      "x": 230.97268190870489,
-      "y": -51.03450214900036,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-39",
-      "label": "Projector",
-      "x": 622.3949159378161,
-      "y": -102.79152049117593,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-40",
-      "label": "AI Flight (Move) (+Group)",
-      "x": 567.322962370791,
-      "y": -65.89510765913116,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-41",
-      "label": "Gravity Generator",
-      "x": 495.08661768291154,
-      "y": -106.7194014642248,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-42",
-      "label": "Jump Drive",
-      "x": 492.4942698685235,
-      "y": -35.25468728512808,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-43",
-      "label": "Button Pannel (+Group)",
-      "x": 698.2076582772413,
-      "y": -140.59164193402773,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-44",
-      "label": "Laser Antenna",
-      "x": 374.610007312709,
-      "y": -35.62952104465816,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-45",
-      "label": "Speed Module (+Group)",
-      "x": 586.5239476923135,
-      "y": -381.2136419105834,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat2-02",
-      "label": "Static Hinge Drill Base ",
-      "x": -283.1061931920806,
-      "y": 89.71931373658343,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Description": "Focus on building a base that will vertically mount a drill. Use small grid head to build up to large grid. Pistons to move further down (7 wide sweep), then when deep enough move to horizontal Hing drilling (move conveyors like rails)"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat2-03",
-      "label": "Static Rotor Drill Base ",
-      "x": -184.01250055586465,
-      "y": 49.97027204356198,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Description": "Focus on building a base that will vertically mount piston drills on a rotor. drill. Use small grid head to build up to large grid. Pistons to move further down (7 wide rotation), then when deep enough move to horizontal rotor drilling (move conveyors like rails)"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-ST2_01",
-      "label": "Produce Gravel in Survival Kit (From Stone)",
-      "x": -207.1312980830582,
-      "y": 187.96990213934123,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat3-ST2_02",
-      "label": "Build Wind Turbine and Basic Assembler Components in Survival Kit",
-      "x": -207.76885091828103,
-      "y": 135.0593724598216,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {},
-      "fontSize": 12
+      "fontSize": 21
     },
     {
       "id": "Scenarios",
@@ -713,8 +17,7 @@
       "y": 106.15468621869505,
       "color": "#d89e18",
       "r": 60,
-      "props": {},
-      "fontSize": 25
+      "props": {}
     },
     {
       "id": "Scenario-01-LTS",
@@ -725,22 +28,20 @@
       "r": 45,
       "props": {
         "Info": "https://www.reddit.com/r/spaceengineers/comments/b7dbhr/learning_to_survive_full_guide_spoilers/"
-      },
-      "fontSize": 25
+      }
     },
     {
       "id": "Scn01-Base-01",
       "label": "Base 1",
-      "x": -132.1322674156508,
-      "y": 338.9188809781147,
-      "color": "#00b4f0",
+      "x": -125.62173122180315,
+      "y": 326.0757108120991,
+      "color": "#55ff55",
       "r": 20,
       "props": {
         "GPS": "GPS:Base-01_Start:119.9:-125.14:5.84:#FF85F175:",
         "Ores": "Au, Ag, Fe, Ice",
         "Blocks": "Batteries (x2), Survival Kit, Solar Pannel (x3), Beacon, H2/O2 Generator, Gravity Generator"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-B1-Task-01",
@@ -749,8 +50,9 @@
       "y": 315.0512850466663,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": "Refill health via the Kit."
+      }
     },
     {
       "id": "Scn01-B1-Task-02",
@@ -759,8 +61,9 @@
       "y": 350.9614297437897,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": "Refill O2 and bottles."
+      }
     },
     {
       "id": "Scn01-B1-Task-03",
@@ -769,97 +72,98 @@
       "y": 379.0046199685496,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": "Collect iron with your drill."
+      }
     },
     {
       "id": "Scn01-B1-Task-04",
-      "label": "Task 4 - Mining",
+      "label": "Task 4 - Solar Panels",
       "x": -200.03325096729003,
       "y": 424.9266180574951,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": "Repair with equipment in the base."
+      }
     },
     {
       "id": "Scn01-B1-Task-05",
       "label": "Task 5 - Ship",
-      "x": -119.07587572125479,
+      "x": -118.64586015728995,
       "y": 404.8748041141466,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": "Unpark or grind Landing Gear to release ship."
+      }
     },
     {
       "id": "Scn01-Base-02",
       "label": "Base 2 - Construction Facility",
       "x": -30.5439023223729,
       "y": 377.79038265053885,
-      "color": "#00b4f0",
+      "color": "#55ff55",
       "r": 20,
       "props": {
         "GPS": "GPS:Base-02_Ship-Tools:-44.01:-16.92:-354.09:#FFF1C375:",
         "Blocks": "Batteries (x1), Survival Kit, Small Cargo (x2), O2/H2 Generator, H2 Engine, Gravity Generator, Assembler"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-B2-Task-06",
       "label": "Task 6 - Ship Tools",
-      "x": -32.09548987662413,
-      "y": 430.9776913453574,
+      "x": -72.90410270011046,
+      "y": 452.42864959731054,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": "Grind or Repair doors to leave."
+      }
     },
     {
       "id": "Scn01-Base-03",
       "label": "Base 3",
-      "x": 31.958955826582006,
-      "y": 404.74371533706636,
-      "color": "#00b4f0",
+      "x": 33.42988020402341,
+      "y": 483.86310010269136,
+      "color": "#55ff55",
       "r": 20,
       "props": {
         "GPS": "GPS:Base-03_Ship-Mining:427.97:-402.79:152.11:#FF75C9F1:",
         "Blocks": "Batteries (x1), Small Cargo (x2), O2/H2 Generator, Gravity Generator, Basic Assembler, Beacon"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-B3-Task-07",
       "label": "Task 7 - Ship Mining",
-      "x": 30.255684577172673,
-      "y": 486.4089911173694,
+      "x": -26.264165200049007,
+      "y": 509.6538641642444,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": "Fix and leave hangar."
+      }
     },
     {
       "id": "Scn01-Base-04",
       "label": "Base 4",
       "x": 114.4658480896538,
       "y": 391.27635184354256,
-      "color": "#00b4f0",
+      "color": "#55ff55",
       "r": 20,
       "props": {
         "GPS": "GPS:Base-04_Adv-Production:-1060.26:120.69:-5036.3:#FFF1BB75:",
         "Blocks": "Batteries (x1), Large Cargo, O2/H2 Generator, Gravity Generator, Assembler, Refinery, Beacon"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Cluster-01",
       "label": "Starting-Cluster",
       "x": 16.185768069562215,
-      "y": 324.8237872584978,
+      "y": 323.9752459987322,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {}
     },
     {
       "id": "Scn01-B4-Task-08",
@@ -868,8 +172,9 @@
       "y": 454.4945395653562,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": ""
+      }
     },
     {
       "id": "Scn01-B5-Task-09",
@@ -878,8 +183,9 @@
       "y": 489.3321759039093,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": ""
+      }
     },
     {
       "id": "Scn01-Base-05",
@@ -891,8 +197,7 @@
       "props": {
         "GPS": "GPS:Base-05_Pressurization:-2029.56:3658.87:-2717.73:#FFE9F175:",
         "Blocks": "Batteries (x1), Large Cargo, O2/H2 Generator, Gravity Generator, Assembler, Refinery, Beacon"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Cluster-02",
@@ -901,8 +206,7 @@
       "y": 346.580994084486,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {}
     },
     {
       "id": "Scn01-Cluster-03",
@@ -911,8 +215,7 @@
       "y": 354.60865294458654,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {}
     },
     {
       "id": "Scn01-Base-06",
@@ -924,8 +227,7 @@
       "props": {
         "GPS": "GPS:Base-06_H2-Miner:-4500.84:-3484.93:-7724.15:#FFF16300:",
         "Ores": "Ice"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Base-07",
@@ -937,8 +239,7 @@
       "props": {
         "GPS": "GPS:BASE-07_Drone-Repair:-4670.62:2508.36:-12979.27:#FFAB9AFF:",
         "Ores": "TBD"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-B6-Task-10",
@@ -947,8 +248,9 @@
       "y": 465.81556445965134,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": ""
+      }
     },
     {
       "id": "Scn01-Random",
@@ -957,8 +259,7 @@
       "y": 176.65569388423626,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {}
     },
     {
       "id": "Scn01-R1-Pt",
@@ -969,8 +270,7 @@
       "r": 20,
       "props": {
         "GPS": "GPS:Random - Platinum:-12036.58:-7170.57:-4468.24:#FFF1F1F1:"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-R1-Co_Mg",
@@ -981,8 +281,7 @@
       "r": 20,
       "props": {
         "GPS": "GPS:Cobalt & Magnesium:-12721.72:-6853.38:-4122.11:#FF2D59D0:"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-B7-Task-11",
@@ -991,8 +290,9 @@
       "y": 487.2653078314699,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {
+        "Description": ""
+      }
     },
     {
       "id": "Scn01-Cluster-Nil",
@@ -1001,8 +301,7 @@
       "y": 250.39675612698363,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {}
     },
     {
       "id": "Scn01-Nil-01",
@@ -1014,30 +313,7 @@
       "props": {
         "GPS": "GPS:Nil-Cluster-01:-10882.88:9366.4:-17161.44:#FF8F8F8F:",
         "Ore": "TBD"
-      },
-      "fontSize": 12
-    },
-    {
-      "id": "Game-SE-Cat1-02",
-      "label": "Control Pro Tips",
-      "x": -452.53115583781965,
-      "y": -112.9550989719927,
-      "color": "#00b4f0",
-      "r": 40,
-      "props": {},
-      "fontSize": 24
-    },
-    {
-      "id": "Game-SE-Cat1-02_01",
-      "label": "Drills - All-vs-One",
-      "x": -519.9614025001715,
-      "y": -50.609482709254024,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "Note": "Click MMB to swap \"weapon mode\"; no KNOWN method on Controller"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Base-08",
@@ -1049,8 +325,7 @@
       "props": {
         "GPS": "GPS:Base-08_Ship-Building:1565.77:-5226.9:337.99:#FF75F18B:",
         "Ores": "TBD"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Base-09",
@@ -1062,8 +337,7 @@
       "props": {
         "GPS": "GPS:Base-09_Projectors:2848.49:-12903.68:5583.32:#FFE17C6D:",
         "Ores": "TBD"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Base-10",
@@ -1076,8 +350,7 @@
         "GPS": "GPS:Base-10_Combat-Drone-Station:-2275.7:-7150.16:11126.22:#FFF10808:",
         "Ores": "None",
         "Blocks": "Modified starter ship, with jump drive"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-R1-Au",
@@ -1088,8 +361,7 @@
       "r": 20,
       "props": {
         "GPS": "GPS:Gold:1350.84:-12335.7:-7730.36:#FF75C9F1:"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Base-11",
@@ -1102,8 +374,7 @@
         "GPS": "GPS:Base-11_Jump-Drive:-760.95:-13704.6:-2184.54:#FFE52FF1:",
         "Ores": "None",
         "Blocks": "Modified starter ship, with jump drive"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Cluster-04",
@@ -1112,8 +383,7 @@
       "y": 319.43510371571153,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {}
     },
     {
       "id": "Scn01-Base-12",
@@ -1126,8 +396,7 @@
         "GPS": "GPS:Base-12_Hidden-base location:-9353:-11490:-14000:",
         "Ores": "TBD",
         "Blocks": "TBD"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Nil-02",
@@ -1139,8 +408,7 @@
       "props": {
         "GPS": "TBD",
         "Ore": "TBD"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Nil-03",
@@ -1152,8 +420,7 @@
       "props": {
         "GPS": "TBD",
         "Ore": "TBD"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Nil-04",
@@ -1165,8 +432,7 @@
       "props": {
         "GPS": "TBD",
         "Ore": "TBD"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Nil-05",
@@ -1178,8 +444,7 @@
       "props": {
         "GPS": "TBD",
         "Ore": "TBD"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Base-13",
@@ -1192,8 +457,7 @@
         "GPS": "GPS:Base-13_Orbital-Bombardment:-9353:-11490:-14000:",
         "Ores": "TBD",
         "Blocks": "TBD"
-      },
-      "fontSize": 12
+      }
     },
     {
       "id": "Scn01-Base-14",
@@ -1207,43 +471,1112 @@
         "Ores": "TBD",
         "Blocks": "TBD",
         "Note": "Random Spawn location based on player position"
-      },
-      "fontSize": 12
+      }
+    },
+    {
+      "id": "Game-SE-Category-01",
+      "label": "Settings",
+      "x": -442.4349605891489,
+      "y": -218.3623337826687,
+      "color": "#f00000",
+      "r": 35,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Category-02",
+      "label": "Survival Strategies",
+      "x": -274.58604301737034,
+      "y": -47.50372438594381,
+      "color": "#70db43",
+      "r": 35,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Category-03",
+      "label": "Survival Progression",
+      "x": 42.81178179005461,
+      "y": -336.1440067101118,
+      "color": "#c8f000",
+      "r": 50,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat1-01",
+      "label": "Official Keen Server Settings",
+      "x": -696.2383245826811,
+      "y": -223.35089519853662,
+      "color": "#00b4f0",
+      "r": 40,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-01",
+      "label": "Landing Gear (Small Grid)",
+      "x": 51.98941721003757,
+      "y": -271.6355806406435,
+      "color": "#a000f0",
+      "r": 10,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-02",
+      "label": "Remote Control (Small Grid)(+Group)",
+      "x": 40.596523958947294,
+      "y": -193.5896951623928,
+      "color": "#a000f0",
+      "r": 10,
+      "props": {
+        "SourceMaterials": "Timer Block and a thruster on Drop Ship."
+      }
+    },
+    {
+      "id": "Game-SE-Cat3-03",
+      "label": "H2/O2 Generator (Small Grid)",
+      "x": 149.207735844282,
+      "y": -220.45272880355702,
+      "color": "#a000f0",
+      "r": 10,
+      "props": {
+        "Note": "IS NOT dependent on Remote Control Block!"
+      }
+    },
+    {
+      "id": "Game-SE-Cat3-04",
+      "label": "Small Cargo (Small Grid)",
+      "x": 249.2908216941952,
+      "y": -236.22021152200205,
+      "color": "#a000f0",
+      "r": 10,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-05",
+      "label": "Small Conveyor Tube (Small Grid)",
+      "x": 288.662505397893,
+      "y": -175.66520890398493,
+      "color": "#a000f0",
+      "r": 10,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-06",
+      "label": "Wind Turbine",
+      "x": 388.19149433021073,
+      "y": -244.86025847617526,
+      "color": "#a000f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-07",
+      "label": "Beacon (Small Grid)",
+      "x": 358.8209542351868,
+      "y": -168.8188110105042,
+      "color": "#00b4f0",
+      "r": 10,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-08",
+      "label": "Antenna (Small Grid)",
+      "x": 361.5436532828199,
+      "y": -117.42390069231939,
+      "color": "#00b4f0",
+      "r": 10,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-09",
+      "label": "Basic Assembler",
+      "x": 507.95212646698644,
+      "y": -272.7423301145421,
+      "color": "#a000f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-10",
+      "label": "Interior Light",
+      "x": 562.2507705866669,
+      "y": -154.08925698864812,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-11",
+      "label": "Basic Refinery",
+      "x": 497.310110478006,
+      "y": -348.1793563532361,
+      "color": "#a000f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-12",
+      "label": "Ore Detector",
+      "x": 483.8139634523787,
+      "y": -380.49564086891814,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-13",
+      "label": "Battery",
+      "x": 712.7755511718384,
+      "y": -214.41164028007708,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat1-01_01",
+      "label": "PCU",
+      "x": -725.2842672781399,
+      "y": -122.55639178488585,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Total": "20000"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_02",
+      "label": "Assembler Efficiency Multiplier",
+      "x": -740.1110211442614,
+      "y": -305.99376314027774,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Value": "3"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_03",
+      "label": "Assembler Speed Multiplier",
+      "x": -596.5572033836432,
+      "y": -285.1309603058846,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Value": "3"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_04",
+      "label": "Block Type Limits",
+      "x": -820.4668586501601,
+      "y": -246.99234459472848,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "ShipGrinder": "5",
+        "ShipWelder": "5",
+        "Drill": "5"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_05",
+      "label": "Cargo Ships",
+      "x": -814.4413810917489,
+      "y": -161.00676235006486,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Value": "Off"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_06",
+      "label": "Grinder Speed Multiplier",
+      "x": -628.0104667956621,
+      "y": -107.48605384089295,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Value": "2"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_07",
+      "label": "Hack Speed Multiplier",
+      "x": -759.0062655404321,
+      "y": -300.07055766433496,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Value": "0.33"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_08",
+      "label": "Inventory Size Multiplier",
+      "x": -631.1935132045577,
+      "y": -303.8982912071057,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Value": "1 (Realistic)"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_09",
+      "label": "Refinery Speed Multiplier",
+      "x": -549.4194071691695,
+      "y": -204.99752313081018,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Value": "3"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_10",
+      "label": "Sun Rotation Interval",
+      "x": -710.5546754864424,
+      "y": -150.4117916821735,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Value": "120"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_11",
+      "label": "Total PCU",
+      "x": -764.6563296373531,
+      "y": -156.05902018854192,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Value": "320000"
+      }
+    },
+    {
+      "id": "Game-SE-Cat1-01_12",
+      "label": "Welder Speed Multiplier",
+      "x": -614.0646032270076,
+      "y": -169.56068836139573,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Value": "2"
+      }
+    },
+    {
+      "id": "Game-SE-Cat2-01",
+      "label": "Sunken Ship",
+      "x": -379.6505680277001,
+      "y": 0.48867280297315574,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Description": "When you land with a drop ship: dig a hole that the ship CAREFULLY falls into. Getting the survival kit below rock line allows stone to fall towards the survival kit for faster collection/continual gravel production."
+      }
+    },
+    {
+      "id": "Game-SE-Cat3-14",
+      "label": "Cryo Chamber (+Group)",
+      "x": 157.30689427563263,
+      "y": -111.42284662120571,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-15",
+      "label": "H2 & O2 Tanks (+Group)",
+      "x": 120.27494215286774,
+      "y": -151.2297061109265,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-16",
+      "label": "H2 Engine",
+      "x": 228.75722950376442,
+      "y": -135.74621157471913,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-17",
+      "label": "Interior Wall",
+      "x": 224.95604483441167,
+      "y": -405.4866592286401,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-18",
+      "label": "Ladder (+Group)",
+      "x": 313.96180017577603,
+      "y": -405.49344533301854,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-19",
+      "label": "Scaffolding & Catwalks",
+      "x": 373.2876575702603,
+      "y": -391.1100111091851,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-20",
+      "label": "Wheels (+Group)",
+      "x": -42.48859680482501,
+      "y": -279.39809876036804,
+      "color": "#bebebe",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-21",
+      "label": "Passenger Seat",
+      "x": -91.40839181553423,
+      "y": -235.76331061420035,
+      "color": "#bebebe",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-22",
+      "label": "Cockpit (+Group)",
+      "x": -101.11887505894182,
+      "y": -193.81310220334277,
+      "color": "#bebebe",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-23",
+      "label": "Gatling Gun ",
+      "x": -7.163504811691411,
+      "y": -96.01025011650934,
+      "color": "#f00000",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-24",
+      "label": "Thrusters (Atmo and Ion) (+Group)",
+      "x": -6.876045552724346,
+      "y": -149.80828472725344,
+      "color": "#efea8d",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-25",
+      "label": "Gyroscope",
+      "x": -139.0827263490552,
+      "y": -136.4493954625172,
+      "color": "#bebebe",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-26",
+      "label": "Grinder (+Group)",
+      "x": 46.058887514652525,
+      "y": -114.03547598370228,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-27",
+      "label": "Rocket Launcher (+Group)",
+      "x": -34.684107713928555,
+      "y": -51.91899802715375,
+      "color": "#f00000",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-28",
+      "label": "Thrusters (H2) (+Group)",
+      "x": 107.60188239551204,
+      "y": -73.34629736105398,
+      "color": "#bebebe",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Node#Game-SE-Cat3-29",
+      "label": "Spotlight (+Group)",
+      "x": 630.5025575765876,
+      "y": -201.83463458276813,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-30",
+      "label": "Assembler",
+      "x": 502.3603587739692,
+      "y": -161.22711276713662,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-31",
+      "label": "Refinery",
+      "x": 585.9692770262726,
+      "y": -350.9119900365972,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-32",
+      "label": "Control Panel",
+      "x": 448.09759880079287,
+      "y": -206.79759967959495,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-33",
+      "label": "Piston (+Group)",
+      "x": 332.1160188542499,
+      "y": -137.55974796386747,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-34",
+      "label": "Rotor (+Group)",
+      "x": 406.4817115223238,
+      "y": -96.60028488608002,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-35",
+      "label": "Hinge (+Group)",
+      "x": 460.20906651368676,
+      "y": -128.63295137935086,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-36",
+      "label": "Collector (+Group)",
+      "x": 293.26367250062793,
+      "y": -93.18794850073922,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-37",
+      "label": "Connector",
+      "x": 300.62891176508674,
+      "y": -7.860232042242288,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-38",
+      "label": "Conveyor Sorter",
+      "x": 211.71895084429397,
+      "y": -63.98451320936491,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-39",
+      "label": "Projector",
+      "x": 632.7349740317278,
+      "y": -105.44394227053292,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-40",
+      "label": "AI Flight (Move) (+Group)",
+      "x": 554.4531775161425,
+      "y": -84.89045274634364,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-41",
+      "label": "Gravity Generator",
+      "x": 507.09754046097567,
+      "y": -101.04331384130043,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-42",
+      "label": "Jump Drive",
+      "x": 495.7925873088062,
+      "y": -39.0028155435112,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-43",
+      "label": "Button Pannel (+Group)",
+      "x": 708.4754375304641,
+      "y": -147.12298532895198,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-44",
+      "label": "Laser Antenna",
+      "x": 363.38371899818,
+      "y": -29.235965770592244,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat3-45",
+      "label": "Speed Module (+Group)",
+      "x": 586.4146042106889,
+      "y": -393.97270469621577,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat2-02",
+      "label": "Static Hinge Drill Base ",
+      "x": -314.9661366401245,
+      "y": 35.15717081592359,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Description": "Focus on building a base that will vertically mount a drill. Use small grid head to build up to large grid. Pistons to move further down (7 wide sweep), then when deep enough move to horizontal Hing drilling (move conveyors like rails)"
+      }
+    },
+    {
+      "id": "Game-SE-Cat2-03",
+      "label": "Static Rotor Drill Base ",
+      "x": -236.26382970889296,
+      "y": 22.89983984151595,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Description": "Focus on building a base that will vertically mount piston drills on a rotor. drill. Use small grid head to build up to large grid. Pistons to move further down (7 wide rotation), then when deep enough move to horizontal rotor drilling (move conveyors like rails)"
+      }
+    },
+    {
+      "id": "Game-SE-Cat3-ST2_01",
+      "label": "Produce Gravel in Survival Kit (From Stone)",
+      "x": -262.70284521773533,
+      "y": 175.2145715440799,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Description": "",
+        "keymqdu7i0c": "This generates basic ingots (Fe, Ni, Si)"
+      }
+    },
+    {
+      "id": "Game-SE-Cat3-ST2_02",
+      "label": "Build Wind Turbine and Basic Assembler Components in Survival Kit",
+      "x": -263.33023536133805,
+      "y": 104.6036149593001,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat1-02",
+      "label": "Control Pro Tips",
+      "x": -466.8326066249277,
+      "y": -111.21806510976192,
+      "color": "#00b4f0",
+      "r": 40,
+      "props": {}
+    },
+    {
+      "id": "Game-SE-Cat1-02_01",
+      "label": "Drills - All-vs-One",
+      "x": -525.5183345495193,
+      "y": -56.40539803235991,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Note": "Click MMB to swap \"weapon mode\"; no KNOWN method on Controller"
+      }
     },
     {
       "id": "Game-SE-Cat3-46",
       "label": "Windows (+Group)",
-      "x": 300.355021591236,
-      "y": -465.50150806861103,
+      "x": 300.3985605817837,
+      "y": -483.8523709872735,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {}
     },
     {
       "id": "Game-SE-Cat3-47",
       "label": "Nuclear Reactor",
-      "x": 657.0971013278194,
-      "y": -339.4413406590108,
+      "x": 670.1077043867648,
+      "y": -334.9073019583307,
       "color": "#00b4f0",
       "r": 20,
-      "props": {},
-      "fontSize": 12
+      "props": {}
     },
     {
       "id": "Game-SE-Cat1-02_02",
       "label": "KBM - Copy Paint",
-      "x": -456.41383383557366,
-      "y": -18.8863023164582,
+      "x": -476.0420711469461,
+      "y": -27.853229225474752,
       "color": "#00b4f0",
       "r": 20,
       "props": {
         "Note": "Hold SHIFT, the press P, while looking at target block."
-      },
-      "fontSize": 12
+      }
+    },
+    {
+      "id": "n10203",
+      "label": "Start (Fast Path)",
+      "x": -33.58140182495117,
+      "y": 258.5231018066406,
+      "color": "#8affab",
+      "r": 26,
+      "props": {}
     }
   ],
   "edges": [
+    {
+      "id": "Scenarios-to-game-space-engineers",
+      "source": "Scenarios",
+      "target": "game-space-engineers",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scenario-01-LTS-to-Scenarios",
+      "source": "Scenario-01-LTS",
+      "target": "Scenarios",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B1-Task-01-to-Scn01-Base-01",
+      "source": "Scn01-B1-Task-01",
+      "target": "Scn01-Base-01",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B1-Task-02-to-Scn01-Base-01",
+      "source": "Scn01-B1-Task-02",
+      "target": "Scn01-Base-01",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B1-Task-03-to-Scn01-Base-01",
+      "source": "Scn01-B1-Task-03",
+      "target": "Scn01-Base-01",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B1-Task-04-to-Scn01-Base-01",
+      "source": "Scn01-B1-Task-04",
+      "target": "Scn01-Base-01",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B1-Task-05-to-Scn01-Base-01",
+      "source": "Scn01-B1-Task-05",
+      "target": "Scn01-Base-01",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B2-Task-06-to-Scn01-Base-02",
+      "source": "Scn01-B2-Task-06",
+      "target": "Scn01-Base-02",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B3-Task-07-to-Scn01-Base-03",
+      "source": "Scn01-B3-Task-07",
+      "target": "Scn01-Base-03",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-01-to-Scn01-Cluster-01",
+      "source": "Scn01-Base-01",
+      "target": "Scn01-Cluster-01",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-02-to-Scn01-Cluster-01",
+      "source": "Scn01-Base-02",
+      "target": "Scn01-Cluster-01",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-03-to-Scn01-Cluster-01",
+      "source": "Scn01-Base-03",
+      "target": "Scn01-Cluster-01",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Cluster-01-to-Scenario-01-LTS",
+      "source": "Scn01-Cluster-01",
+      "target": "Scenario-01-LTS",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-04-to-Scn01-Cluster-02",
+      "source": "Scn01-Base-04",
+      "target": "Scn01-Cluster-02",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium",
+      "color": "#58a6ff"
+    },
+    {
+      "id": "Scn01-Base-05-to-Scn01-Cluster-02",
+      "source": "Scn01-Base-05",
+      "target": "Scn01-Cluster-02",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Cluster-02-to-Scn01-Cluster-01",
+      "source": "Scn01-Cluster-02",
+      "target": "Scn01-Cluster-01",
+      "label": "",
+      "directed": false,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B4-Task-08-to-Scn01-Base-04",
+      "source": "Scn01-B4-Task-08",
+      "target": "Scn01-Base-04",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B5-Task-09-to-Scn01-Base-05",
+      "source": "Scn01-B5-Task-09",
+      "target": "Scn01-Base-05",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Cluster-03-to-Scn01-Cluster-02",
+      "source": "Scn01-Cluster-03",
+      "target": "Scn01-Cluster-02",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-06-to-Scn01-Cluster-02",
+      "source": "Scn01-Base-06",
+      "target": "Scn01-Cluster-02",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-07-to-Scn01-Cluster-02",
+      "source": "Scn01-Base-07",
+      "target": "Scn01-Cluster-02",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B6-Task-10-to-Scn01-Base-06",
+      "source": "Scn01-B6-Task-10",
+      "target": "Scn01-Base-06",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Random-to-Scenario-01-LTS",
+      "source": "Scn01-Random",
+      "target": "Scenario-01-LTS",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-R1-Pt-to-Scn01-Random",
+      "source": "Scn01-R1-Pt",
+      "target": "Scn01-Random",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-R1-Co_Mg-to-Scn01-Random",
+      "source": "Scn01-R1-Co_Mg",
+      "target": "Scn01-Random",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-B7-Task-11-to-Scn01-Base-07",
+      "source": "Scn01-B7-Task-11",
+      "target": "Scn01-Base-07",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Cluster-Nil-to-Scenario-01-LTS",
+      "source": "Scn01-Cluster-Nil",
+      "target": "Scenario-01-LTS",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Nil-01-to-Scn01-Cluster-Nil",
+      "source": "Scn01-Nil-01",
+      "target": "Scn01-Cluster-Nil",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Cluster-04-to-Scn01-Cluster-03",
+      "source": "Scn01-Cluster-04",
+      "target": "Scn01-Cluster-03",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-11-to-Scn01-Cluster-04",
+      "source": "Scn01-Base-11",
+      "target": "Scn01-Cluster-04",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-10-to-Scn01-Cluster-04",
+      "source": "Scn01-Base-10",
+      "target": "Scn01-Cluster-04",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-08-to-Scn01-Cluster-03",
+      "source": "Scn01-Base-08",
+      "target": "Scn01-Cluster-03",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-09-to-Scn01-Cluster-03",
+      "source": "Scn01-Base-09",
+      "target": "Scn01-Cluster-03",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-R1-Au-to-Scn01-Random",
+      "source": "Scn01-R1-Au",
+      "target": "Scn01-Random",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Nil-03-to-Scn01-Cluster-Nil",
+      "source": "Scn01-Nil-03",
+      "target": "Scn01-Cluster-Nil",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Nil-05-to-Scn01-Cluster-Nil",
+      "source": "Scn01-Nil-05",
+      "target": "Scn01-Cluster-Nil",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-12-to-Scn01-Cluster-04",
+      "source": "Scn01-Base-12",
+      "target": "Scn01-Cluster-04",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Nil-04-to-Scn01-Cluster-Nil",
+      "source": "Scn01-Nil-04",
+      "target": "Scn01-Cluster-Nil",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Nil-02-to-Scn01-Cluster-Nil",
+      "source": "Scn01-Nil-02",
+      "target": "Scn01-Cluster-Nil",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-13-to-Scn01-Base-12",
+      "source": "Scn01-Base-13",
+      "target": "Scn01-Base-12",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Base-14-to-Scn01-Base-13",
+      "source": "Scn01-Base-14",
+      "target": "Scn01-Base-13",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
     {
       "id": "Game-SE-Category-01-to-game-space-engineers",
       "source": "Game-SE-Category-01",
@@ -1975,286 +2308,6 @@
       "arrowSize": "medium"
     },
     {
-      "id": "Scenarios-to-game-space-engineers",
-      "source": "Scenarios",
-      "target": "game-space-engineers",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scenario-01-LTS-to-Scenarios",
-      "source": "Scenario-01-LTS",
-      "target": "Scenarios",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B1-Task-01-to-Scn01-Base-01",
-      "source": "Scn01-B1-Task-01",
-      "target": "Scn01-Base-01",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B1-Task-02-to-Scn01-Base-01",
-      "source": "Scn01-B1-Task-02",
-      "target": "Scn01-Base-01",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B1-Task-03-to-Scn01-Base-01",
-      "source": "Scn01-B1-Task-03",
-      "target": "Scn01-Base-01",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B1-Task-04-to-Scn01-Base-01",
-      "source": "Scn01-B1-Task-04",
-      "target": "Scn01-Base-01",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B1-Task-05-to-Scn01-Base-01",
-      "source": "Scn01-B1-Task-05",
-      "target": "Scn01-Base-01",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B2-Task-06-to-Scn01-Base-02",
-      "source": "Scn01-B2-Task-06",
-      "target": "Scn01-Base-02",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B3-Task-07-to-Scn01-Base-03",
-      "source": "Scn01-B3-Task-07",
-      "target": "Scn01-Base-03",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-01-to-Scn01-Cluster-01",
-      "source": "Scn01-Base-01",
-      "target": "Scn01-Cluster-01",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-02-to-Scn01-Cluster-01",
-      "source": "Scn01-Base-02",
-      "target": "Scn01-Cluster-01",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-03-to-Scn01-Cluster-01",
-      "source": "Scn01-Base-03",
-      "target": "Scn01-Cluster-01",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Cluster-01-to-Scenario-01-LTS",
-      "source": "Scn01-Cluster-01",
-      "target": "Scenario-01-LTS",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-04-to-Scn01-Cluster-02",
-      "source": "Scn01-Base-04",
-      "target": "Scn01-Cluster-02",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-05-to-Scn01-Cluster-02",
-      "source": "Scn01-Base-05",
-      "target": "Scn01-Cluster-02",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Cluster-02-to-Scn01-Cluster-01",
-      "source": "Scn01-Cluster-02",
-      "target": "Scn01-Cluster-01",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B4-Task-08-to-Scn01-Base-04",
-      "source": "Scn01-B4-Task-08",
-      "target": "Scn01-Base-04",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B5-Task-09-to-Scn01-Base-05",
-      "source": "Scn01-B5-Task-09",
-      "target": "Scn01-Base-05",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Cluster-03-to-Scn01-Cluster-02",
-      "source": "Scn01-Cluster-03",
-      "target": "Scn01-Cluster-02",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-06-to-Scn01-Cluster-02",
-      "source": "Scn01-Base-06",
-      "target": "Scn01-Cluster-02",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-07-to-Scn01-Cluster-02",
-      "source": "Scn01-Base-07",
-      "target": "Scn01-Cluster-02",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B6-Task-10-to-Scn01-Base-06",
-      "source": "Scn01-B6-Task-10",
-      "target": "Scn01-Base-06",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Random-to-Scenario-01-LTS",
-      "source": "Scn01-Random",
-      "target": "Scenario-01-LTS",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-R1-Pt-to-Scn01-Random",
-      "source": "Scn01-R1-Pt",
-      "target": "Scn01-Random",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-R1-Co_Mg-to-Scn01-Random",
-      "source": "Scn01-R1-Co_Mg",
-      "target": "Scn01-Random",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-B7-Task-11-to-Scn01-Base-07",
-      "source": "Scn01-B7-Task-11",
-      "target": "Scn01-Base-07",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Cluster-Nil-to-Scenario-01-LTS",
-      "source": "Scn01-Cluster-Nil",
-      "target": "Scenario-01-LTS",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Nil-01-to-Scn01-Cluster-Nil",
-      "source": "Scn01-Nil-01",
-      "target": "Scn01-Cluster-Nil",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
       "id": "Game-SE-Cat1-02-to-Game-SE-Category-01",
       "source": "Game-SE-Cat1-02",
       "target": "Game-SE-Category-01",
@@ -2268,136 +2321,6 @@
       "id": "Game-SE-Cat1-02_01-to-Game-SE-Cat1-02",
       "source": "Game-SE-Cat1-02_01",
       "target": "Game-SE-Cat1-02",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Cluster-04-to-Scn01-Cluster-03",
-      "source": "Scn01-Cluster-04",
-      "target": "Scn01-Cluster-03",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-11-to-Scn01-Cluster-04",
-      "source": "Scn01-Base-11",
-      "target": "Scn01-Cluster-04",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-10-to-Scn01-Cluster-04",
-      "source": "Scn01-Base-10",
-      "target": "Scn01-Cluster-04",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-08-to-Scn01-Cluster-03",
-      "source": "Scn01-Base-08",
-      "target": "Scn01-Cluster-03",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-09-to-Scn01-Cluster-03",
-      "source": "Scn01-Base-09",
-      "target": "Scn01-Cluster-03",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-R1-Au-to-Scn01-Random",
-      "source": "Scn01-R1-Au",
-      "target": "Scn01-Random",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Nil-03-to-Scn01-Cluster-Nil",
-      "source": "Scn01-Nil-03",
-      "target": "Scn01-Cluster-Nil",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Nil-05-to-Scn01-Cluster-Nil",
-      "source": "Scn01-Nil-05",
-      "target": "Scn01-Cluster-Nil",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-12-to-Scn01-Cluster-04",
-      "source": "Scn01-Base-12",
-      "target": "Scn01-Cluster-04",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Nil-04-to-Scn01-Cluster-Nil",
-      "source": "Scn01-Nil-04",
-      "target": "Scn01-Cluster-Nil",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Nil-02-to-Scn01-Cluster-Nil",
-      "source": "Scn01-Nil-02",
-      "target": "Scn01-Cluster-Nil",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-13-to-Scn01-Base-12",
-      "source": "Scn01-Base-13",
-      "target": "Scn01-Base-12",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-14-to-Scn01-Base-13",
-      "source": "Scn01-Base-14",
-      "target": "Scn01-Base-13",
       "label": "",
       "directed": true,
       "style": "straight",
@@ -2443,6 +2366,71 @@
       "style": "straight",
       "dash": "solid",
       "arrowSize": "medium"
+    },
+    {
+      "id": "e10204",
+      "source": "n10203",
+      "target": "Scn01-Base-01",
+      "label": "",
+      "directed": true,
+      "style": "orthogonal",
+      "dash": "solid",
+      "arrowSize": "medium",
+      "color": "#55ff55"
+    },
+    {
+      "id": "e10207",
+      "source": "Scn01-Base-02",
+      "target": "Scn01-B2-Task-06",
+      "label": "",
+      "directed": false,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10208",
+      "source": "Scn01-Base-01",
+      "target": "Scn01-Base-02",
+      "label": "(Ship)",
+      "directed": true,
+      "style": "orthogonal",
+      "dash": "solid",
+      "arrowSize": "medium",
+      "color": "inherit"
+    },
+    {
+      "id": "e10209",
+      "source": "Scn01-Base-02",
+      "target": "Scn01-Base-03",
+      "label": "(Tool Ship's Grinder)",
+      "directed": true,
+      "style": "orthogonal",
+      "dash": "solid",
+      "arrowSize": "medium",
+      "color": "#55ff55"
+    },
+    {
+      "id": "e10210",
+      "source": "Scn01-Base-03",
+      "target": "Scn01-Base-04",
+      "label": "(Miner Ship)",
+      "directed": true,
+      "style": "orthogonal",
+      "dash": "solid",
+      "arrowSize": "medium",
+      "color": "#55ff55"
     }
-  ]
+  ],
+  "idCounter": 10211,
+  "graphId": "graph1",
+  "graphMeta": {
+    "edgedefault": "undirected"
+  },
+  "view": {
+    "x": 802.7313604450061,
+    "y": -216.05799856046622,
+    "k": 1.599835591557139
+  },
+  "clampNodeLabels": false
 }
