@@ -286,7 +286,35 @@ body[data-paint="active"] .edge-group{cursor:copy}
 .set-row input[type=range]{flex:1;accent-color:var(--accent)}
 .set-row .set-val{font-family:var(--font-mono);font-size:.79em;color:var(--text3);min-width:32px;text-align:right}
 .set-toggle-btn{display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:.86em;font-family:var(--font-ui);width:100%;transition:all var(--transition)}
-.set-toggle-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
+/* ── PROP EDITOR MODAL ─────────────────────────────────────────── */
+#prop-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1250;display:none;align-items:center;justify-content:center}
+#prop-modal-overlay.open{display:flex}
+#prop-modal{background:var(--bg1);border:1px solid var(--border);border-radius:var(--radius2);width:min(660px,96vw);max-height:86vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.7)}
+#prop-modal-header{padding:14px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
+#prop-modal-title{font-family:var(--font-mono);font-size:.93em;color:var(--accent);font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#prop-modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.3em;padding:2px 8px;line-height:1}
+#prop-modal-close:hover{color:var(--text)}
+#prop-modal-body{padding:14px 18px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px}
+#prop-modal-footer{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
+.pm-prop-row{border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;background:var(--bg2);display:flex;flex-direction:column;gap:6px}
+.pm-prop-row-header{display:flex;align-items:center;gap:6px}
+.pm-key-label{font-size:.72em;font-family:var(--font-mono);color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.pm-key-input{font-family:var(--font-mono);font-size:.86em;background:var(--bg3);border:1px solid var(--border);color:var(--accent);border-radius:var(--radius);padding:5px 8px;flex:1;outline:none;min-width:0}
+.pm-key-input:focus{border-color:var(--accent);background:var(--bg0)}
+.pm-val-label{font-size:.72em;font-family:var(--font-mono);color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.pm-val-textarea{width:100%;min-height:72px;max-height:260px;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:7px 8px;font-family:var(--font-mono);font-size:.86em;resize:vertical;outline:none;line-height:1.5;box-sizing:border-box}
+.pm-val-textarea:focus{border-color:var(--accent);background:var(--bg0)}
+.pm-rm-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1em;opacity:.55;padding:2px 5px;flex-shrink:0;line-height:1}
+.pm-rm-btn:hover{color:var(--red);opacity:1}
+.pm-add-btn{padding:8px 14px;border-radius:var(--radius);border:1px dashed var(--border2);background:transparent;color:var(--text3);cursor:pointer;font-size:.86em;font-family:var(--font-ui);transition:all .15s;width:100%;text-align:center}
+.pm-add-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.06)}
+/* inspector section label with expand button */
+.insp-section-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.insp-section-label-row .insp-section-label{margin-bottom:0}
+.insp-section-label-row .expand-btn{background:none;border:1px solid var(--border);color:var(--text3);cursor:pointer;font-size:.72em;font-family:var(--font-mono);padding:1px 7px;border-radius:3px;line-height:1.6}
+.insp-section-label-row .expand-btn:hover{color:var(--accent);border-color:var(--accent)}
+.prop-expand{background:none;border:none;color:var(--text3);cursor:pointer;font-size:.86em;padding:2px 3px;opacity:.6;flex-shrink:0;line-height:1}
+.prop-expand:hover{color:var(--accent);opacity:1}
 </style>
 </head>
 <body data-tool="select">
@@ -565,6 +593,21 @@ body[data-paint="active"] .edge-group{cursor:copy}
     </div>
   </div>
 </div>
+<!-- PROP EDITOR MODAL -->
+<div id="prop-modal-overlay" onclick="if(event.target===this)App.closePropModal()">
+  <div id="prop-modal" role="dialog" aria-labelledby="prop-modal-title">
+    <div id="prop-modal-header">
+      <span id="prop-modal-title">Properties</span>
+      <button id="prop-modal-close" onclick="App.closePropModal()" aria-label="Close">&#x2715;</button>
+    </div>
+    <div id="prop-modal-body"></div>
+    <div id="prop-modal-footer">
+      <button class="modal-btn" onclick="App.closePropModal()">Cancel</button>
+      <button class="modal-btn primary" onclick="App.savePropModal()">&#x2713; Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <div id="settings-overlay" onclick="App.closeSettings(event)">
   <div id="settings-panel" onclick="event.stopPropagation()">
     <div id="settings-header">
@@ -1024,11 +1067,23 @@ function attachNodeEvents(g, id){
   });
   g.addEventListener('dblclick', e=>{
     e.stopPropagation();
-    startInlineRename(id);
+    if(State.tool==='select'){
+      if(e.target.classList.contains('node-label')){
+        startInlineRename(id);
+      } else {
+        App.openPropModal('node', id);
+      }
+    } else {
+      startInlineRename(id);
+    }
   });
 }
 
 function attachEdgeEvents(g, id){
+  g.addEventListener('dblclick', e=>{
+    e.stopPropagation();
+    if(State.tool==='select') App.openPropModal('edge', id);
+  });
   g.addEventListener('pointerdown', e=>{
     e.stopPropagation();
     if(e.button !== 0) return;
@@ -1393,13 +1448,17 @@ function renderInspector(){
         </div>
       </div>
       <div class="insp-section">
-        <div class="insp-section-label">Custom Properties</div>
+        <div class="insp-section-label-row">
+          <span class="insp-section-label">Custom Properties</span>
+          <button class="expand-btn" onclick="App.openPropModal('node','${node.id}')" title="Open full property editor">&#x2922; expand</button>
+        </div>
         <div class="prop-list">
           ${Object.entries(node.props||{}).map(([k,v])=>`
             <div class="prop-item">
-              <input value="${escHtml(k)}" onchange="App.renamePropKey('node','${node.id}','${k}',this.value)" style="width:40%">
-              <input value="${escHtml(v)}" oninput="App.setLivePropKV('node','${node.id}','${k}',this.value)" style="width:55%">
-              <button class="prop-rm" onclick="App.removeProp('node','${node.id}','${k}')">✕</button>
+              <input value="${escHtml(k)}" onchange="App.renamePropKey('node','${node.id}','${k}',this.value)" style="width:36%">
+              <input value="${escHtml(v)}" oninput="App.setLivePropKV('node','${node.id}','${k}',this.value)" style="width:44%">
+              <button class="prop-expand" onclick="App.openPropModal('node','${node.id}','${k}')" title="Edit in full editor">&#x2922;</button>
+              <button class="prop-rm" onclick="App.removeProp('node','${node.id}','${k}')">&#x2715;</button>
             </div>`).join('')}
         </div>
         <button class="insp-btn" onclick="App.addProp('node','${node.id}')">+ Add Property</button>
@@ -1461,13 +1520,17 @@ function renderInspector(){
         </div>
       </div>
       <div class="insp-section">
-        <div class="insp-section-label">Custom Properties</div>
+        <div class="insp-section-label-row">
+          <span class="insp-section-label">Custom Properties</span>
+          <button class="expand-btn" onclick="App.openPropModal('edge','${edge.id}')" title="Open full property editor">&#x2922; expand</button>
+        </div>
         <div class="prop-list">
           ${Object.entries(edge.props||{}).map(([k,v])=>`
             <div class="prop-item">
-              <input value="${escHtml(k)}" onchange="App.renamePropKey('edge','${edge.id}','${k}',this.value)" style="width:40%">
-              <input value="${escHtml(v)}" oninput="App.setLivePropKV('edge','${edge.id}','${k}',this.value)" style="width:55%">
-              <button class="prop-rm" onclick="App.removeProp('edge','${edge.id}','${k}')">✕</button>
+              <input value="${escHtml(k)}" onchange="App.renamePropKey('edge','${edge.id}','${k}',this.value)" style="width:36%">
+              <input value="${escHtml(v)}" oninput="App.setLivePropKV('edge','${edge.id}','${k}',this.value)" style="width:44%">
+              <button class="prop-expand" onclick="App.openPropModal('edge','${edge.id}','${k}')" title="Edit in full editor">&#x2922;</button>
+              <button class="prop-rm" onclick="App.removeProp('edge','${edge.id}','${k}')">&#x2715;</button>
             </div>`).join('')}
         </div>
         <button class="insp-btn" onclick="App.addProp('edge','${edge.id}')">+ Add Property</button>
@@ -2229,6 +2292,98 @@ window.App = {
     renderNodes();
   },
   closeModal(){ $('modal-overlay').classList.remove('open'); },
+
+  openPropModal(type, id, focusKey){
+    const obj = type==='node' ? State.nodes.find(n=>n.id===id) : State.edges.find(e=>e.id===id);
+    if(!obj) return;
+    // Also select it so inspector is showing
+    State.selected.clear(); State.selected.add(id);
+    renderAll(); renderInspector();
+    const label = obj.label || obj.id;
+    $('prop-modal-title').textContent = (type==='node'?'🔵 Node':'→ Edge')+': '+label+' — Properties';
+    App._propModalState = {type, id};
+    App._renderPropModalRows(obj.props||{}, focusKey);
+    $('prop-modal-overlay').classList.add('open');
+  },
+
+  _renderPropModalRows(props, focusKey){
+    const {type, id} = App._propModalState;
+    const body = $('prop-modal-body');
+    body.innerHTML = '';
+    let idx = 0;
+    for(const [k,v] of Object.entries(props)){
+      const uid = 'pm-'+Date.now()+'-'+(idx++);
+      const row = document.createElement('div');
+      row.className = 'pm-prop-row';
+      row.innerHTML =
+        `<div class="pm-prop-row-header">` +
+          `<div style="flex:1;min-width:0">` +
+            `<div class="pm-key-label"><label for="${uid}-k">Key / Name</label></div>` +
+            `<input id="${uid}-k" name="${uid}-k" class="pm-key-input" value="${escHtml(k)}" placeholder="property name" data-orig="${escHtml(k)}" autocomplete="off">` +
+          `</div>` +
+          `<button class="pm-rm-btn" title="Remove this property" aria-label="Remove property">&#x2715;</button>` +
+        `</div>` +
+        `<div class="pm-val-label"><label for="${uid}-v">Value</label></div>` +
+        `<textarea id="${uid}-v" name="${uid}-v" class="pm-val-textarea" placeholder="value…">${escHtml(String(v))}</textarea>`;
+      row.querySelector('.pm-rm-btn').addEventListener('click', ()=> row.remove());
+      body.appendChild(row);
+    }
+    const addBtn = document.createElement('button');
+    addBtn.className = 'pm-add-btn';
+    addBtn.textContent = '+ Add Property';
+    addBtn.addEventListener('click', ()=>{
+      const uid2 = 'pm-'+Date.now()+'-new';
+      const row2 = document.createElement('div');
+      row2.className = 'pm-prop-row';
+      row2.innerHTML =
+        `<div class="pm-prop-row-header">` +
+          `<div style="flex:1;min-width:0">` +
+            `<div class="pm-key-label"><label for="${uid2}-k">Key / Name</label></div>` +
+            `<input id="${uid2}-k" name="${uid2}-k" class="pm-key-input" value="" placeholder="property name" data-orig="" autocomplete="off">` +
+          `</div>` +
+          `<button class="pm-rm-btn" title="Remove" aria-label="Remove property">&#x2715;</button>` +
+        `</div>` +
+        `<div class="pm-val-label"><label for="${uid2}-v">Value</label></div>` +
+        `<textarea id="${uid2}-v" name="${uid2}-v" class="pm-val-textarea" placeholder="value…"></textarea>`;
+      row2.querySelector('.pm-rm-btn').addEventListener('click', ()=> row2.remove());
+      body.insertBefore(row2, addBtn);
+      row2.querySelector('.pm-key-input').focus();
+    });
+    body.appendChild(addBtn);
+    // Focus requested key's textarea for editing
+    if(focusKey){
+      for(const inp of body.querySelectorAll('.pm-key-input')){
+        if(inp.value === focusKey){
+          const ta = inp.closest('.pm-prop-row').querySelector('.pm-val-textarea');
+          if(ta){ ta.focus(); ta.select(); } else { inp.focus(); }
+          break;
+        }
+      }
+    }
+  },
+
+  savePropModal(){
+    const s = App._propModalState; if(!s) return;
+    const obj = s.type==='node' ? State.nodes.find(n=>n.id===s.id) : State.edges.find(e=>e.id===s.id);
+    if(!obj) return;
+    snapshot();
+    const newProps = {};
+    for(const row of $('prop-modal-body').querySelectorAll('.pm-prop-row')){
+      const k = row.querySelector('.pm-key-input').value.trim();
+      const v = row.querySelector('.pm-val-textarea').value;
+      if(k) newProps[k] = v;
+    }
+    obj.props = newProps;
+    localStorage.setItem('lpg_graph_state', serialize());
+    App.closePropModal();
+    renderInspector(); renderGraphML(); renderTable();
+    notify('Properties saved');
+  },
+
+  closePropModal(){
+    $('prop-modal-overlay').classList.remove('open');
+    App._propModalState = null;
+  },
 
   toggleInspector(){
     const app = document.getElementById('app');
