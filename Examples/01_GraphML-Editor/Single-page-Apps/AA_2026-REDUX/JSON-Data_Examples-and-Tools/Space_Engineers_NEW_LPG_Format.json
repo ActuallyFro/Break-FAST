@@ -173,7 +173,7 @@
       "color": "#00b4f0",
       "r": 20,
       "props": {
-        "Description": ""
+        "Description": "Fix the cargo-to-refinery conveyors. Fix the refinery, and build an assembler."
       }
     },
     {
@@ -184,7 +184,7 @@
       "color": "#00b4f0",
       "r": 20,
       "props": {
-        "Description": ""
+        "Description": "Fix the sliding door, the air vent, window, and top armor block by the winder. Load the H2/O2 Generator with Ice."
       }
     },
     {
@@ -238,7 +238,7 @@
       "r": 20,
       "props": {
         "GPS": "GPS:BASE-07_Drone-Repair:-4670.62:2508.36:-12979.27:#FFAB9AFF:",
-        "Ores": "TBD"
+        "Ores": "None"
       }
     },
     {
@@ -249,7 +249,7 @@
       "color": "#00b4f0",
       "r": 20,
       "props": {
-        "Description": ""
+        "Description": "Fix the parts on the H2/Ice-Mining Ship. Collect ice."
       }
     },
     {
@@ -291,28 +291,19 @@
       "color": "#00b4f0",
       "r": 20,
       "props": {
-        "Description": ""
+        "Description": "Repair remote control and add antenna to remotely navigate a drone. Use Shift+K for quick remote control access. Also, add the camera to the Drone's tool bar for easier navigtation.",
+        "Shenanigans": "Remove the tail, and make a flat area to attach a helm -- now you have a Space Segway ;)"
       }
     },
     {
-      "id": "Scn01-Cluster-Nil",
-      "label": "Empty (Nil) Clusters",
-      "x": 353.5785117055666,
+      "id": "Scn01-Achievements",
+      "label": "Scenario Achievements",
+      "x": 354.0811056997072,
       "y": 250.39675612698363,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {}
-    },
-    {
-      "id": "Scn01-Nil-01",
-      "label": "Nil Cluster 1",
-      "x": 368.2015141635994,
-      "y": 189.80447619733445,
-      "color": "#00b4f0",
+      "color": "#e34c26",
       "r": 20,
       "props": {
-        "GPS": "GPS:Nil-Cluster-01:-10882.88:9366.4:-17161.44:#FF8F8F8F:",
-        "Ore": "TBD"
+        "Source": "https://spaceengineers.fandom.com/wiki/Learning_to_Survive_Scenario#Steam_Achievements_(minor_spoilers)"
       }
     },
     {
@@ -394,77 +385,29 @@
       "r": 20,
       "props": {
         "GPS": "GPS:Base-12_Hidden-base location:-9353:-11490:-14000:",
-        "Ores": "TBD",
-        "Blocks": "TBD"
-      }
-    },
-    {
-      "id": "Scn01-Nil-02",
-      "label": "Nil Cluster 2",
-      "x": 421.68084580151657,
-      "y": 214.35206685073058,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "GPS": "TBD",
-        "Ore": "TBD"
-      }
-    },
-    {
-      "id": "Scn01-Nil-03",
-      "label": "Nil Cluster 3",
-      "x": 429.66344740291925,
-      "y": 267.1723577038638,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "GPS": "TBD",
-        "Ore": "TBD"
-      }
-    },
-    {
-      "id": "Scn01-Nil-04",
-      "label": "Nil Cluster 4",
-      "x": 399.97081428298793,
-      "y": 304.2190000302678,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "GPS": "TBD",
-        "Ore": "TBD"
-      }
-    },
-    {
-      "id": "Scn01-Nil-05",
-      "label": "Nil Cluster 5",
-      "x": 327.40066764010464,
-      "y": 314.5593475157994,
-      "color": "#00b4f0",
-      "r": 20,
-      "props": {
-        "GPS": "TBD",
-        "Ore": "TBD"
+        "Ores": "None Significant",
+        "Blocks": "Small Cargo, Oxygen Generator, H2/O2 Generator, H2 Engine, Connector"
       }
     },
     {
       "id": "Scn01-Base-13",
       "label": "Base - 13 - Orbital Bombardment",
       "x": 739.9411046834621,
-      "y": 214.8570752211503,
-      "color": "#00b4f0",
+      "y": 214.35753298482217,
+      "color": "#2da44e",
       "r": 20,
       "props": {
         "GPS": "GPS:Base-13_Orbital-Bombardment:-9353:-11490:-14000:",
-        "Ores": "TBD",
-        "Blocks": "TBD"
+        "Ores": "N/A",
+        "Blocks": "N/A"
       }
     },
     {
       "id": "Scn01-Base-14",
       "label": "Base - 14 - Commander Ship Fight",
-      "x": 748.5690997520045,
-      "y": 135.55664749820434,
-      "color": "#00b4f0",
+      "x": 749.0217364707545,
+      "y": 134.63036270816528,
+      "color": "#2da44e",
       "r": 20,
       "props": {
         "GPS": "NONE",
@@ -1163,6 +1106,174 @@
       "color": "#8affab",
       "r": 26,
       "props": {}
+    },
+    {
+      "id": "Scn01-B8-Task-12",
+      "label": "Task 12 - Build a Ship",
+      "x": 454.9906921386719,
+      "y": 522.7644653320312,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Description": "With the provided frame: (1) add cockpit, (2) six-directions of thrusters, (3) a gyroscope, and (4) power (reactors or batteries)"
+      }
+    },
+    {
+      "id": "Scn01-B9-Task-13",
+      "label": "Task 13 - Print-a-Ship",
+      "x": 578.4495239257812,
+      "y": 497.44793701171875,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Description": "Turn on projector, built a scaffold to allow the welders to weld (upstairs button), and detach from the merge block to fly ship away."
+      }
+    },
+    {
+      "id": "Scn01-Base-10-Point-01",
+      "label": "First Point: Warning Beacon",
+      "x": 727.1583251953125,
+      "y": 459.6104431152344,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Description": "This is a standalone task-button and warning beacon that is 5Km from the Pirate Station."
+      }
+    },
+    {
+      "id": "Scn01-Base-10-Point-02",
+      "label": "Second Point: Pirate Station",
+      "x": 803.32666015625,
+      "y": 514.8836669921875,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Description": "Attack and takeover a Pirate Space Station.",
+        "Defenses": "Defense Drone (two gatling guns + Missile Turret; small grid). The Station has two main, large grid, Gatling turrets on the top and bottom of the 'front' of the ship.",
+        "Backdoor GPS": "GPS:BACKDOOR - Pirate Station :-5577.81:-5449.8:15445.24:#FFF175EC:",
+        "GPS": "GPS:Drone Facility:-4296.88:-6951.8:15838.19:#FFF17575:"
+      }
+    },
+    {
+      "id": "Scn01-B10-Task-14",
+      "label": "Task 14 - Defeat the Defense Drone",
+      "x": 831.2952880859375,
+      "y": 583.7774047851562,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Scn01-B10-Task-15",
+      "label": "Task 15 - Destroy Two Station Gatling Turrets",
+      "x": 942.7982177734375,
+      "y": 544.1339721679688,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Scn01-B11-Task-16",
+      "label": "Task 16 - Repair and Configure Ship for Jump",
+      "x": 868.9775390625,
+      "y": 386.96612548828125,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Description": "This Large Grid Ship is abandoned and contains a Jump Drive to use to travel to Base 12."
+      }
+    },
+    {
+      "id": "Scn01-B12-Task-17",
+      "label": "Task 17 - Jump Drive to Hidden Base",
+      "x": 816.0982055664062,
+      "y": 299.7758483886719,
+      "color": "#00b4f0",
+      "r": 20,
+      "props": {
+        "Description": "When the player uses the \"Mayday\" ship to Jump to the hidden base, then they must travel within 1Km to complete the task.",
+        "Game Achievement": "Complete all tasks in this starting area."
+      }
+    },
+    {
+      "id": "Scn01-B13-Task-18",
+      "label": "Task 18 - Destroy Pirate Base",
+      "x": 874.1570434570312,
+      "y": 255.54954528808594,
+      "color": "#2da44e",
+      "r": 20,
+      "props": {
+        "Description": "The Pirate is a multi-compound, multi-defenses location. Players must fight through the defenses in order to remove the Pirate threat.",
+        "Game Achievement": "Destroy the base without entering the Planet's Gravity"
+      }
+    },
+    {
+      "id": "Scn01-Cluster-05",
+      "label": "JUMP to EARTH",
+      "x": 607.58203125,
+      "y": 222.1926727294922,
+      "color": "#2da44e",
+      "r": 26,
+      "props": {
+        "Description": "Upon beating the 'main area' (Achievement is 'Engineering Degree'), the player can opt-in and continue on to Earth."
+      }
+    },
+    {
+      "id": "Scn01-B14-Task-19",
+      "label": "Task 19 - Destroy Pirate Capital Ship",
+      "x": 935.3440551757812,
+      "y": 163.6040496826172,
+      "color": "#2da44e",
+      "r": 20,
+      "props": {}
+    },
+    {
+      "id": "Scn01-Achv-01",
+      "label": "Achievement 1",
+      "x": 390.58465576171875,
+      "y": 172.05392456054688,
+      "color": "#e34c26",
+      "r": 20,
+      "props": {
+        "Name": "Engineering Degree",
+        "Description": "Finish all tasks of the Learning to Survive Scenario. The tasks are marked with beacons."
+      }
+    },
+    {
+      "id": "Scn01-Achv-02",
+      "label": "Achievement 2",
+      "x": 432.1054382324219,
+      "y": 215.56166076660156,
+      "color": "#e34c26",
+      "r": 20,
+      "props": {
+        "Name": "Promoted Engineer",
+        "Description": "Complete the final objective of the Learning to Survive Scenario (Defeat the Pirate Capital Ship). "
+      }
+    },
+    {
+      "id": "Scn01-Achv-03",
+      "label": "Achievement 3",
+      "x": 432.0852355957031,
+      "y": 281.2014465332031,
+      "color": "#e34c26",
+      "r": 20,
+      "props": {
+        "Name": "Planetesphobia",
+        "Description": "Disable the Pirate's Planet-based base without entering the atmosphere."
+      }
+    },
+    {
+      "id": "Scn01-Achv-04",
+      "label": "Achievement 4",
+      "x": 375.2552185058594,
+      "y": 317.376953125,
+      "color": "#e34c26",
+      "r": 20,
+      "props": {
+        "Name": "It Takes But One",
+        "Description": "Complete all scenario objectives without dying."
+      }
     }
   ],
   "edges": [
@@ -1288,8 +1399,8 @@
     },
     {
       "id": "Scn01-Cluster-01-to-Scenario-01-LTS",
-      "source": "Scn01-Cluster-01",
-      "target": "Scenario-01-LTS",
+      "source": "Scenario-01-LTS",
+      "target": "Scn01-Cluster-01",
       "label": "",
       "directed": true,
       "style": "straight",
@@ -1429,18 +1540,8 @@
     },
     {
       "id": "Scn01-Cluster-Nil-to-Scenario-01-LTS",
-      "source": "Scn01-Cluster-Nil",
+      "source": "Scn01-Achievements",
       "target": "Scenario-01-LTS",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Nil-01-to-Scn01-Cluster-Nil",
-      "source": "Scn01-Nil-01",
-      "target": "Scn01-Cluster-Nil",
       "label": "",
       "directed": true,
       "style": "straight",
@@ -1479,8 +1580,8 @@
     },
     {
       "id": "Scn01-Base-08-to-Scn01-Cluster-03",
-      "source": "Scn01-Base-08",
-      "target": "Scn01-Cluster-03",
+      "source": "Scn01-Cluster-03",
+      "target": "Scn01-Base-08",
       "label": "",
       "directed": true,
       "style": "straight",
@@ -1508,63 +1609,13 @@
       "arrowSize": "medium"
     },
     {
-      "id": "Scn01-Nil-03-to-Scn01-Cluster-Nil",
-      "source": "Scn01-Nil-03",
-      "target": "Scn01-Cluster-Nil",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Nil-05-to-Scn01-Cluster-Nil",
-      "source": "Scn01-Nil-05",
-      "target": "Scn01-Cluster-Nil",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Base-12-to-Scn01-Cluster-04",
-      "source": "Scn01-Base-12",
-      "target": "Scn01-Cluster-04",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Nil-04-to-Scn01-Cluster-Nil",
-      "source": "Scn01-Nil-04",
-      "target": "Scn01-Cluster-Nil",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
-      "id": "Scn01-Nil-02-to-Scn01-Cluster-Nil",
-      "source": "Scn01-Nil-02",
-      "target": "Scn01-Cluster-Nil",
-      "label": "",
-      "directed": true,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
-    },
-    {
       "id": "Scn01-Base-13-to-Scn01-Base-12",
-      "source": "Scn01-Base-13",
-      "target": "Scn01-Base-12",
+      "source": "Scn01-Base-12",
+      "target": "Scn01-Cluster-05",
       "label": "",
       "directed": true,
-      "style": "straight",
-      "dash": "solid",
+      "style": "curved",
+      "dash": "dashed",
       "arrowSize": "medium"
     },
     {
@@ -2420,17 +2471,178 @@
       "dash": "solid",
       "arrowSize": "medium",
       "color": "#55ff55"
+    },
+    {
+      "id": "e10212",
+      "source": "Scn01-Base-08",
+      "target": "Scn01-B8-Task-12",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10214",
+      "source": "Scn01-B9-Task-13",
+      "target": "Scn01-Base-09",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10217",
+      "source": "Scn01-Base-10-Point-01",
+      "target": "Scn01-Base-10",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10218",
+      "source": "Scn01-Base-10-Point-02",
+      "target": "Scn01-Base-10-Point-01",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10221",
+      "source": "Scn01-B10-Task-14",
+      "target": "Scn01-Base-10-Point-02",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10223",
+      "source": "Scn01-B10-Task-15",
+      "target": "Scn01-Base-10-Point-02",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10225",
+      "source": "Scn01-B11-Task-16",
+      "target": "Scn01-Base-11",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10228",
+      "source": "Scn01-B12-Task-17",
+      "target": "Scn01-Base-12",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10230",
+      "source": "Scn01-B13-Task-18",
+      "target": "Scn01-Base-13",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10232",
+      "source": "Scn01-Cluster-04",
+      "target": "Scn01-Base-12",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "Scn01-Cluster-04-to-Scn01-Cluster-05",
+      "source": "Scn01-Cluster-05",
+      "target": "Scn01-Base-13",
+      "label": "",
+      "directed": true,
+      "style": "curved",
+      "dash": "dashed",
+      "arrowSize": "medium",
+      "color": "inherit"
+    },
+    {
+      "id": "e10235",
+      "source": "Scn01-B14-Task-19",
+      "target": "Scn01-Base-14",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10239",
+      "source": "Scn01-Achv-01",
+      "target": "Scn01-Achievements",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10240",
+      "source": "Scn01-Achv-02",
+      "target": "Scn01-Achievements",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10241",
+      "source": "Scn01-Achv-03",
+      "target": "Scn01-Achievements",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
+    },
+    {
+      "id": "e10243",
+      "source": "Scn01-Achv-04",
+      "target": "Scn01-Achievements",
+      "label": "",
+      "directed": true,
+      "style": "straight",
+      "dash": "solid",
+      "arrowSize": "medium"
     }
   ],
-  "idCounter": 10211,
+  "idCounter": 10244,
   "graphId": "graph1",
   "graphMeta": {
     "edgedefault": "undirected"
   },
   "view": {
-    "x": 802.7313604450061,
-    "y": -216.05799856046622,
-    "k": 1.599835591557139
+    "x": 211.16914122172625,
+    "y": -77.62527893972873,
+    "k": 1.3970869871870706
   },
   "clampNodeLabels": false
 }

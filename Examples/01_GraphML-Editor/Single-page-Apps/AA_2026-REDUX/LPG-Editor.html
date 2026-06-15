@@ -526,12 +526,14 @@ body[data-paint="active"] .edge-group{cursor:copy}
 
       <h3>Selection</h3>
       <div class="readme-grid">
+        <div class="readme-kv"><span class="readme-key">Drag</span><span class="readme-val">Rubber-band: nodes + edges</span></div>
+        <div class="readme-kv"><span class="readme-key">Ctrl+drag</span><span class="readme-val">Rubber-band: nodes only</span></div>
+        <div class="readme-kv"><span class="readme-key">Alt+drag</span><span class="readme-val">Rubber-band: edges only</span></div>
+        <div class="readme-kv"><span class="readme-key">Shift+drag</span><span class="readme-val">Add to current selection</span></div>
         <div class="readme-kv"><span class="readme-key">A</span><span class="readme-val">Select all nodes + edges</span></div>
         <div class="readme-kv"><span class="readme-key">Ctrl+S</span><span class="readme-val">Save to localStorage</span></div>
-        <div class="readme-kv"><span class="readme-key">Drag canvas</span><span class="readme-val">Rubber-band: nodes + edges</span></div>
-        <div class="readme-kv"><span class="readme-key">Alt+drag</span><span class="readme-val">Rubber-band: edges only</span></div>
-        <div class="readme-kv"><span class="readme-key">Shift+click/drag</span><span class="readme-val">Add to current selection</span></div>
-        <div class="readme-kv"><span class="readme-key">Click edge</span><span class="readme-val">Select + inspect edge</span></div>
+        <div class="readme-kv"><span class="readme-key">Ctrl+click node/edge</span><span class="readme-val">Capture format for painter</span></div>
+        <div class="readme-kv"><span class="readme-key">Click edge</span><span class="readme-val">Select + open edge inspector</span></div>
       </div>
 
       <h3>Format Painter</h3>
@@ -1080,7 +1082,7 @@ $('svg-canvas').addEventListener('pointerdown', e=>{
   const targetGroup = e.target.closest('.node-group, .edge-group');
   if(targetGroup) return;
 
-  if(e.shiftKey || State.tool==='pan'){
+  if(State.tool==='pan'){
     _panStart = {px:e.clientX, py:e.clientY, vx:State.view.x, vy:State.view.y};
     document.body.classList.add('panning');
     $('svg-canvas').setPointerCapture(e.pointerId);
@@ -1088,9 +1090,11 @@ $('svg-canvas').addEventListener('pointerdown', e=>{
   }
   if(State.tool==='select'){
     const pt = svgPoint(e);
-    // Alt+drag = edges only; default = nodes+edges; shift = additive
+    // Ctrl+drag = nodes only; Alt+drag = edges only; default = both; Shift = additive
     State.selRect = {x0:pt.x, y0:pt.y, x1:pt.x, y1:pt.y,
-      edgesOnly: e.altKey, additive: e.shiftKey};
+      nodesOnly: e.ctrlKey && !e.altKey,
+      edgesOnly: e.altKey && !e.ctrlKey,
+      additive: e.shiftKey};
     if(!e.shiftKey) State.selected.clear();
     $('svg-canvas').setPointerCapture(e.pointerId);
     renderAll();
@@ -1206,17 +1210,25 @@ function updateSelRect(){
   sr.setAttribute('x',x); sr.setAttribute('y',y);
   sr.setAttribute('width',w); sr.setAttribute('height',h);
   sr.setAttribute('display','block');
+  // Visual tint by mode
+  if(State.selRect.nodesOnly){
+    sr.style.stroke='var(--green)'; sr.style.fill='rgba(63,185,80,.08)';
+  } else if(State.selRect.edgesOnly){
+    sr.style.stroke='var(--orange)'; sr.style.fill='rgba(210,153,34,.08)';
+  } else {
+    sr.style.stroke=''; sr.style.fill='';
+  }
 
   const xMin = x, xMax = x+w, yMin = y, yMax = y+h;
   const edgesOnly = State.selRect.edgesOnly;
-  // Show nodes preview (dim if edges-only mode)
+  const nodesOnly = State.selRect.nodesOnly;
   for(const n of State.nodes){
     const inside = !edgesOnly && n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax;
     const g = $('nodes-layer').querySelector(`[data-id="${n.id}"]`);
     if(g) g.classList.toggle('selected', inside || State.selected.has(n.id));
   }
-  // Always check edges midpoint
   for(const e of State.edges){
+    if(nodesOnly){ const g2=$('edges-layer').querySelector(`[data-id="${e.id}"]`); if(g2) g2.classList.toggle('selected', State.selected.has(e.id)); continue; }
     const src = State.nodes.find(n=>n.id===e.source);
     const tgt = State.nodes.find(n=>n.id===e.target);
     if(!src||!tgt) continue;
@@ -1234,19 +1246,22 @@ function finalizeSelRect(){
   const yMin = Math.min(State.selRect.y0, State.selRect.y1);
   const yMax = Math.max(State.selRect.y0, State.selRect.y1);
   const edgesOnly = State.selRect.edgesOnly;
+  const nodesOnly = State.selRect.nodesOnly;
   if(!edgesOnly){
     for(const n of State.nodes){
       if(n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax)
         State.selected.add(n.id);
     }
   }
-  for(const e of State.edges){
-    const src = State.nodes.find(n=>n.id===e.source);
-    const tgt = State.nodes.find(n=>n.id===e.target);
-    if(!src||!tgt) continue;
-    const mx = (src.x+tgt.x)/2, my = (src.y+tgt.y)/2;
-    if(mx >= xMin && mx <= xMax && my >= yMin && my <= yMax)
-      State.selected.add(e.id);
+  if(!nodesOnly){
+    for(const e of State.edges){
+      const src = State.nodes.find(n=>n.id===e.source);
+      const tgt = State.nodes.find(n=>n.id===e.target);
+      if(!src||!tgt) continue;
+      const mx = (src.x+tgt.x)/2, my = (src.y+tgt.y)/2;
+      if(mx >= xMin && mx <= xMax && my >= yMin && my <= yMax)
+        State.selected.add(e.id);
+    }
   }
 }
 
