@@ -536,56 +536,66 @@ body[data-paint="active"] .edge-group{cursor:copy}
       <p>LPG Editor lets you visually build and explore <strong>Labeled Property Graphs</strong> — nodes and edges, each with arbitrary key/value properties, labels, and styling. Everything is stored in your browser's localStorage and can be exported as JSON, GraphML, SVG, or PNG.</p>
       <p>⚠️ <strong>No data is sent anywhere.</strong> Your graph lives only in this tab. Export regularly to avoid losing work on refresh or browser clear.</p>
 
-      <h3>Tools</h3>
+      <h3>Tools &amp; Shortcuts</h3>
       <div class="readme-grid">
-        <div class="readme-kv"><span class="readme-key">S</span><span class="readme-val">Select / drag nodes</span></div>
-        <div class="readme-kv"><span class="readme-key">N</span><span class="readme-val">Add Node (click canvas)</span></div>
-        <div class="readme-kv"><span class="readme-key">E</span><span class="readme-val">Add Edge (drag node→node)</span></div>
-        <div class="readme-kv"><span class="readme-key">P</span><span class="readme-val">Pan the canvas</span></div>
+        <div class="readme-kv"><span class="readme-key">S</span><span class="readme-val">Select tool</span></div>
+        <div class="readme-kv"><span class="readme-key">N</span><span class="readme-val">Node tool — click canvas to add</span></div>
+        <div class="readme-kv"><span class="readme-key">E</span><span class="readme-val">Edge tool — drag node → node</span></div>
+        <div class="readme-kv"><span class="readme-key">P</span><span class="readme-val">Pan tool</span></div>
         <div class="readme-kv"><span class="readme-key">F</span><span class="readme-val">Fit graph to view</span></div>
-        <div class="readme-kv"><span class="readme-key">Del</span><span class="readme-val">Delete selected</span></div>
-        <div class="readme-kv"><span class="readme-key">Ctrl+Z</span><span class="readme-val">Undo</span></div>
-        <div class="readme-kv"><span class="readme-key">Ctrl+Y</span><span class="readme-val">Redo</span></div>
-        <div class="readme-kv"><span class="readme-key">Esc</span><span class="readme-val">Deselect / cancel paint</span></div>
-        <div class="readme-kv"><span class="readme-key">Middle drag</span><span class="readme-val">Pan (any tool)</span></div>
-        <div class="readme-kv"><span class="readme-key">Scroll</span><span class="readme-val">Zoom in / out</span></div>
-        <div class="readme-kv"><span class="readme-key">Dbl-click node</span><span class="readme-val">Rename inline</span></div>
+        <div class="readme-kv"><span class="readme-key">A</span><span class="readme-val">Select all nodes + edges</span></div>
+        <div class="readme-kv"><span class="readme-key">Del / Backspace</span><span class="readme-val">Delete selected</span></div>
+        <div class="readme-kv"><span class="readme-key">Ctrl+Z / Ctrl+Y</span><span class="readme-val">Undo / Redo</span></div>
+        <div class="readme-kv"><span class="readme-key">Ctrl+S</span><span class="readme-val">Save to localStorage</span></div>
+        <div class="readme-kv"><span class="readme-key">Alt+P</span><span class="readme-val">Toggle format painter</span></div>
+        <div class="readme-kv"><span class="readme-key">Esc</span><span class="readme-val">Deselect / cancel / exit paint</span></div>
+        <div class="readme-kv"><span class="readme-key">Scroll wheel</span><span class="readme-val">Zoom in / out</span></div>
+        <div class="readme-kv"><span class="readme-key">Middle-click drag</span><span class="readme-val">Pan (any tool)</span></div>
       </div>
 
-      <h3>Selection</h3>
+      <h3>Mouse Interactions</h3>
       <div class="readme-grid">
-        <div class="readme-kv"><span class="readme-key">Drag</span><span class="readme-val">Rubber-band: nodes + edges</span></div>
-        <div class="readme-kv"><span class="readme-key">Ctrl+drag</span><span class="readme-val">Rubber-band: nodes only</span></div>
-        <div class="readme-kv"><span class="readme-key">Alt+drag</span><span class="readme-val">Rubber-band: edges only</span></div>
-        <div class="readme-kv"><span class="readme-key">Shift+drag</span><span class="readme-val">Add to current selection</span></div>
-        <div class="readme-kv"><span class="readme-key">A</span><span class="readme-val">Select all nodes + edges</span></div>
-        <div class="readme-kv"><span class="readme-key">Ctrl+S</span><span class="readme-val">Save to localStorage</span></div>
+        <div class="readme-kv"><span class="readme-key">Click node/edge</span><span class="readme-val">Select + open inspector</span></div>
+        <div class="readme-kv"><span class="readme-key">Shift+click</span><span class="readme-val">Add to selection</span></div>
+        <div class="readme-kv"><span class="readme-key">Dbl-click node label</span><span class="readme-val">Inline rename</span></div>
+        <div class="readme-kv"><span class="readme-key">Dbl-click node (body)</span><span class="readme-val">Open property editor modal</span></div>
+        <div class="readme-kv"><span class="readme-key">Dbl-click edge</span><span class="readme-val">Open property editor modal</span></div>
         <div class="readme-kv"><span class="readme-key">Ctrl+click node/edge</span><span class="readme-val">Capture format for painter</span></div>
-        <div class="readme-kv"><span class="readme-key">Click edge</span><span class="readme-val">Select + open edge inspector</span></div>
+      </div>
+
+      <h3>Rubber-band Selection (drag on canvas)</h3>
+      <div class="readme-grid">
+        <div class="readme-kv"><span class="readme-key">Drag</span><span class="readme-val">Select nodes + edges (blue)</span></div>
+        <div class="readme-kv"><span class="readme-key">Ctrl+drag</span><span class="readme-val">Nodes only (green tint)</span></div>
+        <div class="readme-kv"><span class="readme-key">Alt+drag</span><span class="readme-val">Edges only (orange tint)</span></div>
+        <div class="readme-kv"><span class="readme-key">Shift+drag</span><span class="readme-val">Add to existing selection</span></div>
       </div>
 
       <h3>Format Painter</h3>
       <div class="readme-grid">
-        <div class="readme-kv"><span class="readme-key">Ctrl+click</span><span class="readme-val">Capture format from node/edge</span></div>
-        <div class="readme-kv"><span class="readme-key">Alt+P</span><span class="readme-val">Toggle paint tool on/off</span></div>
-        <div class="readme-kv"><span class="readme-key">Paint btn</span><span class="readme-val">Activate from toolbar</span></div>
-        <div class="readme-kv"><span class="readme-key">Multi-select</span><span class="readme-val">🖌 Paint Format from First</span></div>
+        <div class="readme-kv"><span class="readme-key">Ctrl+click</span><span class="readme-val">Capture style from node/edge</span></div>
+        <div class="readme-kv"><span class="readme-key">then click targets</span><span class="readme-val">Paste style onto each target</span></div>
+        <div class="readme-kv"><span class="readme-key">Alt+P or Paint btn</span><span class="readme-val">Activate / deactivate painter</span></div>
+        <div class="readme-kv"><span class="readme-key">Multi-select → 🖌</span><span class="readme-val">Paint format from first to rest</span></div>
       </div>
+
+      <h3>Property Editor</h3>
+      <p>Every node and edge can hold unlimited custom key/value properties. Access them three ways: (1) the <strong>Custom Properties</strong> section in the inspector panel, (2) the <strong>⤢ expand</strong> button to open the full-screen modal editor with resizable text areas for long values, or (3) <strong>double-click</strong> any node body or edge to jump straight to the modal.</p>
 
       <h3>Features</h3>
       <div class="readme-feature-grid">
-        <div class="readme-feature"><strong>Node Properties</strong><span>Click any node → inspector panel. Edit label, ID, color, radius, font size, and add arbitrary key/value properties.</span></div>
-        <div class="readme-feature"><strong>Edge Properties</strong><span>Click any edge → set label, color, style (straight/curved/orthogonal), dash pattern, arrow size, and directed/undirected.</span></div>
-        <div class="readme-feature"><strong>Auto Layout</strong><span>Force-directed layout spreads nodes automatically. Positions are saved; manual moves persist on refresh.</span></div>
-        <div class="readme-feature"><strong>GraphML Export</strong><span>Standard XML format readable by Gephi, yEd, Neo4j, and other graph tools.</span></div>
-        <div class="readme-feature"><strong>SVG / PNG Export</strong><span>Export the current canvas as a vector SVG or raster PNG, with the active theme applied.</span></div>
-        <div class="readme-feature"><strong>Import JSON / GraphML</strong><span>Paste or upload a JSON layout or GraphML file via Settings → Import.</span></div>
-        <div class="readme-feature"><strong>Label Clamp</strong><span>Toggle label truncation (…) per-graph in Settings. Off by default so labels overflow naturally.</span></div>
-        <div class="readme-feature"><strong>Light / Dark Mode</strong><span>Toggle in Settings. Theme preference is saved across sessions.</span></div>
+        <div class="readme-feature"><strong>Node Inspector</strong><span>Click any node: edit label, ID, color, radius, label font size, and custom properties.</span></div>
+        <div class="readme-feature"><strong>Edge Inspector</strong><span>Click any edge: edit label, source/target (with autocomplete), direction, style, dash, color, and custom properties.</span></div>
+        <div class="readme-feature"><strong>Merge Graphs</strong><span>➕ OBJs in toolbar: paste a second JSON graph and resolve ID conflicts with keep/replace per object.</span></div>
+        <div class="readme-feature"><strong>Auto Layout</strong><span>Force-directed layout. Positions are saved and survive refresh.</span></div>
+        <div class="readme-feature"><strong>SVG / PNG Export</strong><span>Export the canvas as vector SVG or raster PNG with the active theme.</span></div>
+        <div class="readme-feature"><strong>GraphML Export</strong><span>Standard XML readable by Gephi, yEd, Neo4j, and other tools.</span></div>
+        <div class="readme-feature"><strong>Collapsible Panels</strong><span>Inspector (◀ button), object table, and GraphML drawer can all be hidden to maximize canvas space.</span></div>
+        <div class="readme-feature"><strong>Hover Tooltip</strong><span>Hover any node to see its label and all custom properties in a floating card.</span></div>
       </div>
 
       <h3>Data &amp; Persistence</h3>
-      <p>Graph state (nodes, edges, positions, colors, view) is auto-saved to <code style="font-family:var(--font-mono);font-size:.86em;background:var(--bg2);padding:1px 5px;border-radius:3px">localStorage</code> on every meaningful action. This survives page reload <em>within the same browser</em>, but is wiped if you clear browser storage. <strong>Use Export JSON for a permanent backup.</strong></p>
+      <p>Graph state (nodes, edges, positions, colors, view zoom) auto-saves to <code style="font-family:var(--font-mono);font-size:.86em;background:var(--bg2);padding:1px 5px;border-radius:3px">localStorage</code> on every meaningful action. This survives page reload <em>within the same browser</em>, but is wiped if you clear browser storage. A reminder banner appears after 90 seconds of unexported changes. <strong>Use Export JSON for a permanent backup.</strong></p>
     </div>
     <div id="readme-footer">
       <p>Click <strong>⬡ LPG</strong> anytime to reopen this guide.</p>
