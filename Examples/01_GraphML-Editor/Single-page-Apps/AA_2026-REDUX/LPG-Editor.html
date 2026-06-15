@@ -344,11 +344,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 1.75a.25.25 0 01.25-.25h2.5a.25.25 0 01.25.25V3h-3V1.75zm4.5 0V3h2.25a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75zM4.496 6.675a.75.75 0 10-1.492.15l.66 6.6A1.75 1.75 0 005.405 15h5.19c.9 0 1.652-.681 1.741-1.576l.66-6.6a.75.75 0 00-1.492-.149l-.66 6.6a.25.25 0 01-.249.225h-5.19a.25.25 0 01-.249-.225l-.66-6.6z"/></svg>
       Delete
     </button>
-    <div class="tb-sep"></div>
-    <span class="tb-label">Sel:</span>
-    <button class="tb-btn sel-mode-btn active" id="selmode-nodes" onclick="App.setSelMode('nodes')" title="Select Nodes only (S key)">N</button>
-    <button class="tb-btn sel-mode-btn" id="selmode-edges" onclick="App.setSelMode('edges')" title="Select Edges only (D key)">E</button>
-    <button class="tb-btn sel-mode-btn" id="selmode-all" onclick="App.setSelMode('all')" title="Select All (A key)">All</button>
+
     <div class="tb-sep"></div>
     <button class="tb-btn" id="tool-paint" onclick="App.togglePaintTool()" title="Format Painter - copy style from selected node/edge (Alt+P)">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.354.646a1.207 1.207 0 0 0-1.708 0L8.5 3.793l-.646-.647a.5.5 0 1 0-.708.708L8.293 5l-7.647 7.646a.5.5 0 0 0-.146.354v3h3a.5.5 0 0 0 .354-.146L11.5 8.707l1.146 1.147a.5.5 0 0 0 .708-.708l-.647-.646 3.147-3.146a1.207 1.207 0 0 0 0-1.708l-2-2zM1.5 15h-1v-1l7.646-7.646.961.961L1.5 15zm8-8.5L8.293 5.293l4.5-4.5 1.414 1.414-4.5 4.5-.207-.207z"/></svg>
@@ -528,14 +524,14 @@ body[data-paint="active"] .edge-group{cursor:copy}
         <div class="readme-kv"><span class="readme-key">Dbl-click node</span><span class="readme-val">Rename inline</span></div>
       </div>
 
-      <h3>Selection Modes</h3>
+      <h3>Selection</h3>
       <div class="readme-grid">
-        <div class="readme-kv"><span class="readme-key">S (shift)</span><span class="readme-val">Node-only selection</span></div>
-        <div class="readme-kv"><span class="readme-key">D</span><span class="readme-val">Edge-only selection</span></div>
-        <div class="readme-kv"><span class="readme-key">A</span><span class="readme-val">Select All (nodes + edges)</span></div>
-        <div class="readme-kv"><span class="readme-key">Ctrl+S</span><span class="readme-val">Cycle through modes</span></div>
-        <div class="readme-kv"><span class="readme-key">Shift+drag</span><span class="readme-val">Add to current selection</span></div>
-        <div class="readme-kv"><span class="readme-key">Rubber-band</span><span class="readme-val">Drag canvas to select area</span></div>
+        <div class="readme-kv"><span class="readme-key">A</span><span class="readme-val">Select all nodes + edges</span></div>
+        <div class="readme-kv"><span class="readme-key">Ctrl+S</span><span class="readme-val">Save to localStorage</span></div>
+        <div class="readme-kv"><span class="readme-key">Drag canvas</span><span class="readme-val">Rubber-band: nodes + edges</span></div>
+        <div class="readme-kv"><span class="readme-key">Alt+drag</span><span class="readme-val">Rubber-band: edges only</span></div>
+        <div class="readme-kv"><span class="readme-key">Shift+click/drag</span><span class="readme-val">Add to current selection</span></div>
+        <div class="readme-kv"><span class="readme-key">Click edge</span><span class="readme-val">Select + inspect edge</span></div>
       </div>
 
       <h3>Format Painter</h3>
@@ -1092,7 +1088,9 @@ $('svg-canvas').addEventListener('pointerdown', e=>{
   }
   if(State.tool==='select'){
     const pt = svgPoint(e);
-    State.selRect = {x0:pt.x, y0:pt.y, x1:pt.x, y1:pt.y};
+    // Alt+drag = edges only; default = nodes+edges; shift = additive
+    State.selRect = {x0:pt.x, y0:pt.y, x1:pt.x, y1:pt.y,
+      edgesOnly: e.altKey, additive: e.shiftKey};
     if(!e.shiftKey) State.selected.clear();
     $('svg-canvas').setPointerCapture(e.pointerId);
     renderAll();
@@ -1210,23 +1208,22 @@ function updateSelRect(){
   sr.setAttribute('display','block');
 
   const xMin = x, xMax = x+w, yMin = y, yMax = y+h;
-  if(State.selMode !== 'edges'){
-    for(const n of State.nodes){
-      const inside = n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax;
-      const g = $('nodes-layer').querySelector(`[data-id="${n.id}"]`);
-      if(g) g.classList.toggle('selected', inside || State.selected.has(n.id));
-    }
+  const edgesOnly = State.selRect.edgesOnly;
+  // Show nodes preview (dim if edges-only mode)
+  for(const n of State.nodes){
+    const inside = !edgesOnly && n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax;
+    const g = $('nodes-layer').querySelector(`[data-id="${n.id}"]`);
+    if(g) g.classList.toggle('selected', inside || State.selected.has(n.id));
   }
-  if(State.selMode !== 'nodes'){
-    for(const e of State.edges){
-      const src = State.nodes.find(n=>n.id===e.source);
-      const tgt = State.nodes.find(n=>n.id===e.target);
-      if(!src||!tgt) continue;
-      const mx = (src.x+tgt.x)/2, my = (src.y+tgt.y)/2;
-      const inside = mx >= xMin && mx <= xMax && my >= yMin && my <= yMax;
-      const g = $('edges-layer').querySelector(`[data-id="${e.id}"]`);
-      if(g) g.classList.toggle('selected', inside || State.selected.has(e.id));
-    }
+  // Always check edges midpoint
+  for(const e of State.edges){
+    const src = State.nodes.find(n=>n.id===e.source);
+    const tgt = State.nodes.find(n=>n.id===e.target);
+    if(!src||!tgt) continue;
+    const mx = (src.x+tgt.x)/2, my = (src.y+tgt.y)/2;
+    const inside = mx >= xMin && mx <= xMax && my >= yMin && my <= yMax;
+    const g = $('edges-layer').querySelector(`[data-id="${e.id}"]`);
+    if(g) g.classList.toggle('selected', inside || State.selected.has(e.id));
   }
 }
 
@@ -1236,38 +1233,35 @@ function finalizeSelRect(){
   const xMax = Math.max(State.selRect.x0, State.selRect.x1);
   const yMin = Math.min(State.selRect.y0, State.selRect.y1);
   const yMax = Math.max(State.selRect.y0, State.selRect.y1);
-  if(State.selMode !== 'edges'){
+  const edgesOnly = State.selRect.edgesOnly;
+  if(!edgesOnly){
     for(const n of State.nodes){
-      if(n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax){
+      if(n.x >= xMin && n.x <= xMax && n.y >= yMin && n.y <= yMax)
         State.selected.add(n.id);
-      }
     }
   }
-  if(State.selMode !== 'nodes'){
-    for(const e of State.edges){
-      const src = State.nodes.find(n=>n.id===e.source);
-      const tgt = State.nodes.find(n=>n.id===e.target);
-      if(!src||!tgt) continue;
-      const mx = (src.x+tgt.x)/2, my = (src.y+tgt.y)/2;
-      if(mx >= xMin && mx <= xMax && my >= yMin && my <= yMax){
-        State.selected.add(e.id);
-      }
-    }
+  for(const e of State.edges){
+    const src = State.nodes.find(n=>n.id===e.source);
+    const tgt = State.nodes.find(n=>n.id===e.target);
+    if(!src||!tgt) continue;
+    const mx = (src.x+tgt.x)/2, my = (src.y+tgt.y)/2;
+    if(mx >= xMin && mx <= xMax && my >= yMin && my <= yMax)
+      State.selected.add(e.id);
   }
 }
 
 function renderEdgeGhost(){
-  let ghost = $('svg-canvas').querySelector('.edge-ghost');
+  let ghost = $('graph-root').querySelector('.edge-ghost');
   if(!ghost){
     ghost = svgEl('line',{class:'edge-ghost'});
-    $('svg-canvas').appendChild(ghost);
+    $('graph-root').appendChild(ghost);
   }
   const g = State.edgeGhost;
   ghost.setAttribute('x1',g.x1); ghost.setAttribute('y1',g.y1);
   ghost.setAttribute('x2',g.x2); ghost.setAttribute('y2',g.y2);
 }
 function removeEdgeGhost(){
-  const ghost = $('svg-canvas').querySelector('.edge-ghost');
+  const ghost = $('graph-root').querySelector('.edge-ghost');
   if(ghost) ghost.remove();
 }
 
@@ -2375,11 +2369,7 @@ document.addEventListener('keydown', e=>{
   if(e.ctrlKey || e.metaKey){
     if(e.key==='z' || e.key==='Z'){ e.preventDefault(); App.undo(); }
     if(e.key==='y' || e.key==='Y'){ e.preventDefault(); App.redo(); }
-    // Ctrl+click-equivalent: cycle selection mode
-    if(e.key==='s' || e.key==='S'){ e.preventDefault();
-      const modes = ['nodes','edges','all']; const i = modes.indexOf(State.selMode);
-      App.setSelMode(modes[(i+1)%modes.length]); return;
-    }
+    if(e.key==='s' || e.key==='S'){ e.preventDefault(); App.saveToStorage(); return; }
     return;
   }
   if(e.altKey){
@@ -2388,13 +2378,15 @@ document.addEventListener('keydown', e=>{
   }
   switch(e.key){
     case 'Delete': case 'Backspace': App.deleteSelected(); break;
-    case 's': App.setTool('select'); break;
-    case 'S': App.setSelMode('nodes'); break;
+    case 's': case 'S': App.setTool('select'); break;
     case 'n': case 'N': App.setTool('node'); break;
-    case 'e': App.setTool('edge'); break;
-    case 'E': App.setSelMode('edges'); break;  // E = toggle edge select mode (D was taken by edge tool historically but not here)
-    case 'd': case 'D': App.setSelMode('edges'); break;
-    case 'a': case 'A': App.setSelMode('all'); break;
+    case 'e': case 'E': App.setTool('edge'); break;
+    case 'a': case 'A':
+      // Select all nodes and edges
+      State.selected.clear();
+      State.nodes.forEach(n=>State.selected.add(n.id));
+      State.edges.forEach(e=>State.selected.add(e.id));
+      renderAll(); renderInspector(); break;
     case 'p': case 'P': App.setTool('pan'); break;
     case 'f': case 'F': App.fitView(); break;
     case 'Escape':
@@ -2444,7 +2436,6 @@ document.addEventListener('webkitfullscreenchange', syncFsIcon);
   }
 
   App.setTool('select');
-  App.setSelMode('nodes');
   loadFromStorage();
   if(State.nodes.length===0){
     State.nodes=[
