@@ -313,8 +313,6 @@ body[data-paint="active"] .edge-group{cursor:copy}
 .insp-section-label-row .insp-section-label{margin-bottom:0}
 .insp-section-label-row .expand-btn{background:none;border:1px solid var(--border);color:var(--text3);cursor:pointer;font-size:.72em;font-family:var(--font-mono);padding:1px 7px;border-radius:3px;line-height:1.6}
 .insp-section-label-row .expand-btn:hover{color:var(--accent);border-color:var(--accent)}
-.prop-expand{background:none;border:none;color:var(--text3);cursor:pointer;font-size:.86em;padding:2px 3px;opacity:.6;flex-shrink:0;line-height:1}
-.prop-expand:hover{color:var(--accent);opacity:1}
 </style>
 </head>
 <body data-tool="select">
@@ -1465,9 +1463,8 @@ function renderInspector(){
         <div class="prop-list">
           ${Object.entries(node.props||{}).map(([k,v])=>`
             <div class="prop-item">
-              <input value="${escHtml(k)}" onchange="App.renamePropKey('node','${node.id}','${k}',this.value)" style="width:36%">
-              <input value="${escHtml(v)}" oninput="App.setLivePropKV('node','${node.id}','${k}',this.value)" style="width:44%">
-              <button class="prop-expand" onclick="App.openPropModal('node','${node.id}','${k}')" title="Edit in full editor">&#x2922;</button>
+              <input value="${escHtml(k)}" onchange="App.renamePropKey('node','${node.id}','${k}',this.value)" style="width:40%">
+              <input value="${escHtml(v)}" oninput="App.setLivePropKV('node','${node.id}','${k}',this.value)" style="width:55%">
               <button class="prop-rm" onclick="App.removeProp('node','${node.id}','${k}')">&#x2715;</button>
             </div>`).join('')}
         </div>
@@ -1537,9 +1534,8 @@ function renderInspector(){
         <div class="prop-list">
           ${Object.entries(edge.props||{}).map(([k,v])=>`
             <div class="prop-item">
-              <input value="${escHtml(k)}" onchange="App.renamePropKey('edge','${edge.id}','${k}',this.value)" style="width:36%">
-              <input value="${escHtml(v)}" oninput="App.setLivePropKV('edge','${edge.id}','${k}',this.value)" style="width:44%">
-              <button class="prop-expand" onclick="App.openPropModal('edge','${edge.id}','${k}')" title="Edit in full editor">&#x2922;</button>
+              <input value="${escHtml(k)}" onchange="App.renamePropKey('edge','${edge.id}','${k}',this.value)" style="width:40%">
+              <input value="${escHtml(v)}" oninput="App.setLivePropKV('edge','${edge.id}','${k}',this.value)" style="width:55%">
               <button class="prop-rm" onclick="App.removeProp('edge','${edge.id}','${k}')">&#x2715;</button>
             </div>`).join('')}
         </div>
