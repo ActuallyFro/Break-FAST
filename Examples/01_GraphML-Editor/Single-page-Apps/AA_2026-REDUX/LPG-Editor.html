@@ -555,9 +555,9 @@ body[data-paint="active"] .edge-group{cursor:copy}
       <div class="readme-grid">
         <div class="readme-kv"><span class="readme-key">Click node/edge</span><span class="readme-val">Select + open inspector</span></div>
         <div class="readme-kv"><span class="readme-key">Shift+click</span><span class="readme-val">Add to selection</span></div>
-        <div class="readme-kv"><span class="readme-key">Dbl-click node label</span><span class="readme-val">Inline rename</span></div>
-        <div class="readme-kv"><span class="readme-key">Dbl-click node (body)</span><span class="readme-val">Open property editor modal</span></div>
-        <div class="readme-kv"><span class="readme-key">Dbl-click edge</span><span class="readme-val">Open property editor modal</span></div>
+        <div class="readme-kv"><span class="readme-key">Dbl-click node/edge</span><span class="readme-val">Open property editor modal</span></div>
+        <div class="readme-kv"><span class="readme-key">Alt+dbl-click node</span><span class="readme-val">Inline label rename</span></div>
+        <div class="readme-kv"><span class="readme-key">Alt+dbl-click edge</span><span class="readme-val">Inline label rename</span></div>
         <div class="readme-kv"><span class="readme-key">Ctrl+click node/edge</span><span class="readme-val">Capture format for painter</span></div>
       </div>
 
@@ -1075,14 +1075,10 @@ function attachNodeEvents(g, id){
   });
   g.addEventListener('dblclick', e=>{
     e.stopPropagation();
-    if(State.tool==='select'){
-      if(e.target.classList.contains('node-label')){
-        startInlineRename(id);
-      } else {
-        App.openPropModal('node', id);
-      }
-    } else {
+    if(e.altKey){
       startInlineRename(id);
+    } else {
+      App.openPropModal('node', id);
     }
   });
 }
@@ -1090,7 +1086,11 @@ function attachNodeEvents(g, id){
 function attachEdgeEvents(g, id){
   g.addEventListener('dblclick', e=>{
     e.stopPropagation();
-    if(State.tool==='select') App.openPropModal('edge', id);
+    if(e.altKey){
+      startInlineEdgeRename(id);
+    } else {
+      App.openPropModal('edge', id);
+    }
   });
   g.addEventListener('pointerdown', e=>{
     e.stopPropagation();
@@ -1372,8 +1372,36 @@ function startInlineRename(id){
   });
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  INSPECTOR PANEL
+function startInlineEdgeRename(id){
+  const e2 = State.edges.find(e=>e.id===id);
+  if(!e2) return;
+  const src = State.nodes.find(n=>n.id===e2.source);
+  const tgt = State.nodes.find(n=>n.id===e2.target);
+  if(!src||!tgt) return;
+  const mx = (src.x+tgt.x)/2, my = (src.y+tgt.y)/2;
+  const g = $('edges-layer').querySelector(`[data-id="${id}"]`);
+  if(!g) return;
+  const fo = svgEl('foreignObject',{x:mx-60, y:my-14, width:120, height:24});
+  const inp = document.createElement('input');
+  inp.value = e2.label||'';
+  inp.placeholder = 'edge label';
+  inp.style.cssText='width:100%;background:#161b22;border:1px solid var(--accent);color:var(--text);border-radius:4px;padding:2px 4px;font-size:11px;text-align:center;outline:none';
+  fo.appendChild(inp);
+  $('graph-root').appendChild(fo);
+  inp.focus(); inp.select();
+  const done = ()=>{
+    snapshot();
+    e2.label = inp.value;
+    fo.remove();
+    renderAll();
+    renderInspector();
+  };
+  inp.addEventListener('blur', done);
+  inp.addEventListener('keydown', ev=>{
+    if(ev.key==='Enter') done();
+    if(ev.key==='Escape') fo.remove();
+  });
+}
 // ═══════════════════════════════════════════════════════════════
 function renderInspector(){
   const body = $('inspector-body');
