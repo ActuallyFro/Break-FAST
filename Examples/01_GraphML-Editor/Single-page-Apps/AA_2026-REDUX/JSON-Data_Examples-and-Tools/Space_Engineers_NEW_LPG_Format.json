@@ -24,7 +24,7 @@
       "label": "Learning To Survive",
       "x": 127.62161327015983,
       "y": 254.0536960681959,
-      "color": "#d29dea",
+      "color": "#ff75f4",
       "r": 45,
       "props": {
         "Info": "https://www.reddit.com/r/spaceengineers/comments/b7dbhr/learning_to_survive_full_guide_spoilers/"
@@ -33,9 +33,9 @@
     {
       "id": "Scn01-Base-01",
       "label": "Base 1",
-      "x": -125.62173122180315,
-      "y": 326.0757108120991,
-      "color": "#55ff55",
+      "x": -128.30039638293596,
+      "y": 339.98986486483346,
+      "color": "#eee5ff",
       "r": 20,
       "props": {
         "GPS": "GPS:Base-01_Start:119.9:-125.14:5.84:#FF85F175:",
@@ -92,7 +92,7 @@
       "label": "Task 5 - Ship",
       "x": -118.64586015728995,
       "y": 404.8748041141466,
-      "color": "#00b4f0",
+      "color": "#f5dbff",
       "r": 20,
       "props": {
         "Description": "Unpark or grind Landing Gear to release ship."
@@ -103,7 +103,7 @@
       "label": "Base 2 - Construction Facility",
       "x": -30.5439023223729,
       "y": 377.79038265053885,
-      "color": "#55ff55",
+      "color": "#deccff",
       "r": 20,
       "props": {
         "GPS": "GPS:Base-02_Ship-Tools:-44.01:-16.92:-354.09:#FFF1C375:",
@@ -115,7 +115,7 @@
       "label": "Task 6 - Ship Tools",
       "x": -72.90410270011046,
       "y": 452.42864959731054,
-      "color": "#00b4f0",
+      "color": "#f5dbff",
       "r": 20,
       "props": {
         "Description": "Grind or Repair doors to leave."
@@ -126,7 +126,7 @@
       "label": "Base 3",
       "x": 33.42988020402341,
       "y": 483.86310010269136,
-      "color": "#55ff55",
+      "color": "#deccff",
       "r": 20,
       "props": {
         "GPS": "GPS:Base-03_Ship-Mining:427.97:-402.79:152.11:#FF75C9F1:",
@@ -138,7 +138,7 @@
       "label": "Task 7 - Ship Mining",
       "x": -26.264165200049007,
       "y": 509.6538641642444,
-      "color": "#00b4f0",
+      "color": "#f5dbff",
       "r": 20,
       "props": {
         "Description": "Fix and leave hangar."
@@ -149,7 +149,7 @@
       "label": "Base 4",
       "x": 114.4658480896538,
       "y": 391.27635184354256,
-      "color": "#55ff55",
+      "color": "#deccff",
       "r": 20,
       "props": {
         "GPS": "GPS:Base-04_Adv-Production:-1060.26:120.69:-5036.3:#FFF1BB75:",
@@ -159,8 +159,8 @@
     {
       "id": "Scn01-Cluster-01",
       "label": "Starting-Cluster",
-      "x": 16.185768069562215,
-      "y": 323.9752459987322,
+      "x": 15.141072215375203,
+      "y": 300.1624103053728,
       "color": "#00b4f0",
       "r": 20,
       "props": {}
@@ -170,7 +170,7 @@
       "label": "Task 8 - Refine and Assemble",
       "x": 113.95780325842708,
       "y": 454.4945395653562,
-      "color": "#00b4f0",
+      "color": "#f5dbff",
       "r": 20,
       "props": {
         "Description": "Fix the cargo-to-refinery conveyors. Fix the refinery, and build an assembler."
@@ -371,7 +371,7 @@
       "id": "Scn01-Cluster-04",
       "label": "Final Cluster (4th)",
       "x": 586.273743015825,
-      "y": 319.43510371571153,
+      "y": 318.87260371571153,
       "color": "#00b4f0",
       "r": 20,
       "props": {}
@@ -392,7 +392,7 @@
     {
       "id": "Scn01-Base-13",
       "label": "Base - 13 - Orbital Bombardment",
-      "x": 739.9411046834621,
+      "x": 740.4523351522121,
       "y": 214.35753298482217,
       "color": "#2da44e",
       "r": 20,
@@ -411,8 +411,8 @@
       "r": 20,
       "props": {
         "GPS": "NONE",
-        "Ores": "TBD",
-        "Blocks": "TBD",
+        "Ores": "N/A",
+        "Blocks": "N/A",
         "Note": "Random Spawn location based on player position"
       }
     },
@@ -1101,9 +1101,9 @@
     {
       "id": "n10203",
       "label": "Start (Fast Path)",
-      "x": -33.58140182495117,
-      "y": 258.5231018066406,
-      "color": "#8affab",
+      "x": -72.65840530395508,
+      "y": 253.48284912109375,
+      "color": "#af85ff",
       "r": 26,
       "props": {}
     },
@@ -1200,11 +1200,13 @@
       "label": "Task 18 - Destroy Pirate Base",
       "x": 874.1570434570312,
       "y": 255.54954528808594,
-      "color": "#2da44e",
+      "color": "#8affab",
       "r": 20,
       "props": {
         "Description": "The Pirate is a multi-compound, multi-defenses location. Players must fight through the defenses in order to remove the Pirate threat.",
-        "Game Achievement": "Destroy the base without entering the Planet's Gravity"
+        "Game Achievement": "Destroy the base without entering the Planet's Gravity",
+        "Strategy": "Leverage an atmospheric energy-endurance (e.g., reactors/engines) fighter to destroy base with railguns. ",
+        "Targeting Locations": "GPS:Earth - PirateTurret (0 - Main):1546182.91:-2923861.62:-3719888.01:#FFFFFF00:\nGPS:Earth - PirateTurret (1 - Point):1546241.23:-2924250.71:-3719844.58:#FFFFFF00:\nGPS:Earth - PirateTurret (2 - Cliff):1546053.96:-2923959.74:-3720390.76:#FFFFFF00:\nGPS:Earth - PirateTurret (3 - Flank):1546238.85:-2923536.94:-3719899.97:#FFFFFF00:\nGPS:Earth - PirateTurret (4 - Base2):1546229.18:-2923857.09:-3719852.94:#FFFFFF00:\nGPS:Earth - PirateTurret (5 - LZone):1546157.36:-2923863.45:-3719920.35:#FFFFFF00:"
       }
     },
     {
@@ -1221,11 +1223,14 @@
     {
       "id": "Scn01-B14-Task-19",
       "label": "Task 19 - Destroy Pirate Capital Ship",
-      "x": 935.3440551757812,
-      "y": 163.6040496826172,
-      "color": "#2da44e",
+      "x": 935.90576171875,
+      "y": 163.04237365722656,
+      "color": "#8affab",
       "r": 20,
-      "props": {}
+      "props": {
+        "Description": "This capital ship is designed to be the \"boss fight\" for the scenario. The ship WILL CHASE the player grids. Thus, it's advised to leveraged standoff weapons, and hit-and-run tactics.",
+        "Starting GPS": "GPS:Pirate commander ship:1495774.94765564:-3024781.3084516:-3722912.72678912:#FFF0F8FF:"
+      }
     },
     {
       "id": "Scn01-Achv-01",
@@ -1345,7 +1350,8 @@
       "directed": true,
       "style": "straight",
       "dash": "solid",
-      "arrowSize": "medium"
+      "arrowSize": "medium",
+      "color": "#dadbdc"
     },
     {
       "id": "Scn01-B2-Task-06-to-Scn01-Base-02",
@@ -1355,7 +1361,8 @@
       "directed": true,
       "style": "straight",
       "dash": "solid",
-      "arrowSize": "medium"
+      "arrowSize": "medium",
+      "color": "#dadbdc"
     },
     {
       "id": "Scn01-B3-Task-07-to-Scn01-Base-03",
@@ -1365,7 +1372,8 @@
       "directed": true,
       "style": "straight",
       "dash": "solid",
-      "arrowSize": "medium"
+      "arrowSize": "medium",
+      "color": "#dadbdc"
     },
     {
       "id": "Scn01-Base-01-to-Scn01-Cluster-01",
@@ -1446,7 +1454,8 @@
       "directed": true,
       "style": "straight",
       "dash": "solid",
-      "arrowSize": "medium"
+      "arrowSize": "medium",
+      "color": "#dadbdc"
     },
     {
       "id": "Scn01-B5-Task-09-to-Scn01-Base-05",
@@ -1562,7 +1571,7 @@
       "id": "Scn01-Base-11-to-Scn01-Cluster-04",
       "source": "Scn01-Base-11",
       "target": "Scn01-Cluster-04",
-      "label": "",
+      "label": "A Thing",
       "directed": true,
       "style": "straight",
       "dash": "solid",
@@ -2427,17 +2436,7 @@
       "style": "orthogonal",
       "dash": "solid",
       "arrowSize": "medium",
-      "color": "#55ff55"
-    },
-    {
-      "id": "e10207",
-      "source": "Scn01-Base-02",
-      "target": "Scn01-B2-Task-06",
-      "label": "",
-      "directed": false,
-      "style": "straight",
-      "dash": "solid",
-      "arrowSize": "medium"
+      "color": "#deccff"
     },
     {
       "id": "e10208",
@@ -2459,7 +2458,7 @@
       "style": "orthogonal",
       "dash": "solid",
       "arrowSize": "medium",
-      "color": "#55ff55"
+      "color": "#deccff"
     },
     {
       "id": "e10210",
@@ -2470,7 +2469,7 @@
       "style": "orthogonal",
       "dash": "solid",
       "arrowSize": "medium",
-      "color": "#55ff55"
+      "color": "#deccff"
     },
     {
       "id": "e10212",
@@ -2560,7 +2559,8 @@
       "directed": true,
       "style": "straight",
       "dash": "solid",
-      "arrowSize": "medium"
+      "arrowSize": "medium",
+      "color": "#8affab"
     },
     {
       "id": "e10232",
@@ -2591,7 +2591,8 @@
       "directed": true,
       "style": "straight",
       "dash": "solid",
-      "arrowSize": "medium"
+      "arrowSize": "medium",
+      "color": "#8affab"
     },
     {
       "id": "e10239",
@@ -2640,9 +2641,9 @@
     "edgedefault": "undirected"
   },
   "view": {
-    "x": 211.16914122172625,
-    "y": -77.62527893972873,
-    "k": 1.3970869871870706
+    "x": 833.5828173368992,
+    "y": 265.5360591768689,
+    "k": 0.6124261666831071
   },
   "clampNodeLabels": false
 }
