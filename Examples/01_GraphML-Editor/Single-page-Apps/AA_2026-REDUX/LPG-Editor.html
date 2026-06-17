@@ -2595,6 +2595,9 @@ document.addEventListener('keydown', e=>{
     case 'f': case 'F': App.fitView(); break;
     case 'Escape':
       if(State.paintActive){ App.togglePaintTool(); break; }
+      if($('prop-modal-overlay').classList.contains('open')){ App.closePropModal(); break; }
+      if($('readme-overlay').classList.contains('open')){ App.closeReadme(); break; }
+      if($('settings-overlay').classList.contains('open')){ App.closeSettings(); break; }
       if(document.fullscreenElement || document.webkitFullscreenElement){
         (document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document);
         break;
