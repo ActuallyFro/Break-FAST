@@ -87,7 +87,7 @@ body.mid-panning #svg-canvas{cursor:grabbing!important}
 .node-group .node-circle{stroke-width:1.5;transition:filter .1s;pointer-events:all}
 .node-group.selected .node-circle{stroke:#fff;stroke-width:2.5;filter:drop-shadow(0 0 8px var(--accent-glow))}
 .node-group.orphan .node-circle{stroke-dasharray:4 2}
-.node-group .node-label{fill:var(--text);font-family:var(--font-ui);font-size:11px;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
+.node-group .node-label{font-family:var(--font-ui);text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
 .edge-line{stroke-width:1.5;fill:none;cursor:pointer;transition:stroke .1s}
 .edge-line.selected{stroke-width:2.5}
 .edge-line:hover{stroke-width:2}
@@ -257,6 +257,10 @@ body[data-paint="active"] .edge-group{cursor:copy}
 .color-row{display:flex;gap:6px;flex-wrap:wrap}
 .color-swatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .1s}
 .color-swatch:hover,.color-swatch.active{border-color:#fff}
+.align-btn-row{display:flex;gap:6px}
+.align-btn{flex:1;padding:6px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:1em;transition:all .15s}
+.align-btn:hover{background:var(--bg3);color:var(--text)}
+.align-btn.active{background:var(--accent2);border-color:var(--accent);color:#fff}
 
 /* ── SCROLLBARS ───────────────────────────────────────────────── */
 ::-webkit-scrollbar{width:6px;height:6px}
@@ -590,6 +594,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
         <div class="readme-feature"><strong>GraphML Export</strong><span>Standard XML readable by Gephi, yEd, Neo4j, and other tools.</span></div>
         <div class="readme-feature"><strong>Collapsible Panels</strong><span>Inspector (◀ button), object table, and GraphML drawer can all be hidden to maximize canvas space.</span></div>
         <div class="readme-feature"><strong>Hover Tooltip</strong><span>Hover any node to see its label and all custom properties in a floating card.</span></div>
+        <div class="readme-feature"><strong>Rich Text Labels</strong><span>Labels support &lt;br&gt; for line breaks and &lt;b&gt;/&lt;i&gt;/&lt;u&gt; for emphasis — rendered as real SVG text (no word-wrap; breaks only where you place &lt;br&gt;). Set color and alignment in the node inspector's Styling section.</span></div>
       </div>
 
       <h3>Data &amp; Persistence</h3>
@@ -669,6 +674,38 @@ body[data-paint="active"] .edge-group{cursor:copy}
           </label>
         </div>
       </div>
+
+      <div class="set-section">
+        <div class="set-section-label">
+          Export
+        </div>
+
+        <div class="set-row"
+            style="flex-direction:column;
+                    align-items:flex-start">
+
+          <label>
+            Export Filename
+          </label>
+
+          <input
+            id="export-name"
+            type="text"
+            placeholder="graph"
+            style="
+              width:100%;
+              background:var(--bg2);
+              border:1px solid var(--border);
+              color:var(--text);
+              padding:6px 8px;
+              border-radius:var(--radius);
+            "
+            oninput="App.setExportName(this.value)"
+          >
+
+        </div>
+      </div>
+
       <div class="set-section">
         <div class="set-section-label">Import</div>
         <button class="set-toggle-btn" onclick="App.importJson();App.closeSettings()">
@@ -711,6 +748,7 @@ const State = {
   graphId: 'graph1',
   graphMeta: {edgedefault:'undirected'},
   clampNodeLabels: false,
+  exportName: 'graph',
   paintFormat: null,
   paintActive: false,
 };
@@ -731,6 +769,7 @@ function serialize(formatted = false){
     idCounter: State.idCounter,
     graphId: State.graphId,
     graphMeta: {...State.graphMeta},
+    exportName: State.exportName,
     view: {...State.view},
     clampNodeLabels: State.clampNodeLabels
   };
@@ -743,6 +782,7 @@ function deserialize(str){
   State.idCounter = d.idCounter || 1;
   State.graphId = d.graphId || 'graph1';
   State.graphMeta = d.graphMeta || {edgedefault:'undirected'};
+  State.exportName = d.exportName || State.graphId || 'graph';
   State.view = d.view || {x:0,y:0,k:1};
   if(d.clampNodeLabels !== undefined) State.clampNodeLabels = d.clampNodeLabels;
   State.selected.clear();
@@ -822,9 +862,15 @@ function renderNodes(){
       g.style.removeProperty('--node-hover-computed');
     }
     const lbl = n.label || n.id;
-    g.querySelector('.node-label').textContent = truncLabel(lbl, r);
-    g.querySelector('.node-label').setAttribute('font-size', (n.fontSize || 11) + 'px');
-    g.querySelector('.node-label').style.fontSize = (n.fontSize || 11) + 'px';
+    const fontSize = n.fontSize || 11;
+    const align = n.labelAlign || 'center';
+    const txtEl = g.querySelector('.node-label');
+    txtEl.setAttribute('font-size', fontSize+'px');
+    txtEl.style.fontSize = fontSize+'px';
+    txtEl.setAttribute('fill', n.labelColor || 'var(--text)');
+    txtEl.style.fill = n.labelColor || '';
+    txtEl.setAttribute('text-anchor', align==='left' ? 'start' : align==='right' ? 'end' : 'middle');
+    renderNodeLabelLines(txtEl, lbl, r, fontSize, align);
     g.querySelector('.node-port').setAttribute('r', r+4);
     g.setAttribute('transform',`translate(${n.x},${n.y})`);
     g.dataset.id = n.id;
@@ -839,8 +885,84 @@ function renderNodes(){
   }
 }
 
+// Parse a label string with <br> for line breaks and a small safe set of
+// inline tags (b, i, u, strong, em) into SVG <tspan> runs. Pure SVG text —
+// never taints canvas exports, has reliable getBBox(), and never word-wraps
+// since each line is explicit (only breaks where the user put <br>).
+const LABEL_ALLOWED_INLINE = {B:'bold', STRONG:'bold', I:'italic', EM:'italic', U:'underline'};
+
+function parseLabelLines(raw){
+  // Split on <br> (case-insensitive, self-closing or not)
+  const lineStrings = String(raw).split(/<br\s*\/?>/i);
+  return lineStrings.map(lineHtml=>{
+    // Parse remaining safe inline tags into {text, bold, italic, underline} runs
+    const tmp = document.createElement('div');
+    tmp.innerHTML = lineHtml;
+    const runs = [];
+    const walk = (node, style)=>{
+      for(const child of node.childNodes){
+        if(child.nodeType === 3){ // text node
+          if(child.textContent) runs.push({text:child.textContent, ...style});
+        } else if(child.nodeType === 1){
+          const tag = child.tagName;
+          const styleProp = LABEL_ALLOWED_INLINE[tag];
+          const childStyle = styleProp ? {...style, [styleProp]:true} : style;
+          walk(child, childStyle);
+        }
+      }
+    };
+    walk(tmp, {});
+    return runs.length ? runs : [{text:''}];
+  });
+}
+
+function renderNodeLabelLines(txtEl, rawLabel, r, fontSize, align){
+  while(txtEl.firstChild) txtEl.removeChild(txtEl.firstChild);
+  let lines = parseLabelLines(rawLabel);
+  // Apply char-clamp per line only for plain lines (no markup) when enabled
+  if(State.clampNodeLabels){
+    const maxChars = Math.max(4, Math.floor(r/4.5));
+    lines = lines.map(runs=>{
+      const totalLen = runs.reduce((s,run)=>s+run.text.length,0);
+      if(totalLen <= maxChars) return runs;
+      let remaining = maxChars, out = [];
+      for(const run of runs){
+        if(remaining <= 0) break;
+        const slice = run.text.slice(0, remaining);
+        out.push({...run, text: slice});
+        remaining -= slice.length;
+      }
+      if(out.length) out[out.length-1].text += '…';
+      return out;
+    });
+  }
+  // Cap total visible lines so very long multi-line labels don't overflow the node absurdly
+  const maxLines = Math.max(2, Math.floor(r/(fontSize*0.8)));
+  if(lines.length > maxLines){
+    lines = lines.slice(0, maxLines);
+    const last = lines[lines.length-1];
+    if(last.length) last[last.length-1] = {...last[last.length-1], text: last[last.length-1].text+'…'};
+  }
+  const lineHeight = fontSize * 1.25;
+  const startY = -((lines.length-1) * lineHeight) / 2;
+  const anchorX = align==='left' ? -r*0.9 : align==='right' ? r*0.9 : 0;
+  lines.forEach((runs, i)=>{
+    const tspanLine = svgEl('tspan',{x:anchorX, y:startY + i*lineHeight});
+    for(const run of runs){
+      const rs = svgEl('tspan',{});
+      if(run.bold) rs.style.fontWeight='700';
+      if(run.italic) rs.style.fontStyle='italic';
+      if(run.underline) rs.style.textDecoration='underline';
+      rs.textContent = run.text;
+      tspanLine.appendChild(rs);
+    }
+    txtEl.appendChild(tspanLine);
+  });
+}
+
 function truncLabel(lbl, r){
   if(!State.clampNodeLabels) return lbl;
+  if(/<[a-z]/i.test(lbl)) return lbl; // contains HTML markup — don't slice mid-tag
   const maxChars = Math.max(4, Math.floor(r/4.5));
   return lbl.length > maxChars ? lbl.slice(0, maxChars)+'…' : lbl;
 }
@@ -1350,7 +1472,6 @@ function startInlineRename(id){
   const n = State.nodes.find(n=>n.id===id);
   if(!n) return;
   const g = $('nodes-layer').querySelector(`[data-id="${id}"]`);
-  const txt = g.querySelector('.node-label');
   const fo = svgEl('foreignObject',{x:-50, y:-14, width:100, height:24});
   const inp = document.createElement('input');
   inp.value = n.label;
@@ -1480,6 +1601,17 @@ function renderInspector(){
           <input type="color" value="${nodeColor(node)}" oninput="App.setLiveProp('node', '${node.id}', 'color', this.value)" onchange="App.setProp('node', '${node.id}', 'color', this.value)">
           <div class="color-row" style="margin-top:8px;">
             ${NODE_COLORS.map(c=>`<div class="color-swatch ${nodeColor(node)===c?'active':''}" style="background:${c}" onclick="App.setProp('node', '${node.id}', 'color', '${c}')"></div>`).join('')}
+          </div>
+        </div>
+        <div class="insp-row"><label>Label Color</label>
+          <input type="color" value="${node.labelColor||'#e6edf3'}" oninput="App.setLiveProp('node', '${node.id}', 'labelColor', this.value)" onchange="App.setProp('node', '${node.id}', 'labelColor', this.value)">
+          <label style="margin-top:4px;display:flex;align-items:center;gap:4px;"><input type="checkbox" ${!node.labelColor?'checked':''} onchange="App.setProp('node', '${node.id}', 'labelColor', this.checked ? '' : '#e6edf3')"> Use theme default</label>
+        </div>
+        <div class="insp-row"><label>Label Alignment</label>
+          <div class="align-btn-row">
+            <button class="align-btn ${(node.labelAlign||'center')==='left'?'active':''}" onclick="App.setProp('node','${node.id}','labelAlign','left')" title="Align left">&#x2630;</button>
+            <button class="align-btn ${(node.labelAlign||'center')==='center'?'active':''}" onclick="App.setProp('node','${node.id}','labelAlign','center')" title="Align center">&#x2261;</button>
+            <button class="align-btn ${(node.labelAlign||'center')==='right'?'active':''}" onclick="App.setProp('node','${node.id}','labelAlign','right')" title="Align right">&#x2632;</button>
           </div>
         </div>
       </div>
@@ -1746,8 +1878,8 @@ function importFromJSON(text){
   let d; try{ d = JSON.parse(text); } catch(e){ return false; }
   if(d && Array.isArray(d.nodes) && Array.isArray(d.edges)){
     snapshot();
-    State.nodes = d.nodes.map(n=>({id:n.id, label:n.label||n.id, x:n.x||0, y:n.y||0, color:n.color||'#1f6feb', r:n.r||26, props:n.props||{}}));
-    State.edges = d.edges.map(e=>({id:e.id||uid('e'), source:e.source, target:e.target, label:e.label||'', directed:e.directed!==false, style:e.style||'straight', dash:e.dash||'solid', arrowSize:e.arrowSize||'medium', color:e.color}));
+    State.nodes = d.nodes.map(n=>({id:n.id, label:n.label||n.id, x:n.x||0, y:n.y||0, color:n.color||'#1f6feb', r:n.r||26, fontSize:n.fontSize||11, labelAlign:n.labelAlign||'center', labelColor:n.labelColor||'', props:n.props||{}}));
+    State.edges = d.edges.map(e=>({id:e.id||uid('e'), source:e.source, target:e.target, label:e.label||'', directed:e.directed!==false, style:e.style||'straight', dash:e.dash||'solid', arrowSize:e.arrowSize||'medium', color:e.color, props:e.props||{}}));
     State.graphId = d.graphId || 'graph1';
     State.graphMeta = d.graphMeta || {edgedefault:'undirected'};
     State.idCounter = d.idCounter || (Math.max(0,...State.nodes.map(n=>parseInt(n.id.replace(/\D/g,''))||0))+1);
@@ -1856,6 +1988,8 @@ window.App = {
     const slider = $('font-size-slider'); if(slider) slider.value = Math.min(20, fs);
     const numInput = $('font-size-val'); if(numInput) numInput.value = fs;
     const ck = $('clamp-labels-chk'); if(ck) ck.checked = State.clampNodeLabels;
+    const ex = $('export-name');
+    if(ex) ex.value = State.exportName;
   },
   closeSettings(event){
     if(!event || event.target === $('settings-overlay') || event.currentTarget === $('settings-close'))
@@ -1867,6 +2001,18 @@ window.App = {
     const numInput = $('font-size-val'); if(numInput) numInput.value = px;
     const slider = $('font-size-slider'); if(slider) slider.value = Math.min(20, px);
     localStorage.setItem('lpg_font_size', px);
+  },
+  setExportName(val){
+      const clean = (val || '')
+          .trim()
+          .replace(/[<>:"\/\\|?*\x00-\x1F]/g,'');
+
+      State.exportName = clean || 'graph';
+
+      localStorage.setItem(
+          'lpg_export_name',
+          State.exportName
+      );
   },
   exportPng() {
     const svg = $('svg-canvas').cloneNode(true);
@@ -1904,10 +2050,21 @@ window.App = {
     const padding = 50;
     const width = Math.max(800, bbox.width + padding * 2);
     const height = Math.max(600, bbox.height + padding * 2);
-    
+    const vbX = bbox.x - padding, vbY = bbox.y - padding;
+
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
-    svg.setAttribute('viewBox', `${bbox.x - padding} ${bbox.y - padding} ${width} ${height}`);
+    svg.setAttribute('viewBox', `${vbX} ${vbY} ${width} ${height}`);
+
+    // Fix background rect to cover the new viewBox exactly (was 100%/100% which
+    // only covers from 0,0 — wrong now that viewBox has a non-zero origin)
+    const gridBg = svg.querySelector('#grid-bg');
+    if(gridBg){
+      gridBg.setAttribute('x', vbX);
+      gridBg.setAttribute('y', vbY);
+      gridBg.setAttribute('width', width);
+      gridBg.setAttribute('height', height);
+    }
 
     const svgString = (new XMLSerializer()).serializeToString(svg);
     const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
@@ -2156,10 +2313,10 @@ window.App = {
     $('graphml-output').select(); document.execCommand('copy'); notify('XML copied to clipboard');
   },
   downloadGraphML(){
-    downloadFile($('graphml-output').value, (State.graphId||'graph')+'.graphml', 'application/xml');
+    downloadFile($('graphml-output').value, (State.exportName||'graph')+'.graphml', 'application/xml');
   },
   downloadJson(){
-    downloadFile(serialize(true), (State.graphId||'graph')+'.json', 'application/json');
+    downloadFile(serialize(true), (State.exportName||'graph')+'.json', 'application/json');
   },
   importGraphML(){
     const input = document.createElement('input'); input.type='file'; input.accept='.graphml,.xml';
@@ -2457,10 +2614,18 @@ window.App = {
     const bbox = $('graph-root').getBBox();
     const pad = 50;
     const w = Math.max(800, bbox.width+pad*2), h = Math.max(600, bbox.height+pad*2);
+    const vbX = bbox.x-pad, vbY = bbox.y-pad;
     svg.setAttribute('width',w); svg.setAttribute('height',h);
-    svg.setAttribute('viewBox',`${bbox.x-pad} ${bbox.y-pad} ${w} ${h}`);
+    svg.setAttribute('viewBox',`${vbX} ${vbY} ${w} ${h}`);
+    const gridBg2 = svg.querySelector('#grid-bg');
+    if(gridBg2){
+      gridBg2.setAttribute('x', vbX);
+      gridBg2.setAttribute('y', vbY);
+      gridBg2.setAttribute('width', w);
+      gridBg2.setAttribute('height', h);
+    }
     const str = (new XMLSerializer()).serializeToString(svg);
-    downloadFile(str, (State.graphId||'graph')+'.svg', 'image/svg+xml');
+    downloadFile(str, (State.exportName||'graph')+'.svg', 'image/svg+xml');
     notify('SVG exported');
     dismissReminder(true);
   },
@@ -2640,6 +2805,10 @@ document.addEventListener('webkitfullscreenchange', syncFsIcon);
   const savedFs = parseInt(localStorage.getItem('lpg_font_size'));
   if(savedFs && savedFs>=10){
     App.setGuiFontSize(savedFs);
+  }
+  const savedExportName = localStorage.getItem('lpg_export_name');
+  if(savedExportName){
+    State.exportName = savedExportName;
   }
 
   App.setTool('select');
