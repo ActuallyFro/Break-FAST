@@ -198,6 +198,27 @@ body[data-paint="active"] .edge-group{cursor:copy}
 
 /* ── MERGE MODAL ─────────────────────────────────────────────── */
 .merge-conflict{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin-bottom:8px}
+/* ── MERGE DIFF MODAL ──────────────────────────────────────────── */
+#diff-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1350;display:none;align-items:center;justify-content:center}
+#diff-overlay.open{display:flex}
+#diff-modal{background:var(--bg1);border:1px solid var(--border);border-radius:var(--radius2);width:min(860px,96vw);max-height:86vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+#diff-modal-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0}
+#diff-modal-title{font-family:var(--font-mono);font-size:.86em;color:var(--accent);font-weight:700;flex:1}
+#diff-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.3em;padding:2px 8px}
+#diff-close:hover{color:var(--text)}
+#diff-body{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden;min-height:0}
+.diff-col{display:flex;flex-direction:column;overflow:hidden}
+.diff-col:first-child{border-right:1px solid var(--border)}
+.diff-col-header{padding:8px 14px;font-family:var(--font-mono);font-size:.72em;text-transform:uppercase;letter-spacing:.08em;font-weight:700;flex-shrink:0}
+.diff-col:first-child .diff-col-header{color:var(--text3);background:var(--bg2)}
+.diff-col:last-child .diff-col-header{color:#3fb950;background:rgba(63,185,80,.08)}
+.diff-pre{padding:12px 14px;font-family:var(--font-mono);font-size:.79em;overflow:auto;flex:1;line-height:1.6;white-space:pre-wrap;word-break:break-all}
+.diff-line{display:block}
+.diff-line-same{color:var(--text2)}
+.diff-line-removed{color:#ff7b72;background:rgba(255,123,114,.1);border-radius:2px}
+.diff-line-added{color:#3fb950;background:rgba(63,185,80,.1);border-radius:2px}
+.diff-btn{font-size:.72em;padding:2px 8px;border-radius:3px;border:1px solid var(--border);background:var(--bg3);color:var(--text3);cursor:pointer;margin-left:8px;font-family:var(--font-mono)}
+.diff-btn:hover{color:var(--accent);border-color:var(--accent)}
 .merge-conflict-header{font-family:var(--font-mono);font-size:.79em;color:var(--orange);margin-bottom:8px;font-weight:600}
 .merge-conflict-options{display:flex;gap:8px}
 .merge-opt{flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3);cursor:pointer;font-size:.79em;font-family:var(--font-mono);text-align:center;transition:all .15s;color:var(--text2)}
@@ -254,9 +275,15 @@ body[data-paint="active"] .edge-group{cursor:copy}
 #toolbar-title:hover{background:var(--bg2);color:var(--text)}
 
 /* ── NODE COLOR PALETTE ──────────────────────────────────────── */
-.color-row{display:flex;gap:6px;flex-wrap:wrap}
-.color-swatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .1s}
+.color-row{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.color-swatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .1s;flex-shrink:0;position:relative}
 .color-swatch:hover,.color-swatch.active{border-color:#fff}
+.color-swatch[title]:hover::after{content:attr(title);position:absolute;bottom:26px;left:50%;transform:translateX(-50%);background:var(--bg0);color:var(--text);font-size:.7em;padding:2px 6px;border-radius:3px;white-space:nowrap;pointer-events:none;z-index:10}
+.palette-add-btn{width:22px;height:22px;border-radius:50%;border:2px dashed var(--border2);background:transparent;color:var(--text3);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;padding:0}
+.palette-add-btn:hover{border-color:var(--accent);color:var(--accent)}
+.palette-actions{display:flex;gap:6px;margin-top:6px}
+.palette-action-btn{font-size:.72em;padding:2px 8px;border-radius:3px;border:1px solid var(--border);background:var(--bg3);color:var(--text3);cursor:pointer;font-family:var(--font-mono)}
+.palette-action-btn:hover{color:var(--accent);border-color:var(--accent)}
 .align-btn-row{display:flex;gap:6px}
 .align-btn{flex:1;padding:6px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:1em;transition:all .15s}
 .align-btn:hover{background:var(--bg3);color:var(--text)}
@@ -621,6 +648,26 @@ body[data-paint="active"] .edge-group{cursor:copy}
   </div>
 </div>
 
+<!-- MERGE DIFF MODAL -->
+<div id="diff-overlay" onclick="if(event.target===this)closeDiffModal()">
+  <div id="diff-modal">
+    <div id="diff-modal-header">
+      <span id="diff-modal-title">Diff</span>
+      <button id="diff-close" onclick="closeDiffModal()">&#x2715;</button>
+    </div>
+    <div id="diff-body">
+      <div class="diff-col">
+        <div class="diff-col-header">■ Current (keep)</div>
+        <pre class="diff-pre" id="diff-current"></pre>
+      </div>
+      <div class="diff-col">
+        <div class="diff-col-header">▶ Incoming (replace)</div>
+        <pre class="diff-pre" id="diff-incoming"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="settings-overlay" onclick="App.closeSettings(event)">
   <div id="settings-panel" onclick="event.stopPropagation()">
     <div id="settings-header">
@@ -667,11 +714,30 @@ body[data-paint="active"] .edge-group{cursor:copy}
       </div>
       <div class="set-section">
         <div class="set-section-label">Canvas</div>
-        <div class="set-row" style="flex-direction:column;align-items:flex-start;gap:4px">
+        <div class="set-row" style="flex-direction:column;align-items:flex-start;gap:6px">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
             <input type="checkbox" id="clamp-labels-chk" onchange="App.setClampLabels(this.checked)">
             Clamp long node labels (…)
           </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="reminder-enabled-chk" checked onchange="App.setReminderEnabled(this.checked)">
+            Enable footer banner for export reminders
+          </label>
+        </div>
+      </div>
+
+      <div class="set-section">
+        <div class="set-section-label">Color Palette</div>
+        <div class="set-row" style="flex-direction:column;align-items:flex-start;gap:8px">
+          <div class="color-row" id="palette-settings"></div>
+          <div style="font-size:.72em;color:var(--text3);line-height:1.5">
+            Click <strong>+</strong> to add a custom color. Ctrl+click any dot (here or in the inspector) to remove it. This palette is shared across all graphs in this browser.
+          </div>
+          <div class="palette-actions">
+            <button class="palette-action-btn" onclick="App.copyPaletteToClipboard()" title="Copy palette as JSON">⎘ Copy palette</button>
+            <button class="palette-action-btn" onclick="App.pastePaletteFromClipboard()" title="Paste palette from clipboard">⎗ Paste palette</button>
+            <button class="palette-action-btn" onclick="App.resetPalette()" title="Reset to defaults">↺ Reset</button>
+          </div>
         </div>
       </div>
 
@@ -751,6 +817,7 @@ const State = {
   exportName: 'graph',
   paintFormat: null,
   paintActive: false,
+  reminderEnabled: true,
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -811,10 +878,71 @@ function svgEl(tag, attrs={}){
   return el;
 }
 
-const NODE_COLORS = [
-  '#1f6feb','#1a7f37','#9e6a03','#8250df','#cf222e','#0969da',
-  '#2da44e','#d4a72c','#6e40c9','#e34c26','#0550ae','#33a06f'
-];
+// Default palette (first 5 shown initially)
+const DEFAULT_PALETTE = ['#1f6feb','#1a7f37','#cf222e','#8250df','#9e6a03'];
+let NODE_COLORS = JSON.parse(localStorage.getItem('lpg_palette') || 'null') || [...DEFAULT_PALETTE];
+
+function savePalette(){ localStorage.setItem('lpg_palette', JSON.stringify(NODE_COLORS)); }
+
+function addPaletteColor(hex){
+  if(!hex || NODE_COLORS.includes(hex)) return;
+  NODE_COLORS.push(hex);
+  savePalette();
+}
+function removePaletteColor(hex){
+  NODE_COLORS = NODE_COLORS.filter(c=>c!==hex);
+  if(NODE_COLORS.length===0) NODE_COLORS = [...DEFAULT_PALETTE];
+  savePalette();
+}
+
+function renderColorPaletteRow(containerId, activeColor, onClickFn, showAddBtn){
+  if(showAddBtn === undefined) showAddBtn = true;
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  container.innerHTML = '';
+  for(const c of NODE_COLORS){
+    const sw = document.createElement('div');
+    sw.className = 'color-swatch' + (activeColor===c?' active':'');
+    sw.style.background = c;
+    sw.title = c;
+    sw.addEventListener('click', ev=>{
+      if(ev.ctrlKey || ev.metaKey){
+        if(NODE_COLORS.length > 1){ removePaletteColor(c); renderAllPalettes(); }
+        return;
+      }
+      onClickFn(c);
+    });
+    container.appendChild(sw);
+  }
+  if(!showAddBtn) return;
+  // + button
+  const addBtn = document.createElement('button');
+  addBtn.className = 'palette-add-btn';
+  addBtn.title = 'Add custom color to palette';
+  addBtn.textContent = '+';
+  addBtn.addEventListener('click', ()=>{
+    const inp = document.createElement('input');
+    inp.type = 'color';
+    inp.value = '#58a6ff';
+    inp.style.position = 'fixed'; inp.style.opacity = '0'; inp.style.pointerEvents = 'none';
+    document.body.appendChild(inp);
+    inp.addEventListener('change', ()=>{
+      addPaletteColor(inp.value);
+      renderAllPalettes();
+      inp.remove();
+    });
+    inp.click();
+  });
+  container.appendChild(addBtn);
+}
+
+// Track all active palette containers for re-render
+function renderAllPalettes(){
+  initInspectorPalettes();
+  if($('settings-overlay').classList.contains('open')){
+    renderColorPaletteRow('palette-settings', '', ()=>{}, true);
+  }
+}
 
 function nodeColor(n){ return n.color || '#1f6feb'; }
 function nodeRadius(n){ return n.r || 26; }
@@ -823,6 +951,7 @@ function renderAll(){
   renderEdges();
   renderNodes();
   renderGraphML();
+  setTimeout(initInspectorPalettes, 0);
   renderTable();
   updateStats();
   applyTransform();
@@ -1524,6 +1653,24 @@ function startInlineEdgeRename(id){
   });
 }
 // ═══════════════════════════════════════════════════════════════
+function initInspectorPalettes(){
+  // Node single-select palette
+  const nidMatch = document.querySelector('[id^="palette-node-"]');
+  if(nidMatch){
+    const nodeId = nidMatch.id.replace('palette-node-','');
+    const n = State.nodes.find(n=>n.id===nodeId);
+    if(n){
+      renderColorPaletteRow(nidMatch.id, nodeColor(n), (c)=>App.setProp('node',nodeId,'color',c), false);
+    }
+  }
+  // Multi node
+  const mn = $('palette-multi-node');
+  if(mn) renderColorPaletteRow(mn.id, '', (c)=>App.setMultiColor('node',c), false);
+  // Multi edge
+  const me = $('palette-multi-edge');
+  if(me) renderColorPaletteRow(me.id, '', (c)=>App.setMultiColor('edge',c), false);
+}
+
 function renderInspector(){
   const body = $('inspector-body');
   const ids = [...State.selected];
@@ -1552,12 +1699,12 @@ function renderInspector(){
     let html = '<div class="insp-section"><div class="insp-section-label">Multi-select</div>';
     if(nodeCount>0){
       html += '<div class="insp-row"><label>Node Color</label><div class="color-row">';
-      html += NODE_COLORS.map(c=>`<div class="color-swatch" style="background:${c}" onclick="App.setMultiColor('node','${c}')"></div>`).join('');
+      html += '<div class="color-row" id="palette-multi-node"></div>';
       html += '</div></div>';
     }
     if(edgeCount>0){
       html += '<div class="insp-row"><label>Edge Color</label><div class="color-row">';
-      html += NODE_COLORS.map(c=>`<div class="color-swatch" style="background:${c}" onclick="App.setMultiColor('edge','${c}')"></div>`).join('');
+      html += '<div class="color-row" id="palette-multi-edge"></div>';
       html += '</div></div>';
     }
     if(nodeCount>0&&edgeCount===0){
@@ -1599,9 +1746,7 @@ function renderInspector(){
         <div class="insp-section-label">Styling</div>
         <div class="insp-row"><label>Color Picker</label>
           <input type="color" value="${nodeColor(node)}" oninput="App.setLiveProp('node', '${node.id}', 'color', this.value)" onchange="App.setProp('node', '${node.id}', 'color', this.value)">
-          <div class="color-row" style="margin-top:8px;">
-            ${NODE_COLORS.map(c=>`<div class="color-swatch ${nodeColor(node)===c?'active':''}" style="background:${c}" onclick="App.setProp('node', '${node.id}', 'color', '${c}')"></div>`).join('')}
-          </div>
+          <div class="color-row" id="palette-node-${node.id}" style="margin-top:8px;"></div>
         </div>
         <div class="insp-row"><label>Label Color</label>
           <input type="color" value="${node.labelColor||'#e6edf3'}" oninput="App.setLiveProp('node', '${node.id}', 'labelColor', this.value)" onchange="App.setProp('node', '${node.id}', 'labelColor', this.value)">
@@ -1930,6 +2075,44 @@ function doAutoLayout(){
 }
 
 // ═══════════════════════════════════════════════════════════════
+//  MERGE DIFF VIEWER
+// ═══════════════════════════════════════════════════════════════
+function openDiffModal(id, currentObj, incomingObj){
+  const curLines = JSON.stringify(currentObj, null, 2).split('\n');
+  const incLines = JSON.stringify(incomingObj, null, 2).split('\n');
+  const maxLen = Math.max(curLines.length, incLines.length);
+
+  const renderSide = (lines, otherLines, elId, isIncoming) => {
+    const el = $(elId);
+    el.innerHTML = '';
+    for(let i=0;i<lines.length;i++){
+      const span = document.createElement('span');
+      span.className = 'diff-line';
+      const mine = (lines[i]||'').trim();
+      const theirs = (otherLines[i]||'').trim();
+      if(mine === theirs){
+        span.classList.add('diff-line-same');
+      } else if(isIncoming){
+        span.classList.add('diff-line-added');
+      } else {
+        span.classList.add('diff-line-removed');
+      }
+      span.textContent = lines[i]||'';
+      el.appendChild(span);
+      el.appendChild(document.createTextNode('\n'));
+    }
+  };
+
+  renderSide(curLines, incLines, 'diff-current', false);
+  renderSide(incLines, curLines, 'diff-incoming', true);
+  $('diff-modal-title').textContent = 'Diff — ' + id;
+  $('diff-overlay').classList.add('open');
+}
+function closeDiffModal(){
+  $('diff-overlay').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════════════════
 //  PAINT FORMAT TOOL
 // ═══════════════════════════════════════════════════════════════
 function applyPaintFormat(type, id){
@@ -1966,6 +2149,100 @@ function applyPaintFormat(type, id){
 // ═══════════════════════════════════════════════════════════════
 //  APPLICATION API INTERFACE
 // ═══════════════════════════════════════════════════════════════
+// ── EXPORT HELPER ────────────────────────────────────────────────
+// Builds a clean, self-contained export SVG with:
+//  1. All CSS var() replaced by literal computed values
+//  2. grid-bg sized to cover the exact viewBox (no 100%/100% offset bug)
+//  3. Viewport sized to the graph bounding box + padding
+function prepareExportSvg(){
+  const isLight = document.body.classList.contains('light-mode');
+  const resolved = {
+    '--text':        isLight ? '#1f2937'  : '#e6edf3',
+    '--text2':       isLight ? '#4b5563'  : '#8b949e',
+    '--text3':       isLight ? '#9ca3af'  : '#6e7681',
+    '--accent':      isLight ? '#2563eb'  : '#58a6ff',
+    '--accent2':     isLight ? '#1d4ed8'  : '#1f6feb',
+    '--edge':        isLight ? '#3b82f6'  : '#58a6ff',
+    '--edge-sel':    isLight ? '#f97316'  : '#f0883e',
+    '--node-default':isLight ? '#2563eb'  : '#1f6feb',
+    '--node-ring':   isLight ? '#3b82f6'  : '#58a6ff',
+    '--orange':      '#d29922',
+    '--red':         '#f85149',
+    '--green':       '#3fb950',
+    '--purple':      '#a371f7',
+    '--bg0':         isLight ? '#f6f8fa'  : '#0d1117',
+    '--bg1':         isLight ? '#ffffff'  : '#161b22',
+    '--bg2':         isLight ? '#f3f4f6'  : '#21262d',
+    '--border':      isLight ? '#d1d5db'  : '#30363d',
+  };
+
+  function resolveVar(val){
+    if(!val || typeof val !== 'string') return val;
+    return val.replace(/var\(([^,)]+)(?:,[^)]+)?\)/g, (_, name)=>{
+      const k = name.trim();
+      return resolved[k] || (isLight ? '#1f2937' : '#e6edf3');
+    });
+  }
+
+  function resolveEl(el){
+    if(el.nodeType !== 1) return;
+    // Resolve presentation attributes
+    for(const attr of el.attributes){
+      if(['fill','stroke','color','stop-color'].includes(attr.name)){
+        const v = resolveVar(attr.value);
+        if(v !== attr.value) el.setAttribute(attr.name, v);
+      }
+      if(attr.name === 'style'){
+        const fixed = attr.value.replace(/:\s*var\([^)]+\)/g, m=>{
+          const k = m.match(/var\(([^,)]+)/); return k ? ': '+resolveVar('var('+k[1]+')') : m;
+        });
+        if(fixed !== attr.value) el.setAttribute('style', fixed);
+      }
+    }
+    for(const child of el.children) resolveEl(child);
+  }
+
+  const svg = $('svg-canvas').cloneNode(true);
+  // Remove UI-only elements
+  const toRemove = ['#sel-rect','#node-tooltip','#ctx-menu'];
+  for(const sel of toRemove){ const el=svg.querySelector(sel); if(el) el.remove(); }
+
+  // Build an inline style block that defines the variables (belt-and-suspenders)
+  const styleEl = document.createElementNS('http://www.w3.org/2000/svg','style');
+  styleEl.textContent = ':root{' + Object.entries(resolved).map(([k,v])=>`${k}:${v}`).join(';') + ';--font-ui:sans-serif}';
+  svg.insertBefore(styleEl, svg.firstChild);
+
+  // Also walk and resolve every element so the SVG is self-contained even in
+  // viewers that don't support CSS custom properties (Inkscape, Affinity, etc.)
+  resolveEl(svg);
+
+  // Compute bounding box from graph-root
+  const bbox = $('graph-root').getBBox();
+  const pad = 60;
+  const w = Math.max(400, bbox.width + pad*2);
+  const h = Math.max(300, bbox.height + pad*2);
+  const vbX = bbox.x - pad, vbY = bbox.y - pad;
+
+  svg.setAttribute('width', w);
+  svg.setAttribute('height', h);
+  svg.setAttribute('viewBox', `${vbX} ${vbY} ${w} ${h}`);
+
+  // Fix grid-bg rect: was width/height="100%" which means 100% of the SVG
+  // viewport (starting at 0,0), but our viewBox starts at (vbX,vbY) so it
+  // would only cover the portion near the origin — everything else goes black.
+  const gridBg = svg.querySelector('#grid-bg');
+  if(gridBg){
+    gridBg.setAttribute('x', vbX - 1000);
+    gridBg.setAttribute('y', vbY - 1000);
+    gridBg.setAttribute('width', w + 2000);
+    gridBg.setAttribute('height', h + 2000);
+    gridBg.setAttribute('fill', resolved['--bg0']);
+    gridBg.removeAttribute('fill-opacity');
+  }
+
+  return {svgEl: svg, width: w, height: h, vbX, vbY};
+}
+
 window.App = {
   setTool(t){
     State.tool = t; document.body.setAttribute('data-tool',t);
@@ -1990,6 +2267,7 @@ window.App = {
     const ck = $('clamp-labels-chk'); if(ck) ck.checked = State.clampNodeLabels;
     const ex = $('export-name');
     if(ex) ex.value = State.exportName;
+    renderColorPaletteRow('palette-settings', '', ()=>{}, true);
   },
   closeSettings(event){
     if(!event || event.target === $('settings-overlay') || event.currentTarget === $('settings-close'))
@@ -2015,78 +2293,37 @@ window.App = {
       );
   },
   exportPng() {
-    const svg = $('svg-canvas').cloneNode(true);
-    const sRect = svg.querySelector('#sel-rect'); if(sRect) sRect.remove();
-    
-    let cssText = '';
-    try {
-      for (const rule of document.styleSheets[0].cssRules) {
-        if (rule.selectorText && (rule.selectorText.includes('node') || rule.selectorText.includes('edge') || rule.selectorText.includes('svg'))) {
-          cssText += rule.cssText + '\n';
-        }
-      }
-    } catch(e){}
-
-    const isLight = document.body.classList.contains('light-mode');
-    const styleEl = document.createElementNS('http://www.w3.org/2000/svg', 'style');
-    styleEl.textContent = `
-      ${cssText}
-      :root {
-        --bg0: ${isLight ? '#f6f8fa' : '#0d1117'};
-        --text: ${isLight ? '#1f2937' : '#e6edf3'};
-        --text2: ${isLight ? '#4b5563' : '#8b949e'};
-        --text3: ${isLight ? '#9ca3af' : '#6e7681'};
-        --accent: ${isLight ? '#2563eb' : '#58a6ff'};
-        --edge: ${isLight ? '#3b82f6' : '#58a6ff'};
-        --edge-sel: #f0883e;
-        --node-default: ${isLight ? '#2563eb' : '#1f6feb'};
-        --font-ui: 'Segoe UI', sans-serif;
-      }
-      #grid-bg { fill: ${isLight ? '#f6f8fa' : '#0d1117'}; }
-    `;
-    svg.insertBefore(styleEl, svg.firstChild);
-
-    const bbox = $('graph-root').getBBox();
-    const padding = 50;
-    const width = Math.max(800, bbox.width + padding * 2);
-    const height = Math.max(600, bbox.height + padding * 2);
-    const vbX = bbox.x - padding, vbY = bbox.y - padding;
-
-    svg.setAttribute('width', width);
-    svg.setAttribute('height', height);
-    svg.setAttribute('viewBox', `${vbX} ${vbY} ${width} ${height}`);
-
-    // Fix background rect to cover the new viewBox exactly (was 100%/100% which
-    // only covers from 0,0 — wrong now that viewBox has a non-zero origin)
-    const gridBg = svg.querySelector('#grid-bg');
-    if(gridBg){
-      gridBg.setAttribute('x', vbX);
-      gridBg.setAttribute('y', vbY);
-      gridBg.setAttribute('width', width);
-      gridBg.setAttribute('height', height);
-    }
-
-    const svgString = (new XMLSerializer()).serializeToString(svg);
-    const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
-    const url = URL.createObjectURL(svgBlob);
-    
+    const {svgEl: exportedSvg, width, height} = prepareExportSvg();
+    const svgString = (new XMLSerializer()).serializeToString(exportedSvg);
+    const blob = new Blob([svgString], {type:'image/svg+xml;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
     const img = new Image();
     img.onload = () => {
       const canvas = document.createElement('canvas');
-      canvas.width = width * 2; canvas.height = height * 2;
+      canvas.width = width*2; canvas.height = height*2;
       const ctx = canvas.getContext('2d');
-      ctx.scale(2, 2);
-      ctx.drawImage(img, 0, 0, width, height);
-      
+      ctx.scale(2,2);
+      ctx.fillStyle = document.body.classList.contains('light-mode') ? '#f6f8fa' : '#0d1117';
+      ctx.fillRect(0,0,width,height);
+      ctx.drawImage(img,0,0,width,height);
       const a = document.createElement('a');
-      a.download = (State.graphId || 'graph') + '.png';
+      a.download = (State.exportName||'graph')+'.png';
       a.href = canvas.toDataURL('image/png');
       a.click();
       URL.revokeObjectURL(url);
-      notify('PNG exported successfully');
+      notify('PNG exported');
       dismissReminder(true);
     };
+    img.onerror = ()=>{ notify('PNG export failed — try SVG instead'); URL.revokeObjectURL(url); };
     img.src = url;
+  },
+
+  exportSvg(){
+    const {svgEl: exportedSvg} = prepareExportSvg();
+    const str = (new XMLSerializer()).serializeToString(exportedSvg);
+    downloadFile(str, (State.exportName||'graph')+'.svg', 'image/svg+xml');
+    notify('SVG exported');
+    dismissReminder(true);
   },
   handleJsonFile(input) {
     const file = input.files[0];
@@ -2404,14 +2641,21 @@ window.App = {
     for(const c of allConflicts){
       const existing = c.type==='node' ? State.nodes.find(n=>n.id===c.obj.id) : State.edges.find(e=>e.id===c.obj.id);
       App._mergeData.resolutions[c.obj.id] = 'keep';
+      const encId = escHtml(c.obj.id);
+      // Stash objects for diff viewer using data attributes (JSON-encoded)
+      const encCur = encodeURIComponent(JSON.stringify(existing));
+      const encInc = encodeURIComponent(JSON.stringify(c.obj));
       html += `<div class="merge-conflict">
-        <div class="merge-conflict-header">⚡ ${c.type.toUpperCase()} conflict: <code>${escHtml(c.obj.id)}</code></div>
+        <div class="merge-conflict-header">
+          ⚡ ${c.type.toUpperCase()} conflict: <code>${encId}</code>
+          <button class="diff-btn" onclick="openDiffModal('${encId}', JSON.parse(decodeURIComponent('${encCur}')), JSON.parse(decodeURIComponent('${encInc}')))">👁 Diff</button>
+        </div>
         <div class="merge-conflict-options">
-          <div class="merge-opt keep chosen" id="mopt-keep-${escHtml(c.obj.id)}" onclick="App._setRes('${escHtml(c.obj.id)}','keep')">
-            Keep Current<br><small style="opacity:.7">${escHtml(existing.label||existing.id||'')}</small>
+          <div class="merge-opt keep chosen" id="mopt-keep-${encId}" onclick="App._setRes('${encId}','keep')">
+            ■ Keep Current<br><small style="opacity:.7">${escHtml(existing.label||existing.id||'')}</small>
           </div>
-          <div class="merge-opt" id="mopt-replace-${escHtml(c.obj.id)}" onclick="App._setRes('${escHtml(c.obj.id)}','replace')">
-            Use Incoming<br><small style="opacity:.7">${escHtml(c.obj.label||c.obj.id||'')}</small>
+          <div class="merge-opt" id="mopt-replace-${encId}" onclick="App._setRes('${encId}','replace')">
+            ▶ Use Incoming<br><small style="opacity:.7">${escHtml(c.obj.label||c.obj.id||'')}</small>
           </div>
         </div>
       </div>`;
@@ -2483,6 +2727,27 @@ window.App = {
     renderNodes();
   },
   closeModal(){ $('modal-overlay').classList.remove('open'); },
+
+  copyPaletteToClipboard(){
+    navigator.clipboard.writeText(JSON.stringify(NODE_COLORS)).then(()=>notify('Palette copied to clipboard'));
+  },
+  async pastePaletteFromClipboard(){
+    try{
+      const text = await navigator.clipboard.readText();
+      const arr = JSON.parse(text);
+      if(!Array.isArray(arr) || !arr.every(c=>typeof c==='string'&&c.startsWith('#'))){ notify('Invalid palette JSON'); return; }
+      NODE_COLORS = arr;
+      savePalette();
+      renderAllPalettes();
+      notify('Palette applied ('+arr.length+' colors)');
+    }catch(e){ notify('Could not read clipboard'); }
+  },
+  resetPalette(){
+    NODE_COLORS = [...DEFAULT_PALETTE];
+    savePalette();
+    renderAllPalettes();
+    notify('Palette reset to defaults');
+  },
 
   openPropModal(type, id, focusKey){
     const obj = type==='node' ? State.nodes.find(n=>n.id===id) : State.edges.find(e=>e.id===id);
@@ -2601,34 +2866,7 @@ window.App = {
     $('readme-overlay').classList.remove('open');
   },
 
-  exportSvg(){
-    const svg = $('svg-canvas').cloneNode(true);
-    const sRect = svg.querySelector('#sel-rect'); if(sRect) sRect.remove();
-    const isLight = document.body.classList.contains('light-mode');
-    const vars = isLight
-      ? '--bg0:#f6f8fa;--text:#1f2937;--text2:#4b5563;--accent:#2563eb;--edge:#3b82f6;--edge-sel:#f97316;--node-default:#2563eb;'
-      : '--bg0:#0d1117;--text:#e6edf3;--text2:#8b949e;--accent:#58a6ff;--edge:#58a6ff;--edge-sel:#f0883e;--node-default:#1f6feb;';
-    const styleEl = document.createElementNS('http://www.w3.org/2000/svg','style');
-    styleEl.textContent = `:root{${vars}--font-ui:sans-serif} #grid-bg{fill:${isLight?'#f6f8fa':'#0d1117'}}`;
-    svg.insertBefore(styleEl, svg.firstChild);
-    const bbox = $('graph-root').getBBox();
-    const pad = 50;
-    const w = Math.max(800, bbox.width+pad*2), h = Math.max(600, bbox.height+pad*2);
-    const vbX = bbox.x-pad, vbY = bbox.y-pad;
-    svg.setAttribute('width',w); svg.setAttribute('height',h);
-    svg.setAttribute('viewBox',`${vbX} ${vbY} ${w} ${h}`);
-    const gridBg2 = svg.querySelector('#grid-bg');
-    if(gridBg2){
-      gridBg2.setAttribute('x', vbX);
-      gridBg2.setAttribute('y', vbY);
-      gridBg2.setAttribute('width', w);
-      gridBg2.setAttribute('height', h);
-    }
-    const str = (new XMLSerializer()).serializeToString(svg);
-    downloadFile(str, (State.exportName||'graph')+'.svg', 'image/svg+xml');
-    notify('SVG exported');
-    dismissReminder(true);
-  },
+
 
   setSelMode(mode){
     State.selMode = mode;
@@ -2643,6 +2881,11 @@ window.App = {
     State.clampNodeLabels = val;
     localStorage.setItem('lpg_graph_state', serialize());
     renderNodes();
+  },
+  setReminderEnabled(val){
+    State.reminderEnabled = val;
+    localStorage.setItem('lpg_reminder_enabled', val ? '1' : '0');
+    if(!val) dismissReminder(false); // hide if currently showing
   },
 
   togglePaintTool(){
@@ -2713,7 +2956,7 @@ function markDirty(){
 }
 
 function showReminder(){
-  if(!_reminderDirty) return;
+  if(!_reminderDirty || !State.reminderEnabled) return;
   $('export-reminder').classList.add('show');
 }
 
@@ -2761,6 +3004,7 @@ document.addEventListener('keydown', e=>{
     case 'Escape':
       if(State.paintActive){ App.togglePaintTool(); break; }
       if($('prop-modal-overlay').classList.contains('open')){ App.closePropModal(); break; }
+      if($('diff-overlay').classList.contains('open')){ closeDiffModal(); break; }
       if($('readme-overlay').classList.contains('open')){ App.closeReadme(); break; }
       if($('settings-overlay').classList.contains('open')){ App.closeSettings(); break; }
       if(document.fullscreenElement || document.webkitFullscreenElement){
@@ -2812,6 +3056,8 @@ document.addEventListener('webkitfullscreenchange', syncFsIcon);
   }
 
   App.setTool('select');
+  const savedReminder = localStorage.getItem('lpg_reminder_enabled');
+  if(savedReminder === '0'){ State.reminderEnabled = false; const ck=$('reminder-enabled-chk'); if(ck) ck.checked=false; }
   loadFromStorage();
   if(State.nodes.length===0){
     State.nodes=[
