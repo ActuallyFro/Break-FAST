@@ -284,6 +284,10 @@ body[data-paint="active"] .edge-group{cursor:copy}
 .palette-actions{display:flex;gap:6px;margin-top:6px}
 .palette-action-btn{font-size:.72em;padding:2px 8px;border-radius:3px;border:1px solid var(--border);background:var(--bg3);color:var(--text3);cursor:pointer;font-family:var(--font-mono)}
 .palette-action-btn:hover{color:var(--accent);border-color:var(--accent)}
+.help-icon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:var(--bg3);color:var(--text3);font-size:.64em;font-weight:700;cursor:help;flex-shrink:0}
+.help-icon:hover,.help-icon:focus{color:var(--accent);background:var(--bg2)}
+.help-tooltip{position:absolute;top:20px;left:0;width:220px;background:var(--bg0);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 10px;font-size:.72em;font-weight:400;color:var(--text2);line-height:1.5;text-transform:none;letter-spacing:normal;opacity:0;pointer-events:none;transition:opacity .15s;z-index:50;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+.help-icon:hover .help-tooltip,.help-icon:focus .help-tooltip{opacity:1}
 .align-btn-row{display:flex;gap:6px}
 .align-btn{flex:1;padding:6px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:1em;transition:all .15s}
 .align-btn:hover{background:var(--bg3);color:var(--text)}
@@ -727,12 +731,14 @@ body[data-paint="active"] .edge-group{cursor:copy}
       </div>
 
       <div class="set-section">
-        <div class="set-section-label">Color Palette</div>
+        <div class="set-section-label" style="display:flex;align-items:center;gap:6px">
+          Color Palette
+          <span class="help-icon" tabindex="0">?
+            <span class="help-tooltip">Click <strong>+</strong> to add a custom color. Ctrl+click any dot (here or in the inspector) to remove it. Double-click a dot here to edit its color. This palette is shared across all graphs in this browser.</span>
+          </span>
+        </div>
         <div class="set-row" style="flex-direction:column;align-items:flex-start;gap:8px">
           <div class="color-row" id="palette-settings"></div>
-          <div style="font-size:.72em;color:var(--text3);line-height:1.5">
-            Click <strong>+</strong> to add a custom color. Ctrl+click any dot (here or in the inspector) to remove it. This palette is shared across all graphs in this browser.
-          </div>
           <div class="palette-actions">
             <button class="palette-action-btn" onclick="App.copyPaletteToClipboard()" title="Copy palette as JSON">⎘ Copy palette</button>
             <button class="palette-action-btn" onclick="App.pastePaletteFromClipboard()" title="Paste palette from clipboard">⎗ Paste palette</button>
@@ -912,6 +918,23 @@ function renderColorPaletteRow(containerId, activeColor, onClickFn, showAddBtn){
       }
       onClickFn(c);
     });
+    if(showAddBtn){
+      sw.title = c + ' — double-click to edit';
+      sw.addEventListener('dblclick', ev=>{
+        ev.stopPropagation();
+        const inp = document.createElement('input');
+        inp.type = 'color';
+        inp.value = c;
+        inp.style.position = 'fixed'; inp.style.opacity = '0'; inp.style.pointerEvents = 'none';
+        document.body.appendChild(inp);
+        inp.addEventListener('change', ()=>{
+          const idx = NODE_COLORS.indexOf(c);
+          if(idx !== -1){ NODE_COLORS[idx] = inp.value; savePalette(); renderAllPalettes(); }
+          inp.remove();
+        });
+        inp.click();
+      });
+    }
     container.appendChild(sw);
   }
   if(!showAddBtn) return;
@@ -2184,37 +2207,42 @@ function prepareExportSvg(){
     });
   }
 
-  function resolveEl(el){
-    if(el.nodeType !== 1) return;
-    // Resolve presentation attributes
-    for(const attr of el.attributes){
-      if(['fill','stroke','color','stop-color'].includes(attr.name)){
-        const v = resolveVar(attr.value);
-        if(v !== attr.value) el.setAttribute(attr.name, v);
-      }
-      if(attr.name === 'style'){
-        const fixed = attr.value.replace(/:\s*var\([^)]+\)/g, m=>{
-          const k = m.match(/var\(([^,)]+)/); return k ? ': '+resolveVar('var('+k[1]+')') : m;
-        });
-        if(fixed !== attr.value) el.setAttribute('style', fixed);
-      }
+  function bakeComputedStyle(liveEl, cloneEl){
+    if(liveEl.nodeType !== 1) return;
+    const cs = getComputedStyle(liveEl);
+    const props = ['fill','stroke','color','stop-color','font-size','font-weight','font-style','text-decoration-line','stroke-width','stroke-dasharray','opacity'];
+    let inline = '';
+    for(const p of props){
+      const v = cs.getPropertyValue(p);
+      if(v && v !== 'none' && v !== 'normal' && v !== '0px') inline += `${p}:${v};`;
     }
-    for(const child of el.children) resolveEl(child);
+    if(inline) cloneEl.setAttribute('style', (cloneEl.getAttribute('style')||'') + inline);
+    const liveChildren = Array.from(liveEl.children);
+    const cloneChildren = Array.from(cloneEl.children);
+    for(let i=0;i<liveChildren.length;i++){
+      if(cloneChildren[i]) bakeComputedStyle(liveChildren[i], cloneChildren[i]);
+    }
   }
 
-  const svg = $('svg-canvas').cloneNode(true);
-  // Remove UI-only elements
+  const liveSvg = $('svg-canvas');
+  const svg = liveSvg.cloneNode(true);
+  // Remove UI-only elements (from both live reference points stay paired by index,
+  // so remove from clone only — live tree is untouched)
   const toRemove = ['#sel-rect','#node-tooltip','#ctx-menu'];
   for(const sel of toRemove){ const el=svg.querySelector(sel); if(el) el.remove(); }
 
-  // Build an inline style block that defines the variables (belt-and-suspenders)
+  // Bake every element's actual rendered color/style (resolved by the browser via
+  // getComputedStyle on the LIVE tree) into literal inline styles on the clone.
+  // This is robust regardless of whether the color came from an attribute, a CSS
+  // class rule (.node-group.orphan .node-circle), or a var() — getComputedStyle
+  // always returns the final resolved value.
+  bakeComputedStyle(liveSvg, svg);
+
+  // Belt-and-suspenders: also keep a :root var block in case any rule still
+  // references var() somewhere we didn't bake (e.g. dynamically-created markers).
   const styleEl = document.createElementNS('http://www.w3.org/2000/svg','style');
   styleEl.textContent = ':root{' + Object.entries(resolved).map(([k,v])=>`${k}:${v}`).join(';') + ';--font-ui:sans-serif}';
   svg.insertBefore(styleEl, svg.firstChild);
-
-  // Also walk and resolve every element so the SVG is self-contained even in
-  // viewers that don't support CSS custom properties (Inkscape, Affinity, etc.)
-  resolveEl(svg);
 
   // Compute bounding box from graph-root
   const bbox = $('graph-root').getBBox();
@@ -2227,18 +2255,24 @@ function prepareExportSvg(){
   svg.setAttribute('height', h);
   svg.setAttribute('viewBox', `${vbX} ${vbY} ${w} ${h}`);
 
-  // Fix grid-bg rect: was width/height="100%" which means 100% of the SVG
-  // viewport (starting at 0,0), but our viewBox starts at (vbX,vbY) so it
-  // would only cover the portion near the origin — everything else goes black.
-  const gridBg = svg.querySelector('#grid-bg');
-  if(gridBg){
-    gridBg.setAttribute('x', vbX - 1000);
-    gridBg.setAttribute('y', vbY - 1000);
-    gridBg.setAttribute('width', w + 2000);
-    gridBg.setAttribute('height', h + 2000);
-    gridBg.setAttribute('fill', resolved['--bg0']);
-    gridBg.removeAttribute('fill-opacity');
-  }
+  // The original #grid-bg rect lives in screen-pixel space (child of #svg-canvas,
+  // sibling of #graph-root), NOT in graph-space — so reusing it with bbox-derived
+  // coordinates (which are in graph-root's transformed coordinate system) mixed
+  // two different coordinate spaces and placed it in the wrong quadrant entirely.
+  // Fix: remove the original grid-bg and draw a fresh flat background rect
+  // directly in the new export viewBox's coordinate space instead.
+  const oldGridBg = svg.querySelector('#grid-bg');
+  if(oldGridBg) oldGridBg.remove();
+  const freshBg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  freshBg.setAttribute('x', vbX);
+  freshBg.setAttribute('y', vbY);
+  freshBg.setAttribute('width', w);
+  freshBg.setAttribute('height', h);
+  freshBg.setAttribute('fill', resolved['--bg0']);
+  // Insert right after <defs> so it sits behind all graph content
+  const defsEl = svg.querySelector('defs');
+  if(defsEl && defsEl.nextSibling) svg.insertBefore(freshBg, defsEl.nextSibling);
+  else svg.appendChild(freshBg);
 
   return {svgEl: svg, width: w, height: h, vbX, vbY};
 }
