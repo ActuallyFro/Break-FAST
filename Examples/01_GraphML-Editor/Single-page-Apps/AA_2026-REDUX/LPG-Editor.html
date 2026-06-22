@@ -2177,7 +2177,28 @@ function applyPaintFormat(type, id){
 //  1. All CSS var() replaced by literal computed values
 //  2. grid-bg sized to cover the exact viewBox (no 100%/100% offset bug)
 //  3. Viewport sized to the graph bounding box + padding
-function prepareExportSvg(){
+// Computes the rectangle, in graph-space coordinates, that is CURRENTLY visible
+// on screen — i.e. what the player is "looking out at" through the current
+// pan/zoom (State.view.x, State.view.y, State.view.k). This is the inverse of
+// the transform applied in applyTransform(): screen = translate(view.x,view.y) scale(view.k) * graph.
+// So graph = (screen - view) / k.
+function getVisibleGraphRect(){
+  const canvas = $('svg-canvas');
+  const rect = canvas.getBoundingClientRect();
+  const k = (State.view && State.view.k) || 1;
+  const vx = (State.view && State.view.x) || 0;
+  const vy = (State.view && State.view.y) || 0;
+  return {
+    x: -vx / k,
+    y: -vy / k,
+    width: rect.width / k,
+    height: rect.height / k,
+    screenWidth: rect.width,
+    screenHeight: rect.height
+  };
+}
+
+function prepareExportSvg(viewRect){
   const isLight = document.body.classList.contains('light-mode');
   const resolved = {
     '--text':        isLight ? '#1f2937'  : '#e6edf3',
@@ -2214,7 +2235,12 @@ function prepareExportSvg(){
     let inline = '';
     for(const p of props){
       const v = cs.getPropertyValue(p);
-      if(v && v !== 'none' && v !== 'normal' && v !== '0px') inline += `${p}:${v};`;
+      // Bake the real computed value whenever there is one — including 'none'.
+      // 'none' is a meaningful paint/value (e.g. the invisible node-port hit-circle
+      // relies on fill:none from a CSS class that won't exist in the standalone
+      // exported file). Skipping it left such elements with NO fill attribute at
+      // all, which defaults to opaque black in SVG and covered content beneath it.
+      if(v && v !== '0px') inline += `${p}:${v};`;
     }
     if(inline) cloneEl.setAttribute('style', (cloneEl.getAttribute('style')||'') + inline);
     const liveChildren = Array.from(liveEl.children);
@@ -2226,17 +2252,28 @@ function prepareExportSvg(){
 
   const liveSvg = $('svg-canvas');
   const svg = liveSvg.cloneNode(true);
-  // Remove UI-only elements (from both live reference points stay paired by index,
-  // so remove from clone only — live tree is untouched)
-  const toRemove = ['#sel-rect','#node-tooltip','#ctx-menu'];
-  for(const sel of toRemove){ const el=svg.querySelector(sel); if(el) el.remove(); }
 
   // Bake every element's actual rendered color/style (resolved by the browser via
   // getComputedStyle on the LIVE tree) into literal inline styles on the clone.
-  // This is robust regardless of whether the color came from an attribute, a CSS
-  // class rule (.node-group.orphan .node-circle), or a var() — getComputedStyle
-  // always returns the final resolved value.
+  // IMPORTANT: this must happen while liveSvg and svg are still structurally
+  // identical (straight clone), because bakeComputedStyle walks both trees in
+  // parallel, pairing children by index. Removing elements from the clone
+  // first would desync that pairing for every later sibling, causing styles
+  // to be baked onto the WRONG elements (this is what made nodes render black
+  // while edges/text, which carry explicit color attributes, stayed correct).
   bakeComputedStyle(liveSvg, svg);
+
+  // Only now remove UI-only elements from the clone.
+  const toRemove = ['#sel-rect','#node-tooltip','#ctx-menu'];
+  for(const sel of toRemove){ const el=svg.querySelector(sel); if(el) el.remove(); }
+
+  // #graph-root carries a live transform (translate(view.x,view.y) scale(view.k))
+  // for on-screen panning/zooming. Our export viewBox already maps the visible
+  // region directly in raw graph-space coordinates, so leaving this transform
+  // on the clone would apply the pan/zoom a SECOND time — shrinking and
+  // shoving the whole graph into one corner. Strip it on the clone only.
+  const clonedRoot = svg.querySelector('#graph-root');
+  if(clonedRoot) clonedRoot.removeAttribute('transform');
 
   // Belt-and-suspenders: also keep a :root var block in case any rule still
   // references var() somewhere we didn't bake (e.g. dynamically-created markers).
@@ -2244,15 +2281,24 @@ function prepareExportSvg(){
   styleEl.textContent = ':root{' + Object.entries(resolved).map(([k,v])=>`${k}:${v}`).join(';') + ';--font-ui:sans-serif}';
   svg.insertBefore(styleEl, svg.firstChild);
 
-  // Compute bounding box from graph-root
-  const bbox = $('graph-root').getBBox();
-  const pad = 60;
-  const w = Math.max(400, bbox.width + pad*2);
-  const h = Math.max(300, bbox.height + pad*2);
-  const vbX = bbox.x - pad, vbY = bbox.y - pad;
+  // Bounds: either the caller-supplied visible viewport rect (graph-space —
+  // exactly what's on screen right now), or, if none was given, fall back to
+  // the full content bounding box of the graph (legacy "export everything").
+  let w, h, vbX, vbY;
+  if(viewRect){
+    w = Math.max(1, viewRect.width);
+    h = Math.max(1, viewRect.height);
+    vbX = viewRect.x; vbY = viewRect.y;
+  } else {
+    const bbox = $('graph-root').getBBox();
+    const pad = 60;
+    w = Math.max(400, bbox.width + pad*2);
+    h = Math.max(300, bbox.height + pad*2);
+    vbX = bbox.x - pad; vbY = bbox.y - pad;
+  }
 
-  svg.setAttribute('width', w);
-  svg.setAttribute('height', h);
+  svg.setAttribute('width', viewRect ? viewRect.screenWidth : w);
+  svg.setAttribute('height', viewRect ? viewRect.screenHeight : h);
   svg.setAttribute('viewBox', `${vbX} ${vbY} ${w} ${h}`);
 
   // The original #grid-bg rect lives in screen-pixel space (child of #svg-canvas,
@@ -2328,80 +2374,39 @@ window.App = {
   },
   exportPng() {
     try {
-      const view = App.getVisibleViewport();
-      if (view.width <= 0 || view.height <= 0) return;
+      const rect = getVisibleGraphRect();
+      if (rect.screenWidth <= 0 || rect.screenHeight <= 0) return;
 
-      // Create an in-memory canvas matching the active workspace dimensions
-      const tempCanvas = document.createElement('canvas');
-      
-      // Account for High-DPI/Retina screens so the exported PNG text stays perfectly crisp
-      const dpr = window.devicePixelRatio || 1;
-      tempCanvas.width = view.width * dpr;
-      tempCanvas.height = view.height * dpr;
-      
-      const ctx = tempCanvas.getContext('2d');
-      ctx.scale(dpr, dpr);
+      const { svgEl } = prepareExportSvg(rect);
+      const svgString = new XMLSerializer().serializeToString(svgEl);
+      const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(svgBlob);
 
-      // 1. Draw the background workspace color
-      ctx.fillStyle = '#0d1117';
-      ctx.fillRect(0, 0, view.width, view.height);
+      const img = new Image();
+      img.onload = () => {
+        const dpr = window.devicePixelRatio || 1;
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = rect.screenWidth * dpr;
+        tempCanvas.height = rect.screenHeight * dpr;
+        const ctx = tempCanvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+        ctx.drawImage(img, 0, 0, rect.screenWidth, rect.screenHeight);
+        URL.revokeObjectURL(url);
 
-      // 2. Apply the active pan and zoom transforms
-      ctx.save();
-      ctx.translate(State.panX || 0, State.panY || 0);
-      ctx.scale(State.zoom || 1, State.zoom || 1);
-
-      // 3. Draw Edges programmatically from State data
-      if (State.edges && Array.isArray(State.edges)) {
-        State.edges.forEach(edge => {
-          const src = State.nodes.find(n => n.id === edge.source);
-          const tgt = State.nodes.find(n => n.id === edge.target);
-          if (!src || !tgt) return;
-          
-          ctx.beginPath();
-          ctx.moveTo(src.x, src.y);
-          ctx.lineTo(tgt.x, tgt.y);
-          ctx.strokeStyle = '#58a6ff';
-          ctx.lineWidth = 2;
-          ctx.stroke();
-        });
-      }
-
-      // 4. Draw Nodes and Text Labels programmatically from State data
-      if (State.nodes && Array.isArray(State.nodes)) {
-        State.nodes.forEach(node => {
-          const radius = node.r || 26;
-          
-          // Outer Node Circle
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI);
-          ctx.fillStyle = node.color || '#1f6feb';
-          ctx.fill();
-          ctx.strokeStyle = '#58a6ff';
-          ctx.lineWidth = 2;
-          ctx.stroke();
-
-          // Node Text Label
-          if (node.label) {
-            ctx.fillStyle = '#e6edf3';
-            ctx.font = '12px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(node.label, node.x, node.y + 2);
-          }
-        });
-      }
-
-      ctx.restore();
-
-      // Trigger instant PNG asset generation & download
-      const data = tempCanvas.toDataURL('image/png');
-      const a = document.createElement('a');
-      a.href = data;
-      a.download = (State.exportName || 'graph') + '.png';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+        const data = tempCanvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = data;
+        a.download = (State.exportName || 'graph') + '.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+      img.onerror = (err) => {
+        URL.revokeObjectURL(url);
+        console.error("PNG Export failed (image load):", err);
+        alert("PNG Export failed while rendering the image.");
+      };
+      img.src = url;
     } catch (err) {
       console.error("PNG Export failed:", err);
       alert("PNG Export failed: " + err.message);
@@ -2410,57 +2415,12 @@ window.App = {
 
   exportSvg() {
     try {
-      const view = App.getVisibleViewport();
-      if (view.width <= 0 || view.height <= 0) return;
+      const rect = getVisibleGraphRect();
+      if (rect.screenWidth <= 0 || rect.screenHeight <= 0) return;
 
-      // Helper function to safely escape special text characters for valid XML output
-      const escapeXml = (str) => {
-        if (str === null || str === undefined) return '';
-        return String(str).replace(/[<>&'"]/g, (c) => {
-          switch (c) {
-            case '<': return '&lt;';
-            case '>': return '&gt;';
-            case '&': return '&amp;';
-            case '\'': return '&apos;';
-            case '"': return '&quot;';
-            default: return c;
-          }
-        });
-      };
-
-      // Set up base SVG template matching layout workspace bounds exactly
-      let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${view.width}" height="${view.height}" viewBox="0 0 ${view.width} ${view.height}">`;
-      svg += `<rect width="100%" height="100%" fill="#0d1117" />`;
-      
-      // Direct coordinate layout binding without extra double-offset shifts
-      svg += `<g transform="translate(${State.panX || 0}, ${State.panY || 0}) scale(${State.zoom || 1})">`;
-      
-      // Process edges safely
-      if (State.edges && Array.isArray(State.edges)) {
-        State.edges.forEach(edge => {
-          const src = State.nodes.find(n => n.id === edge.source);
-          const tgt = State.nodes.find(n => n.id === edge.target);
-          if (!src || !tgt) return;
-          svg += `<line x1="${src.x}" y1="${src.y}" x2="${tgt.x}" y2="${tgt.y}" stroke="#58a6ff" stroke-width="2" />`;
-        });
-      }
-      
-      // Process nodes and cleanly parse their text labels
-      if (State.nodes && Array.isArray(State.nodes)) {
-        State.nodes.forEach(node => {
-          const nodeColor = escapeXml(node.color || '#1f6feb');
-          svg += `<circle cx="${node.x}" cy="${node.y}" r="${node.r || 26}" fill="${nodeColor}" stroke="#58a6ff" stroke-width="2" />`;
-          
-          if (node.label) {
-            const labelText = escapeXml(node.label);
-            svg += `<text x="${node.x}" y="${node.y + 4}" fill="#e6edf3" font-size="12" font-family="sans-serif" text-anchor="middle">${labelText}</text>`;
-          }
-        });
-      }
-      
-      svg += `</g></svg>`;
-      
-      const blob = new Blob([svg], {type: 'image/svg+xml;charset=utf-8'});
+      const { svgEl } = prepareExportSvg(rect);
+      const svgString = new XMLSerializer().serializeToString(svgEl);
+      const blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -2476,32 +2436,7 @@ window.App = {
   },
 
   getVisibleViewport() {
-    // Dynamically calculate workspace boundaries based purely on current window real estate
-    let left = 0;
-    let top = 0;
-    let right = window.innerWidth;
-    let bottom = window.innerHeight;
-
-    const sidebar = document.getElementById('sidebar') || document.getElementById('settings-panel');
-    if (sidebar && sidebar.offsetWidth > 0) {
-      const rect = sidebar.getBoundingClientRect();
-      if (rect.left === 0) left = rect.right;
-      else if (rect.right === window.innerWidth) right = rect.left;
-    }
-
-    const tableDrawer = document.getElementById('table-drawer') || document.getElementById('table-panel');
-    if (tableDrawer && tableDrawer.offsetHeight > 0) {
-      const rect = tableDrawer.getBoundingClientRect();
-      if (rect.bottom === window.innerHeight) bottom = rect.top;
-      else if (rect.top === 0) top = rect.bottom;
-    }
-
-    return {
-      left,
-      top,
-      width: Math.max(0, right - left),
-      height: Math.max(0, bottom - top)
-    };
+    return getVisibleGraphRect();
   },
   handleJsonFile(input) {
     const file = input.files[0];
