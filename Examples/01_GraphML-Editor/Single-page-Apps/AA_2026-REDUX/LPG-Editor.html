@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LPG Graph Editor</title>
+<title>LPG Graph Editor v4</title>
 <style>
 /* ── RESET & BASE ─────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -355,7 +355,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
 <div id="app">
 
   <div id="toolbar">
-    <span id="toolbar-title" onclick="App.openReadme()" title="About LPG Editor — click for help &amp; shortcuts">⬡ LPG</span>
+    <span id="toolbar-title" onclick="App.openReadme()" title="About LPG Editor — click for help &amp; shortcuts">⬡ LPG v4</span>
     <div class="tb-sep"></div>
     <button class="tb-btn" onclick="App.newGraph()" title="New graph">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75A.75.75 0 012.75 1h6.586a.75.75 0 01.53.22l3.914 3.914a.75.75 0 01.22.53V14.25a.75.75 0 01-.75.75H2.75a.75.75 0 01-.75-.75V1.75zm1.5.75v11h9V6.5H9.25A.75.75 0 018.5 5.75V2.5H3.5zm6.5.56l2.19 2.19H10V3.06z"/></svg>
@@ -559,7 +559,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
     <div id="readme-header">
       <div class="readme-logo">⬡</div>
       <div id="readme-header-text">
-        <h2>LPG Graph Editor</h2>
+        <h2>LPG Graph Editor v4</h2>
         <p>A browser-based Labeled Property Graph editor — no server, no install.</p>
       </div>
       <button id="readme-close" onclick="App.closeReadme()">✕</button>
@@ -632,7 +632,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
       <p>Graph state (nodes, edges, positions, colors, view zoom) auto-saves to <code style="font-family:var(--font-mono);font-size:.86em;background:var(--bg2);padding:1px 5px;border-radius:3px">localStorage</code> on every meaningful action. This survives page reload <em>within the same browser</em>, but is wiped if you clear browser storage. A reminder banner appears after 90 seconds of unexported changes. <strong>Use Export JSON for a permanent backup.</strong></p>
     </div>
     <div id="readme-footer">
-      <p>Click <strong>⬡ LPG</strong> anytime to reopen this guide.</p>
+      <p>Click <strong>⬡ LPG v4</strong> anytime to reopen this guide.</p>
       <button class="modal-btn primary" onclick="App.closeReadme()">Got it</button>
     </div>
   </div>
@@ -2049,6 +2049,18 @@ function importFromJSON(text){
     State.nodes = d.nodes.map(n=>({id:n.id, label:n.label||n.id, x:n.x||0, y:n.y||0, color:n.color||'#1f6feb', r:n.r||26, fontSize:n.fontSize||11, labelAlign:n.labelAlign||'center', labelColor:n.labelColor||'', props:n.props||{}}));
     State.edges = d.edges.map(e=>({id:e.id||uid('e'), source:e.source, target:e.target, label:e.label||'', directed:e.directed!==false, style:e.style||'straight', dash:e.dash||'solid', arrowSize:e.arrowSize||'medium', color:e.color, props:e.props||{}}));
     State.graphId = d.graphId || 'graph1';
+    
+    if (d.exportName && d.exportName !== State.exportName) {
+      if (confirm(`The imported file has a different Export Name ('${d.exportName}'). Do you want to update your Local Storage Export Name?`)) {
+        if(window.App && typeof window.App.setExportName === 'function'){
+          window.App.setExportName(d.exportName);
+        } else {
+          State.exportName = d.exportName;
+          localStorage.setItem('lpg_export_name', State.exportName);
+        }
+      }
+    }
+
     State.graphMeta = d.graphMeta || {edgedefault:'undirected'};
     State.idCounter = d.idCounter || (Math.max(0,...State.nodes.map(n=>parseInt(n.id.replace(/\D/g,''))||0))+1);
     State.selected.clear();
@@ -2535,7 +2547,7 @@ window.App = {
   },
   renameNodeId(oldId, newId){
     if(!newId||newId===oldId) return;
-    if(State.nodes.find(n=>n.id===newId)){ notify('ID already exists'); return; }
+    if(State.nodes.find(n=>n.id===newId) || State.edges.find(e=>e.id===newId)){ notify('ID already exists'); return; }
     snapshot();
     const n=State.nodes.find(n=>n.id===oldId); if(n) n.id=newId;
     for(const e of State.edges){
@@ -2547,7 +2559,7 @@ window.App = {
   },
   renameEdgeId(oldId, newId){
     if(!newId||newId===oldId) return;
-    if(State.edges.find(e=>e.id===newId)){ notify('Edge ID already exists'); return; }
+    if(State.nodes.find(n=>n.id===newId) || State.edges.find(e=>e.id===newId)){ notify('Edge ID already exists'); return; }
     snapshot();
     const e=State.edges.find(e=>e.id===oldId); if(e) e.id=newId;
     State.selected.delete(oldId); State.selected.add(newId);
