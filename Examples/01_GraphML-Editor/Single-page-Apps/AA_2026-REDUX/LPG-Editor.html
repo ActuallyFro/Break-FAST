@@ -355,7 +355,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
 <div id="app">
 
   <div id="toolbar">
-    <span id="toolbar-title" onclick="App.openReadme()" title="About LPG Editor — click for help &amp; shortcuts">⬡ LPG v4</span>
+    <span id="toolbar-title" onclick="App.openReadme()" title="About LPG Editor — click for help &amp; shortcuts">⬡ LPG v5</span>
     <div class="tb-sep"></div>
     <button class="tb-btn" onclick="App.newGraph()" title="New graph">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75A.75.75 0 012.75 1h6.586a.75.75 0 01.53.22l3.914 3.914a.75.75 0 01.22.53V14.25a.75.75 0 01-.75.75H2.75a.75.75 0 01-.75-.75V1.75zm1.5.75v11h9V6.5H9.25A.75.75 0 018.5 5.75V2.5H3.5zm6.5.56l2.19 2.19H10V3.06z"/></svg>
@@ -559,7 +559,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
     <div id="readme-header">
       <div class="readme-logo">⬡</div>
       <div id="readme-header-text">
-        <h2>LPG Graph Editor v4</h2>
+        <h2>LPG Graph Editor v5</h2>
         <p>A browser-based Labeled Property Graph editor — no server, no install.</p>
       </div>
       <button id="readme-close" onclick="App.closeReadme()">✕</button>
@@ -632,7 +632,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
       <p>Graph state (nodes, edges, positions, colors, view zoom) auto-saves to <code style="font-family:var(--font-mono);font-size:.86em;background:var(--bg2);padding:1px 5px;border-radius:3px">localStorage</code> on every meaningful action. This survives page reload <em>within the same browser</em>, but is wiped if you clear browser storage. A reminder banner appears after 90 seconds of unexported changes. <strong>Use Export JSON for a permanent backup.</strong></p>
     </div>
     <div id="readme-footer">
-      <p>Click <strong>⬡ LPG v4</strong> anytime to reopen this guide.</p>
+      <p>Click <strong>⬡ LPG v5</strong> anytime to reopen this guide.</p>
       <button class="modal-btn primary" onclick="App.closeReadme()">Got it</button>
     </div>
   </div>
@@ -779,7 +779,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
       </div>
 
       <div class="set-section">
-        <div class="set-section-label">Import</div>
+        <div class="set-section-label">FULL/NEW GRAPH Import</div>
         <button class="set-toggle-btn" onclick="App.importJson();App.closeSettings()">
           <svg viewBox="0 0 16 16" fill="currentColor" style="width:14px;height:14px"><path d="M7.47 10.78a.75.75 0 001.06 0l3.5-3.5a.75.75 0 00-1.06-1.06L8.75 8.44V1.75a.75.75 0 00-1.5 0v6.69L5.03 6.22a.75.75 0 00-1.06 1.06l3.5 3.5zM3.75 13a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5z"/></svg>
           Import JSON / GraphML Text
@@ -1694,6 +1694,38 @@ function initInspectorPalettes(){
   if(me) renderColorPaletteRow(me.id, '', (c)=>App.setMultiColor('edge',c), false);
 }
 
+// ── Copy-selection (exporting objects) ──────────────────────────────
+let _copyOpts = {fmt:'pretty', linkEdges:true};
+
+function buildSelectionPatch(){
+  const sel = State.selected;
+  const nodes = State.nodes.filter(n=>sel.has(n.id));
+  const nodeIds = new Set(nodes.map(n=>n.id));
+  const edges = State.edges.filter(e=>
+    sel.has(e.id) || (_copyOpts.linkEdges && nodeIds.has(e.source) && nodeIds.has(e.target)));
+  const obj = {
+    nodes: nodes.map(n=>({...n, props:{...(n.props||{})}})),
+    edges: edges.map(e=>({...e, props:{...(e.props||{})}})),
+    graphId: State.graphId,
+    graphMeta: {...State.graphMeta},
+    idCounter: State.idCounter
+  };
+  return {obj, text: JSON.stringify(obj, null, _copyOpts.fmt==='pretty' ? 2 : 0)};
+}
+
+async function copyText(text, okMsg){
+  try{ await navigator.clipboard.writeText(text); notify(okMsg); return; }catch(e){}
+  try{
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    const ok = document.execCommand('copy'); ta.remove();
+    if(ok){ notify(okMsg); return; }
+  }catch(e){}
+  openModal('Copy manually', `<textarea readonly>${escHtml(text)}</textarea>`, [{label:'Close'}]);
+}
+
+
 function renderInspector(){
   const body = $('inspector-body');
   const ids = [...State.selected];
@@ -1734,6 +1766,15 @@ function renderInspector(){
       html += '<div class="insp-row"><label>Node Size</label><div style="display:flex;gap:6px;align-items:center"><input type="range" min="15" max="120" value="26" style="flex:1" oninput="App.setMultiSize(parseInt(this.value))"></div></div>';
     }
     html += '<button class="insp-btn" onclick="App.paintSelected()">🖌 Paint Format from First</button>';
+    html += `<div class="insp-row"><label>Copy Format</label>
+      <select onchange="App.setCopyOpt('fmt',this.value)">
+        <option value="pretty" ${_copyOpts.fmt==='pretty'?'selected':''}>Pretty JSON</option>
+        <option value="compact" ${_copyOpts.fmt==='compact'?'selected':''}>Compact JSON</option>
+      </select></div>`;
+    html += `<label style="display:flex;gap:4px;align-items:center;font-size:.8em;margin-bottom:6px">
+      <input type="checkbox" ${_copyOpts.linkEdges?'checked':''} onchange="App.setCopyOpt('linkEdges',this.checked)">
+      Include edges between selected nodes</label>`;
+    html += '<button class="insp-btn" onclick="App.copySelection()">⧉ Copy All Selected as JSON</button>';
     html += '<button class="insp-btn danger" onclick="App.deleteSelected()">Delete All Selected</button>';
     html += '</div>';
     body.innerHTML = html;
@@ -1799,6 +1840,7 @@ function renderInspector(){
         <button class="insp-btn" onclick="App.addProp('node','${node.id}')">+ Add Property</button>
       </div>
       <div class="insp-section">
+        <button class="insp-btn" onclick="App.copySelection()">⧉ Copy Node as JSON</button>
         <button class="insp-btn danger" onclick="App.deleteSelected()">Delete Node</button>
       </div>`;
     return;
@@ -1870,6 +1912,7 @@ function renderInspector(){
         <button class="insp-btn" onclick="App.addProp('edge','${edge.id}')">+ Add Property</button>
       </div>
       <div class="insp-section">
+        <button class="insp-btn" onclick="App.copySelection()">⧉ Copy Edge as JSON</button>
         <button class="insp-btn danger" onclick="App.deleteSelected()">Delete Edge</button>
       </div>`;
   }
@@ -2722,6 +2765,12 @@ window.App = {
     dismissReminder(true);
   },
 
+  copySelection(){
+    if(!State.selected.size){ notify('Nothing selected'); return; }
+    const {obj, text} = buildSelectionPatch();
+    copyText(text, `Copied ${obj.nodes.length}N / ${obj.edges.length}E — paste via ➕ OBJs`);
+  },
+  setCopyOpt(k, v){ _copyOpts[k] = v; },
 
   openMerge(){
     const ta = `<textarea id="merge-json" style="height:160px;font-family:var(--font-mono);font-size:.79em" placeholder="Paste the JSON of the graph to merge in…"></textarea>
@@ -2808,7 +2857,8 @@ window.App = {
     // Add new (non-conflicting) nodes and edges
     for(const n of d.newNodes){
       // Offset position slightly so they don't pile up
-      State.nodes.push({...n, x:(n.x||200)+Math.random()*40-20, y:(n.y||200)+Math.random()*40-20});
+      // COMMENTING OUT to remove jitter-placement: State.nodes.push({...n, x:(n.x||200)+Math.random()*40-20, y:(n.y||200)+Math.random()*40-20});
+      State.nodes.push({...n});
     }
     for(const e of d.newEdges) State.edges.push({...e});
     // Apply conflict resolutions
