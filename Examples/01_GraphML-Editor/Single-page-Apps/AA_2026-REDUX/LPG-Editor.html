@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LPG Graph Editor v4</title>
+<title>LPG Graph Editor v6</title>
 <style>
 /* ── RESET & BASE ─────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -355,7 +355,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
 <div id="app">
 
   <div id="toolbar">
-    <span id="toolbar-title" onclick="App.openReadme()" title="About LPG Editor — click for help &amp; shortcuts">⬡ LPG v5</span>
+    <span id="toolbar-title" onclick="App.openReadme()" title="About LPG Editor — click for help &amp; shortcuts">⬡ LPG v6</span>
     <div class="tb-sep"></div>
     <button class="tb-btn" onclick="App.newGraph()" title="New graph">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75A.75.75 0 012.75 1h6.586a.75.75 0 01.53.22l3.914 3.914a.75.75 0 01.22.53V14.25a.75.75 0 01-.75.75H2.75a.75.75 0 01-.75-.75V1.75zm1.5.75v11h9V6.5H9.25A.75.75 0 018.5 5.75V2.5H3.5zm6.5.56l2.19 2.19H10V3.06z"/></svg>
@@ -415,6 +415,14 @@ body[data-paint="active"] .edge-group{cursor:copy}
     <button class="tb-btn" onclick="App.autoLayout()" title="Auto force layout">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 012.5 1h3A1.5 1.5 0 017 2.5v3A1.5 1.5 0 015.5 7h-3A1.5 1.5 0 011 5.5v-3zm8.5 0A1.5 1.5 0 0111 1h3a1.5 1.5 0 011.5 1.5v3A1.5 1.5 0 0114 7h-3a1.5 1.5 0 01-1.5-1.5v-3zm-8.5 8A1.5 1.5 0 012.5 9h3A1.5 1.5 0 017 10.5v3A1.5 1.5 0 015.5 15h-3A1.5 1.5 0 011 13.5v-3zm8.5 0A1.5 1.5 0 0111 9h3a1.5 1.5 0 011.5 1.5v3A1.5 1.5 0 0114 15h-3a1.5 1.5 0 01-1.5-1.5v-3z"/></svg>
       Layout
+    </button>
+    <button class="tb-btn" onclick="App.spread()" title="Spread nodes apart (keeps arrangement; spreads selection if 2+ nodes selected)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.5 2.5-.7.7L8.5 3.9v3.6h3.6V6.2l-.7-.7.7-.7L14.6 7.3 12.1 9.8l-.7-.7.7-.7V8.5H8.5v3.6l.7-.7.7.7L7.3 14.6 4.8 12.1l.7-.7.7.7.3-.3V8.5H3.9l.7.7-.7.7L1.4 7.3 3.9 4.8l.7.7-.7.7V7.5h3.6V3.9l-.7.7-.7-.7L8 1z" transform="translate(0.3 0.3) scale(.96)"/></svg>
+      Spread
+    </button>
+    <button class="tb-btn" onclick="App.tighten()" title="Tighten nodes together (keeps a minimum gap; tightens selection if 2+ nodes selected)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 1.5l.5-.5h3a.5.5 0 010 1H2.7l3.15 3.15a.5.5 0 01-.7.7L2 2.7V4.5a.5.5 0 01-1 0v-3zm14 0v3a.5.5 0 01-1 0V2.7l-3.15 3.15a.5.5 0 01-.7-.7L13.3 2H11.5a.5.5 0 010-1h3l.5.5zM1 11.5a.5.5 0 011 0v1.8l3.15-3.15a.5.5 0 01.7.7L2.7 14h1.8a.5.5 0 010 1h-3l-.5-.5v-3zm13 0a.5.5 0 011 0v3l-.5.5h-3a.5.5 0 010-1h1.8l-3.15-3.15a.5.5 0 01.7-.7L14 13.3v-1.8z"/></svg>
+      Tighten
     </button>
     <button class="tb-btn" onclick="App.fitView()" title="Fit view (F)">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1h4a.5.5 0 010 1H2v3.5a.5.5 0 01-1 0V1.5A.5.5 0 011.5 1zm9 0h4a.5.5 0 01.5.5v4a.5.5 0 01-1 0V2h-3.5a.5.5 0 010-1zM1 10.5a.5.5 0 011 0V14h3.5a.5.5 0 010 1H1.5a.5.5 0 01-.5-.5v-4zm13 0a.5.5 0 011 0v4a.5.5 0 01-.5.5h-4a.5.5 0 010-1H14v-3.5z"/></svg>
@@ -559,7 +567,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
     <div id="readme-header">
       <div class="readme-logo">⬡</div>
       <div id="readme-header-text">
-        <h2>LPG Graph Editor v5</h2>
+        <h2>LPG Graph Editor v6</h2>
         <p>A browser-based Labeled Property Graph editor — no server, no install.</p>
       </div>
       <button id="readme-close" onclick="App.closeReadme()">✕</button>
@@ -632,7 +640,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
       <p>Graph state (nodes, edges, positions, colors, view zoom) auto-saves to <code style="font-family:var(--font-mono);font-size:.86em;background:var(--bg2);padding:1px 5px;border-radius:3px">localStorage</code> on every meaningful action. This survives page reload <em>within the same browser</em>, but is wiped if you clear browser storage. A reminder banner appears after 90 seconds of unexported changes. <strong>Use Export JSON for a permanent backup.</strong></p>
     </div>
     <div id="readme-footer">
-      <p>Click <strong>⬡ LPG v5</strong> anytime to reopen this guide.</p>
+      <p>Click <strong>⬡ LPG v6</strong> anytime to reopen this guide.</p>
       <button class="modal-btn primary" onclick="App.closeReadme()">Got it</button>
     </div>
   </div>
@@ -2124,32 +2132,86 @@ function autoLayoutIfNoPositions(){
 // ═══════════════════════════════════════════════════════════════
 function doAutoLayout(){
   if(State.nodes.length===0) return;
-  const W=800, H=600;
+  const N = State.nodes.length;
+  const W = Math.max(800, Math.sqrt(N)*220), H = Math.max(600, Math.sqrt(N)*180);
   for(const n of State.nodes){
     if(n.x===0&&n.y===0){ n.x = 80 + Math.random()*(W-160); n.y = 80 + Math.random()*(H-160); }
   }
-  const K = 80, REPULSE = 6000, ITERS = 120;
+  // Tunables: bigger K / REPULSE = more breathing room
+  const K = 160, REPULSE = 24000, ITERS = 200;
+  const byId = new Map(State.nodes.map(n=>[n.id,n]));
   for(let iter=0; iter<ITERS; iter++){
+    const cool = 1 - iter/ITERS * 0.8;           // cooling: big moves early, fine tuning late
     const forces = {};
     for(const n of State.nodes) forces[n.id]={fx:0,fy:0};
-    for(let i=0;i<State.nodes.length;i++){
-      for(let j=i+1;j<State.nodes.length;j++){
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
         const a=State.nodes[i], b=State.nodes[j];
-        let dx=b.x-a.x, dy=b.y-a.y; const d=Math.sqrt(dx*dx+dy*dy)||1;
+        let dx=b.x-a.x, dy=b.y-a.y; let d=Math.sqrt(dx*dx+dy*dy);
+        if(d<0.01){ dx=Math.random()-0.5; dy=Math.random()-0.5; d=Math.sqrt(dx*dx+dy*dy)||1; } // coincident nodes: push in a random direction
         const f=REPULSE/(d*d); forces[a.id].fx-=f*dx/d; forces[a.id].fy-=f*dy/d; forces[b.id].fx+=f*dx/d; forces[b.id].fy+=f*dy/d;
       }
     }
     for(const e of State.edges){
-      const a=State.nodes.find(n=>n.id===e.source), b=State.nodes.find(n=>n.id===e.target);
-      if(!a||!b) continue;
+      const a=byId.get(e.source), b=byId.get(e.target);
+      if(!a||!b||a===b) continue;
       let dx=b.x-a.x, dy=b.y-a.y; const d=Math.sqrt(dx*dx+dy*dy)||1;
-      const f=0.06*(d-K); forces[a.id].fx+=f*dx/d; forces[a.id].fy+=f*dy/d; forces[b.id].fx-=f*dx/d; forces[b.id].fy-=f*dy/d;
+      const rest = K + nodeRadius(a) + nodeRadius(b) - 52;   // rest length scales with node size
+      const f=0.05*(d-rest); forces[a.id].fx+=f*dx/d; forces[a.id].fy+=f*dy/d; forces[b.id].fx-=f*dx/d; forces[b.id].fy-=f*dy/d;
     }
+    const maxStep = 30*cool;
     for(const n of State.nodes){
-      n.x += Math.max(-30, Math.min(30, forces[n.id].fx));
-      n.y += Math.max(-30, Math.min(30, forces[n.id].fy));
+      n.x += Math.max(-maxStep, Math.min(maxStep, forces[n.id].fx));
+      n.y += Math.max(-maxStep, Math.min(maxStep, forces[n.id].fy));
     }
   }
+  resolveOverlaps(40);
+  for(const n of State.nodes){ n.x=Math.round(n.x); n.y=Math.round(n.y); }
+}
+
+// Pushes apart any nodes closer than (r1 + r2 + gap). Safe to call on its own.
+function resolveOverlaps(gap=40, passes=80){
+  const ns = State.nodes;
+  for(let p=0;p<passes;p++){
+    let moved=false;
+    for(let i=0;i<ns.length;i++){
+      for(let j=i+1;j<ns.length;j++){
+        const a=ns[i], b=ns[j];
+        let dx=b.x-a.x, dy=b.y-a.y; let d=Math.sqrt(dx*dx+dy*dy);
+        const min = nodeRadius(a)+nodeRadius(b)+gap;
+        if(d>=min) continue;
+        if(d<0.01){ const ang=Math.random()*Math.PI*2; dx=Math.cos(ang); dy=Math.sin(ang); d=1; }
+        const push=(min-d)/2 + 0.5;
+        a.x-=dx/d*push; a.y-=dy/d*push; b.x+=dx/d*push; b.y+=dy/d*push;
+        moved=true;
+      }
+    }
+    if(!moved) break;
+  }
+}
+
+// Spread: scale positions away from the centre, then clear any remaining overlaps.
+// Keeps your arrangement (unlike Layout) - just gives everything more room.
+function doSpread(factor=1.3){
+  const ns = State.selected && State.selected.size>1
+    ? State.nodes.filter(n=>State.selected.has(n.id)) : State.nodes;
+  if(ns.length===0) return;
+  const cx = ns.reduce((s,n)=>s+n.x,0)/ns.length, cy = ns.reduce((s,n)=>s+n.y,0)/ns.length;
+  for(const n of ns){ n.x = cx + (n.x-cx)*factor; n.y = cy + (n.y-cy)*factor; }
+  resolveOverlaps(40);
+  for(const n of State.nodes){ n.x=Math.round(n.x); n.y=Math.round(n.y); }
+}
+
+// Tighten: opposite of Spread. Scales positions toward the centre, but never lets nodes
+// get closer than (r1 + r2 + 20px), so nothing piles up.
+function doTighten(factor=0.8){
+  const ns = State.selected && State.selected.size>1
+    ? State.nodes.filter(n=>State.selected.has(n.id)) : State.nodes;
+  if(ns.length===0) return;
+  const cx = ns.reduce((s,n)=>s+n.x,0)/ns.length, cy = ns.reduce((s,n)=>s+n.y,0)/ns.length;
+  for(const n of ns){ n.x = cx + (n.x-cx)*factor; n.y = cy + (n.y-cy)*factor; }
+  resolveOverlaps(20);
+  for(const n of State.nodes){ n.x=Math.round(n.x); n.y=Math.round(n.y); }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2663,6 +2725,8 @@ window.App = {
     notify('Format painted to '+(ids.length-1)+' objects');
   },
   autoLayout(){ snapshot(); doAutoLayout(); renderAll(); localStorage.setItem('lpg_graph_state', serialize()); notify('Force layout applied'); },
+  spread(){ snapshot(); doSpread(1.3); renderAll(); localStorage.setItem('lpg_graph_state', serialize()); notify('Nodes spread apart'); },
+  tighten(){ snapshot(); doTighten(0.8); renderAll(); localStorage.setItem('lpg_graph_state', serialize()); notify('Nodes tightened'); },
   fitView(){
     if(State.nodes.length===0){ State.view={x:0,y:0,k:1}; applyTransform(); return; }
     const rect = $('svg-canvas').getBoundingClientRect();
@@ -2857,9 +2921,9 @@ window.App = {
     // Add new (non-conflicting) nodes and edges
     for(const n of d.newNodes){
       // Offset position slightly so they don't pile up
-      // COMMENTING OUT to remove jitter-placement: State.nodes.push({...n, x:(n.x||200)+Math.random()*40-20, y:(n.y||200)+Math.random()*40-20});
-      State.nodes.push({...n});
+      State.nodes.push({...n, x:(n.x||200)+Math.random()*40-20, y:(n.y||200)+Math.random()*40-20});
     }
+    resolveOverlaps(30);
     for(const e of d.newEdges) State.edges.push({...e});
     // Apply conflict resolutions
     const allConflicts = [...d.conflictNodes.map(n=>({type:'node',obj:n})), ...d.conflictEdges.map(e=>({type:'edge',obj:e}))];
