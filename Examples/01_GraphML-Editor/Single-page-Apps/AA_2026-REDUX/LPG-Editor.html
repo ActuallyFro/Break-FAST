@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LPG Graph Editor v6</title>
+<title>LPG Graph Editor v7</title>
 <style>
 /* ── RESET & BASE ─────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -138,7 +138,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
 #obj-table th:hover{color:var(--text)}
 #obj-table th.sort-asc::after{content:" ↑"}
 #obj-table th.sort-desc::after{content:" ↓"}
-#obj-table td{padding:4px 8px;border-bottom:1px solid rgba(48,54,61,.5);color:var(--text2);vertical-align:top;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#obj-table td{padding:4px 8px;border-bottom:1px solid rgba(48,54,61,.5);color:var(--text2);vertical-align:top;max-width:max(140px,calc((var(--table-w,340px) - 80px) / 3));overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #obj-table tr:hover td{background:var(--bg2);color:var(--text);cursor:pointer}
 #obj-table tr.selected-row td{background:rgba(88,166,255,.08);color:var(--text)}
 .type-badge{display:inline-block;padding:1px 5px;border-radius:3px;font-size:.64em;text-transform:uppercase;letter-spacing:.05em}
@@ -348,6 +348,48 @@ body[data-paint="active"] .edge-group{cursor:copy}
 .insp-section-label-row .insp-section-label{margin-bottom:0}
 .insp-section-label-row .expand-btn{background:none;border:1px solid var(--border);color:var(--text3);cursor:pointer;font-size:.72em;font-family:var(--font-mono);padding:1px 7px;border-radius:3px;line-height:1.6}
 .insp-section-label-row .expand-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ── v7: TRANSPARENCY (declutter) ─────────────────────────────── */
+/* final opacity = global fade (--*-op) x the object's own alpha (--n-fill-a / --n-stroke-a / --e-a) */
+.node-group .node-circle{fill-opacity:calc(var(--node-fill-op,1) * var(--n-fill-a,1));stroke-opacity:calc(var(--node-stroke-op,1) * var(--n-stroke-a,1))}
+.node-group:hover .node-circle,.node-group.selected .node-circle{fill-opacity:var(--n-fill-a,1);stroke-opacity:var(--n-stroke-a,1)}
+.node-group.orphan .node-circle{stroke-opacity:var(--n-stroke-a,1)}
+.edge-line{stroke-opacity:calc(var(--edge-op,1) * var(--e-a,1))}
+.edge-line.selected,.edge-line.hl,.edge-group:hover .edge-line{stroke-opacity:var(--e-a,1)}
+.alpha-row{display:flex;gap:6px;align-items:center}
+.alpha-row input[type=range]{flex:1;accent-color:var(--accent)}
+.alpha-row .alpha-pct{font-size:.79em;color:var(--text3);font-family:var(--font-mono)}
+.set-hint{font-size:.71em;color:var(--text3);line-height:1.45;margin:2px 0 8px}
+.set-btn-row{display:flex;gap:6px}
+.set-btn-row .set-toggle-btn{justify-content:center;padding:6px 8px}
+
+/* ── v7: RESIZABLE PANELS ─────────────────────────────────────── */
+#drawer{position:relative;z-index:15}
+#inspector{position:relative}
+.rz{position:absolute;z-index:30;transition:background .12s}
+.rz:hover,.rz.dragging,#table-resize:hover,#table-resize.dragging{background:var(--accent-glow)}
+#drawer-resize{top:-3px;left:0;right:0;height:7px;cursor:row-resize}
+#inspector-resize{top:0;bottom:0;left:0;width:6px;cursor:col-resize}
+#table-resize{flex:0 0 5px;cursor:col-resize;transition:background .12s}
+#drawer.collapsed #drawer-resize,#app.inspector-collapsed #inspector-resize{display:none}
+#graphml-output{min-width:0}
+#drawer-toggle{margin-left:8px}
+.drawer-size-btn{margin-left:auto;background:none;border:1px solid var(--border);color:var(--text3);border-radius:var(--radius);padding:1px 8px;font-size:.71em;font-family:var(--font-mono);cursor:pointer}
+.drawer-size-btn:hover{color:var(--accent);border-color:var(--accent)}
+#drawer.collapsed .drawer-size-btn{display:none}
+body.resizing{user-select:none}
+body.resizing #app,body.resizing #drawer,body.resizing #inspector{transition:none!important}
+body.resizing-x *{cursor:col-resize!important}
+body.resizing-y *{cursor:row-resize!important}
+
+/* ── v7: ORPHAN / DANGLING FLAGS ──────────────────────────────── */
+#obj-search-row{display:flex;border-bottom:1px solid var(--border);background:var(--bg2)}
+#obj-search-row #obj-search{flex:1;width:auto;min-width:0;border-bottom:none}
+#obj-flag-btn{background:none;border:none;border-left:1px solid var(--border);color:var(--text3);cursor:pointer;font-family:var(--font-mono);font-size:.79em;padding:0 10px;white-space:nowrap}
+#obj-flag-btn.has{color:var(--orange)}
+#obj-flag-btn.on{background:rgba(210,153,34,.18);color:var(--orange)}
+.flag-badge{margin-left:5px;color:var(--orange);font-size:.64em;text-transform:uppercase;letter-spacing:.05em}
+#obj-table tr.flagged td:first-child{box-shadow:inset 2px 0 0 var(--orange)}
 </style>
 </head>
 <body data-tool="select">
@@ -355,7 +397,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
 <div id="app">
 
   <div id="toolbar">
-    <span id="toolbar-title" onclick="App.openReadme()" title="About LPG Editor — click for help &amp; shortcuts">⬡ LPG v6</span>
+    <span id="toolbar-title" onclick="App.openReadme()" title="About LPG Editor — click for help &amp; shortcuts">⬡ LPG v7</span>
     <div class="tb-sep"></div>
     <button class="tb-btn" onclick="App.newGraph()" title="New graph">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 1.75A.75.75 0 012.75 1h6.586a.75.75 0 01.53.22l3.914 3.914a.75.75 0 01.22.53V14.25a.75.75 0 01-.75.75H2.75a.75.75 0 01-.75-.75V1.75zm1.5.75v11h9V6.5H9.25A.75.75 0 018.5 5.75V2.5H3.5zm6.5.56l2.19 2.19H10V3.06z"/></svg>
@@ -483,6 +525,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
   </div>
 
   <div id="inspector">
+    <div id="inspector-resize" class="rz" title="Drag to resize · double-click to toggle wide"></div>
     <div id="inspector-header">
       <span id="inspector-title">Inspector</span>
       <button onclick="App.toggleInspector()" title="Collapse inspector panel" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1em;padding:2px 6px;line-height:1" id="insp-collapse-btn">◀</button>
@@ -498,8 +541,10 @@ body[data-paint="active"] .edge-group{cursor:copy}
   </div>
 
   <div id="drawer">
+    <div id="drawer-resize" class="rz" title="Drag to resize · double-click to toggle tall"></div>
     <div id="drawer-header" onclick="App.toggleDrawer()">
       <span id="drawer-header-title">▸ GRAPHML / OBJECT TABLE</span>
+      <button class="drawer-size-btn" id="drawer-size-btn" onclick="event.stopPropagation();App.toggleDrawerTall()" title="Toggle tall / normal height (or drag the top edge)">⤢ Tall</button>
       <span id="drawer-toggle">▲</span>
     </div>
     <div id="drawer-content">
@@ -511,8 +556,12 @@ body[data-paint="active"] .edge-group{cursor:copy}
         <button class="drawer-btn" onclick="App.downloadJson()">↓ .json</button>
         <button class="drawer-btn" onclick="App.saveToStorage()">💾 Save</button>
       </div>
-      <div id="obj-table-wrap" style="border-left:1px solid var(--border);flex:0 0 340px">
-        <input id="obj-search" type="search" placeholder="Search nodes / edges…" oninput="App.filterTable(this.value)">
+      <div id="table-resize" title="Drag to resize table"></div>
+      <div id="obj-table-wrap" style="border-left:1px solid var(--border);flex:0 0 var(--table-w,340px)">
+        <div id="obj-search-row">
+          <input id="obj-search" type="search" placeholder="Search nodes / edges…  (is:orphan to filter flags)" oninput="App.filterTable(this.value)">
+          <button id="obj-flag-btn" onclick="App.toggleFlaggedOnly()" title="Show only orphan nodes and dangling edges">⚠ <span id="obj-flag-count">0</span></button>
+        </div>
         <table id="obj-table">
           <thead>
             <tr>
@@ -567,7 +616,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
     <div id="readme-header">
       <div class="readme-logo">⬡</div>
       <div id="readme-header-text">
-        <h2>LPG Graph Editor v6</h2>
+        <h2>LPG Graph Editor v7</h2>
         <p>A browser-based Labeled Property Graph editor — no server, no install.</p>
       </div>
       <button id="readme-close" onclick="App.closeReadme()">✕</button>
@@ -633,6 +682,9 @@ body[data-paint="active"] .edge-group{cursor:copy}
         <div class="readme-feature"><strong>SVG / PNG Export</strong><span>Export the canvas as vector SVG or raster PNG with the active theme.</span></div>
         <div class="readme-feature"><strong>GraphML Export</strong><span>Standard XML readable by Gephi, yEd, Neo4j, and other tools.</span></div>
         <div class="readme-feature"><strong>Collapsible Panels</strong><span>Inspector (◀ button), object table, and GraphML drawer can all be hidden to maximize canvas space.</span></div>
+        <div class="readme-feature"><strong>Resizable Panels</strong><span>Drag the top edge of the drawer to make the object table taller, the left edge of the inspector to widen it, and the table's left edge to widen the table. Double-click an edge (or press ⤢ Tall) to snap to a large size. Sizes are remembered.</span></div>
+        <div class="readme-feature"><strong>Per-object Alpha</strong><span>Every node has Fill Alpha and Outline Alpha, every edge has Line Alpha (0–100%), saved with the graph and exported to JSON, GraphML and SVG/PNG. Select many objects to set alpha in bulk; Paint Format copies it. Settings → Global Fade is an extra view-only multiplier.</span></div>
+        <div class="readme-feature"><strong>Orphan &amp; Dangling Flags</strong><span>The object table marks orphan nodes and edges that point to missing nodes. Use the ⚠ button or type <code>is:orphan</code> to filter.</span></div>
         <div class="readme-feature"><strong>Hover Tooltip</strong><span>Hover any node to see its label and all custom properties in a floating card.</span></div>
         <div class="readme-feature"><strong>Rich Text Labels</strong><span>Labels support &lt;br&gt; for line breaks and &lt;b&gt;/&lt;i&gt;/&lt;u&gt; for emphasis — rendered as real SVG text (no word-wrap; breaks only where you place &lt;br&gt;). Set color and alignment in the node inspector's Styling section.</span></div>
       </div>
@@ -641,7 +693,7 @@ body[data-paint="active"] .edge-group{cursor:copy}
       <p>Graph state (nodes, edges, positions, colors, view zoom) auto-saves to <code style="font-family:var(--font-mono);font-size:.86em;background:var(--bg2);padding:1px 5px;border-radius:3px">localStorage</code> on every meaningful action. This survives page reload <em>within the same browser</em>, but is wiped if you clear browser storage. A reminder banner appears after 90 seconds of unexported changes. <strong>Use Export JSON for a permanent backup.</strong></p>
     </div>
     <div id="readme-footer">
-      <p>Click <strong>⬡ LPG v6</strong> anytime to reopen this guide.</p>
+      <p>Click <strong>⬡ LPG v7</strong> anytime to reopen this guide.</p>
       <button class="modal-btn primary" onclick="App.closeReadme()">Got it</button>
     </div>
   </div>
@@ -713,6 +765,29 @@ body[data-paint="active"] .edge-group{cursor:copy}
             <input type="checkbox" id="hover-auto-chk" checked onchange="App.setNodeHoverColor()">
             Auto (match node color)
           </label>
+        </div>
+      </div>
+      <div class="set-section">
+        <div class="set-section-label">Global Fade (all objects)</div>
+        <div class="set-row">
+          <label>Node fill</label>
+          <input type="range" min="0" max="95" step="5" value="0" id="tr-node-fill" oninput="App.setTransparency()">
+          <span class="set-val" id="tr-node-fill-val">0%</span>
+        </div>
+        <div class="set-row">
+          <label>Node outline</label>
+          <input type="range" min="0" max="95" step="5" value="0" id="tr-node-stroke" oninput="App.setTransparency()">
+          <span class="set-val" id="tr-node-stroke-val">0%</span>
+        </div>
+        <div class="set-row">
+          <label>Edge lines</label>
+          <input type="range" min="0" max="95" step="5" value="0" id="tr-edge" oninput="App.setTransparency()">
+          <span class="set-val" id="tr-edge-val">0%</span>
+        </div>
+        <div class="set-hint">Multiplies with each object's own Alpha (set per node/edge in the Inspector). Selected/hovered items drop the global fade but keep their own alpha. Exports use per-object alpha only.</div>
+        <div class="set-btn-row">
+          <button class="set-toggle-btn" onclick="App.declutter()">Declutter</button>
+          <button class="set-toggle-btn" onclick="App.resetTransparency()">Reset</button>
         </div>
       </div>
       <div class="set-section">
@@ -1036,6 +1111,8 @@ function renderNodes(){
     g.setAttribute('transform',`translate(${n.x},${n.y})`);
     g.dataset.id = n.id;
     g.classList.toggle('selected', State.selected.has(n.id));
+    g.style.setProperty('--n-fill-a',   ((n.fillAlpha   ?? 100)/100).toFixed(2));
+    g.style.setProperty('--n-stroke-a', ((n.strokeAlpha ?? 100)/100).toFixed(2));
 
     const connected = State.edges.some(e=>e.source===n.id||e.target===n.id);
     g.classList.toggle('orphan', !connected);
@@ -1182,6 +1259,9 @@ function renderEdges(){
     const lineEl = g.querySelector('.edge-line');
     lineEl.setAttribute('d', d);
     lineEl.classList.toggle('selected', State.selected.has(e.id));
+    const hl = State.selected.has(e.source) || State.selected.has(e.target);
+    lineEl.classList.toggle('hl', hl);
+    lineEl.style.setProperty('--e-a', ((e.alpha ?? 100)/100).toFixed(2));
     // Use edge-sel color when selected, else the custom color
     const displayColor = State.selected.has(e.id) ? 'var(--edge-sel)' : edgeColor;
     lineEl.setAttribute('stroke', displayColor);
@@ -1205,6 +1285,9 @@ function renderEdges(){
       else { dynMark.setAttribute('markerWidth','8'); dynMark.setAttribute('markerHeight','6'); dynMark.setAttribute('refX','8'); dynMark.setAttribute('refY','3'); dynMark.firstElementChild.setAttribute('d','M0,0 L8,3 L0,6 Z'); }
       const arrowFill = State.selected.has(e.id) ? 'var(--edge-sel)' : edgeColor;
       dynMark.firstElementChild.setAttribute('fill', arrowFill);
+      const ea = ((e.alpha ?? 100)/100).toFixed(2);
+      dynMark.firstElementChild.setAttribute('data-a', ea);
+      dynMark.firstElementChild.style.fillOpacity = (State.selected.has(e.id) || hl) ? ea : `calc(var(--edge-op,1) * ${ea})`;
       lineEl.setAttribute('marker-end', `url(#${dynId})`);
     } else {
       lineEl.removeAttribute('marker-end');
@@ -1771,6 +1854,15 @@ function renderInspector(){
       html += '<div class="color-row" id="palette-multi-edge"></div>';
       html += '</div></div>';
     }
+    const firstNode = ids.map(i=>State.nodes.find(n=>n.id===i)).find(Boolean);
+    const firstEdge = ids.map(i=>State.edges.find(e=>e.id===i)).find(Boolean);
+    if(nodeCount>0){
+      html += alphaRowHtml('node', '*', 'fillAlpha', 'Node Fill Alpha', firstNode.fillAlpha, 'Sets every selected node');
+      html += alphaRowHtml('node', '*', 'strokeAlpha', 'Node Outline Alpha', firstNode.strokeAlpha, 'Sets every selected node');
+    }
+    if(edgeCount>0){
+      html += alphaRowHtml('edge', '*', 'alpha', 'Edge Alpha', firstEdge.alpha, 'Sets every selected edge');
+    }
     if(nodeCount>0&&edgeCount===0){
       html += '<div class="insp-row"><label>Node Size</label><div style="display:flex;gap:6px;align-items:center"><input type="range" min="15" max="120" value="26" style="flex:1" oninput="App.setMultiSize(parseInt(this.value))"></div></div>';
     }
@@ -1821,6 +1913,8 @@ function renderInspector(){
           <input type="color" value="${nodeColor(node)}" oninput="App.setLiveProp('node', '${node.id}', 'color', this.value)" onchange="App.setProp('node', '${node.id}', 'color', this.value)">
           <div class="color-row" id="palette-node-${node.id}" style="margin-top:8px;"></div>
         </div>
+        ${alphaRowHtml('node', node.id, 'fillAlpha', 'Fill Alpha', node.fillAlpha, 'Alpha of the node fill: 100 = solid, 0 = invisible')}
+        ${alphaRowHtml('node', node.id, 'strokeAlpha', 'Outline Alpha', node.strokeAlpha, 'Alpha of the node outline: 100 = solid, 0 = invisible')}
         <div class="insp-row"><label>Label Color</label>
           <input type="color" value="${node.labelColor||'#e6edf3'}" oninput="App.setLiveProp('node', '${node.id}', 'labelColor', this.value)" onchange="App.setProp('node', '${node.id}', 'labelColor', this.value)">
           <label style="margin-top:4px;display:flex;align-items:center;gap:4px;"><input type="checkbox" ${!node.labelColor?'checked':''} onchange="App.setProp('node', '${node.id}', 'labelColor', this.checked ? '' : '#e6edf3')"> Use theme default</label>
@@ -1904,6 +1998,7 @@ function renderInspector(){
           <input type="color" value="${edge.color && edge.color !== 'inherit' ? edge.color : '#58a6ff'}" oninput="App.setLiveProp('edge', '${edge.id}', 'color', this.value)" onchange="App.setProp('edge', '${edge.id}', 'color', this.value)">
           <label style="margin-top:4px;display:flex;align-items:center;gap:4px;"><input type="checkbox" ${edge.color==='inherit'?'checked':''} onchange="App.setProp('edge', '${edge.id}', 'color', this.checked?'inherit':'#58a6ff')"> Match Source Node</label>
         </div>
+        ${alphaRowHtml('edge', edge.id, 'alpha', 'Line Alpha', edge.alpha, 'Alpha of the edge line and arrowhead: 100 = solid, 0 = invisible')}
       </div>
       <div class="insp-section">
         <div class="insp-section-label-row">
@@ -1927,22 +2022,73 @@ function renderInspector(){
   }
 }
 
+// v7: per-object alpha (0-100, 100 = solid). Fields: node.fillAlpha, node.strokeAlpha, edge.alpha
+function alphaRowHtml(type, id, key, label, val, title){
+  const v = (val === undefined || val === null) ? 100 : val;
+  const sid = escHtml(id).replace(/'/g, "\\'");
+  const clampJs = "Math.max(0,Math.min(100,parseInt(this.value)||0))";
+  return `<div class="insp-row"><label title="${title||''}">${label}</label>
+    <div class="alpha-row">
+      <input type="range" min="0" max="100" step="5" value="${v}"
+        oninput="App.setAlpha('${type}','${sid}','${key}',this.value,false); this.nextElementSibling.value=this.value"
+        onchange="App.setAlpha('${type}','${sid}','${key}',this.value,true)">
+      <input type="number" min="0" max="100" value="${v}" style="width:52px"
+        oninput="App.setAlpha('${type}','${sid}','${key}',${clampJs},false); this.previousElementSibling.value=${clampJs}"
+        onchange="App.setAlpha('${type}','${sid}','${key}',${clampJs},true)">
+      <span class="alpha-pct">%</span>
+    </div></div>`;
+}
+// SVG export bakes ONLY per-object alpha (the global fade is a view setting)
+function alphaBake(el){
+  const cl = el.classList;
+  if(cl && cl.contains('node-circle')){
+    const g = el.parentNode;
+    return `fill-opacity:${g.style.getPropertyValue('--n-fill-a')||1};stroke-opacity:${g.style.getPropertyValue('--n-stroke-a')||1};`;
+  }
+  if(cl && cl.contains('edge-line')) return `stroke-opacity:${el.style.getPropertyValue('--e-a')||1};`;
+  if(el.hasAttribute && el.hasAttribute('data-a')) return `fill-opacity:${el.getAttribute('data-a')};`;
+  return '';
+}
+
+// Single source of truth for "problem" objects.
+//  orphan   = node with no edge touching it
+//  dangling = edge whose source or target node doesn't exist (never drawn on canvas)
+function getFlagged(){
+  const ids = new Set(State.nodes.map(n=>n.id));
+  const linked = new Set();
+  const dangling = [];
+  for(const e of State.edges){
+    linked.add(e.source); linked.add(e.target);
+    if(!ids.has(e.source) || !ids.has(e.target)) dangling.push(e);
+  }
+  return { orphans: State.nodes.filter(n=>!linked.has(n.id)), dangling };
+}
+
 function buildOrphanList(){
-  const orphans = State.nodes.filter(n=>!State.edges.some(e=>e.source===n.id||e.target===n.id));
-  if(!orphans.length) return '<div style="color:var(--green);font-size:11px">No orphan nodes ✓</div>';
-  return orphans.map(n=>`
+  const {orphans, dangling} = getFlagged();
+  if(!orphans.length && !dangling.length)
+    return '<div style="color:var(--green);font-size:11px">No orphan nodes or dangling edges ✓</div>';
+  const nodeRows = orphans.map(n=>`
     <div class="orphan-item">
       <span>${escHtml(n.id)}</span>
       <button onclick="App.selectNode('${n.id}')" title="Select">→</button>
-    </div>`).join('');
+    </div>`);
+  const edgeRows = dangling.map(e=>`
+    <div class="orphan-item">
+      <span>${escHtml(e.id)} <small style="opacity:.7">${escHtml(e.source)}→${escHtml(e.target)} (missing end)</small></span>
+      <button onclick="App.selectFromTable('${e.id}')" title="Select">→</button>
+    </div>`);
+  return nodeRows.concat(edgeRows).join('');
 }
 
 function updateStats(){
   $('stat-nodes').textContent = State.nodes.length;
   $('stat-edges').textContent = State.edges.length;
-  const orphans = State.nodes.filter(n=>!State.edges.some(e=>e.source===n.id||e.target===n.id)).length;
-  $('stat-orphans').textContent = orphans;
-  $('stat-orphan-wrap').style.color = orphans>0 ? 'var(--orange)' : 'var(--text3)';
+  const {orphans, dangling} = getFlagged();
+  const total = orphans.length + dangling.length;
+  $('stat-orphans').textContent = total;
+  $('stat-orphan-wrap').style.color = total>0 ? 'var(--orange)' : 'var(--text3)';
+  $('stat-orphan-wrap').title = `${orphans.length} orphan node(s), ${dangling.length} dangling edge(s)`;
 }
 function escHtml(s){
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1952,24 +2098,30 @@ function escHtml(s){
 //  OBJECT TABLE
 // ═══════════════════════════════════════════════════════════════
 let _tableFilter = '';
+let _flaggedOnly = false;
 function renderTable(){
   const tbody = $('obj-tbody');
   const s = State.tableSort;
+  const fl = getFlagged();
+  const orphanIds = new Set(fl.orphans.map(n=>n.id));
+  const danglingIds = new Set(fl.dangling.map(e=>e.id));
   let rows = [
-    ...State.nodes.map(n=>({type:'node', id:n.id, label:n.label||'', extra:Object.keys(n.props||{}).join(', ')})),
-    ...State.edges.map(e=>({type:'edge', id:e.id, label:e.label||'', extra:`${e.source}→${e.target}`}))
+    ...State.nodes.map(n=>({type:'node', id:n.id, label:n.label||'', extra:Object.keys(n.props||{}).join(', '), flag: orphanIds.has(n.id)?'orphan':''})),
+    ...State.edges.map(e=>({type:'edge', id:e.id, label:e.label||'', extra:`${e.source}→${e.target}`, flag: danglingIds.has(e.id)?'dangling':''}))
   ];
-  if(_tableFilter){
-    const f = _tableFilter.toLowerCase();
-    rows = rows.filter(r=>r.id.toLowerCase().includes(f)||r.label.toLowerCase().includes(f)||r.extra.toLowerCase().includes(f));
+  const q = _tableFilter.trim().toLowerCase();
+  const flagQuery = /^(is:(orphans?|dangling|flagged)|⚠)$/.test(q);
+  if(_flaggedOnly || flagQuery) rows = rows.filter(r=>r.flag);
+  if(q && !flagQuery){
+    rows = rows.filter(r=>r.id.toLowerCase().includes(q)||r.label.toLowerCase().includes(q)||r.extra.toLowerCase().includes(q));
   }
   rows.sort((a,b)=>{
     const av=a[s.col]||'', bv=b[s.col]||'';
     return s.asc ? av.localeCompare(bv) : bv.localeCompare(av);
   });
   tbody.innerHTML = rows.map(r=>`
-    <tr class="${State.selected.has(r.id)?'selected-row':''}" onclick="App.selectFromTable('${r.id}')">
-      <td><span class="type-badge type-${r.type}">${r.type}</span></td>
+    <tr class="${State.selected.has(r.id)?'selected-row':''} ${r.flag?'flagged':''}" onclick="App.selectFromTable('${r.id}')">
+      <td><span class="type-badge type-${r.type}">${r.type}</span>${r.flag?`<span class="flag-badge" title="${r.flag==='orphan'?'Node has no edges':'Edge points to a node that does not exist'}">⚠ ${r.flag}</span>`:''}</td>
       <td title="${escHtml(r.id)}">${escHtml(r.id)}</td>
       <td title="${escHtml(r.label)}">${escHtml(r.label)}</td>
       <td title="${escHtml(r.extra)}">${escHtml(r.extra)}</td>
@@ -1980,6 +2132,11 @@ function renderTable(){
     const col = th.getAttribute('onclick').match(/sortTable\('(\w+)'\)/)?.[1];
     if(col===s.col) th.classList.add(s.asc?'sort-asc':'sort-desc');
   }
+
+  const flagTotal = fl.orphans.length + fl.dangling.length;
+  const fc = $('obj-flag-count'); if(fc) fc.textContent = flagTotal;
+  const fb = $('obj-flag-btn');
+  if(fb){ fb.classList.toggle('has', flagTotal>0); fb.classList.toggle('on', _flaggedOnly); }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1995,6 +2152,8 @@ function renderGraphML(){
     xml += `      <data key="y">${n.y}</data>\n`;
     xml += `      <data key="color">${nodeColor(n)}</data>\n`;
     xml += `      <data key="r">${nodeRadius(n)}</data>\n`;
+    if(n.fillAlpha !== undefined && n.fillAlpha !== 100) xml += `      <data key="fillAlpha">${n.fillAlpha}</data>\n`;
+    if(n.strokeAlpha !== undefined && n.strokeAlpha !== 100) xml += `      <data key="strokeAlpha">${n.strokeAlpha}</data>\n`;
     if(n.props){
       for(const [k,v] of Object.entries(n.props)){
         xml += `      <data key="${escHtml(k)}">${escHtml(v)}</data>\n`;
@@ -2009,6 +2168,7 @@ function renderGraphML(){
     if(e.style) xml += `      <data key="style">${escHtml(e.style)}</data>\n`;
     if(e.dash) xml += `      <data key="dash">${escHtml(e.dash)}</data>\n`;
     if(e.color) xml += `      <data key="color">${escHtml(e.color)}</data>\n`;
+    if(e.alpha !== undefined && e.alpha !== 100) xml += `      <data key="alpha">${e.alpha}</data>\n`;
     xml += `    </edge>\n`;
   }
   xml += `  </graph>\n</graphml>`;
@@ -2072,6 +2232,8 @@ function parseGraphML(xmlStr){
       else if(k==='y') n.y = parseFloat(val)||0;
       else if(k==='color') n.color = val;
       else if(k==='r') n.r = parseInt(val)||26;
+      else if(k==='fillAlpha') n.fillAlpha = Math.max(0,Math.min(100,parseInt(val)));
+      else if(k==='strokeAlpha') n.strokeAlpha = Math.max(0,Math.min(100,parseInt(val)));
       else n.props[k] = val;
     }
     nodes.push(n);
@@ -2088,6 +2250,7 @@ function parseGraphML(xmlStr){
       else if(k==='style') e.style = val;
       else if(k==='dash') e.dash = val;
       else if(k==='color') e.color = val;
+      else if(k==='alpha') e.alpha = Math.max(0,Math.min(100,parseInt(val)));
     }
     edges.push(e);
   }
@@ -2098,8 +2261,8 @@ function importFromJSON(text){
   let d; try{ d = JSON.parse(text); } catch(e){ return false; }
   if(d && Array.isArray(d.nodes) && Array.isArray(d.edges)){
     snapshot();
-    State.nodes = d.nodes.map(n=>({id:n.id, label:n.label||n.id, x:n.x||0, y:n.y||0, color:n.color||'#1f6feb', r:n.r||26, fontSize:n.fontSize||11, labelAlign:n.labelAlign||'center', labelColor:n.labelColor||'', props:n.props||{}}));
-    State.edges = d.edges.map(e=>({id:e.id||uid('e'), source:e.source, target:e.target, label:e.label||'', directed:e.directed!==false, style:e.style||'straight', dash:e.dash||'solid', arrowSize:e.arrowSize||'medium', color:e.color, props:e.props||{}}));
+    State.nodes = d.nodes.map(n=>({id:n.id, label:n.label||n.id, x:n.x||0, y:n.y||0, color:n.color||'#1f6feb', r:n.r||26, fontSize:n.fontSize||11, labelAlign:n.labelAlign||'center', labelColor:n.labelColor||'', fillAlpha:n.fillAlpha, strokeAlpha:n.strokeAlpha, props:n.props||{}}));
+    State.edges = d.edges.map(e=>({id:e.id||uid('e'), source:e.source, target:e.target, label:e.label||'', directed:e.directed!==false, style:e.style||'straight', dash:e.dash||'solid', arrowSize:e.arrowSize||'medium', color:e.color, alpha:e.alpha, props:e.props||{}}));
     State.graphId = d.graphId || 'graph1';
     
     if (d.exportName && d.exportName !== State.exportName) {
@@ -2268,6 +2431,7 @@ function applyPaintFormat(type, id){
       if(fmt.type === 'node'){
         if(fmt.r !== undefined) n.r = fmt.r;
         if(fmt.fontSize !== undefined) n.fontSize = fmt.fontSize;
+        n.fillAlpha = fmt.fillAlpha; n.strokeAlpha = fmt.strokeAlpha;
       }
     }
   } else {
@@ -2278,6 +2442,7 @@ function applyPaintFormat(type, id){
         if(fmt.dash !== undefined) e.dash = fmt.dash;
         if(fmt.style !== undefined) e.style = fmt.style;
         if(fmt.arrowSize !== undefined) e.arrowSize = fmt.arrowSize;
+        e.alpha = fmt.alpha;
       }
     }
   }
@@ -2360,6 +2525,7 @@ function prepareExportSvg(viewRect){
       // all, which defaults to opaque black in SVG and covered content beneath it.
       if(v && v !== '0px') inline += `${p}:${v};`;
     }
+    inline += alphaBake(liveEl);
     if(inline) cloneEl.setAttribute('style', (cloneEl.getAttribute('style')||'') + inline);
     const liveChildren = Array.from(liveEl.children);
     const cloneChildren = Array.from(cloneEl.children);
@@ -2698,6 +2864,17 @@ window.App = {
     localStorage.setItem('lpg_graph_state', serialize());
     renderAll(); renderInspector();
   },
+  setAlpha(type, id, key, val, commit){
+    val = Math.max(0, Math.min(100, Math.round(+val) || 0));
+    if(!App._alphaSnap){ snapshot(); App._alphaSnap = true; }   // one undo step per drag
+    const targets = id === '*' ? [...State.selected] : [id];
+    for(const t of targets){
+      if(type === 'node'){ const n = State.nodes.find(n=>n.id===t); if(n) n[key] = val; }
+      else { const e = State.edges.find(e=>e.id===t); if(e) e[key] = val; }
+    }
+    renderAll();
+    if(commit){ App._alphaSnap = false; localStorage.setItem('lpg_graph_state', serialize()); }
+  },
   setMultiSize(r){
     for(const id of State.selected){
       const n = State.nodes.find(nn=>nn.id===id); if(n) n.r = r;
@@ -2712,14 +2889,14 @@ window.App = {
     const srcEdge = State.edges.find(e=>e.id===srcId);
     if(!srcNode && !srcEdge){ return; }
     snapshot();
-    const fmt = srcNode ? {type:'node', color:srcNode.color, r:srcNode.r, fontSize:srcNode.fontSize}
-                        : {type:'edge', color:srcEdge.color, dash:srcEdge.dash, style:srcEdge.style, arrowSize:srcEdge.arrowSize};
+    const fmt = srcNode ? {type:'node', color:srcNode.color, r:srcNode.r, fontSize:srcNode.fontSize, fillAlpha:srcNode.fillAlpha, strokeAlpha:srcNode.strokeAlpha}
+                        : {type:'edge', color:srcEdge.color, dash:srcEdge.dash, style:srcEdge.style, arrowSize:srcEdge.arrowSize, alpha:srcEdge.alpha};
     State.paintFormat = fmt;
     for(const id of ids.slice(1)){
       const tn = State.nodes.find(n=>n.id===id) ? 'node' : 'edge';
       // Apply inline without extra snapshot
-      if(tn==='node'){ const n=State.nodes.find(n=>n.id===id); if(n){ if(fmt.color!==undefined) n.color=fmt.color; if(fmt.type==='node'){ if(fmt.r!==undefined) n.r=fmt.r; if(fmt.fontSize!==undefined) n.fontSize=fmt.fontSize; } } }
-      else { const e=State.edges.find(e=>e.id===id); if(e){ if(fmt.color!==undefined) e.color=fmt.color; if(fmt.type==='edge'){ if(fmt.dash!==undefined) e.dash=fmt.dash; if(fmt.style!==undefined) e.style=fmt.style; if(fmt.arrowSize!==undefined) e.arrowSize=fmt.arrowSize; } } }
+      if(tn==='node'){ const n=State.nodes.find(n=>n.id===id); if(n){ if(fmt.color!==undefined) n.color=fmt.color; if(fmt.type==='node'){ n.fillAlpha=fmt.fillAlpha; n.strokeAlpha=fmt.strokeAlpha; if(fmt.r!==undefined) n.r=fmt.r; if(fmt.fontSize!==undefined) n.fontSize=fmt.fontSize; } } }
+      else { const e=State.edges.find(e=>e.id===id); if(e){ if(fmt.color!==undefined) e.color=fmt.color; if(fmt.type==='edge'){ e.alpha=fmt.alpha; if(fmt.dash!==undefined) e.dash=fmt.dash; if(fmt.style!==undefined) e.style=fmt.style; if(fmt.arrowSize!==undefined) e.arrowSize=fmt.arrowSize; } } }
     }
     localStorage.setItem('lpg_graph_state', serialize());
     renderAll(); renderInspector();
@@ -2966,6 +3143,26 @@ window.App = {
     }));
     renderNodes();
   },
+  setTransparency(persist=true){
+    const val = id => parseInt(($(id)||{}).value) || 0;
+    const v = { nodeFill: val('tr-node-fill'), nodeStroke: val('tr-node-stroke'), edge: val('tr-edge') };
+    const st = document.documentElement.style;
+    st.setProperty('--node-fill-op',   (1 - v.nodeFill/100).toFixed(2));
+    st.setProperty('--node-stroke-op', (1 - v.nodeStroke/100).toFixed(2));
+    st.setProperty('--edge-op',        (1 - v.edge/100).toFixed(2));
+    const lbl = (id, n)=>{ const el=$(id); if(el) el.textContent = n+'%'; };
+    lbl('tr-node-fill-val', v.nodeFill); lbl('tr-node-stroke-val', v.nodeStroke); lbl('tr-edge-val', v.edge);
+    if(persist) localStorage.setItem('lpg_transparency', JSON.stringify(v));
+    renderEdges();   // arrowheads pick up the new edge opacity
+  },
+  _setTrSliders(f, s, e){
+    $('tr-node-fill').value = f; $('tr-node-stroke').value = s; $('tr-edge').value = e;
+    App.setTransparency();
+  },
+  declutter(){ App._setTrSliders(80, 50, 80); },
+  resetTransparency(){ App._setTrSliders(0, 0, 0); },
+  toggleFlaggedOnly(){ _flaggedOnly = !_flaggedOnly; renderTable(); },
+
   closeModal(){ $('modal-overlay').classList.remove('open'); },
 
   copyPaletteToClipboard(){
@@ -3136,9 +3333,9 @@ window.App = {
       let fmt = null;
       for(const id of selIds){
         const n = State.nodes.find(n=>n.id===id);
-        if(n){ fmt = {type:'node', color:n.color, r:n.r, fontSize:n.fontSize}; break; }
+        if(n){ fmt = {type:'node', color:n.color, r:n.r, fontSize:n.fontSize, fillAlpha:n.fillAlpha, strokeAlpha:n.strokeAlpha}; break; }
         const e = State.edges.find(e=>e.id===id);
-        if(e){ fmt = {type:'edge', color:e.color, dash:e.dash, style:e.style, arrowSize:e.arrowSize}; break; }
+        if(e){ fmt = {type:'edge', color:e.color, dash:e.dash, style:e.style, arrowSize:e.arrowSize, alpha:e.alpha}; break; }
       }
       if(!fmt){ notify('Select a node or edge first, then click Paint'); return; }
       State.paintFormat = fmt;
@@ -3157,9 +3354,9 @@ window.App = {
 
   captureFormatFrom(id){
     const n = State.nodes.find(n=>n.id===id);
-    if(n){ State.paintFormat = {type:'node', color:n.color, r:n.r, fontSize:n.fontSize}; }
+    if(n){ State.paintFormat = {type:'node', color:n.color, r:n.r, fontSize:n.fontSize, fillAlpha:n.fillAlpha, strokeAlpha:n.strokeAlpha}; }
     const e = State.edges.find(e=>e.id===id);
-    if(e){ State.paintFormat = {type:'edge', color:e.color, dash:e.dash, style:e.style, arrowSize:e.arrowSize}; }
+    if(e){ State.paintFormat = {type:'edge', color:e.color, dash:e.dash, style:e.style, arrowSize:e.arrowSize, alpha:e.alpha}; }
     State.paintActive = true;
     document.body.setAttribute('data-paint','active');
     const btn = $('tool-paint'); if(btn) btn.classList.add('paint-active');
@@ -3268,6 +3465,97 @@ function syncFsIcon(){
 document.addEventListener('fullscreenchange', syncFsIcon);
 document.addEventListener('webkitfullscreenchange', syncFsIcon);
 
+// ═══════════════════════════════════════════════════════════════
+//  v7: RESIZABLE PANELS (drawer height, inspector width, table width)
+// ═══════════════════════════════════════════════════════════════
+const Layout = (()=>{
+  const KEY = 'lpg_layout';
+  const root = document.documentElement;
+  const VARS = { drawerH:'--drawer-h', inspW:'--inspector-w', tableW:'--table-w' };
+  let cfg = {};
+  try{ cfg = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; }catch(e){}
+  const save = ()=>{ try{ localStorage.setItem(KEY, JSON.stringify(cfg)); }catch(e){} };
+  const clamp = (v, lo, hi)=>Math.max(lo, Math.min(hi, v));
+  const toolbarH = ()=>parseInt(getComputedStyle(root).getPropertyValue('--toolbar-h')) || 42;
+  const limits = {
+    drawerH: ()=>[100, Math.max(160, window.innerHeight - toolbarH() - 140)],
+    inspW:   ()=>[220, Math.max(260, Math.round(window.innerWidth * 0.7))],
+    tableW:  ()=>[220, Math.max(260, ($('drawer-content').clientWidth || window.innerWidth) - 110 - 160)]
+  };
+  function set(k, v, persist=true){
+    const [lo, hi] = limits[k]();
+    v = Math.round(clamp(v, lo, hi));
+    cfg[k] = v;
+    root.style.setProperty(VARS[k], v + 'px');
+    if(persist) save();
+    return v;
+  }
+  const cur = k => parseInt(getComputedStyle(root).getPropertyValue(VARS[k])) || 0;
+  const tallH = ()=>Math.round(window.innerHeight * 0.6);
+  const wideW = ()=>clamp(Math.round(window.innerWidth * 0.4), 420, 640);
+  const fire = ()=>window.dispatchEvent(new Event('resize'));
+
+  function syncButtons(){
+    const b = $('drawer-size-btn');
+    if(b) b.textContent = cur('drawerH') >= tallH() - 20 ? '⤡ Normal' : '⤢ Tall';
+  }
+
+  function drag(handle, key, axis, calc){
+    handle.addEventListener('pointerdown', ev=>{
+      if(ev.button !== 0) return;
+      ev.preventDefault();
+      handle.setPointerCapture(ev.pointerId);
+      handle.classList.add('dragging');
+      document.body.classList.add('resizing', 'resizing-' + axis);
+      const move = e=>set(key, calc(e), false);
+      const up = ()=>{
+        handle.removeEventListener('pointermove', move);
+        handle.removeEventListener('pointerup', up);
+        handle.removeEventListener('pointercancel', up);
+        handle.classList.remove('dragging');
+        document.body.classList.remove('resizing', 'resizing-x', 'resizing-y');
+        save(); syncButtons(); fire();
+      };
+      handle.addEventListener('pointermove', move);
+      handle.addEventListener('pointerup', up);
+      handle.addEventListener('pointercancel', up);
+    });
+  }
+
+  function toggleDrawerTall(){
+    if($('drawer').classList.contains('collapsed')) App.toggleDrawer();
+    const h = cur('drawerH');
+    if(h < tallH() - 20){ cfg.drawerPrev = h; set('drawerH', tallH()); }
+    else set('drawerH', cfg.drawerPrev || 220);
+    syncButtons(); fire();
+  }
+  function toggleInspectorWide(){
+    if($('app').classList.contains('inspector-collapsed')) App.toggleInspector();
+    const w = cur('inspW');
+    if(w < wideW() - 20){ cfg.inspPrev = w; set('inspW', wideW()); }
+    else set('inspW', cfg.inspPrev || 300);
+    fire();
+  }
+
+  function init(){
+    for(const k of Object.keys(VARS)) if(typeof cfg[k] === 'number') set(k, cfg[k], false);
+    drag($('drawer-resize'),    'drawerH', 'y', e=>window.innerHeight - e.clientY);
+    drag($('inspector-resize'), 'inspW',   'x', e=>window.innerWidth - e.clientX);
+    drag($('table-resize'),     'tableW',  'x', e=>$('drawer-content').getBoundingClientRect().right - e.clientX);
+    $('drawer-resize').addEventListener('dblclick', toggleDrawerTall);
+    $('inspector-resize').addEventListener('dblclick', toggleInspectorWide);
+    $('table-resize').addEventListener('dblclick', ()=>{ set('tableW', 340); });
+    window.addEventListener('resize', ()=>{
+      for(const k of Object.keys(VARS)) if(typeof cfg[k] === 'number') set(k, cfg[k], false);
+      syncButtons();
+    });
+    syncButtons();
+  }
+  return { init, toggleDrawerTall, toggleInspectorWide };
+})();
+App.toggleDrawerTall = Layout.toggleDrawerTall;
+App.toggleInspectorWide = Layout.toggleInspectorWide;
+
 (function init(){
   // Restore theme
   if(localStorage.getItem('lpg_theme')==='light'){
@@ -3294,6 +3582,14 @@ document.addEventListener('webkitfullscreenchange', syncFsIcon);
   if(savedExportName){
     State.exportName = savedExportName;
   }
+
+  // v7: restore transparency + panel sizes
+  try{
+    const tr = JSON.parse(localStorage.getItem('lpg_transparency') || 'null');
+    if(tr){ $('tr-node-fill').value = tr.nodeFill||0; $('tr-node-stroke').value = tr.nodeStroke||0; $('tr-edge').value = tr.edge||0; }
+  }catch(e){}
+  App.setTransparency(false);
+  Layout.init();
 
   App.setTool('select');
   const savedReminder = localStorage.getItem('lpg_reminder_enabled');
